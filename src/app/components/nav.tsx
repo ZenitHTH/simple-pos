@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { FaBars } from "react-icons/fa";
 
 interface itemNavInf {
   id: number;
@@ -34,33 +35,60 @@ const itemNav: itemNavInf[] = [
   },
 ];
 
+const itemNavLogin: itemNavInf[] = [
+  {
+    id: 0,
+    link: "/login",
+    name: "Login",
+  },
+  {
+    id: 1,
+    link: "register",
+    name: "Register",
+  },
+];
+
 function Nav() {
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-gray-800 p-4">
-      <div className="block lg:hidden">
-        <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-          <svg
-            className="fill-current h-3 w-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+    <nav className="bg-[#F5F7FA]">
+      <div
+        className="container mx-auto max-w-[1320px] relative h-auto p-2 flex flex-col
+      md:flex-row md:justify-between md:items-center"
+      >
+        <div className="">
+          <button className="text-black bg-gray-300 px-3 py-2">
+            <FaBars />
+          </button>
+        </div>
+        <div className="">
+          <div
+            className=" flex flex-col 
+        md:flex-row md:my-5"
           >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
-      <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div className="text-sm lg:flex-glow">
-          {itemNav.map((item: itemNavInf) => {
+            {itemNav.map((item: itemNavInf) => {
+              return (
+                <button
+                  key={item.id}
+                  className="px-4 py-2 mx-3 my-2 rounded-lg bg-gray-300 "
+                >
+                  <Link href={item.link} className="text-black">
+                    {item.name}
+                  </Link>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex flex-col my-t md:flex-row">
+          {itemNavLogin.map((item: itemNavInf) => {
             return (
-              <button
-                key={item.id}
-                className="flex items-center px-4 py-2 border rounded text-teal-200 bg-blue-800 hover:border-white"
-              >
-                <Link href={item.link} className="">
-                  {item.name}
-                </Link>
-              </button>
+              <div className="my-2 md:mx-4" key={item.id}>
+                <button className="px-4 py-2 rounded-lg bg-gray-300">
+                  <Link href={item.link} className="text-black">
+                    {item.name}
+                  </Link>
+                </button>
+              </div>
             );
           })}
         </div>
