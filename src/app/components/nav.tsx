@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 
@@ -49,41 +51,41 @@ const itemNavLogin: itemNavInf[] = [
 ];
 
 function Nav() {
+  const [toggle, setToggle] = useState(false);
+  const updateToggle = () => {
+    setToggle(!toggle);
+  };
+
   return (
     <nav className="bg-[#F5F7FA]">
       <div
         className="container mx-auto max-w-[1320px] relative h-auto p-2 flex flex-col
-      md:flex-row md:justify-between md:items-center"
+      md:flex-row md:justify-between md:items-center "
       >
-        <div className="">
+        <div className="text-xl text-black my-1">Logo</div>
+        <div className="md:hidden absolute right-5">
           <button className="text-black bg-gray-300 px-3 py-2">
-            <FaBars />
+            <FaBars onClick={updateToggle} className="text-xl" />
           </button>
         </div>
-        <div className="">
-          <div
-            className=" flex flex-col 
-        md:flex-row md:my-5"
-          >
-            {itemNav.map((item: itemNavInf) => {
-              return (
-                <button
-                  key={item.id}
-                  className="px-4 py-2 mx-3 my-2 rounded-lg bg-gray-300 "
-                >
-                  <Link href={item.link} className="text-black">
+        <div className={`${!toggle ? "hidden" : "flex"} flex-col md:flex-row`}>
+          {itemNav.map((item: itemNavInf) => {
+            return (
+              <div className="my-2 md:mx-4" key={item.id}>
+                <button className="px-4 py-2 rounded-lg ">
+                  <Link href={item.link} className="text-black text-center">
                     {item.name}
                   </Link>
                 </button>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="flex flex-col my-t md:flex-row">
+        <div className={`${!toggle ? "hidden" : "flex"} flex-col md:flex-row`}>
           {itemNavLogin.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
-                <button className="px-4 py-2 rounded-lg bg-gray-300">
+                <button className="px-4 py-2">
                   <Link href={item.link} className="text-black">
                     {item.name}
                   </Link>
