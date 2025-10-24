@@ -67,8 +67,8 @@ function Nav() {
       setWindowSize(getWindowSize());
     }
 
+    updateToggle();
     window.addEventListener("resize", handleWindowResize);
-
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
@@ -80,13 +80,17 @@ function Nav() {
         className="container mx-auto max-w-[1320px] relative h-auto p-2 flex flex-col
       md:flex-row md:justify-between md:items-center "
       >
-        <div className="text-xl text-black my-1">Logo</div>
+        <div className="text-xl text-black py-2 px-2">
+          {windowSize.innerWidth}
+        </div>
         <div className="md:hidden absolute right-5">
           <button className="text-black bg-gray-300 px-3 py-2">
             <FaBars onClick={updateToggle} className="text-xl" />
           </button>
         </div>
-        <div className={`${toggle ? "flex" : "hidden"} flex-col md:flex-row`}>
+        <div
+          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row`}
+        >
           {itemNav.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
@@ -99,7 +103,9 @@ function Nav() {
             );
           })}
         </div>
-        <div className={`${toggle ? "flex" : "hidden"} flex-col md:flex-row`}>
+        <div
+          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row`}
+        >
           {itemNavLogin.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
