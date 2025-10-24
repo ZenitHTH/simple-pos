@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 
@@ -50,11 +50,29 @@ const itemNavLogin: itemNavInf[] = [
   },
 ];
 
+function getWindowSize() {
+  const { innerWidth, innerHeight } = window;
+  return { innerWidth, innerHeight };
+}
+
 function Nav() {
   const [toggle, setToggle] = useState(false);
+  const [windowSize, setWindowSize] = useState(getWindowSize());
   const updateToggle = () => {
     setToggle(!toggle);
   };
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   return (
     <nav className="bg-[#F5F7FA]">
@@ -68,7 +86,7 @@ function Nav() {
             <FaBars onClick={updateToggle} className="text-xl" />
           </button>
         </div>
-        <div className={`${!toggle ? "hidden" : "flex"} flex-col md:flex-row`}>
+        <div className={`${toggle ? "flex" : "hidden"} flex-col md:flex-row`}>
           {itemNav.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
@@ -81,7 +99,7 @@ function Nav() {
             );
           })}
         </div>
-        <div className={`${!toggle ? "hidden" : "flex"} flex-col md:flex-row`}>
+        <div className={`${toggle ? "flex" : "hidden"} flex-col md:flex-row`}>
           {itemNavLogin.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
