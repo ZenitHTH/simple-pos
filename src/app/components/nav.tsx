@@ -89,13 +89,13 @@ function Nav() {
           </button>
         </div>
         <div
-          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row`}
+          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row `}
         >
           {itemNav.map((item: itemNavInf) => {
             return (
-              <div className="my-2 md:mx-4" key={item.id}>
-                <button className="px-4 py-2 rounded-lg ">
-                  <Link href={item.link} className="text-black text-center">
+              <div className="my-2 md:mx-4 " key={item.id}>
+                <button className="w-full px-4 py-2 rounded-lg bg-gray-600">
+                  <Link href={item.link} className="text-white">
                     {item.name}
                   </Link>
                 </button>
@@ -104,13 +104,13 @@ function Nav() {
           })}
         </div>
         <div
-          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row`}
+          className={`${toggle! && windowSize.innerWidth < 768 ? "hidden" : "flex"} flex-col md:flex-row m`}
         >
           {itemNavLogin.map((item: itemNavInf) => {
             return (
               <div className="my-2 md:mx-4" key={item.id}>
-                <button className="px-4 py-2">
-                  <Link href={item.link} className="text-black">
+                <button className="w-full px-4 py-2 rounded-lg bg-gray-600">
+                  <Link href={item.link} className="text-white">
                     {item.name}
                   </Link>
                 </button>
