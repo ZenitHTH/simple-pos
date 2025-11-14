@@ -7,3 +7,8 @@ use crate::model::{Product};
 pub fn InsertProduct(prod:Product,quan:i32){
 
 }
+
+pub fn RemoveProduct(product_id:i32){
+
+}
+
