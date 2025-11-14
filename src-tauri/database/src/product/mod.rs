@@ -15,3 +15,7 @@ pub fn RemoveProduct(product_id:i32){
 pub fn UpdateProduct(prod:Product){
 
 }
+
+pub fn FindProduct(product_id:i32){
+    
+}
