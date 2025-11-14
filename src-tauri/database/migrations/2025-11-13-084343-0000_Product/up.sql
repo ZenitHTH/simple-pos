@@ -1,7 +1,7 @@
 -- Your SQL goes here
 CREATE TABLE Product (
   product_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  name VARCHAR NOT NULL,
+  title VARCHAR NOT NULL,
   catagory VARCHAR NOT NULL,
   satang INTEGER NOT NULL
 )
