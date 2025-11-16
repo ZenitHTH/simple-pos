@@ -3,6 +3,6 @@ diesel::table! {
         product_id -> Integer,
         title -> Text,
         catagory -> Text,
-        satang -> i32,
+        satang -> Integer,
     }
 }
