@@ -2,7 +2,6 @@ pub mod model;
 pub mod schema;
 
 use crate::model::{Product,NewProduct};
-use crate::product::schema::product::product_id;
 use crate::schema::product;
 use diesel::prelude::*;
 
