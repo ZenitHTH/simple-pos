@@ -10,12 +10,20 @@ pub struct Product {
     pub satang: i32,
 }
 
+#[derive(Insertable)]
+#[diesel(table_name = Product)]
+pub struct NewProduct<'a> {
+    pub title: &'a str,
+    pub catagory: &'a str,
+    pub satang: &'a i32,
+}
+
 /*
 Struct Product {
 id:i32
 Name:String
 Category:String
-Price Satang : i32 
+Price Satang : i32
 Quantity : i32 }
 
 */
