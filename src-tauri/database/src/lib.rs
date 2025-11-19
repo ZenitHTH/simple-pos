@@ -2,9 +2,11 @@ use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
 
-pub mod product;
+pub mod Product;
+pub mod Stock;
 
-use crate::product::{model,schema};
+use crate::Product::{model as product_model, schema as product_schema};
+use crate::Stock::{model as stock_model, schema as stock_schema};
 
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();
@@ -14,9 +16,6 @@ pub fn establish_connection() -> SqliteConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-
-
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }
-
