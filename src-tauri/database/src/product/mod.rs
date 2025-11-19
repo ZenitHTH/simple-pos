@@ -1,8 +1,6 @@
 pub mod model;
 pub mod schema;
 
-use std::ops::ControlFlow;
-
 use crate::model::{NewProduct, Product};
 use crate::schema::product as product_schema;
 use diesel::prelude::*;
