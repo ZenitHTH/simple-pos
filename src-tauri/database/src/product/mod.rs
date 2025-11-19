@@ -1,6 +1,8 @@
 pub mod model;
 pub mod schema;
 
+use std::ops::ControlFlow;
+
 use crate::model::{NewProduct, Product};
 use crate::schema::product as product_schema;
 use diesel::prelude::*;
@@ -36,9 +38,7 @@ pub fn update_product(conn: &mut SqliteConnection, prod: Product) {
 }
 
 pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Vec<Product>, Error> {
-    let prod: Vec<Product> = product_schema::table
-        .select(product_schema::product_id.eq(id))
-        .load::<Product>(conn)?;
-
-    return prod;
+    return product_schema::table
+        .filter(product_schema::product_id.eq(id))
+        .load::<Product>(conn);
 }
