@@ -10,9 +10,13 @@ pub use model::*;
 
 pub fn create_receipt_header(
     conn: &mut SqliteConnection,
+    custom_timestamp: Option<i64>,
 ) -> Result<ReceiptList, diesel::result::Error> {
+    // Use the provided time, or default to NOW
+    let timestamp = custom_timestamp.unwrap_or_else(|| Utc::now().timestamp());
+
     let new_header = NewReceiptList {
-        datetime_unix: Utc::now().timestamp(),
+        datetime_unix: timestamp,
     };
 
     diesel::insert_into(receipt_list::table)

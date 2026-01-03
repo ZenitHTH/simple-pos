@@ -1,5 +1,5 @@
 use crate::receipt::schema::{receipt_item, receipt_list};
-use chrono::NaiveDateTime;
+use chrono::{DateTime, FixedOffset, NaiveDateTime};
 use diesel::prelude::*;
 
 // --- Receipt List (Header) ---
@@ -12,8 +12,17 @@ pub struct ReceiptList {
 }
 
 impl ReceiptList {
-    pub fn get_datetime(&self) -> Option<NaiveDateTime> {
-        NaiveDateTime::from_timestamp_opt(self.datetime_unix, 0)
+    /// Convert the stored Unix timestamp to a readable Date
+    /// Pass `offset_hours` to adjust the timezone (e.g., 7 for Thailand)
+    pub fn get_datetime(&self, offset_hours: i32) -> Option<NaiveDateTime> {
+        // 1. Create the timezone offset (hours * 3600 seconds)
+        // .unwrap() is safe here because 7 * 3600 is a valid offset
+        let offset =
+            FixedOffset::east_opt(offset_hours * 3600).unwrap_or(FixedOffset::east_opt(0).unwrap());
+
+        // 2. Convert Unix Timestamp -> UTC DateTime -> Local DateTime -> NaiveDateTime
+        DateTime::from_timestamp(self.datetime_unix, 0)
+            .map(|utc_dt| utc_dt.with_timezone(&offset).naive_local())
     }
 }
 
