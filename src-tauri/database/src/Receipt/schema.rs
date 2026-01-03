@@ -10,7 +10,7 @@ diesel::table! {
 diesel::table! {
     receipt_list (product_id) {
         receipt_list_id -> Integer,
-        datetime -> Integer,
+        datetime -> BigInt,
 
     }
 }
