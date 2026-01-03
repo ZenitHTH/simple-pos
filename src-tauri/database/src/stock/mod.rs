@@ -1,8 +1,8 @@
 pub mod model;
 pub mod schema;
 
-use crate::stock_model::{NewStock, Stock};
-use crate::stock_schema::stock as stock_schemata;
+use crate::stock::model::{NewStock, Stock};
+use crate::stock::schema::stock as stock_schemata;
 use diesel::prelude::*;
 use diesel::result::Error;
 

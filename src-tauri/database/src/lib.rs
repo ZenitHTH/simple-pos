@@ -2,20 +2,18 @@ use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
 
-pub mod Product;
-pub mod Stock;
+pub mod product;
+pub mod receipt;
+pub mod stock;
 
-use crate::Product::{model as product_model, schema as product_schema};
-use crate::Stock::{model as stock_model, schema as stock_schema};
+pub use product::model::{NewProduct, Product};
+pub use receipt::model::{NewReceipt, NewReceiptList, Receipt, ReceiptList};
+pub use stock::model::{NewStock, Stock};
 
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();
+    let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| "database.db".to_string());
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     SqliteConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
-
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
 }

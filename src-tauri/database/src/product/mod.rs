@@ -1,8 +1,8 @@
 pub mod model;
 pub mod schema;
 
-use crate::product_model::{NewProduct, Product};
-use crate::product_schema::product as product_schema;
+use crate::product::model::{NewProduct, Product};
+use crate::product::schema::product as product_schema;
 use diesel::prelude::*;
 use diesel::result::Error;
 

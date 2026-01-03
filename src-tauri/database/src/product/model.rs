@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 
 #[derive(Queryable, Selectable)]
-#[diesel(table_name = crate::product_schema::product)]
+#[diesel(table_name = crate::product::schema::product)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Product {
     pub product_id: i32,
@@ -11,7 +11,7 @@ pub struct Product {
 }
 
 #[derive(Insertable)]
-#[diesel(table_name = crate::product_schema::product)]
+#[diesel(table_name = crate::product::schema::product)]
 pub struct NewProduct<'a> {
     pub title: &'a str,
     pub catagory: &'a str,
