@@ -6,12 +6,11 @@ use crate::stock::schema::stock as stock_schemata;
 use diesel::prelude::*;
 use diesel::result::Error;
 
-pub fn insert_stock(conn: &mut SqliteConnection, new_stock: &NewStock) {
+pub fn insert_stock(conn: &mut SqliteConnection, new_stock: &NewStock) -> Result<Stock, Error> {
     diesel::insert_into(stock_schemata::table)
         .values(new_stock)
         .returning(Stock::as_returning())
         .get_result(conn)
-        .expect("Failed to insert stock");
 }
 
 pub fn update_stock(conn: &mut SqliteConnection, updated_stock: Stock) -> Result<Stock, Error> {
