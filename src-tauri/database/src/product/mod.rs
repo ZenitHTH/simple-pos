@@ -19,6 +19,9 @@ pub fn remove_product(conn: &mut SqliteConnection, id: i32) -> Result<usize, Err
     diesel::delete(product_schema::dsl::product.find(id)).execute(conn)
 }
 
+pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Error> {
+    product_schema::table.load::<Product>(conn)
+}
 pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error> {
     use product_schema::dsl::{catagory, product as product_dsl, product_id, satang, title};
 
