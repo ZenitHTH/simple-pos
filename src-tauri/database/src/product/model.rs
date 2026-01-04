@@ -15,7 +15,7 @@ pub struct Product {
 pub struct NewProduct<'a> {
     pub title: &'a str,
     pub catagory: &'a str,
-    pub satang: &'a i32,
+    pub satang: i32,
 }
 
 /*
