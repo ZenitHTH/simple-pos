@@ -1,5 +1,5 @@
 -- Your SQL goes here
-CREATE TABLE Product (
+CREATE TABLE product (
   product_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   title VARCHAR NOT NULL,
   catagory VARCHAR NOT NULL,
