@@ -5,7 +5,7 @@ use database::{NewProduct, Product};
 #[tauri::command]
 pub fn get_products() -> Result<Vec<Product>, String> {
     let mut conn = establish_connection();
-    product::get_all_products(&mut conn).map_err(|e| e.to_string())
+    return product::get_all_products(&mut conn).map_err(|e| e.to_string());
 }
 
 #[tauri::command]
