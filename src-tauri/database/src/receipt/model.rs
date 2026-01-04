@@ -1,9 +1,9 @@
 use crate::receipt::schema::{receipt_item, receipt_list};
 use chrono::{DateTime, FixedOffset, NaiveDateTime};
 use diesel::prelude::*;
-
+use serde::Serialize;
 // --- Receipt List (Header) ---
-#[derive(Queryable, Selectable, Identifiable, Debug, Clone)]
+#[derive(Queryable, Selectable, Serialize, Identifiable, Debug, Clone)]
 #[diesel(table_name = receipt_list)]
 #[diesel(primary_key(receipt_id))]
 pub struct ReceiptList {
@@ -33,7 +33,7 @@ pub struct NewReceiptList {
 }
 
 // --- Receipt (Items) ---
-#[derive(Queryable, Selectable, Associations, Debug, Clone)]
+#[derive(Queryable, Selectable, Serialize, Associations, Debug, Clone)]
 #[diesel(table_name = receipt_item)]
 #[diesel(belongs_to(ReceiptList, foreign_key = receipt_id))]
 pub struct Receipt {
