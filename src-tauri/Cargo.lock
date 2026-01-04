@@ -81,6 +81,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "database",
+ "diesel",
  "log",
  "serde",
  "serde_json",
@@ -618,6 +619,7 @@ dependencies = [
  "chrono",
  "diesel",
  "dotenvy",
+ "serde",
 ]
 
 [[package]]
