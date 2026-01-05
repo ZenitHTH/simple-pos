@@ -24,10 +24,8 @@ pub fn update_stock(conn: &mut SqliteConnection, updated_stock: Stock) -> Result
         .get_result(conn)
 }
 
-pub fn remove_stock(conn: &mut SqliteConnection, stock_id: i32) {
-    diesel::delete(stock_schemata::dsl::stock.find(stock_id))
-        .execute(conn)
-        .expect("cannot find stock_id");
+pub fn remove_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<usize, Error> {
+    diesel::delete(stock_schemata::dsl::stock.find(stock_id)).execute(conn)
 }
 
 pub fn get_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<Vec<Stock>, Error> {
