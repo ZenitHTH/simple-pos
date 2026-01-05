@@ -13,14 +13,17 @@ pub fn insert_stock(conn: &mut SqliteConnection, new_stock: &NewStock) -> Result
         .get_result(conn)
 }
 
-pub fn update_stock(conn: &mut SqliteConnection, updated_stock: Stock) -> Result<Stock, Error> {
-    use stock_schemata::dsl::{product_id, quantity, stock as stock_dsl, stock_id};
-    diesel::update(stock_dsl.find(updated_stock.stock_id))
-        .set((
-            stock_id.eq(updated_stock.stock_id),
-            product_id.eq(updated_stock.product_id),
-            quantity.eq(updated_stock.quantity),
-        ))
+pub fn update_stock(
+    conn: &mut SqliteConnection,
+    target_product_id: i32,
+    new_quantity: i32,
+) -> Result<Stock, Error> {
+    use stock_schemata::dsl::{product_id, quantity, stock as stock_dsl};
+
+    // Find the row where product_id == target_product_id
+    diesel::update(stock_dsl.filter(product_id.eq(target_product_id)))
+        .set(quantity.eq(new_quantity))
+        .returning(Stock::as_returning())
         .get_result(conn)
 }
 
@@ -28,8 +31,8 @@ pub fn remove_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<usize,
     diesel::delete(stock_schemata::dsl::stock.find(stock_id)).execute(conn)
 }
 
-pub fn get_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<Vec<Stock>, Error> {
-    return stock_schemata::table
-        .filter(stock_schemata::stock_id.eq(stock_id))
-        .load::<Stock>(conn);
+pub fn get_stock(conn: &mut SqliteConnection, product_id_target: i32) -> Result<Vec<Stock>, Error> {
+    stock_schemata::table
+        .filter(stock_schemata::product_id.eq(product_id_target))
+        .load::<Stock>(conn)
 }
