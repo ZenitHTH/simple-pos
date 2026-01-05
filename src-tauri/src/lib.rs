@@ -17,7 +17,9 @@ pub fn run() {
             delete_product,
             // Stock Commands
             get_stock,
-            add_stock,
+            insert_stock,
+            update_stock,
+            remove_stock,
             // Receipt Commands
             create_invoice,
             add_invoice_item,
