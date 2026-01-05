@@ -19,14 +19,10 @@ pub fn insert_stock(product_id: i32, quantity: i32) -> Result<Stock, String> {
 }
 
 #[tauri::command]
-pub fn update_stock(stock_id: i32, product_id: i32, quantity: i32) -> Result<Stock, String> {
+pub fn update_stock(product_id: i32, quantity: i32) -> Result<Stock, String> {
     let mut conn = establish_connection();
-    let stock_data = Stock {
-        stock_id,
-        product_id,
-        quantity,
-    };
-    stock::update_stock(&mut conn, stock_data).map_err(|e| e.to_string())
+    // Pass product_id directly to the DB function
+    stock::update_stock(&mut conn, product_id, quantity).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
