@@ -3,7 +3,7 @@ use database::stock;
 use database::{NewStock, Stock};
 
 #[tauri::command]
-pub fn get_stock(product_id: i32) -> Result<Vec<Stock>, String> {
+pub fn get_stock(product_id: i32) -> Result<Stock, String> {
     let mut conn = establish_connection();
     stock::get_stock(&mut conn, product_id).map_err(|e| e.to_string())
 }
