@@ -50,24 +50,30 @@ const itemNavLogin: itemNavInf[] = [
   },
 ];
 
+
 function getWindowSize() {
-  const { innerWidth, innerHeight } = window;
-  return { innerWidth, innerHeight };
+  if (typeof window !== "undefined") {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
+  return { innerWidth: 0, innerHeight: 0 };
 }
 
 function Nav() {
   const [toggle, setToggle] = useState(false);
-  const [windowSize, setWindowSize] = useState(getWindowSize());
+  const [windowSize, setWindowSize] = useState({ innerWidth: 0, innerHeight: 0 });
+
   const updateToggle = () => {
-    setToggle(!toggle);
+    setToggle((prev) => !prev);
   };
 
   useEffect(() => {
+    setWindowSize(getWindowSize());
+
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
 
-    updateToggle();
     window.addEventListener("resize", handleWindowResize);
     return () => {
       window.removeEventListener("resize", handleWindowResize);
