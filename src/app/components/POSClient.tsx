@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import Cart from './Cart';
 import { Product, CartItem } from '../types';
@@ -13,9 +14,33 @@ interface POSClientProps {
 const CATEGORIES = ["All", "Coffee", "Tea", "Bakery", "Dessert"];
 
 export default function POSClient({ initialProducts }: POSClientProps) {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // URL State
+    const selectedCategory = searchParams.get('category') || 'All';
+    const searchQuery = searchParams.get('search') || '';
+
+    // Local State (Cart)
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState("All");
-    const [searchQuery, setSearchQuery] = useState("");
+
+    const updateURL = (key: string, value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (value && value !== 'All') {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+        router.push(`?${params.toString()}`, { scroll: false });
+    };
+
+    const handleCategoryChange = (category: string) => {
+        updateURL('category', category);
+    };
+
+    const handleSearchChange = (query: string) => {
+        updateURL('search', query);
+    };
 
     const handleAddToCart = (product: Product) => {
         setCartItems(prev => {
@@ -71,7 +96,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                             placeholder="Search products..."
                             className="w-full pl-10 pr-4 py-3 bg-card-bg border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground placeholder:text-muted/70"
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => handleSearchChange(e.target.value)}
                         />
                     </div>
 
@@ -79,10 +104,10 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                         {CATEGORIES.map(cat => (
                             <button
                                 key={cat}
-                                onClick={() => setSelectedCategory(cat)}
+                                onClick={() => handleCategoryChange(cat)}
                                 className={`px-5 py-2.5 rounded-xl font-medium whitespace-nowrap transition-all ${selectedCategory === cat
-                                        ? 'bg-primary text-primary-foreground shadow-lg shadow-blue-500/20'
-                                        : 'bg-card-bg text-muted border border-border hover:bg-card-hover hover:text-foreground'
+                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-blue-500/20'
+                                    : 'bg-card-bg text-muted border border-border hover:bg-card-hover hover:text-foreground'
                                     }`}
                             >
                                 {cat}
