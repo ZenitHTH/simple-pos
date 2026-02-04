@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { BackendProduct, NewProduct } from "../../lib/types";
+import { useState, useEffect } from "react";
+import { BackendProduct, NewProduct, Category } from "../../lib/types";
+import { categoryApi } from "../../lib/api";
 import { FaTimes } from "react-icons/fa";
 
 interface ProductModalProps {
@@ -24,6 +25,14 @@ export default function ProductModal({
         catagory: initialData?.catagory || "",
         satang: initialData?.satang || 0,
     });
+
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        if (isOpen) {
+            categoryApi.getAll().then(setCategories).catch(console.error);
+        }
+    }, [isOpen]);
 
     // Reset form when opening for create, or set for edit
     // Note: This is a simple implementation. For production, consider useEffect to sync initialData.
@@ -57,7 +66,8 @@ export default function ProductModal({
                         <input
                             type="text"
                             required
-                            className="w-full px-3 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            className="w-full px-3 py-2 rounded-lg border border-border bg-zinc-800 text-white focus:ring-2 focus:ring-primary/50 outline-none transition-all placeholder:text-gray-400"
+                            style={{ backgroundColor: '#27272a' }}
                             value={formData.title}
                             onChange={(e) =>
                                 setFormData({ ...formData, title: e.target.value })
@@ -68,17 +78,28 @@ export default function ProductModal({
                     <div>
                         <label className="block text-sm font-medium mb-1">Category</label>
                         <select
-                            className="w-full px-3 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            className="w-full px-3 py-2 rounded-lg border border-border bg-zinc-800 text-white focus:ring-2 focus:ring-primary/50 outline-none transition-all appearance-none"
+                            style={{
+                                backgroundColor: '#27272a',
+                                color: 'white',
+                                colorScheme: 'dark',
+                                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                                backgroundPosition: 'right 0.5rem center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: '1.5em 1.5em',
+                                paddingRight: '2.5rem'
+                            }}
                             value={formData.catagory}
                             onChange={(e) =>
                                 setFormData({ ...formData, catagory: e.target.value })
                             }
                         >
-                            <option value="">Select Category</option>
-                            <option value="Coffee">Coffee</option>
-                            <option value="Tea">Tea</option>
-                            <option value="Bakery">Bakery</option>
-                            <option value="Dessert">Dessert</option>
+                            <option value="" style={{ backgroundColor: '#27272a', color: 'white' }}>Select Category</option>
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={cat.name} style={{ backgroundColor: '#27272a', color: 'white' }}>
+                                    {cat.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
@@ -91,7 +112,8 @@ export default function ProductModal({
                                 type="number"
                                 required
                                 min="0"
-                                className="w-full px-3 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                                className="w-full px-3 py-2 rounded-lg border border-border bg-zinc-800 text-white focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                                style={{ backgroundColor: '#27272a' }}
                                 value={formData.satang}
                                 onChange={(e) =>
                                     setFormData({
