@@ -6,3 +6,10 @@ export interface BackendProduct {
 }
 
 export type NewProduct = Omit<BackendProduct, 'product_id'>;
+
+export interface Category {
+    id: number;
+    name: string;
+}
+
+export type NewCategory = Omit<Category, 'id'>;

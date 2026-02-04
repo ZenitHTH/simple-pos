@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { BackendProduct, NewProduct } from "./types";
+import { BackendProduct, NewProduct, Category, NewCategory } from "./types";
 
 export const productApi = {
     getAll: async (): Promise<BackendProduct[]> => {
@@ -25,5 +25,26 @@ export const productApi = {
 
     delete: async (id: number): Promise<void> => {
         await invoke("delete_product", { id });
+    },
+};
+
+export const categoryApi = {
+    getAll: async (): Promise<Category[]> => {
+        return await invoke("get_categories");
+    },
+
+    create: async (name: string): Promise<Category> => {
+        return await invoke("create_category", { name });
+    },
+
+    update: async (category: Category): Promise<Category> => {
+        return await invoke("update_category", {
+            id: category.id,
+            name: category.name,
+        });
+    },
+
+    delete: async (id: number): Promise<void> => {
+        await invoke("delete_category", { id });
     },
 };
