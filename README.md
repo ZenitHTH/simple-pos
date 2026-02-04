@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Simple POS
 
-## Getting Started
+A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for performance and simplicity.
 
-First, run the development server:
+## Features
+
+- **Point of Sale Interface**: Fast and intuitive interface for processing sales.
+- **Product Management**: Add, update, and remove products with details like price, category, and images.
+- **Category Management**: Organize products into custom categories for easier navigation.
+- **Settings**: Configure application preferences.
+- **Cross-Platform**: Runs natively on Linux, macOS, and Windows.
+
+## Tech Stack
+
+- **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/)
+- **Backend**: [Tauri v2](https://v2.tauri.app/) (Rust)
+- **State Management**: React Hooks & Context
+- **Database**: Embedded (managed via Rust/Tauri)
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v20 or newer recommended)
+- **Rust & Cargo** (latest stable)
+- **System Dependencies**:
+  - **Linux**: Build essentials, webkit2gtk (see [Tauri Linux Setup](https://v2.tauri.app/start/prerequisites/#linux))
+  - **macOS**: Xcode Command Line Tools
+  - **Windows**: Microsoft Visual Studio C++ Build Tools
+
+## Setup & Development
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd simple-pos
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run in Development Mode**
+   This command starts both the Next.js frontend and the Tauri application window.
+   ```bash
+   npm run tauri dev
+   ```
+   > **Note for Linux Users**: If you encounter rendering issues or crashes related to DMABUF, you may need to run:
+   > ```bash
+   > WEBKIT_DISABLE_DMABUF_RENDERER=1 npm run tauri dev
+   > ```
+   > or use the convenience script defined in `package.json`:
+   > ```bash
+   > npm run tauri
+   > ```
+
+## Building for Production
+
+To build a standalone executable for your operating system:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run tauri build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The output binary will be located in `src-tauri/target/release/bundle/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`src/`**: Next.js frontend source code.
+  - `app/`: App router pages and layouts.
+  - `components/`: Reusable React components.
+  - `lib/`: Utility functions and API wrappers (`api.ts`).
+- **`src-tauri/`**: Rust backend source code.
+  - `src/`: Rust source files (`main.rs`, `lib.rs`).
+  - `tauri.conf.json`: Tauri configuration file.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE)
