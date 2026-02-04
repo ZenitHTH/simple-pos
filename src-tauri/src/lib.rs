@@ -5,6 +5,7 @@ pub mod commands;
 use commands::product::*;
 use commands::receipt::*;
 use commands::stock::*;
+use commands::category::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -29,7 +30,12 @@ pub fn run() {
             create_invoice,
             add_invoice_item,
             get_invoice_detail,
-            get_invoices_by_date
+            get_invoices_by_date,
+            // Category Commands
+            get_categories,
+            create_category,
+            update_category,
+            delete_category
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
