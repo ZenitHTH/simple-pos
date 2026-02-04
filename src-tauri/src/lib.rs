@@ -9,6 +9,11 @@ use commands::stock::*;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .setup(|_app| {
+            let mut conn = database::establish_connection();
+            database::run_migrations(&mut conn).expect("Failed to run migrations");
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             // Product Commands
             get_products,
