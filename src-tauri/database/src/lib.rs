@@ -13,10 +13,12 @@ pub fn run_migrations(connection: &mut SqliteConnection) -> Result<(), Box<dyn s
 pub mod product;
 pub mod receipt;
 pub mod stock;
+pub mod category;
 
 pub use product::model::{NewProduct, Product};
 pub use receipt::model::{NewReceipt, NewReceiptList, Receipt, ReceiptList};
 pub use stock::model::{NewStock, Stock};
+pub use category::model::{NewCategory, Category};
 
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();
