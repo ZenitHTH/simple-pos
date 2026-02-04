@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import Cart from './Cart';
 import { Product, CartItem } from '../types';
+import { categoryApi } from '../lib/api';
 import { FaSearch } from 'react-icons/fa';
 
 interface POSClientProps {
     initialProducts: Product[];
 }
-
-const CATEGORIES = ["All", "Coffee", "Tea", "Bakery", "Dessert"];
 
 export default function POSClient({ initialProducts }: POSClientProps) {
     const router = useRouter();
@@ -23,6 +22,15 @@ export default function POSClient({ initialProducts }: POSClientProps) {
 
     // Local State (Cart)
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [categories, setCategories] = useState<string[]>(["All"]);
+
+    useEffect(() => {
+        categoryApi.getAll().then(data => {
+            setCategories(["All", ...data.map(c => c.name)]);
+        }).catch(err => {
+            console.error("Failed to fetch categories", err);
+        });
+    }, []);
 
     const updateURL = (key: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -101,7 +109,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
-                        {CATEGORIES.map(cat => (
+                        {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => handleCategoryChange(cat)}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaBoxOpen, FaCog } from "react-icons/fa";
+import { FaHome, FaBoxOpen, FaCog, FaTags } from "react-icons/fa";
 
 const menuItems = [
     {
@@ -14,6 +14,11 @@ const menuItems = [
         name: "Product Management",
         path: "/manage",
         icon: <FaBoxOpen size={20} />,
+    },
+    {
+        name: "Categories",
+        path: "/manage/categories",
+        icon: <FaTags size={20} />,
     },
     {
         name: "System Setting",
