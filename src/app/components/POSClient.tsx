@@ -7,7 +7,7 @@ import Cart from './Cart';
 import PaymentModal from './PaymentModal';
 import { Product, CartItem } from '../types';
 import { categoryApi, receiptApi } from '../lib/api';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaReceipt } from 'react-icons/fa';
 
 interface POSClientProps {
     initialProducts: Product[];
@@ -129,9 +129,17 @@ export default function POSClient({ initialProducts }: POSClientProps) {
         <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8 flex gap-6 box-border">
             {/* Left Side: Product Grid */}
             <div className="flex-1 flex flex-col min-w-0">
-                <header className="mb-8">
-                    <h1 className="text-3xl font-bold text-foreground mb-1">Simple POS</h1>
-                    <p className="text-muted">Manage orders efficiently</p>
+                <header className="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-3xl font-bold text-foreground mb-1">Simple POS</h1>
+                        <p className="text-muted">Manage orders efficiently</p>
+                    </div>
+                    <button
+                        onClick={() => router.push('/history')}
+                        className="px-4 py-2 bg-card-bg border border-border rounded-lg shadow-sm hover:bg-card-hover transition-colors font-medium text-sm flex items-center gap-2"
+                    >
+                        <FaReceipt /> History
+                    </button>
                 </header>
 
                 {/* Filters & Search */}
@@ -193,6 +201,12 @@ export default function POSClient({ initialProducts }: POSClientProps) {
             />
 
             {/* Mobile Cart Toggle (optional, could be added later) */}
+
+            <div className="fixed bottom-4 right-4 lg:hidden">
+                {/* ... existing mobile logic if any ... */}
+            </div>
+
+
         </div>
     );
 }
