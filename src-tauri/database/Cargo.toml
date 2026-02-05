@@ -10,6 +10,7 @@ diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlit
 serde = { version = "1.0", features = ["derive"] }
 dotenvy = "0.15"
 diesel_migrations = "2.2.0"
+directories = "6.0.0"
 
 [dev-dependencies]
 # Required to run migrations in test mode
