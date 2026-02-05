@@ -17,30 +17,38 @@ export default function SettingPage() {
 
     const handleExport = async () => {
         setLoading(true);
-        try {
-            const start = Math.floor(new Date(startDate).getTime() / 1000);
-            const end = Math.floor(new Date(endDate).getTime() / 1000) + 86399;
+        const start = Math.floor(new Date(startDate).getTime() / 1000);
+        const end = Math.floor(new Date(endDate).getTime() / 1000) + 86399;
 
-            // 1. Open Save Dialog
+        const performExport = async (ext: string, label: string) => {
+            console.log(`Starting ${label} Export...`);
             const path = await save({
-                filters: [{
-                    name: format.toUpperCase(),
-                    extensions: [format]
-                }],
-                defaultPath: `receipts_export_${startDate}_${endDate}.${format}`
+                filters: [{ name: label, extensions: [ext] }],
+                defaultPath: `receipts_export_${startDate}_${endDate}.${ext}`
             });
+            if (!path) return;
 
-            if (!path) {
-                setLoading(false);
-                return; // User cancelled
+            await receiptApi.exportReceipts(path, ext, start, end);
+            alert(`${label} Export successful!`);
+        };
+
+        try {
+            switch (format) {
+                case 'csv':
+                    await performExport('csv', 'CSV');
+                    break;
+                case 'xlsx':
+                    await performExport('xlsx', 'Excel');
+                    break;
+                case 'ods':
+                    await performExport('ods', 'OpenDocument');
+                    break;
+                default:
+                    throw new Error(`Unsupported format: ${format}`);
             }
-
-            // 2. Call Backend
-            await receiptApi.exportReceipts(path, format, start, end);
-            alert("Export successful!");
         } catch (error) {
-            console.error(error);
-            alert("Export failed: " + error);
+            console.error(`Export failed for format ${format}:`, error);
+            alert(`Export failed for ${format.toUpperCase()}: ` + error);
         } finally {
             setLoading(false);
         }
@@ -92,8 +100,8 @@ export default function SettingPage() {
                                         key={f}
                                         onClick={() => setFormat(f)}
                                         className={`px-4 py-2 rounded-xl border transition-all font-medium uppercase ${format === f
-                                                ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-blue-500/20'
-                                                : 'bg-background border-border hover:bg-muted/10 text-muted'
+                                            ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-blue-500/20'
+                                            : 'bg-background border-border hover:bg-muted/10 text-muted'
                                             }`}
                                     >
                                         {f}
