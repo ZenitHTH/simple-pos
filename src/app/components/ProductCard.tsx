@@ -13,7 +13,7 @@ export default function ProductCard({ product, onAdd }: ProductCardProps) {
             className="group bg-card-bg border border-border rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/50 hover:-translate-y-1 active:scale-95"
         >
             <div
-                className="h-32 sm:h-40 w-full relative bg-muted/20"
+                className="aspect-[3/2] w-full relative bg-muted/20"
                 style={{ backgroundColor: !product.image ? (product.color || '#e2e8f0') : undefined }}
             >
                 {product.image ? (
