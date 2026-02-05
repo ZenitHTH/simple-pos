@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import Cart from './Cart';
+import PaymentModal from './PaymentModal';
 import { Product, CartItem } from '../types';
-import { categoryApi } from '../lib/api';
+import { categoryApi, receiptApi } from '../lib/api';
 import { FaSearch } from 'react-icons/fa';
 
 interface POSClientProps {
@@ -80,6 +81,44 @@ export default function POSClient({ initialProducts }: POSClientProps) {
         setCartItems(prev => prev.filter(item => item.id !== id));
     };
 
+    // Payment Logic
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+    const handleCheckout = () => {
+        if (cartItems.length === 0) return;
+        setIsPaymentModalOpen(true);
+    };
+
+    const handleConfirmPayment = async (cashReceived: number) => {
+        try {
+            // 1. Create Invoice Header
+            const receiptList = await receiptApi.createInvoice();
+            console.log("Invoice created:", receiptList);
+
+            // 2. Add Items
+            for (const item of cartItems) {
+                await receiptApi.addInvoiceItem(
+                    receiptList.receipt_id,
+                    item.id,
+                    item.quantity
+                );
+            }
+
+            // 3. Success Feedback
+            // ideally we would show a toast here, but for now console + alert
+            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07;
+            const change = cashReceived - total;
+            alert(`Payment Successful!\nChange: $${change.toFixed(2)}`);
+
+            // 4. Reset
+            setCartItems([]);
+            setIsPaymentModalOpen(false);
+        } catch (error) {
+            console.error("Payment failed:", error);
+            alert("Payment failed. Please try again.");
+        }
+    };
+
     const filteredProducts = initialProducts.filter(product => {
         const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -142,8 +181,16 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                     items={cartItems}
                     onUpdateQuantity={handleUpdateQuantity}
                     onRemove={handleRemove}
+                    onCheckout={handleCheckout}
                 />
             </div>
+
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                total={cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07}
+                onConfirm={handleConfirmPayment}
+            />
 
             {/* Mobile Cart Toggle (optional, could be added later) */}
         </div>

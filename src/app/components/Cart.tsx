@@ -6,9 +6,10 @@ interface CartProps {
     items: CartItem[];
     onUpdateQuantity: (id: number, delta: number) => void;
     onRemove: (id: number) => void;
+    onCheckout: () => void;
 }
 
-export default function Cart({ items, onUpdateQuantity, onRemove }: CartProps) {
+export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout }: CartProps) {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const tax = subtotal * 0.07; // Assumed 7% tax
     const total = subtotal + tax;
@@ -110,7 +111,10 @@ export default function Cart({ items, onUpdateQuantity, onRemove }: CartProps) {
                     </div>
                 </div>
 
-                <button className="w-full py-4 bg-primary hover:bg-blue-600 text-primary-foreground font-bold text-lg rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                <button
+                    onClick={onCheckout}
+                    className="w-full py-4 bg-primary hover:bg-blue-600 text-primary-foreground font-bold text-lg rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                >
                     Checkout Now
                 </button>
             </div>
