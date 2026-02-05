@@ -53,14 +53,7 @@ Before you begin, ensure you have the following installed:
    ```bash
    npm run tauri dev
    ```
-   > **Note for Linux Users**: If you encounter rendering issues or crashes related to DMABUF, you may need to run:
-   > ```bash
-   > WEBKIT_DISABLE_DMABUF_RENDERER=1 npm run tauri dev
-   > ```
-   > or use the convenience script defined in `package.json`:
-   > ```bash
-   > npm run tauri
-   > ```
+   > **Note for Linux Users**: The `tauri` script in `package.json` automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues. Using `npm run tauri dev` ensures this is applied.
 
 ## Building for Production
 
@@ -78,9 +71,13 @@ The output binary will be located in `src-tauri/target/release/bundle/`.
   - `app/`:
     - `components/`: Reusable React components (`POSClient`, `Cart`, `PaymentModal`, etc.).
     - `history/`: Order history page and related components (`HistoryHeader`, `ReceiptList`, etc.).
+    - `manage/`: Management interface for products and categories.
+    - `setting/`: Settings page implementation.
     - `lib/`: Utility functions and API wrappers (`api.ts`).
 - **`src-tauri/`**: Rust backend source code.
-  - `src/`: Rust source files (`main.rs`, `commands/`, `database/`).
+  - `src/`: Core Rust source files (`main.rs`, `lib.rs`, `commands/`).
+  - `database/`: Local crate for database interactions.
+  - `export_lib/`: Local crate for handling exports.
   - `tauri.conf.json`: Tauri configuration file.
 
 ## License
