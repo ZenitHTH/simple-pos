@@ -66,9 +66,9 @@ export const receiptApi = {
         return await invoke('get_invoice_detail', { receiptId });
     },
     getInvoicesByDate: async (startDate: number, endDate: number): Promise<ReceiptList[]> => {
-        return await invoke('get_invoices_by_date', { startDate, endDate });
+        return await invoke('get_invoices_by_date', { startUnix: startDate, endUnix: endDate });
     },
     exportReceipts: async (exportPath: String, format: String, startDate: number, endDate: number): Promise<string> => {
-        return await invoke('export_receipts', { exportPath, format, startDate, endDate });
+        return await invoke('export_receipts', { exportPath, format, startDate: startDate, endDate: endDate });
     }
 };
