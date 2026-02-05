@@ -7,9 +7,13 @@ use commands::receipt::*;
 use commands::stock::*;
 use commands::category::*;
 
+use commands::export::*;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_log::Builder::default().build())
+        .plugin(tauri_plugin_dialog::init())
         .setup(|_app| {
             let mut conn = database::establish_connection();
             database::run_migrations(&mut conn).expect("Failed to run migrations");
@@ -35,7 +39,9 @@ pub fn run() {
             get_categories,
             create_category,
             update_category,
-            delete_category
+            delete_category,
+            // Export Commands
+            export_receipts
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
