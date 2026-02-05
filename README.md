@@ -6,6 +6,13 @@ A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **N
 
 - **Point of Sale Interface**: Fast and intuitive interface for processing sales.
 - **Product Management**: Add, update, and remove products with details like price, category, and images.
+- **Checkout Payment**: 
+  - Cash payment support with automated change calculation.
+  - Receipt generation and backend integration.
+- **Order History**: 
+  - View past transactions with date filtering.
+  - Search receipts by unique ID.
+  - Detailed receipt view with items and pricing.
 - **Category Management**: Organize products into custom categories for easier navigation.
 - **Settings**: Configure application preferences.
 - **Cross-Platform**: Runs natively on Linux, macOS, and Windows.
@@ -14,8 +21,8 @@ A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **N
 
 - **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/)
 - **Backend**: [Tauri v2](https://v2.tauri.app/) (Rust)
+- **Database**: SQLite (via Diesel ORM in Rust)
 - **State Management**: React Hooks & Context
-- **Database**: Embedded (managed via Rust/Tauri)
 
 ## Prerequisites
 
@@ -68,11 +75,12 @@ The output binary will be located in `src-tauri/target/release/bundle/`.
 ## Project Structure
 
 - **`src/`**: Next.js frontend source code.
-  - `app/`: App router pages and layouts.
-  - `components/`: Reusable React components.
-  - `lib/`: Utility functions and API wrappers (`api.ts`).
+  - `app/`:
+    - `components/`: Reusable React components (`POSClient`, `Cart`, `PaymentModal`, etc.).
+    - `history/`: Order history page and related components (`HistoryHeader`, `ReceiptList`, etc.).
+    - `lib/`: Utility functions and API wrappers (`api.ts`).
 - **`src-tauri/`**: Rust backend source code.
-  - `src/`: Rust source files (`main.rs`, `lib.rs`).
+  - `src/`: Rust source files (`main.rs`, `commands/`, `database/`).
   - `tauri.conf.json`: Tauri configuration file.
 
 ## License
