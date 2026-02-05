@@ -13,3 +13,21 @@ export interface Category {
 }
 
 export type NewCategory = Omit<Category, 'id'>;
+
+export interface ReceiptList {
+    receipt_id: number;
+    datetime_unix: number;
+}
+
+export interface Receipt {
+    id: number;
+    receipt_id: number;
+    product_id: number;
+    quantity: number;
+}
+
+export interface NewReceipt {
+    receipt_id: number;
+    product_id: number;
+    quantity: number;
+}

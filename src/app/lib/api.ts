@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { BackendProduct, NewProduct, Category, NewCategory } from "./types";
+import { BackendProduct, NewProduct, Category, NewCategory, ReceiptList, Receipt } from "./types";
 
 export const productApi = {
     getAll: async (): Promise<BackendProduct[]> => {
@@ -46,5 +46,27 @@ export const categoryApi = {
 
     delete: async (id: number): Promise<void> => {
         await invoke("delete_category", { id });
+    },
+};
+
+export const receiptApi = {
+    createInvoice: async (): Promise<ReceiptList> => {
+        return await invoke("create_invoice");
+    },
+
+    addInvoiceItem: async (receiptId: number, productId: number, quantity: number): Promise<Receipt> => {
+        return await invoke("add_invoice_item", {
+            receiptId: receiptId,
+            productId: productId,
+            quantity,
+        });
+    },
+
+    getInvoiceDetail: async (receiptId: number): Promise<[ReceiptList, Receipt[]]> => {
+        return await invoke("get_invoice_detail", { receiptId: receiptId });
+    },
+
+    getInvoicesByDate: async (startUnix: number, endUnix: number): Promise<ReceiptList[]> => {
+        return await invoke("get_invoices_by_date", { startUnix: startUnix, endUnix: endUnix });
     },
 };
