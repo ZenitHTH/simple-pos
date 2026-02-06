@@ -8,6 +8,7 @@ use commands::receipt::*;
 use commands::stock::*;
 
 use commands::export::*;
+use commands::settings::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -42,7 +43,10 @@ pub fn run() {
             update_category,
             delete_category,
             // Export Commands
-            export_receipts
+            export_receipts,
+            // Settings Commands
+            get_settings,
+            save_settings
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
