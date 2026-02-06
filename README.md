@@ -7,8 +7,10 @@ A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **N
 - **Point of Sale Interface**: Fast and intuitive interface for processing sales.
 - **Product Management**: Add, update, and remove products with details like price, category, and images.
 - **Checkout Payment**: 
-  - Cash payment support with automated change calculation.
-  - Receipt generation and backend integration.
+  - **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
+  - **Smart Change Calculation**: Automated change display with validity checks.
+  - **Responsive Layout**: Adapts seamlessly from compact laptops (1366x768) to large desktop monitors (4K), with optimized touch targets.
+  - **Receipt Generation**: Backend integration for transaction recording.
 - **Order History**: 
   - View past transactions with date filtering.
   - Search receipts by unique ID.
@@ -22,6 +24,7 @@ A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **N
 - **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/)
 - **Backend**: [Tauri v2](https://v2.tauri.app/) (Rust)
 - **Database**: SQLite (via Diesel ORM in Rust)
+  - **Automatic Path Resolution**: Uses `directories` crate to store data securely in the system's local data directory (e.g., `~/.local/share/simple-pos` on Linux).
 - **State Management**: React Hooks & Context
 
 ## Prerequisites
@@ -69,8 +72,10 @@ The output binary will be located in `src-tauri/target/release/bundle/`.
 
 - **`src/`**: Next.js frontend source code.
   - `app/`:
-    - `components/`: Reusable React components (`POSClient`, `Cart`, `PaymentModal`, etc.).
-    - `history/`: Order history page and related components (`HistoryHeader`, `ReceiptList`, etc.).
+    - `components/`: Reusable React components.
+      - `payment/`: New PaymentModal sub-components (`VirtualNumpad`, `CashInput`, `ModalHeader`, etc.).
+      - `POSClient`, `Cart`, etc.
+    - `history/`: Order history page and related components.
     - `manage/`: Management interface for products and categories.
     - `setting/`: Settings page implementation.
     - `lib/`: Utility functions and API wrappers (`api.ts`).
