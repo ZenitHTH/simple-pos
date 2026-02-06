@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ProductFilter from './filters/ProductFilter';
 import ProductCard from './ProductCard';
 import Cart from './Cart';
 import PaymentModal from './PaymentModal';
 import { Product, CartItem } from '../types';
 import { categoryApi, receiptApi } from '../lib/api';
-import { FaSearch, FaReceipt } from 'react-icons/fa';
+import { FaReceipt } from 'react-icons/fa';
 import { useCurrency } from '../../hooks/useCurrency';
 
 interface POSClientProps {
@@ -145,33 +146,13 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                 </header>
 
                 {/* Filters & Search */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div className="relative flex-1">
-                        <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            className="w-full pl-10 pr-4 py-3 bg-card-bg border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground placeholder:text-muted/70"
-                            value={searchQuery}
-                            onChange={(e) => handleSearchChange(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
-                        {categories.map(cat => (
-                            <button
-                                key={cat}
-                                onClick={() => handleCategoryChange(cat)}
-                                className={`px-5 py-2.5 rounded-xl font-medium whitespace-nowrap transition-all ${selectedCategory === cat
-                                    ? 'bg-primary text-primary-foreground shadow-lg shadow-blue-500/20'
-                                    : 'bg-card-bg text-muted border border-border hover:bg-card-hover hover:text-foreground'
-                                    }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                <ProductFilter
+                    searchQuery={searchQuery}
+                    onSearchChange={handleSearchChange}
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={handleCategoryChange}
+                />
 
                 {/* Product Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
