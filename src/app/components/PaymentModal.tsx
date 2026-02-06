@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { FaMoneyBillWave, FaPaperPlane, FaTimes } from 'react-icons/fa';
+import { FaMoneyBillWave, FaPaperPlane, FaTimes, FaBackspace } from 'react-icons/fa';
 
 // --- Type Definitions ---
 interface PaymentModalProps {
@@ -7,10 +7,11 @@ interface PaymentModalProps {
     onClose: () => void;
     total: number;
     onConfirm: (cashReceived: number) => Promise<void>;
+    currency: string;
 }
 
 // --- Helper Functions ---
-const formatCurrency = (amount: number) => `$${amount.toFixed(2)}`;
+const formatCurrency = (amount: number, currency: string) => `${currency}${amount.toFixed(2)}`;
 
 // --- Sub-components (could be in separate files) ---
 const ModalHeader = ({ onClose }: { onClose: () => void }) => (
@@ -29,11 +30,11 @@ const ModalHeader = ({ onClose }: { onClose: () => void }) => (
     </div>
 );
 
-const AmountSummary = ({ total }: { total: number }) => (
+const AmountSummary = ({ total, currency }: { total: number, currency: string }) => (
     <div className="text-center space-y-1">
         <p className="text-muted text-sm uppercase tracking-wider font-semibold">Total Amount</p>
         <div className="text-4xl font-bold text-primary">
-            {formatCurrency(total)}
+            {formatCurrency(total, currency)}
         </div>
     </div>
 );
@@ -41,49 +42,85 @@ const AmountSummary = ({ total }: { total: number }) => (
 const CashInput = ({
     value,
     onChange,
-    quickAmounts
+    quickAmounts,
+    currency
 }: {
     value: string;
     onChange: (val: string) => void;
-    quickAmounts: number[]
-}) => (
-    <div className="space-y-4">
-        <label className="block text-sm font-medium text-foreground">
-            Cash Received
-        </label>
-        <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-bold">$</span>
-            <input
-                type="number"
-                autoFocus
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                className="w-full pl-8 pr-4 py-4 text-xl font-bold bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
-                placeholder="0.00"
-            />
-        </div>
+    quickAmounts: number[];
+    currency: string;
+}) => {
+    const handleAdd = (amount: number) => {
+        const current = parseFloat(value) || 0;
+        onChange((current + amount).toString());
+    };
 
-        {/* Quick Amounts */}
-        <div className="flex gap-2 flex-wrap">
-            {quickAmounts.map(amount => (
+    const handleBackspace = () => {
+        onChange(value.slice(0, -1));
+    };
+
+    const denominations = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
+
+    return (
+        <div className="space-y-4">
+            <label className="block text-sm font-medium text-foreground">
+                Cash Received
+            </label>
+            <div className="relative flex gap-2">
+                <div className="relative flex-1">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-bold">{currency}</span>
+                    <input
+                        type="number"
+                        autoFocus
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        className="w-full pl-8 pr-4 py-4 text-xl font-bold bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                        placeholder="0.00"
+                    />
+                </div>
                 <button
-                    key={amount}
-                    onClick={() => onChange(amount.toString())}
-                    className="px-4 py-2 bg-muted/10 hover:bg-muted/20 text-foreground border border-border rounded-lg text-sm font-medium transition-colors"
+                    onClick={handleBackspace}
+                    className="aspect-square h-full max-h-[64px] flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-500 border-2 border-red-500/20 rounded-xl transition-colors"
                 >
-                    {formatCurrency(amount)}
+                    <FaBackspace size={20} />
                 </button>
-            ))}
-        </div>
-    </div>
-);
+            </div>
 
-const ChangeDisplay = ({ change, isValid }: { change: number; isValid: boolean }) => (
+            {/* Quick Suggestions (Replace) */}
+            <div className="flex gap-2 flex-wrap">
+                {quickAmounts.map(amount => (
+                    <button
+                        key={`quick-${amount}`}
+                        onClick={() => onChange(amount.toString())}
+                        className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-xs font-bold transition-colors"
+                    >
+                        {formatCurrency(amount, currency)}
+                    </button>
+                ))}
+            </div>
+
+            {/* Additive Denominations */}
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                {denominations.map(amount => (
+                    <button
+                        key={`denom-${amount}`}
+                        onClick={() => handleAdd(amount)}
+                        className="px-2 py-3 bg-muted/10 hover:bg-muted/20 text-foreground border border-border rounded-lg text-sm font-semibold transition-colors active:scale-95"
+                    >
+                        +{amount}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const ChangeDisplay = ({ change, isValid, currency }: { change: number; isValid: boolean; currency: string }) => (
     <div className={`p-4 rounded-xl border ${isValid ? 'bg-green-500/10 border-green-500/20' : 'bg-muted/5 border-border'}`}>
         <div className="flex justify-between items-center">
             <span className="text-muted font-medium">Change Due</span>
             <span className={`text-2xl font-bold ${isValid ? 'text-green-600' : 'text-muted'}`}>
-                {formatCurrency(Math.max(0, change))}
+                {formatCurrency(Math.max(0, change), currency)}
             </span>
         </div>
     </div>
@@ -120,7 +157,7 @@ const PaymentFooter = ({
 );
 
 // --- Main Component ---
-export default function PaymentModal({ isOpen, onClose, total, onConfirm }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, total, onConfirm, currency }: PaymentModalProps) {
     const [cashReceived, setCashReceived] = useState<string>('');
     const [isProcessing, setIsProcessing] = useState(false);
 
@@ -169,15 +206,16 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm }: Paym
                 <ModalHeader onClose={onClose} />
 
                 <div className="p-6 space-y-6">
-                    <AmountSummary total={total} />
+                    <AmountSummary total={total} currency={currency} />
 
                     <CashInput
                         value={cashReceived}
                         onChange={setCashReceived}
                         quickAmounts={quickAmounts}
+                        currency={currency}
                     />
 
-                    <ChangeDisplay change={change} isValid={isValid} />
+                    <ChangeDisplay change={change} isValid={isValid} currency={currency} />
                 </div>
 
                 <PaymentFooter
