@@ -2,10 +2,10 @@
 pub mod commands;
 
 // 2. Import everything you need for the run function
+use commands::category::*;
 use commands::product::*;
 use commands::receipt::*;
 use commands::stock::*;
-use commands::category::*;
 
 use commands::export::*;
 
@@ -15,7 +15,8 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::default().build())
         .plugin(tauri_plugin_dialog::init())
         .setup(|_app| {
-            let mut conn = database::establish_connection();
+            let mut conn =
+                database::establish_connection().expect("Failed to initialize database connection");
             database::run_migrations(&mut conn).expect("Failed to run migrations");
             Ok(())
         })

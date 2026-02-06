@@ -4,13 +4,13 @@ use database::{NewStock, Stock};
 
 #[tauri::command]
 pub fn get_stock(product_id: i32) -> Result<Stock, String> {
-    let mut conn = establish_connection();
+    let mut conn = establish_connection().map_err(|e| e.to_string())?;
     stock::get_stock(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn insert_stock(product_id: i32, quantity: i32) -> Result<Stock, String> {
-    let mut conn = establish_connection();
+    let mut conn = establish_connection().map_err(|e| e.to_string())?;
     let new_stock = NewStock {
         product_id,
         quantity,
@@ -20,13 +20,13 @@ pub fn insert_stock(product_id: i32, quantity: i32) -> Result<Stock, String> {
 
 #[tauri::command]
 pub fn update_stock(product_id: i32, quantity: i32) -> Result<Stock, String> {
-    let mut conn = establish_connection();
+    let mut conn = establish_connection().map_err(|e| e.to_string())?;
     // Pass product_id directly to the DB function
     stock::update_stock(&mut conn, product_id, quantity).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn remove_stock(stock_id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection();
+    let mut conn = establish_connection().map_err(|e| e.to_string())?;
     stock::remove_stock(&mut conn, stock_id).map_err(|e| e.to_string())
 }
