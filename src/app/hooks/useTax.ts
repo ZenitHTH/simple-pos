@@ -1,36 +1,17 @@
-import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-
-const TAX_COOKIE_KEY = 'tax_enabled';
-const TAX_RATE_COOKIE_KEY = 'tax_rate';
+import { useSettings } from '@/app/context/SettingsContext';
 
 export function useTax() {
-    const [isTaxEnabled, setIsTaxEnabled] = useState(true);
-    const [taxPercentage, setTaxPercentage] = useState(7);
+    const { settings, updateSettings } = useSettings();
 
-    useEffect(() => {
-        const savedEnabled = Cookies.get(TAX_COOKIE_KEY);
-        const savedRate = Cookies.get(TAX_RATE_COOKIE_KEY);
-
-        if (savedEnabled !== undefined) {
-            setIsTaxEnabled(savedEnabled === 'true');
-        }
-        if (savedRate !== undefined) {
-            setTaxPercentage(parseFloat(savedRate));
-        }
-    }, []);
+    const isTaxEnabled = settings.tax_enabled;
+    const taxPercentage = settings.tax_rate;
 
     const toggleTax = () => {
-        setIsTaxEnabled(prev => {
-            const newValue = !prev;
-            Cookies.set(TAX_COOKIE_KEY, String(newValue), { expires: 365 });
-            return newValue;
-        });
+        updateSettings({ tax_enabled: !isTaxEnabled });
     };
 
     const updateTaxRate = (rate: number) => {
-        setTaxPercentage(rate);
-        Cookies.set(TAX_RATE_COOKIE_KEY, String(rate), { expires: 365 });
+        updateSettings({ tax_rate: rate });
     };
 
     return {
