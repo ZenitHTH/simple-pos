@@ -2,6 +2,7 @@
 
 import ExportSection from './ExportSection';
 import CurrencySettings from './CurrencySettings';
+import TaxSettings from './TaxSettings';
 
 export default function SettingPage() {
     return (
@@ -11,6 +12,9 @@ export default function SettingPage() {
 
             {/* Currency Settings */}
             <CurrencySettings />
+
+            {/* Tax Settings */}
+            <TaxSettings />
 
             {/* Export Section */}
             <ExportSection />
