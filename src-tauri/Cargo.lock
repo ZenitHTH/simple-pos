@@ -93,6 +93,7 @@ dependencies = [
  "chrono",
  "database",
  "diesel",
+ "directories",
  "export_lib",
  "log",
  "serde",
