@@ -4,9 +4,10 @@ import Image from 'next/image';
 interface ProductCardProps {
     product: Product;
     onAdd: (product: Product) => void;
+    currency: string;
 }
 
-export default function ProductCard({ product, onAdd }: ProductCardProps) {
+export default function ProductCard({ product, onAdd, currency }: ProductCardProps) {
     return (
         <div
             onClick={() => onAdd(product)}
@@ -43,7 +44,7 @@ export default function ProductCard({ product, onAdd }: ProductCardProps) {
                         {product.category}
                     </span>
                     <span className="font-bold text-primary text-xl">
-                        ${product.price.toFixed(2)}
+                        {currency}{product.price.toFixed(2)}
                     </span>
                 </div>
             </div>
