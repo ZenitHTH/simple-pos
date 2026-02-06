@@ -9,14 +9,17 @@ A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **N
 - **Checkout Payment**: 
   - **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
   - **Smart Change Calculation**: Automated change display with validity checks.
-  - **Responsive Layout**: Adapts seamlessly from compact laptops (1366x768) to large desktop monitors (4K), with optimized touch targets.
+  - **Responsive Layout**: Optimized for 1080x720 (3:2 Aspect Ratio) and scales up to 4K.
   - **Receipt Generation**: Backend integration for transaction recording.
+- **Customizable UI**:
+  - **Global Display Scaling**: Adjust the entire interface size from 50% to 200%.
+  - **Granular Control**: Independently resize the Sidebar, Cart panel, and Product Grid density.
 - **Order History**: 
   - View past transactions with date filtering.
   - Search receipts by unique ID.
   - Detailed receipt view with items and pricing.
 - **Category Management**: Organize products into custom categories for easier navigation.
-- **Settings**: Configure application preferences.
+- **Settings**: Configure tax, currency, and display preferences.
 - **Cross-Platform**: Runs natively on Linux, macOS, and Windows.
 
 ## Tech Stack
@@ -84,7 +87,3 @@ The output binary will be located in `src-tauri/target/release/bundle/`.
   - `database/`: Local crate for database interactions.
   - `export_lib/`: Local crate for handling exports.
   - `tauri.conf.json`: Tauri configuration file.
-
-## License
-
-[MIT](LICENSE)
