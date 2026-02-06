@@ -11,12 +11,16 @@ import { categoryApi, receiptApi } from '../lib/api';
 import { FaReceipt } from 'react-icons/fa';
 import { useCurrency } from '../../hooks/useCurrency';
 import { useTax } from '../hooks/useTax';
+import { useSettings } from '../context/SettingsContext';
+
+// ... imports
 
 interface POSClientProps {
     initialProducts: Product[];
 }
 
 export default function POSClient({ initialProducts }: POSClientProps) {
+    const { settings } = useSettings();
     const router = useRouter();
     const searchParams = useSearchParams();
     const { currency } = useCurrency();
@@ -130,14 +134,39 @@ export default function POSClient({ initialProducts }: POSClientProps) {
         return matchesCategory && matchesSearch;
     });
 
+    // Calculate Grid Columns based on scale
+    // < 90: compact (more columns)
+    // > 110: large (fewer columns)
+    // default: normal
+    const gridScale = settings?.grid_scale || 100;
+    let gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4";
+
+    if (gridScale < 90) {
+        // Compact: Add one column
+        gridColsClass = "grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5";
+    } else if (gridScale > 110) {
+        // Large: Remove one column
+        gridColsClass = "grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3";
+    }
+
+    // Calculate Cart Width
+    const cartBaseWidth = 320; // w-80
+    const cartWidth2xl = 384; // 2xl:w-96
+
+    const cartDynamicWidth = `${cartBaseWidth * ((settings?.cart_scale || 100) / 100)}px`;
+    const cartDynamicWidth2xl = `${cartWidth2xl * ((settings?.cart_scale || 100) / 100)}px`;
+
+    // ... existing logic
+
     return (
-        <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8 flex gap-6 box-border">
+        <div className="h-full bg-background p-4 flex gap-4 box-border overflow-hidden">
             {/* Left Side: Product Grid */}
-            <div className="flex-1 flex flex-col min-w-0">
-                <header className="mb-8 flex justify-between items-center">
+            <div className="flex-1 flex flex-col min-w-0 h-full">
+                {/* ... Header & Filters ... */}
+                <header className="mb-4 flex justify-between items-center shrink-0">
                     <div>
-                        <h1 className="text-3xl font-bold text-foreground mb-1">Simple POS</h1>
-                        <p className="text-muted">Manage orders efficiently</p>
+                        <h1 className="text-2xl font-bold text-foreground mb-1">Simple POS</h1>
+                        <p className="text-muted text-sm">Manage orders efficiently</p>
                     </div>
                     <button
                         onClick={() => router.push('/history')}
@@ -147,30 +176,38 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                     </button>
                 </header>
 
-                {/* Filters & Search */}
-                <ProductFilter
-                    searchQuery={searchQuery}
-                    onSearchChange={handleSearchChange}
-                    categories={categories}
-                    selectedCategory={selectedCategory}
-                    onCategoryChange={handleCategoryChange}
-                />
+                <div className="shrink-0 mb-4">
+                    <ProductFilter
+                        searchQuery={searchQuery}
+                        onSearchChange={handleSearchChange}
+                        categories={categories}
+                        selectedCategory={selectedCategory}
+                        onCategoryChange={handleCategoryChange}
+                    />
+                </div>
 
-                {/* Product Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-                    {filteredProducts.map(product => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                            onAdd={handleAddToCart}
-                            currency={currency}
-                        />
-                    ))}
+                {/* Product Grid - Scrollable Area */}
+                <div className="flex-1 overflow-y-auto min-h-0 pr-2 custom-scrollbar">
+                    <div className={`grid ${gridColsClass} gap-4 pb-4`}>
+                        {filteredProducts.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onAdd={handleAddToCart}
+                                currency={currency}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
 
             {/* Right Side: Cart Sidebar */}
-            <div className="w-96 shrink-0 hidden lg:block">
+            {/* We apply dynamic width via style because Tailwind can't interpolate arbitrary values cleanly for responsive states like this without complex overrides */}
+            {/* Ideally we use a wrapper with style width */}
+            <div
+                className="shrink-0 hidden lg:block h-full transition-all duration-300"
+                style={{ width: cartDynamicWidth }}
+            >
                 <Cart
                     items={cartItems}
                     onUpdateQuantity={handleUpdateQuantity}
@@ -180,6 +217,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                 />
             </div>
 
+            {/* ... Modals ... */}
             <PaymentModal
                 isOpen={isPaymentModalOpen}
                 onClose={() => setIsPaymentModalOpen(false)}
@@ -187,14 +225,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                 onConfirm={handleConfirmPayment}
                 currency={currency}
             />
-
-            {/* Mobile Cart Toggle (optional, could be added later) */}
-
-            <div className="fixed bottom-4 right-4 lg:hidden">
-                {/* ... existing mobile logic if any ... */}
-            </div>
-
-
+            {/* ... */}
         </div>
     );
 }
