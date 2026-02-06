@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo, memo } from 'react';
-import { FaMoneyBillWave, FaPaperPlane, FaTimes, FaBackspace } from 'react-icons/fa';
+import ModalHeader from './payment/ModalHeader';
+import AmountSummary from './payment/AmountSummary';
+import CashInput from './payment/CashInput';
+import ChangeDisplay from './payment/ChangeDisplay';
+import PaymentFooter from './payment/PaymentFooter';
 
-// --- Constants ---
-const DENOMINATIONS = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
-
-// --- Type Definitions ---
 interface PaymentModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -13,156 +13,6 @@ interface PaymentModalProps {
     currency?: string;
 }
 
-// --- Helper Functions ---
-const formatCurrency = (amount: number, currency: string) => `${currency}${amount.toFixed(2)}`;
-
-// --- Sub-components ---
-
-const ModalHeader = memo(({ onClose }: { onClose: () => void }) => (
-    <div className="p-6 border-b border-border flex justify-between items-center bg-card-bg/50">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-            <FaMoneyBillWave className="text-green-500" aria-hidden="true" />
-            Cash Payment
-        </h2>
-        <button
-            onClick={onClose}
-            className="p-2 hover:bg-muted/20 rounded-full transition-colors text-muted hover:text-foreground"
-            aria-label="Close modal"
-        >
-            <FaTimes />
-        </button>
-    </div>
-));
-ModalHeader.displayName = 'ModalHeader';
-
-const AmountSummary = memo(({ total, currency }: { total: number, currency: string }) => (
-    <div className="text-center space-y-1">
-        <p className="text-muted text-sm uppercase tracking-wider font-semibold">Total Amount</p>
-        <div className="text-4xl font-bold text-primary">
-            {formatCurrency(total, currency)}
-        </div>
-    </div>
-));
-AmountSummary.displayName = 'AmountSummary';
-
-interface CashInputProps {
-    value: string;
-    onChange: (val: string) => void;
-    quickAmounts: number[];
-    currency: string;
-}
-
-const CashInput = memo(({ value, onChange, quickAmounts, currency }: CashInputProps) => {
-    const handleAdd = (amount: number) => {
-        const current = parseFloat(value) || 0;
-        onChange((current + amount).toString());
-    };
-
-    const handleBackspace = () => {
-        onChange(value.slice(0, -1));
-    };
-
-    return (
-        <div className="space-y-4">
-            <label htmlFor="cash-input" className="block text-sm font-medium text-foreground">
-                Cash Received
-            </label>
-            <div className="relative flex gap-2">
-                <div className="relative flex-1">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-bold pointer-events-none">
-                        {currency}
-                    </span>
-                    <input
-                        id="cash-input"
-                        type="number"
-                        autoFocus
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        className="w-full pl-8 pr-4 py-4 text-xl font-bold bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
-                        placeholder="0.00"
-                    />
-                </div>
-                <button
-                    onClick={handleBackspace}
-                    className="aspect-square h-full max-h-[64px] flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-500 border-2 border-red-500/20 rounded-xl transition-colors"
-                    aria-label="Backspace"
-                >
-                    <FaBackspace size={20} />
-                </button>
-            </div>
-
-            {/* Quick Suggestions */}
-            <div className="flex gap-2 flex-wrap">
-                {quickAmounts.map(amount => (
-                    <button
-                        key={`quick-${amount}`}
-                        onClick={() => onChange(amount.toString())}
-                        className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-xs font-bold transition-colors"
-                    >
-                        {formatCurrency(amount, currency)}
-                    </button>
-                ))}
-            </div>
-
-            {/* Additive Denominations */}
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                {DENOMINATIONS.map(amount => (
-                    <button
-                        key={`denom-${amount}`}
-                        onClick={() => handleAdd(amount)}
-                        className="px-2 py-3 bg-muted/10 hover:bg-muted/20 text-foreground border border-border rounded-lg text-sm font-semibold transition-colors active:scale-95"
-                    >
-                        +{amount}
-                    </button>
-                ))}
-            </div>
-        </div>
-    );
-});
-CashInput.displayName = 'CashInput';
-
-const ChangeDisplay = memo(({ change, isValid, currency }: { change: number; isValid: boolean; currency: string }) => (
-    <div className={`p-4 rounded-xl border ${isValid ? 'bg-green-500/10 border-green-500/20' : 'bg-muted/5 border-border'}`}>
-        <div className="flex justify-between items-center">
-            <span className="text-muted font-medium">Change Due</span>
-            <span className={`text-2xl font-bold ${isValid ? 'text-green-600' : 'text-muted'}`}>
-                {formatCurrency(Math.max(0, change), currency)}
-            </span>
-        </div>
-    </div>
-));
-ChangeDisplay.displayName = 'ChangeDisplay';
-
-interface PaymentFooterProps {
-    isValid: boolean;
-    isProcessing: boolean;
-    onConfirm: () => void;
-}
-
-const PaymentFooter = memo(({ isValid, isProcessing, onConfirm }: PaymentFooterProps) => (
-    <div className="p-6 border-t border-border bg-muted/5">
-        <button
-            onClick={onConfirm}
-            disabled={!isValid || isProcessing}
-            className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all ${isValid && !isProcessing
-                ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/20 active:scale-[0.98]'
-                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
-                }`}
-        >
-            {isProcessing ? (
-                <span>Processing...</span>
-            ) : (
-                <>
-                    <FaPaperPlane />
-                    Confirm Payment
-                </>
-            )}
-        </button>
-    </div>
-));
-PaymentFooter.displayName = 'PaymentFooter';
-
-// --- Main Component ---
 export default function PaymentModal({ isOpen, onClose, total, onConfirm, currency = '$' }: PaymentModalProps) {
     const [cashReceived, setCashReceived] = useState<string>('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -236,3 +86,4 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm, curren
         </div>
     );
 }
+
