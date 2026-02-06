@@ -7,9 +7,10 @@ interface CartProps {
     onUpdateQuantity: (id: number, delta: number) => void;
     onRemove: (id: number) => void;
     onCheckout: () => void;
+    currency: string;
 }
 
-export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout }: CartProps) {
+export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout, currency }: CartProps) {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const tax = subtotal * 0.07; // Assumed 7% tax
     const total = subtotal + tax;
@@ -65,7 +66,7 @@ export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout }: 
                         <div className="flex-1 min-w-0">
                             <h4 className="font-medium text-foreground truncate">{item.name}</h4>
                             <div className="text-primary font-bold">
-                                ${(item.price * item.quantity).toFixed(2)}
+                                {currency}{(item.price * item.quantity).toFixed(2)}
                             </div>
                         </div>
 
@@ -99,15 +100,15 @@ export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout }: 
                 <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-muted">
                         <span>Subtotal</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                        <span>{currency}{subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-muted">
                         <span>Tax (7%)</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>{currency}{tax.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-2xl font-bold text-foreground pt-3 border-t border-border border-dashed">
                         <span>Total</span>
-                        <span className="text-primary">${total.toFixed(2)}</span>
+                        <span className="text-primary">{currency}{total.toFixed(2)}</span>
                     </div>
                 </div>
 
