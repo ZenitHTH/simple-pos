@@ -8,7 +8,7 @@ interface PaymentFooterProps {
 }
 
 const PaymentFooter = memo(({ isValid, isProcessing, onConfirm }: PaymentFooterProps) => (
-    <div className="p-6 border-t border-border bg-muted/5">
+    <div className="p-4 lg:p-5 border-t border-border bg-muted/5">
         <button
             onClick={onConfirm}
             disabled={!isValid || isProcessing}

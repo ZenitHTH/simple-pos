@@ -39,7 +39,7 @@ const CashInput = memo(({ value, onChange, quickAmounts, currency }: CashInputPr
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-2 lg:space-y-3">
             <label htmlFor="cash-input" className="block text-sm font-medium text-foreground">
                 Cash Received
             </label>
@@ -54,7 +54,7 @@ const CashInput = memo(({ value, onChange, quickAmounts, currency }: CashInputPr
                     type="text"
                     readOnly
                     value={value}
-                    className="w-full pl-8 pr-4 py-4 text-3xl font-bold bg-muted/5 border-2 border-border rounded-xl text-right focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none cursor-default"
+                    className="w-full pl-8 pr-4 py-3 text-2xl lg:text-3xl font-bold bg-muted/5 border-2 border-border rounded-xl text-right focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none cursor-default"
                     placeholder="0.00"
                 />
             </div>

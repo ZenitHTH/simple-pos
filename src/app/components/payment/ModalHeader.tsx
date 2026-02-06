@@ -6,7 +6,7 @@ interface ModalHeaderProps {
 }
 
 const ModalHeader = memo(({ onClose }: ModalHeaderProps) => (
-    <div className="p-6 border-b border-border flex justify-between items-center bg-card-bg/50">
+    <div className="p-4 lg:p-5 border-b border-border flex justify-between items-center bg-card-bg/50">
         <h2 className="text-2xl font-bold flex items-center gap-2">
             <FaMoneyBillWave className="text-green-500" aria-hidden="true" />
             Cash Payment

@@ -61,11 +61,19 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm, curren
             role="dialog"
             aria-modal="true"
         >
-            <div className="bg-card-bg w-full max-w-md rounded-2xl shadow-2xl border border-border overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="bg-card-bg w-full max-w-md lg:max-w-md xl:max-w-lg max-h-[90vh] flex flex-col rounded-2xl shadow-2xl border border-border overflow-hidden animate-in fade-in zoom-in duration-200">
                 <ModalHeader onClose={onClose} />
 
-                <div className="p-6 space-y-6">
-                    <AmountSummary total={total} currency={currency} />
+                <div className="p-4 lg:p-5 space-y-4 lg:space-y-5 overflow-y-auto custom-scrollbar">
+                    {/* Compact Summary Row */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="p-3 bg-primary/5 rounded-xl border border-primary/10">
+                            <AmountSummary total={total} currency={currency} />
+                        </div>
+                        <div className="h-full">
+                            <ChangeDisplay change={change} isValid={isValid} currency={currency} />
+                        </div>
+                    </div>
 
                     <CashInput
                         value={cashReceived}
@@ -73,8 +81,6 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm, curren
                         quickAmounts={quickAmounts}
                         currency={currency}
                     />
-
-                    <ChangeDisplay change={change} isValid={isValid} currency={currency} />
                 </div>
 
                 <PaymentFooter

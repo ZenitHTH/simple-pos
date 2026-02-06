@@ -16,7 +16,7 @@ const VirtualNumpad = memo(({ onPress, onClear, onBackspace }: VirtualNumpadProp
     ];
 
     return (
-        <div className="grid grid-cols-4 gap-3 h-64 sm:h-80 select-none">
+        <div className="grid grid-cols-4 gap-3 h-48 sm:h-56 lg:h-64 xl:h-80 select-none">
             {/* Numbers Section (3 cols) */}
             <div className="col-span-3 grid grid-cols-3 gap-3">
                 {keys.map((key) => (
