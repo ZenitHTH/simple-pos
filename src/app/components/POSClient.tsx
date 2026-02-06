@@ -8,6 +8,7 @@ import PaymentModal from './PaymentModal';
 import { Product, CartItem } from '../types';
 import { categoryApi, receiptApi } from '../lib/api';
 import { FaSearch, FaReceipt } from 'react-icons/fa';
+import { useCurrency } from '../../hooks/useCurrency';
 
 interface POSClientProps {
     initialProducts: Product[];
@@ -16,6 +17,7 @@ interface POSClientProps {
 export default function POSClient({ initialProducts }: POSClientProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currency } = useCurrency();
 
     // URL State
     const selectedCategory = searchParams.get('category') || 'All';
@@ -108,7 +110,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
             // ideally we would show a toast here, but for now console + alert
             const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07;
             const change = cashReceived - total;
-            alert(`Payment Successful!\nChange: $${change.toFixed(2)}`);
+            alert(`Payment Successful!\nChange: ${currency}${change.toFixed(2)}`);
 
             // 4. Reset
             setCartItems([]);
@@ -178,6 +180,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                             key={product.id}
                             product={product}
                             onAdd={handleAddToCart}
+                            currency={currency}
                         />
                     ))}
                 </div>
@@ -190,6 +193,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                     onUpdateQuantity={handleUpdateQuantity}
                     onRemove={handleRemove}
                     onCheckout={handleCheckout}
+                    currency={currency}
                 />
             </div>
 
@@ -198,6 +202,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                 onClose={() => setIsPaymentModalOpen(false)}
                 total={cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07}
                 onConfirm={handleConfirmPayment}
+                currency={currency}
             />
 
             {/* Mobile Cart Toggle (optional, could be added later) */}
