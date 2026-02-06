@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaBoxOpen, FaCog, FaTags } from "react-icons/fa";
+import { FaHome, FaBoxOpen, FaCog, FaTags, FaBars, FaTimes } from "react-icons/fa";
 
 const menuItems = [
     {
@@ -29,39 +30,81 @@ const menuItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Close sidebar when route changes (mobile)
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
 
     return (
-        <aside className="w-64 bg-card-bg border-r border-border min-h-screen flex flex-col shadow-sm">
-            <div className="p-6">
-                <h1 className="text-2xl font-bold text-primary">POS System</h1>
+        <>
+            {/* Mobile Header */}
+            <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-card-bg border-b border-border flex items-center px-4 z-40 shadow-sm">
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="p-2 -ml-2 text-muted hover:text-foreground transition-colors"
+                >
+                    <FaBars size={24} />
+                </button>
+                <span className="ml-4 text-lg font-bold text-primary">Simple POS</span>
             </div>
 
-            <nav className="flex-1 px-4 py-4 space-y-2">
-                {menuItems.map((item) => {
-                    const isActive = pathname === item.path;
-                    return (
-                        <Link
-                            key={item.path}
-                            href={item.path}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
-                ${isActive
-                                    ? "bg-primary text-primary-foreground shadow-md shadow-blue-500/20"
-                                    : "text-muted hover:bg-card-hover hover:text-foreground"
-                                }
-              `}
-                        >
-                            <span className={isActive ? "text-primary-foreground" : "text-muted group-hover:text-foreground"}>
-                                {item.icon}
-                            </span>
-                            <span className="font-medium">{item.name}</span>
-                        </Link>
-                    );
-                })}
-            </nav>
+            {/* Overlay */}
+            {isOpen && (
+                <div
+                    className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
 
-            <div className="p-4 border-t border-border">
-                <p className="text-xs text-center text-muted">© 2026 Simple POS</p>
-            </div>
-        </aside>
+            {/* Sidebar */}
+            <aside
+                className={`
+                    fixed lg:static inset-y-0 left-0 z-50
+                    w-64 bg-card-bg border-r border-border shadow-2xl lg:shadow-none
+                    transform transition-transform duration-300 ease-in-out
+                    flex flex-col
+                    ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+                `}
+            >
+                <div className="p-6 flex justify-between items-center lg:block">
+                    <h1 className="text-2xl font-bold text-primary">POS System</h1>
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="lg:hidden p-2 text-muted hover:text-foreground transition-colors"
+                    >
+                        <FaTimes size={24} />
+                    </button>
+                </div>
+
+                <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                    {menuItems.map((item) => {
+                        const isActive = pathname === item.path;
+                        return (
+                            <Link
+                                key={item.path}
+                                href={item.path}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
+                                    ${isActive
+                                        ? "bg-primary text-primary-foreground shadow-md shadow-blue-500/20"
+                                        : "text-muted hover:bg-card-hover hover:text-foreground"
+                                    }
+                                `}
+                            >
+                                <span className={isActive ? "text-primary-foreground" : "text-muted group-hover:text-foreground"}>
+                                    {item.icon}
+                                </span>
+                                <span className="font-medium">{item.name}</span>
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                <div className="p-4 border-t border-border mt-auto">
+                    <p className="text-xs text-center text-muted">© 2026 Simple POS</p>
+                </div>
+            </aside>
+        </>
     );
 }
