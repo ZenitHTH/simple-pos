@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "simple-pos",
+  "productName": "Simple POS",
   "version": "0.1.0",
   "identifier": "com.simple-pos.app",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "simple-pos",
+        "title": "Simple POS",
         "width": 800,
         "height": 600,
         "resizable": true,
