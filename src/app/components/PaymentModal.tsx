@@ -1,5 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { FaMoneyBillWave, FaPaperPlane, FaTimes, FaBackspace } from 'react-icons/fa';
+
+// --- Constants ---
+const DENOMINATIONS = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
 
 // --- Type Definitions ---
 interface PaymentModalProps {
@@ -7,17 +10,18 @@ interface PaymentModalProps {
     onClose: () => void;
     total: number;
     onConfirm: (cashReceived: number) => Promise<void>;
-    currency: string;
+    currency?: string;
 }
 
 // --- Helper Functions ---
 const formatCurrency = (amount: number, currency: string) => `${currency}${amount.toFixed(2)}`;
 
-// --- Sub-components (could be in separate files) ---
-const ModalHeader = ({ onClose }: { onClose: () => void }) => (
+// --- Sub-components ---
+
+const ModalHeader = memo(({ onClose }: { onClose: () => void }) => (
     <div className="p-6 border-b border-border flex justify-between items-center bg-card-bg/50">
         <h2 className="text-2xl font-bold flex items-center gap-2">
-            <FaMoneyBillWave className="text-green-500" />
+            <FaMoneyBillWave className="text-green-500" aria-hidden="true" />
             Cash Payment
         </h2>
         <button
@@ -28,28 +32,27 @@ const ModalHeader = ({ onClose }: { onClose: () => void }) => (
             <FaTimes />
         </button>
     </div>
-);
+));
+ModalHeader.displayName = 'ModalHeader';
 
-const AmountSummary = ({ total, currency }: { total: number, currency: string }) => (
+const AmountSummary = memo(({ total, currency }: { total: number, currency: string }) => (
     <div className="text-center space-y-1">
         <p className="text-muted text-sm uppercase tracking-wider font-semibold">Total Amount</p>
         <div className="text-4xl font-bold text-primary">
             {formatCurrency(total, currency)}
         </div>
     </div>
-);
+));
+AmountSummary.displayName = 'AmountSummary';
 
-const CashInput = ({
-    value,
-    onChange,
-    quickAmounts,
-    currency
-}: {
+interface CashInputProps {
     value: string;
     onChange: (val: string) => void;
     quickAmounts: number[];
     currency: string;
-}) => {
+}
+
+const CashInput = memo(({ value, onChange, quickAmounts, currency }: CashInputProps) => {
     const handleAdd = (amount: number) => {
         const current = parseFloat(value) || 0;
         onChange((current + amount).toString());
@@ -59,17 +62,18 @@ const CashInput = ({
         onChange(value.slice(0, -1));
     };
 
-    const denominations = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
-
     return (
         <div className="space-y-4">
-            <label className="block text-sm font-medium text-foreground">
+            <label htmlFor="cash-input" className="block text-sm font-medium text-foreground">
                 Cash Received
             </label>
             <div className="relative flex gap-2">
                 <div className="relative flex-1">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-bold">{currency}</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted font-bold pointer-events-none">
+                        {currency}
+                    </span>
                     <input
+                        id="cash-input"
                         type="number"
                         autoFocus
                         value={value}
@@ -81,12 +85,13 @@ const CashInput = ({
                 <button
                     onClick={handleBackspace}
                     className="aspect-square h-full max-h-[64px] flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-500 border-2 border-red-500/20 rounded-xl transition-colors"
+                    aria-label="Backspace"
                 >
                     <FaBackspace size={20} />
                 </button>
             </div>
 
-            {/* Quick Suggestions (Replace) */}
+            {/* Quick Suggestions */}
             <div className="flex gap-2 flex-wrap">
                 {quickAmounts.map(amount => (
                     <button
@@ -101,7 +106,7 @@ const CashInput = ({
 
             {/* Additive Denominations */}
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                {denominations.map(amount => (
+                {DENOMINATIONS.map(amount => (
                     <button
                         key={`denom-${amount}`}
                         onClick={() => handleAdd(amount)}
@@ -113,9 +118,10 @@ const CashInput = ({
             </div>
         </div>
     );
-};
+});
+CashInput.displayName = 'CashInput';
 
-const ChangeDisplay = ({ change, isValid, currency }: { change: number; isValid: boolean; currency: string }) => (
+const ChangeDisplay = memo(({ change, isValid, currency }: { change: number; isValid: boolean; currency: string }) => (
     <div className={`p-4 rounded-xl border ${isValid ? 'bg-green-500/10 border-green-500/20' : 'bg-muted/5 border-border'}`}>
         <div className="flex justify-between items-center">
             <span className="text-muted font-medium">Change Due</span>
@@ -124,17 +130,16 @@ const ChangeDisplay = ({ change, isValid, currency }: { change: number; isValid:
             </span>
         </div>
     </div>
-);
+));
+ChangeDisplay.displayName = 'ChangeDisplay';
 
-const PaymentFooter = ({
-    isValid,
-    isProcessing,
-    onConfirm
-}: {
+interface PaymentFooterProps {
     isValid: boolean;
     isProcessing: boolean;
-    onConfirm: () => void
-}) => (
+    onConfirm: () => void;
+}
+
+const PaymentFooter = memo(({ isValid, isProcessing, onConfirm }: PaymentFooterProps) => (
     <div className="p-6 border-t border-border bg-muted/5">
         <button
             onClick={onConfirm}
@@ -154,10 +159,11 @@ const PaymentFooter = ({
             )}
         </button>
     </div>
-);
+));
+PaymentFooter.displayName = 'PaymentFooter';
 
 // --- Main Component ---
-export default function PaymentModal({ isOpen, onClose, total, onConfirm, currency }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, total, onConfirm, currency = '$' }: PaymentModalProps) {
     const [cashReceived, setCashReceived] = useState<string>('');
     const [isProcessing, setIsProcessing] = useState(false);
 
@@ -200,9 +206,12 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm, curren
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+        >
             <div className="bg-card-bg w-full max-w-md rounded-2xl shadow-2xl border border-border overflow-hidden animate-in fade-in zoom-in duration-200">
-
                 <ModalHeader onClose={onClose} />
 
                 <div className="p-6 space-y-6">
@@ -223,7 +232,6 @@ export default function PaymentModal({ isOpen, onClose, total, onConfirm, curren
                     isProcessing={isProcessing}
                     onConfirm={handleConfirm}
                 />
-
             </div>
         </div>
     );
