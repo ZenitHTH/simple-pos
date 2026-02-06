@@ -10,6 +10,7 @@ import { Product, CartItem } from '../types';
 import { categoryApi, receiptApi } from '../lib/api';
 import { FaReceipt } from 'react-icons/fa';
 import { useCurrency } from '../../hooks/useCurrency';
+import { useTax } from '../hooks/useTax';
 
 interface POSClientProps {
     initialProducts: Product[];
@@ -19,6 +20,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { currency } = useCurrency();
+    const { taxRate } = useTax();
 
     // URL State
     const selectedCategory = searchParams.get('category') || 'All';
@@ -109,7 +111,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
 
             // 3. Success Feedback
             // ideally we would show a toast here, but for now console + alert
-            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07;
+            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 + taxRate);
             const change = cashReceived - total;
             alert(`Payment Successful!\nChange: ${currency}${change.toFixed(2)}`);
 
@@ -181,7 +183,7 @@ export default function POSClient({ initialProducts }: POSClientProps) {
             <PaymentModal
                 isOpen={isPaymentModalOpen}
                 onClose={() => setIsPaymentModalOpen(false)}
-                total={cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.07}
+                total={cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 + taxRate)}
                 onConfirm={handleConfirmPayment}
                 currency={currency}
             />
