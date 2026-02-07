@@ -12,6 +12,9 @@ import { FaReceipt } from 'react-icons/fa';
 import { useCurrency } from '../../hooks/useCurrency';
 import { useTax } from '../../hooks/useTax';
 import { useSettings } from '../context/SettingsContext';
+import { useMockup } from '../context/MockupContext';
+import SelectableOverlay from './design-mode/SelectableOverlay';
+import { exampleProducts, exampleCartItems } from '@/lib/example-data';
 
 // ... imports
 
@@ -21,10 +24,14 @@ interface POSClientProps {
 
 export default function POSClient({ initialProducts }: POSClientProps) {
     const { settings } = useSettings();
+    const { isMockupMode } = useMockup();
     const router = useRouter();
     const searchParams = useSearchParams();
     const { currency } = useCurrency();
     const { taxRate } = useTax();
+
+    // Determine which products to use
+    const productsSource = isMockupMode ? exampleProducts : initialProducts;
 
     // URL State
     const selectedCategory = searchParams.get('category') || 'All';
@@ -128,24 +135,33 @@ export default function POSClient({ initialProducts }: POSClientProps) {
         }
     };
 
-    const filteredProducts = initialProducts.filter(product => {
+    const filteredProducts = productsSource.filter(product => {
         const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
     // Calculate Grid Columns based on scale
-    // < 90: compact (more columns)
-    // > 110: large (fewer columns)
-    // default: normal
+    // 50: Extra Small (XS)
+    // 75: Small (S)
+    // 100: Normal (M)
+    // 125: Large (L)
+    // 150: Extra Large (XL)
     const gridScale = settings?.grid_scale || 100;
-    let gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4";
 
-    if (gridScale < 90) {
-        // Compact: Add one column
-        gridColsClass = "grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5";
-    } else if (gridScale > 110) {
-        // Large: Remove one column
+    let gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4"; // Default M (100)
+
+    if (gridScale <= 50) {
+        // XS
+        gridColsClass = "grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6";
+    } else if (gridScale <= 75) {
+        // S
+        gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5";
+    } else if (gridScale >= 150) {
+        // XL
+        gridColsClass = "grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2";
+    } else if (gridScale >= 125) {
+        // L
         gridColsClass = "grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3";
     }
 
@@ -188,7 +204,8 @@ export default function POSClient({ initialProducts }: POSClientProps) {
 
                 {/* Product Grid - Scrollable Area */}
                 <div className="flex-1 overflow-y-auto min-h-0 pr-2 custom-scrollbar">
-                    <div className={`grid ${gridColsClass} gap-4 pb-4`}>
+                    <div className={`grid ${gridColsClass} gap-4 pb-4 relative`}>
+                        <SelectableOverlay id="grid_scale" />
                         {filteredProducts.map(product => (
                             <ProductCard
                                 key={product.id}
@@ -205,11 +222,12 @@ export default function POSClient({ initialProducts }: POSClientProps) {
             {/* We apply dynamic width via style because Tailwind can't interpolate arbitrary values cleanly for responsive states like this without complex overrides */}
             {/* Ideally we use a wrapper with style width */}
             <div
-                className="shrink-0 hidden lg:block h-full transition-all duration-300"
+                className="shrink-0 hidden lg:block h-full transition-all duration-300 relative"
                 style={{ width: cartDynamicWidth }}
             >
+                <SelectableOverlay id="cart_scale" />
                 <Cart
-                    items={cartItems}
+                    items={isMockupMode ? exampleCartItems : cartItems}
                     onUpdateQuantity={handleUpdateQuantity}
                     onRemove={handleRemove}
                     onCheckout={handleCheckout}
@@ -226,6 +244,6 @@ export default function POSClient({ initialProducts }: POSClientProps) {
                 currency={currency}
             />
             {/* ... */}
-        </div>
+        </div >
     );
 }
