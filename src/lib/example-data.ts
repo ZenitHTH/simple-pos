@@ -1,4 +1,4 @@
-import { Product } from '../types';
+import { Product } from '@/app/types';
 
 export const exampleProducts: Product[] = [
     { id: 1, name: "Iced Americano", price: 4.50, category: "Coffee", image: "", color: "#78350f" },
@@ -13,4 +13,13 @@ export const exampleProducts: Product[] = [
     { id: 10, name: "Cheesecake", price: 6.50, category: "Dessert", image: "", color: "#eab308" },
     { id: 11, name: "Chocolate Cake", price: 6.00, category: "Dessert", image: "", color: "#3f3f46" },
     { id: 12, name: "Iced Tea", price: 3.50, category: "Tea", image: "", color: "#ef4444" },
+
+];
+
+import { CartItem } from '@/app/types';
+
+export const exampleCartItems: CartItem[] = [
+    { ...exampleProducts[0], quantity: 2 },
+    { ...exampleProducts[7], quantity: 1 },
+    { ...exampleProducts[4], quantity: 3 },
 ];
