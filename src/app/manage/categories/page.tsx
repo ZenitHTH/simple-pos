@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { categoryApi } from "../../lib/api";
-import { Category } from "../../lib/types";
+import { categoryApi } from "@/lib/api";
+import { Category } from "@/lib/types";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import CategoryModal from "./components/CategoryModal";
 

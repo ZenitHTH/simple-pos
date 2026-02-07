@@ -1,6 +1,6 @@
 "use client";
 
-import { useTax } from '../hooks/useTax';
+import { useTax } from '../../hooks/useTax';
 
 export default function TaxSettings() {
     const { isTaxEnabled, toggleTax, taxPercentage, setTaxPercentage } = useTax();

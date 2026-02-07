@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import POSClient from './components/POSClient';
 import { Product } from './types';
-import { productApi } from './lib/api';
+import { productApi } from '@/lib/api';
 
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);

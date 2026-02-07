@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BackendProduct, NewProduct, Category } from "../../lib/types";
-import { categoryApi } from "../../lib/api";
+import { BackendProduct, NewProduct, Category } from "@/lib/types";
+import { categoryApi } from "@/lib/api";
 import { Modal } from "../../components/ui/Modal";
 import { Input } from "../../components/ui/Input";
 import { Select, Option } from "../../components/ui/Select";

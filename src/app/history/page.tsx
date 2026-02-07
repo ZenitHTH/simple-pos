@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { receiptApi } from '../lib/api';
-import { ReceiptList as ReceiptListType } from '../lib/types';
+import { receiptApi } from '@/lib/api';
+import { ReceiptList as ReceiptListType } from '@/lib/types';
 import HistoryHeader from './HistoryHeader';
 import DateFilter from './DateFilter';
 import IdSearch from './IdSearch';

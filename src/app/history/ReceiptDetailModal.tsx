@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaReceipt } from 'react-icons/fa';
-import { ReceiptList as ReceiptListType, Receipt } from '../lib/types';
+import { ReceiptList as ReceiptListType, Receipt } from '@/lib/types';
 import { Product } from '../types';
-import { receiptApi, productApi } from '../lib/api';
+import { receiptApi, productApi } from '@/lib/api';
 
 interface ReceiptDetailModalProps {
     receipt: ReceiptListType;

@@ -7,10 +7,10 @@ import ProductCard from './ProductCard';
 import Cart from './Cart';
 import PaymentModal from './PaymentModal';
 import { Product, CartItem } from '../types';
-import { categoryApi, receiptApi } from '../lib/api';
+import { categoryApi, receiptApi } from '@/lib/api';
 import { FaReceipt } from 'react-icons/fa';
 import { useCurrency } from '../../hooks/useCurrency';
-import { useTax } from '../hooks/useTax';
+import { useTax } from '../../hooks/useTax';
 import { useSettings } from '../context/SettingsContext';
 
 // ... imports

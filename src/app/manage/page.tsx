@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { productApi } from "../lib/api";
-import { BackendProduct, NewProduct } from "../lib/types";
+import { productApi } from "@/lib/api";
+import { BackendProduct, NewProduct } from "@/lib/types";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import ProductModal from "./components/ProductModal";
 

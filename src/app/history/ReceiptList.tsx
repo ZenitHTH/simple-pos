@@ -1,5 +1,5 @@
 import { FaReceipt } from 'react-icons/fa';
-import { ReceiptList as ReceiptListType } from '../lib/types';
+import { ReceiptList as ReceiptListType } from '@/lib/types';
 
 interface ReceiptListProps {
     receipts: ReceiptListType[];
