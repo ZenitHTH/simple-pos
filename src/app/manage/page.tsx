@@ -5,8 +5,11 @@ import { productApi } from "@/lib/api";
 import { BackendProduct, NewProduct } from "@/lib/types";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import ProductModal from "./components/ProductModal";
+import { useSettings } from "@/app/context/SettingsContext";
+import SelectableOverlay from '../components/design-mode/SelectableOverlay';
 
 export default function ManagePage() {
+    const { settings } = useSettings();
     const [products, setProducts] = useState<BackendProduct[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -85,7 +88,7 @@ export default function ManagePage() {
 
     return (
         <div className="p-8 max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
                 <div>
                     <h1 className="text-3xl font-bold text-foreground">Product Management</h1>
                     <p className="text-muted">Manage your inventory items</p>
@@ -122,58 +125,67 @@ export default function ManagePage() {
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
             ) : (
-                <div className="bg-card-bg rounded-xl border border-border shadow-sm overflow-hidden">
-                    <table className="w-full text-left">
-                        <thead className="bg-muted/5 border-b border-border">
-                            <tr>
-                                <th className="px-6 py-4 font-medium text-muted">ID</th>
-                                <th className="px-6 py-4 font-medium text-muted">Title</th>
-                                <th className="px-6 py-4 font-medium text-muted">Category</th>
-                                <th className="px-6 py-4 font-medium text-muted">Price</th>
-                                <th className="px-6 py-4 font-medium text-muted text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                            {filteredProducts.length === 0 ? (
+                <div
+                    className="relative group origin-top transition-transform duration-200 ease-out"
+                    style={{
+                        transform: `scale(${settings.manage_table_scale / 100})`,
+                        marginBottom: `${(settings.manage_table_scale - 100) * 0.5}%`
+                    }}
+                >
+                    <SelectableOverlay id="manage_table_scale" />
+                    <div className="bg-card-bg rounded-xl border border-border shadow-sm overflow-hidden">
+                        <table className="w-full text-left">
+                            <thead className="bg-muted/5 border-b border-border">
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-muted">
-                                        No products found
-                                    </td>
+                                    <th className="px-6 py-4 font-medium text-muted">ID</th>
+                                    <th className="px-6 py-4 font-medium text-muted">Title</th>
+                                    <th className="px-6 py-4 font-medium text-muted">Category</th>
+                                    <th className="px-6 py-4 font-medium text-muted">Price</th>
+                                    <th className="px-6 py-4 font-medium text-muted text-right">Actions</th>
                                 </tr>
-                            ) : (
-                                filteredProducts.map((product) => (
-                                    <tr key={product.product_id} className="hover:bg-muted/5 transition-colors">
-                                        <td className="px-6 py-4 text-muted">#{product.product_id}</td>
-                                        <td className="px-6 py-4 font-medium">{product.title}</td>
-                                        <td className="px-6 py-4">
-                                            <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-medium">
-                                                {product.catagory}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 font-mono">฿{(product.satang / 100).toFixed(2)}</td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(product)}
-                                                    className="p-2 text-muted hover:text-primary transition-colors hover:bg-blue-50 rounded-lg"
-                                                    title="Edit"
-                                                >
-                                                    <FaEdit />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(product.product_id)}
-                                                    className="p-2 text-muted hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
-                                                    title="Delete"
-                                                >
-                                                    <FaTrash />
-                                                </button>
-                                            </div>
+                            </thead>
+                            <tbody className="divide-y divide-border">
+                                {filteredProducts.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="px-6 py-12 text-center text-muted">
+                                            No products found
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    filteredProducts.map((product) => (
+                                        <tr key={product.product_id} className="hover:bg-muted/5 transition-colors">
+                                            <td className="px-6 py-4 text-muted">#{product.product_id}</td>
+                                            <td className="px-6 py-4 font-medium">{product.title}</td>
+                                            <td className="px-6 py-4">
+                                                <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-medium">
+                                                    {product.catagory}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 font-mono">฿{(product.satang / 100).toFixed(2)}</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <button
+                                                        onClick={() => handleEdit(product)}
+                                                        className="p-2 text-muted hover:text-primary transition-colors hover:bg-blue-50 rounded-lg"
+                                                        title="Edit"
+                                                    >
+                                                        <FaEdit />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(product.product_id)}
+                                                        className="p-2 text-muted hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
+                                                        title="Delete"
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 
