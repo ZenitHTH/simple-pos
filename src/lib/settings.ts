@@ -8,6 +8,8 @@ export interface AppSettings {
     sidebar_scale: number;
     cart_scale: number;
     grid_scale: number;
+    manage_table_scale: number;
+    category_table_scale: number;
 }
 
 export async function getSettings(): Promise<AppSettings> {
