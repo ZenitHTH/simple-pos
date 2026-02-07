@@ -5,7 +5,7 @@ import CurrencySettings from './CurrencySettings';
 import TaxSettings from './TaxSettings';
 import DisplaySettings from './DisplaySettings';
 import { useSettings } from '../context/SettingsContext';
-import { FaSave, FaCheck } from 'react-icons/fa';
+import { FaSave, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { useState } from 'react';
 
 export default function SettingPage() {
