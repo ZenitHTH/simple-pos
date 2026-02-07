@@ -20,6 +20,8 @@ const DEFAULT_SETTINGS: AppSettings = {
     sidebar_scale: 100.0,
     cart_scale: 100.0,
     grid_scale: 100.0,
+    manage_table_scale: 100.0,
+    category_table_scale: 100.0,
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -72,13 +74,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
     const resetToDefault = () => {
         setSettings(DEFAULT_SETTINGS);
-        // Note: we don't save immediately, user must click Save.
-        // Or should we? "Reset to Default" usually implies action.
-        // Let's leave it as state change, user clicks Save to confirm.
-        // But the button says "Reset to Default" which feels immediate.
-        // If "Reset" is a destructive action (clearing all "cookies" equivalent), maybe it should save.
-        // However, the new flow is "click Save to persist".
-        // Let's treating it as just updating the form.
+
     };
 
     return (
