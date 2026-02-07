@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { FaHome, FaBoxOpen, FaCog, FaTags, FaBars, FaTimes } from "react-icons/fa";
 
 import { useSettings } from "../context/SettingsContext";
+import SelectableOverlay from './design-mode/SelectableOverlay';
 
 const menuItems = [
     {
@@ -79,7 +80,8 @@ export default function Sidebar() {
             // But tailwind class w-64 is applied. We should override it or use style.
             >
                 {/* We use a style injection or inline style wrapper to handle the dynamic width properly */}
-                <div style={{ width: dynamicWidth }} className="h-full flex flex-col">
+                <div style={{ width: dynamicWidth }} className="h-full flex flex-col relative group">
+                    <SelectableOverlay id="sidebar_scale" />
 
                     <div className="p-6 flex justify-between items-center lg:block">
                         <h1 className="text-2xl font-bold text-primary">POS System</h1>
