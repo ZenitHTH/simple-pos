@@ -4,7 +4,7 @@ import "./globals.css";
 import Sidebar from "./components/Sidebar";
 import { SettingsProvider } from "./context/SettingsContext";
 import { MockupProvider } from "./context/MockupContext";
-import BottomControlPanel from "./components/BottomControlPanel";
+import BottomControlPanel from './components/design-mode/BottomControlPanel';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
