@@ -1,8 +1,8 @@
+use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 use tauri::command;
-use directories::ProjectDirs;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppSettings {
@@ -12,7 +12,14 @@ pub struct AppSettings {
     pub display_scale: f64,
     pub sidebar_scale: f64,
     pub cart_scale: f64,
+    pub manage_table_scale: f64,
+    pub category_table_scale: f64,
+    pub sidebar_font_scale: f64,
+    pub cart_font_scale: f64,
+    pub grid_font_scale: f64,
     pub grid_scale: f64,
+    pub manage_table_font_scale: f64,
+    pub category_table_font_scale: f64,
 }
 
 impl Default for AppSettings {
@@ -25,12 +32,19 @@ impl Default for AppSettings {
             sidebar_scale: 100.0,
             cart_scale: 100.0,
             grid_scale: 100.0,
+            manage_table_scale: 100.0,
+            category_table_scale: 100.0,
+            sidebar_font_scale: 100.0,
+            cart_font_scale: 100.0,
+            grid_font_scale: 100.0,
+            manage_table_font_scale: 100.0,
+            category_table_font_scale: 100.0,
         }
     }
 }
 
 fn get_settings_path() -> Result<PathBuf, String> {
-   let proj_dirs = ProjectDirs::from("", "", "simple-pos").ok_or_else(|| {
+    let proj_dirs = ProjectDirs::from("", "", "simple-pos").ok_or_else(|| {
         "No valid home directory path could be retrieved from the operating system.".to_string()
     })?;
 
@@ -50,7 +64,7 @@ pub fn get_settings() -> Result<AppSettings, String> {
     }
 
     let content = fs::read_to_string(path).map_err(|e| e.to_string())?;
-    // If parsing fails, return default instead of erroring out? 
+    // If parsing fails, return default instead of erroring out?
     // Or maybe error so the user knows something is wrong.
     // Let's fallback to default if file is corrupt but log it?
     // For now, simple unwrapping or default.

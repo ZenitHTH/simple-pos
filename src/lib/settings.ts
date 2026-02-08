@@ -10,6 +10,11 @@ export interface AppSettings {
     grid_scale: number;
     manage_table_scale: number;
     category_table_scale: number;
+    sidebar_font_scale: number;
+    cart_font_scale: number;
+    grid_font_scale: number;
+    manage_table_font_scale: number;
+    category_table_font_scale: number;
 }
 
 export async function getSettings(): Promise<AppSettings> {
