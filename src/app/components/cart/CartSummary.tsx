@@ -18,7 +18,7 @@ export default function CartSummary({ subtotal, tax, total, currency, onCheckout
                     <span>Tax (7%)</span>
                     <span>{currency}{tax.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-2xl font-bold text-foreground pt-3 border-t border-border border-dashed">
+                <div className="flex justify-between text-[1.5em] font-bold text-foreground pt-3 border-t border-border border-dashed">
                     <span>Total</span>
                     <span className="text-primary">{currency}{total.toFixed(2)}</span>
                 </div>
@@ -26,7 +26,7 @@ export default function CartSummary({ subtotal, tax, total, currency, onCheckout
 
             <button
                 onClick={onCheckout}
-                className="w-full py-4 bg-primary hover:bg-blue-600 text-primary-foreground font-bold text-lg rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full py-4 bg-primary hover:bg-blue-600 text-primary-foreground font-bold text-[1.125em] rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
             >
                 Checkout Now
             </button>
