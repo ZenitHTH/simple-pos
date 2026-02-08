@@ -36,14 +36,14 @@ export default function ProductCard({ product, onAdd, currency }: ProductCardPro
 
             <div className="p-4">
                 <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-foreground text-xl leading-tight line-clamp-2">{product.name}</h3>
+                    <h3 className="font-semibold text-foreground text-[1.25em] leading-tight line-clamp-2">{product.name}</h3>
                 </div>
 
                 <div className="flex justify-between items-center mt-2">
-                    <span className="text-muted text-base px-2 py-0.5 rounded-full bg-secondary/10 border border-border">
+                    <span className="text-muted text-[1em] px-2 py-0.5 rounded-full bg-secondary/10 border border-border">
                         {product.category}
                     </span>
-                    <span className="font-bold text-primary text-2xl">
+                    <span className="font-bold text-primary text-[1.5em]">
                         {currency}{product.price.toFixed(2)}
                     </span>
                 </div>
