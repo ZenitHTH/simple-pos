@@ -129,7 +129,8 @@ export default function ManagePage() {
                     className="relative group origin-top transition-transform duration-200 ease-out"
                     style={{
                         transform: `scale(${settings.manage_table_scale / 100})`,
-                        marginBottom: `${(settings.manage_table_scale - 100) * 0.5}%`
+                        marginBottom: `${(settings.manage_table_scale - 100) * 0.5}%`,
+                        fontSize: `${settings?.manage_table_font_scale || 100}%`
                     }}
                 >
                     <SelectableOverlay id="manage_table_scale" />

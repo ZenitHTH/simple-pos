@@ -102,7 +102,8 @@ export default function CategoriesPage() {
                     className="relative group origin-top transition-transform duration-200 ease-out"
                     style={{
                         transform: `scale(${settings.category_table_scale / 100})`,
-                        marginBottom: `${(settings.category_table_scale - 100) * 0.5}%`
+                        marginBottom: `${(settings.category_table_scale - 100) * 0.5}%`,
+                        fontSize: `${settings?.category_table_font_scale || 100}%`
                     }}
                 >
                     <SelectableOverlay id="category_table_scale" />
