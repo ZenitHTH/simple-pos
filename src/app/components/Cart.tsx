@@ -26,9 +26,9 @@ export default function Cart({ items, onUpdateQuantity, onRemove, onCheckout, cu
     return (
         <div className="flex flex-col h-[calc(100vh-2rem)] bg-card-bg border border-border rounded-2xl shadow-xl overflow-hidden sticky top-4">
             <div className="p-6 border-b border-border bg-card-bg/50 backdrop-blur-sm z-10">
-                <h2 className="text-2xl font-bold flex items-center gap-3">
+                <h2 className="text-[1.5em] font-bold flex items-center gap-3">
                     <span className="text-primary">Current Order</span>
-                    <span className="text-sm font-normal text-muted bg-muted/10 px-3 py-1 rounded-full">
+                    <span className="text-[0.875em] font-normal text-muted bg-muted/10 px-3 py-1 rounded-full">
                         {items.reduce((acc, item) => acc + item.quantity, 0)} items
                     </span>
                 </h2>
