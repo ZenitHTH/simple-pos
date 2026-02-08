@@ -55,7 +55,7 @@ export default function Sidebar() {
                 >
                     <FaBars size={24} />
                 </button>
-                <span className="ml-4 text-lg font-bold text-primary">Simple POS</span>
+                <span className="ml-4 text-[1.125em] font-bold text-primary">Simple POS</span>
             </div>
 
             {/* Overlay */}
@@ -80,11 +80,17 @@ export default function Sidebar() {
             // But tailwind class w-64 is applied. We should override it or use style.
             >
                 {/* We use a style injection or inline style wrapper to handle the dynamic width properly */}
-                <div style={{ width: dynamicWidth }} className="h-full flex flex-col relative group">
+                <div
+                    style={{
+                        width: dynamicWidth,
+                        fontSize: `${settings?.sidebar_font_scale || 100}%`
+                    }}
+                    className="h-full flex flex-col relative group"
+                >
                     <SelectableOverlay id="sidebar_scale" />
 
                     <div className="p-6 flex justify-between items-center lg:block">
-                        <h1 className="text-2xl font-bold text-primary">POS System</h1>
+                        <h1 className="text-[1.5em] font-bold text-primary">POS System</h1>
                         <button
                             onClick={() => setIsOpen(false)}
                             className="lg:hidden p-2 text-muted hover:text-foreground transition-colors"
@@ -110,15 +116,16 @@ export default function Sidebar() {
                                     <span className={isActive ? "text-primary-foreground" : "text-muted group-hover:text-foreground"}>
                                         {item.icon}
                                     </span>
-                                    <span className="font-medium">{item.name}</span>
+                                    <span className="font-medium text-[1em]">{item.name}</span>
                                 </Link>
                             );
                         })}
                     </nav>
 
                     <div className="p-4 border-t border-border mt-auto">
-                        <p className="text-xs text-center text-muted">© 2026 Simple POS</p>
+                        <p className="text-[0.75em] text-center text-muted">© 2026 Simple POS</p>
                     </div>
+
                 </div>
             </aside>
         </>
