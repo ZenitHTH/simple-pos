@@ -8,12 +8,29 @@ pub fn get_materials(key: String) -> Result<Vec<Material>, String> {
     material::get_all_materials(&mut conn).map_err(|e| e.to_string())
 }
 
+fn float_to_scaled(val: f64) -> (i32, i32) {
+    let s = format!("{:.4}", val);
+    let trimmed = s.trim_end_matches('0').trim_end_matches('.');
+    if trimmed.is_empty() {
+        return (0, 0);
+    }
+
+    let parts: Vec<&str> = trimmed.split('.').collect();
+    if parts.len() == 1 {
+        return (parts[0].parse().unwrap_or(0), 0);
+    }
+
+    let precision = parts[1].len() as i32;
+    let significand_str = format!("{}{}", parts[0], parts[1]);
+    (significand_str.parse().unwrap_or(0), precision)
+}
+
 #[tauri::command]
 pub fn create_material(
     key: String,
     name: String,
-    type_: String,
-    volume: i32,
+    r#type: String,
+    volume: f64,
     quantity: i32,
 ) -> Result<Material, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -22,15 +39,18 @@ pub fn create_material(
     if trimmed_name.is_empty() {
         return Err("Material name cannot be empty.".to_string());
     }
-    if volume <= 0 {
+    if volume <= 0.0 {
         return Err("Volume must be greater than zero.".to_string());
     }
 
+    let (val, prec) = float_to_scaled(volume);
+
     let new_mat = NewMaterial {
         name: trimmed_name,
-        type_: &type_,
-        volume,
+        type_: &r#type,
+        volume: val,
         quantity,
+        precision: prec,
     };
     material::insert_material(&mut conn, &new_mat).map_err(|e| e.to_string())
 }
@@ -40,8 +60,8 @@ pub fn update_material(
     key: String,
     id: i32,
     name: String,
-    type_: String,
-    volume: i32,
+    r#type: String,
+    volume: f64,
     quantity: i32,
 ) -> Result<Material, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -51,12 +71,15 @@ pub fn update_material(
         return Err("Material name cannot be empty.".to_string());
     }
 
+    let (val, prec) = float_to_scaled(volume);
+
     let mat = Material {
         id,
         name: trimmed_name.to_string(),
-        type_,
-        volume,
+        type_: r#type,
+        volume: val,
         quantity,
+        precision: prec,
     };
     material::update_material(&mut conn, mat).map_err(|e| e.to_string())
 }

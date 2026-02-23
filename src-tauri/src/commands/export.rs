@@ -15,6 +15,7 @@ pub fn export_receipts(
     format: String,
     start_date: i64,
     end_date: i64,
+    _report_type: String,
 ) -> Result<String, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 

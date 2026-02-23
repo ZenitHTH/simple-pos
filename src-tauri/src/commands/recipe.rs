@@ -23,20 +23,41 @@ pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
     recipe::delete_recipe_list(&mut conn, list_id).map_err(|e| e.to_string())
 }
 
+fn float_to_scaled(val: f64) -> (i32, i32) {
+    let s = format!("{:.4}", val);
+    let trimmed = s.trim_end_matches('0').trim_end_matches('.');
+    if trimmed.is_empty() {
+        return (0, 0);
+    }
+
+    let parts: Vec<&str> = trimmed.split('.').collect();
+    if parts.len() == 1 {
+        return (parts[0].parse().unwrap_or(0), 0);
+    }
+
+    let precision = parts[1].len() as i32;
+    let significand_str = format!("{}{}", parts[0], parts[1]);
+    (significand_str.parse().unwrap_or(0), precision)
+}
+
 #[tauri::command]
 pub fn add_recipe_item(
     key: String,
     recipe_list_id: i32,
     material_id: i32,
-    volume_use: i32,
+    volume_use: f64,
     unit: String,
 ) -> Result<RecipeItem, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+
+    let (val, prec) = float_to_scaled(volume_use);
+
     let new_item = NewRecipeItem {
         recipe_list_id,
         material_id,
-        volume_use,
+        volume_use: val,
         unit,
+        volume_use_precision: prec,
     };
     recipe::add_recipe_item(&mut conn, &new_item).map_err(|e| e.to_string())
 }
@@ -51,11 +72,14 @@ pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeIt
 pub fn update_recipe_item(
     key: String,
     item_id: i32,
-    volume_use: i32,
+    volume_use: f64,
     unit: String,
 ) -> Result<RecipeItem, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
-    recipe::update_recipe_item(&mut conn, item_id, volume_use, unit).map_err(|e| e.to_string())
+
+    let (val, prec) = float_to_scaled(volume_use);
+
+    recipe::update_recipe_item(&mut conn, item_id, val, unit, prec).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
