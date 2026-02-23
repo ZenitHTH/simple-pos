@@ -5,6 +5,7 @@ diesel::table! {
         material_id -> Integer,
         volume_use -> Integer,
         unit -> Text,
+        volume_use_precision -> Integer,
     }
 }
 

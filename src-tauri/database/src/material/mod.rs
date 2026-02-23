@@ -29,6 +29,7 @@ pub fn update_material(
             type_.eq(material_data.type_),
             volume.eq(material_data.volume),
             quantity.eq(material_data.quantity),
+            precision.eq(material_data.precision),
         ))
         .returning(Material::as_returning())
         .get_result(conn)

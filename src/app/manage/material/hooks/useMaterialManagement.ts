@@ -72,7 +72,7 @@ export function useMaterialManagement() {
           editingMaterial.id,
           data.name,
           data.type_,
-          parseInt(data.volume, 10),
+          parseFloat(data.volume),
           parseInt(data.quantity, 10),
         );
       } else {
@@ -80,7 +80,7 @@ export function useMaterialManagement() {
           dbKey,
           data.name,
           data.type_,
-          parseInt(data.volume, 10),
+          parseFloat(data.volume),
           parseInt(data.quantity, 10),
         );
       }

@@ -3,9 +3,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
-import { ReactFlowProvider } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
-import RecipeFlowBuilder from "@/components/manage/recipe/RecipeFlowBuilder";
+import SimpleRecipeBuilder from "@/components/manage/recipe/SimpleRecipeBuilder";
 import RecipeTable from "@/components/manage/recipe/RecipeTable";
 import { useRecipeTable } from "./hooks/useRecipeTable";
 
@@ -17,6 +15,7 @@ export default function RecipeBuilderPage() {
       title="Recipe Builder"
       subtitle="Drag and drop materials to connect them to products."
       scaleKey="manage_table_scale"
+      scrollable={true}
       headerActions={
         <Link
           href="/manage/material"
@@ -32,13 +31,11 @@ export default function RecipeBuilderPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-foreground text-xl font-bold">Flow Builder</h2>
             <p className="text-muted-foreground text-sm italic">
-              Connect materials to products in the canvas below
+              Select a product and drag materials to build your recipe
             </p>
           </div>
-          <div className="bg-card border-border h-[500px] w-full overflow-hidden rounded-2xl border shadow-lg ring-1 ring-black/5 dark:ring-white/5">
-            <ReactFlowProvider>
-              <RecipeFlowBuilder onSaved={refresh} />
-            </ReactFlowProvider>
+          <div className="bg-card border-border min-h-[600px] w-full overflow-hidden rounded-2xl border p-6 shadow-lg ring-1 ring-black/5 dark:ring-white/5">
+            <SimpleRecipeBuilder onSaved={refresh} />
           </div>
         </section>
 

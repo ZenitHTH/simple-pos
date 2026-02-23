@@ -10,6 +10,7 @@ pub struct Material {
     pub type_: String,
     pub volume: i32,
     pub quantity: i32,
+    pub precision: i32,
 }
 
 #[derive(Insertable)]
@@ -19,4 +20,5 @@ pub struct NewMaterial<'a> {
     pub type_: &'a str,
     pub volume: i32,
     pub quantity: i32,
+    pub precision: i32,
 }

@@ -9,4 +9,5 @@ export interface RecipeItem {
   material_id: number;
   volume_use: number;
   unit: string;
+  volume_use_precision: number;
 }

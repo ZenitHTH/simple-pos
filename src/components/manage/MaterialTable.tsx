@@ -1,5 +1,5 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Material } from "@/lib";
+import { Material, formatVolume } from "@/lib";
 
 interface MaterialTableProps {
   materials: Material[];

@@ -1,6 +1,6 @@
 "use client";
 
-import { BackendProduct, Material } from "@/lib";
+import { BackendProduct, Material, formatVolume } from "@/lib";
 import { RecipeItem, RecipeList } from "@/lib/types/recipe";
 import GlobalTable, { Column } from "@/components/ui/GlobalTable";
 
@@ -37,7 +37,7 @@ export default function RecipeTable({ recipeRows }: RecipeTableProps) {
       accessor: "item",
       render: (data) => (
         <span className="block w-full text-right font-mono">
-          {data.item.volume_use}
+          {formatVolume(data.item.volume_use, data.item.volume_use_precision)}
         </span>
       ),
       className: "text-right",

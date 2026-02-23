@@ -6,5 +6,6 @@ diesel::table! {
         type_ -> Text,
         volume -> Integer,
         quantity -> Integer,
+        precision -> Integer,
     }
 }

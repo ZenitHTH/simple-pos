@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Material } from "@/lib";
+import { Material, scaledToFloat } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 
@@ -39,7 +39,7 @@ export default function MaterialModal({
         reset({
           name: initialData.name,
           type_: initialData.type_,
-          volume: initialData.volume,
+          volume: scaledToFloat(initialData.volume, initialData.precision),
           quantity: initialData.quantity,
         });
       } else {
@@ -74,11 +74,12 @@ export default function MaterialModal({
           <Input
             label="Volume"
             type="number"
-            min="1"
+            min="0.0001"
+            step="0.0001"
             error={errors.volume?.message}
             {...register("volume", {
               required: "Volume is required",
-              min: { value: 1, message: "Volume must be at least 1" },
+              min: { value: 0.0001, message: "Volume must be at least 0.0001" },
             })}
           />
           <Input
