@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "./invoke";
 import { AppSettings, StorageInfo } from "../types";
 
 export const settingsApi = {

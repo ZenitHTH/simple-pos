@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   BackendProduct,
   Material,
@@ -20,20 +21,40 @@ export interface SimpleRecipeItem {
 
 export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
   const { dbKey } = useDatabase();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<BackendProduct[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<BackendProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<BackendProduct | null>(
+    null,
+  );
   const [recipeItems, setRecipeItems] = useState<SimpleRecipeItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  const initialLoadRef = useRef(false);
+
   useEffect(() => {
     if (dbKey) {
       loadData();
     }
   }, [dbKey]);
+
+  useEffect(() => {
+    if (products.length > 0 && !initialLoadRef.current) {
+      const productId = searchParams.get("product_id");
+      if (productId) {
+        const product = products.find(
+          (p) => p.product_id === parseInt(productId),
+        );
+        if (product) {
+          selectProduct(product);
+          initialLoadRef.current = true;
+        }
+      }
+    }
+  }, [products, searchParams]);
 
   const loadData = async () => {
     try {
@@ -66,7 +87,10 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
           return {
             material_id: item.material_id,
             name: material?.name || "Unknown Material",
-            volume_use: scaledToFloat(item.volume_use, item.volume_use_precision),
+            volume_use: scaledToFloat(
+              item.volume_use,
+              item.volume_use_precision,
+            ),
             unit: item.unit,
           };
         });
@@ -100,14 +124,16 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
   }, []);
 
   const removeMaterial = (materialId: number) => {
-    setRecipeItems((prev) => prev.filter((item) => item.material_id !== materialId));
+    setRecipeItems((prev) =>
+      prev.filter((item) => item.material_id !== materialId),
+    );
   };
 
   const updateItem = (materialId: number, volume_use: number, unit: string) => {
     setRecipeItems((prev) =>
       prev.map((item) =>
-        item.material_id === materialId ? { ...item, volume_use, unit } : item
-      )
+        item.material_id === materialId ? { ...item, volume_use, unit } : item,
+      ),
     );
   };
 
@@ -120,14 +146,20 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
       setSuccessMsg(null);
 
       // 1. Delete existing list if any
-      const existingList = await recipeApi.getListByProduct(dbKey, selectedProduct.product_id);
+      const existingList = await recipeApi.getListByProduct(
+        dbKey,
+        selectedProduct.product_id,
+      );
       if (existingList) {
         await recipeApi.deleteList(dbKey, existingList.id);
       }
 
       if (recipeItems.length > 0) {
         // 2. Create new list
-        const newList = await recipeApi.createList(dbKey, selectedProduct.product_id);
+        const newList = await recipeApi.createList(
+          dbKey,
+          selectedProduct.product_id,
+        );
 
         // 3. Add items
         for (const item of recipeItems) {
@@ -136,7 +168,7 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
             newList.id,
             item.material_id,
             item.volume_use,
-            item.unit
+            item.unit,
           );
         }
       }
@@ -149,6 +181,16 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
       setTimeout(() => setError(null), 5000);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const refreshMaterials = async () => {
+    if (!dbKey) return;
+    try {
+      const mData = await materialApi.getAll(dbKey);
+      setMaterials(mData);
+    } catch (err: any) {
+      setError(err.message || "Failed to refresh materials");
     }
   };
 
@@ -167,5 +209,6 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
     updateItem,
     saveRecipe,
     setSelectedProduct,
+    refreshMaterials,
   };
 }

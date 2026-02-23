@@ -2,7 +2,7 @@ import { Image, BackendProduct } from "@/lib";
 import { FaTrash, FaLink } from "react-icons/fa";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@/lib/api/invoke";
 
 interface ImageGridProps {
   images: Image[];

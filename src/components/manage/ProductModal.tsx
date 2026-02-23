@@ -1,6 +1,6 @@
 "use client";
 
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@/lib/api/invoke";
 import { useState, useEffect } from "react";
 import { BackendProduct, NewProduct, Category, Image } from "@/lib";
 import { categoryApi, imageApi } from "@/lib";

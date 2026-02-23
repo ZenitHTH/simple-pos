@@ -1,6 +1,7 @@
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { useRouter } from "next/navigation";
+import { convertFileSrc } from "@/lib/api/invoke";
 import { BackendProduct, Category } from "@/lib";
-import { FaEdit, FaTrash, FaImage } from "react-icons/fa";
+import { FaEdit, FaTrash, FaImage, FaUtensils } from "react-icons/fa";
 import GlobalTable from "@/components/ui/GlobalTable";
 import { AppSettings } from "@/lib";
 
@@ -18,6 +19,8 @@ export default function ProductTable({
   onEdit,
   onDelete,
 }: ProductTableProps) {
+  const router = useRouter();
+
   return (
     <GlobalTable
       keyField="product_id"
@@ -71,6 +74,17 @@ export default function ProductTable({
           className: "text-right",
           render: (product) => (
             <div className="flex justify-end gap-2">
+              <button
+                onClick={() =>
+                  router.push(
+                    `/manage/material/recipe?product_id=${product.product_id}`,
+                  )
+                }
+                className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
+                title="Create Recipe"
+              >
+                <FaUtensils />
+              </button>
               <button
                 onClick={() => onEdit(product)}
                 className="text-muted-foreground hover:text-accent-foreground hover:bg-accent rounded-lg p-2 transition-colors"

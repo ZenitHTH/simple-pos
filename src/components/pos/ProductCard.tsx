@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import { Product } from "@/lib";
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@/lib/api/invoke";
 
 interface ProductCardProps {
   product: Product;

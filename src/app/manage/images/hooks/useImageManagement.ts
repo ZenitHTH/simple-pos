@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
 import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
 
