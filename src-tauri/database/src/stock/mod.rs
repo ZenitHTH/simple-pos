@@ -40,3 +40,15 @@ pub fn get_stock(conn: &mut SqliteConnection, product_id_target: i32) -> Result<
 pub fn get_all_stocks(conn: &mut SqliteConnection) -> Result<Vec<Stock>, Error> {
     stock_schemata::table.load::<Stock>(conn)
 }
+
+pub fn sync_product_price_in_stock(
+    conn: &mut SqliteConnection,
+    target_product_id: i32,
+    new_price: i32,
+) -> Result<usize, Error> {
+    use stock_schemata::dsl::{product_id, satang, stock as stock_dsl};
+
+    diesel::update(stock_dsl.filter(product_id.eq(target_product_id)))
+        .set(satang.eq(new_price))
+        .execute(conn)
+}
