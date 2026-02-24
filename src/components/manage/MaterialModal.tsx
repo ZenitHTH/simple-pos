@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Material, scaledToFloat } from "@/lib";
+import { Material, scaledToFloat, UNIT_OPTIONS } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { Controller } from "react-hook-form";
 
 interface MaterialFormData {
   name: string;
@@ -30,6 +32,7 @@ export default function MaterialModal({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<MaterialFormData>();
 
@@ -95,21 +98,19 @@ export default function MaterialModal({
         </div>
 
         <div className="space-y-2">
-          <label className="text-foreground text-sm font-medium">
-            Type / Unit
-          </label>
-          <select
-            className="bg-background border-input text-foreground focus:border-primary focus:ring-primary w-full rounded-xl border px-3 py-2 outline-none focus:ring-2"
-            {...register("type_", { required: true })}
-          >
-            <option value="Pieces">Pieces</option>
-            <option value="Liters">Liters</option>
-            <option value="Kilograms">Kilograms</option>
-            <option value="Grams">Grams</option>
-            <option value="Milliliters">Milliliters</option>
-            <option value="Box">Box</option>
-            <option value="Pack">Pack</option>
-          </select>
+          <Controller
+            name="type_"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                label="Type / Unit"
+                value={field.value}
+                onChange={field.onChange}
+                options={UNIT_OPTIONS}
+              />
+            )}
+          />
         </div>
 
         <div className="border-border mt-6 flex justify-end gap-3 border-t pt-4">
