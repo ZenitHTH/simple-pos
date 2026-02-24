@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib";
-import { FaCheckCircle, FaExclamationCircle, FaTimes } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaInfoCircle,
+  FaTimes,
+} from "react-icons/fa";
 
 export type ToastType = "success" | "error" | "info";
 
@@ -24,49 +29,60 @@ export const Toast = ({
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose();
-    }, duration);
-
+    const timer = setTimeout(() => handleClose(), duration);
     return () => clearTimeout(timer);
   }, [duration]);
 
   const handleClose = () => {
     setIsExiting(true);
-    setTimeout(() => onClose(id), 300); // Wait for fade-out animation
+    setTimeout(() => onClose(id), 300);
   };
 
-  const icons = {
-    success: <FaCheckCircle className="text-success h-5 w-5" />,
-    error: <FaExclamationCircle className="text-destructive h-5 w-5" />,
-    info: <FaCheckCircle className="text-primary h-5 w-5" />,
+  const configs = {
+    success: {
+      icon: <FaCheckCircle size={16} />,
+      bg: "bg-card/95 border-border",
+      accent: "bg-success",
+      text: "text-success",
+    },
+    error: {
+      icon: <FaExclamationCircle size={16} />,
+      bg: "bg-card/95 border-border",
+      accent: "bg-destructive",
+      text: "text-destructive",
+    },
+    info: {
+      icon: <FaInfoCircle size={16} />,
+      bg: "bg-card/95 border-border",
+      accent: "bg-primary",
+      text: "text-primary",
+    },
   };
 
-  const bgColors = {
-    success: "bg-success/10 border-success/20",
-    error: "bg-destructive/10 border-destructive/20",
-    info: "bg-primary/10 border-primary/20",
-  };
+  const { icon, bg, accent, text } = configs[type];
 
   return (
     <div
       className={cn(
-        "flex max-w-md min-w-[300px] items-center gap-3 rounded-xl border p-4 shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out",
-        bgColors[type],
+        "flex max-w-md min-w-[300px] overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md transition-all duration-300 ease-in-out",
+        bg,
         isExiting ? "translate-x-full opacity-0" : "translate-x-0 opacity-100",
         "animate-in slide-in-from-right-full",
       )}
     >
-      <div className="shrink-0">{icons[type]}</div>
-      <div className="text-foreground flex-1 text-sm font-medium">
-        {message}
+      {/* Left accent bar */}
+      <div className={cn("w-1 shrink-0", accent)} />
+
+      <div className="flex flex-1 items-center gap-3 px-4 py-3.5">
+        <span className={cn("shrink-0", text)}>{icon}</span>
+        <p className="text-foreground flex-1 text-sm font-medium">{message}</p>
+        <button
+          onClick={handleClose}
+          className="text-muted-foreground hover:text-foreground shrink-0 rounded-lg p-1 transition-colors"
+        >
+          <FaTimes size={12} />
+        </button>
       </div>
-      <button
-        onClick={handleClose}
-        className="text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <FaTimes size={14} />
-      </button>
     </div>
   );
 };

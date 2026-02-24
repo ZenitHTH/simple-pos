@@ -68,6 +68,8 @@ interface DualColumnBuilderProps {
   className?: string;
   height?: string;
   defaultSplit?: number; // 0–100, default 50
+  split?: number; // controlled override from DualColumnTuner
+  onSplitChange?: (v: number) => void; // controlled callback
 }
 
 export function DualColumnBuilder({
@@ -76,11 +78,21 @@ export function DualColumnBuilder({
   className,
   height = "800px",
   defaultSplit = 50,
+  split: controlledSplit,
+  onSplitChange: onControlledSplitChange,
 }: DualColumnBuilderProps) {
-  const [splitPct, setSplitPct] = useState(defaultSplit);
+  const [internalSplit, setInternalSplit] = useState(defaultSplit);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number | null>(null);
+
+  // Use controlled split if provided, otherwise internal
+  const splitPct =
+    controlledSplit !== undefined ? controlledSplit : internalSplit;
+  const setSplitPct = (v: number) => {
+    setInternalSplit(v);
+    onControlledSplitChange?.(v);
+  };
 
   const MIN_PCT = 20;
   const MAX_PCT = 80;

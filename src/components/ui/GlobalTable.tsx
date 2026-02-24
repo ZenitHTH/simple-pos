@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
+import { FaBoxOpen } from "react-icons/fa";
+import { cn } from "@/lib";
 
 export interface Column<T> {
   header: string;
@@ -15,6 +17,7 @@ interface GlobalTableProps<T> {
   data: T[];
   keyField: keyof T;
   emptyMessage?: string;
+  className?: string;
 }
 
 export default function GlobalTable<T>({
@@ -22,16 +25,25 @@ export default function GlobalTable<T>({
   data,
   keyField,
   emptyMessage = "No items found",
+  className,
 }: GlobalTableProps<T>) {
   return (
-    <div className="bg-card text-card-foreground border-border overflow-hidden rounded-xl border shadow-sm">
+    <div
+      className={cn(
+        "bg-card text-card-foreground border-border overflow-hidden rounded-2xl border shadow-sm",
+        className,
+      )}
+    >
       <table className="w-full text-left">
-        <thead className="bg-muted/50 border-border border-b">
+        <thead className="bg-muted/40 border-border sticky top-0 border-b">
           <tr>
             {columns.map((col, index) => (
               <th
                 key={index}
-                className={`text-muted-foreground px-6 py-3 font-medium ${col.headerClassName || ""}`}
+                className={cn(
+                  "text-muted-foreground px-6 py-3.5 text-xs font-bold tracking-wider uppercase",
+                  col.headerClassName,
+                )}
               >
                 {col.header}
               </th>
@@ -43,21 +55,24 @@ export default function GlobalTable<T>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="text-muted-foreground px-6 py-12 text-center"
+                className="text-muted-foreground/60 px-6 py-16 text-center"
               >
-                {emptyMessage}
+                <div className="flex flex-col items-center gap-3">
+                  <FaBoxOpen className="text-muted-foreground/20 text-5xl" />
+                  <span className="text-sm font-medium">{emptyMessage}</span>
+                </div>
               </td>
             </tr>
           ) : (
             data.map((item) => (
               <tr
                 key={String(item[keyField])}
-                className="hover:bg-muted/50 transition-colors"
+                className="hover:bg-muted/30 even:bg-muted/10 transition-colors"
               >
                 {columns.map((col, index) => (
                   <td
                     key={index}
-                    className={`px-6 py-5 ${col.className || ""}`}
+                    className={cn("px-6 py-4 text-sm", col.className)}
                   >
                     {col.render
                       ? col.render(item)

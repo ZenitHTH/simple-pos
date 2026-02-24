@@ -51,7 +51,12 @@ export default function DesignTunerPage() {
         <div className="mx-auto max-w-4xl">
           {activeTab === "selector" && <SelectorTuner />}
           {activeTab === "button" && <ButtonTuner />}
-          {activeTab === "typography" && <TypographyTuner />}
+          {activeTab === "typography" && (
+            <TypographyTuner
+              baseFontSize={baseFontSize}
+              setBaseFontSize={setBaseFontSize}
+            />
+          )}
           {activeTab === "cart" && (
             <CartItemTuner
               itemFontSize={settings.cart_item_font_size ?? 100}

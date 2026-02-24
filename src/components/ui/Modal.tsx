@@ -25,7 +25,7 @@ export function Modal({
 
   useEffect(() => {
     if (isOpen) setVisible(true);
-    else setTimeout(() => setVisible(false), 200); // Wait for animation
+    else setTimeout(() => setVisible(false), 200);
   }, [isOpen]);
 
   if (!visible && !isOpen) return null;
@@ -33,25 +33,27 @@ export function Modal({
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-200",
+        "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-200",
         isOpen ? "opacity-100" : "pointer-events-none opacity-0",
       )}
+      onClick={onClose}
     >
       <div
         className={cn(
-          "bg-card text-card-foreground border-border w-full max-w-md transform overflow-hidden rounded-2xl border shadow-xl transition-all duration-200",
+          "bg-card text-card-foreground border-border w-full max-w-md transform overflow-hidden rounded-2xl border shadow-2xl ring-1 ring-black/10 transition-all duration-200 dark:ring-white/10",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0",
           className,
         )}
         style={style}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="border-border bg-muted/5 flex items-center justify-between border-b p-4">
-          <h2 className="text-xl font-bold">{title}</h2>
+        <div className="border-border bg-muted/20 flex items-center justify-between border-b px-5 py-4">
+          <h2 className="text-lg font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-full p-2 transition-colors"
+            className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl p-2 transition-all"
           >
-            <FaTimes />
+            <FaTimes size={14} />
           </button>
         </div>
         <div className={cn("p-6", contentClassName)}>{children}</div>

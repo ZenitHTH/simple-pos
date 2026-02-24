@@ -17,11 +17,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+          "focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
           {
-            "bg-primary text-primary-foreground hover:bg-primary/90":
+            "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm":
               variant === "default",
-            "bg-destructive text-destructive-foreground hover:bg-destructive/90":
+            "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm":
               variant === "destructive",
             "border-input bg-background hover:bg-accent hover:text-accent-foreground border":
               variant === "outline",
@@ -31,8 +31,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             "text-primary underline-offset-4 hover:underline":
               variant === "link",
             "h-11 px-6 py-2": size === "default",
-            "h-10 rounded-md px-4": size === "sm",
-            "h-12 rounded-md px-10": size === "lg",
+            "h-9 rounded-lg px-4 text-xs": size === "sm",
+            "h-12 rounded-xl px-10 text-base": size === "lg",
             "h-11 w-11": size === "icon",
           },
           className,

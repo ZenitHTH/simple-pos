@@ -25,8 +25,12 @@ import {
 
 export default function SimpleRecipeBuilder({
   onSaved,
+  split,
+  onSplitChange,
 }: {
   onSaved?: () => void;
+  split?: number;
+  onSplitChange?: (v: number) => void;
 }) {
   const { dbKey } = useDatabase();
   const {
@@ -127,6 +131,8 @@ export default function SimpleRecipeBuilder({
 
       <DualColumnBuilder
         height="800px"
+        split={split}
+        onSplitChange={onSplitChange}
         leftPane={{
           header: (
             <>

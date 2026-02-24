@@ -1,14 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import SimpleRecipeBuilder from "@/components/manage/recipe/SimpleRecipeBuilder";
 import RecipeTable from "@/components/manage/recipe/RecipeTable";
+import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import { useRecipeTable } from "./hooks/useRecipeTable";
+import { useMockup } from "@/context/MockupContext";
 
 export default function RecipeBuilderPage() {
   const { rows, loading, refresh } = useRecipeTable();
+  const { isMockupMode } = useMockup();
+  const [split, setSplit] = useState(50);
 
   return (
     <ManagementPageLayout
@@ -35,7 +40,11 @@ export default function RecipeBuilderPage() {
             </p>
           </div>
           <div className="bg-card border-border min-h-[600px] w-full overflow-hidden rounded-2xl border p-6 shadow-lg ring-1 ring-black/5 dark:ring-white/5">
-            <SimpleRecipeBuilder onSaved={refresh} />
+            <SimpleRecipeBuilder
+              onSaved={refresh}
+              split={split}
+              onSplitChange={setSplit}
+            />
           </div>
         </section>
 
@@ -64,6 +73,11 @@ export default function RecipeBuilderPage() {
           )}
         </section>
       </div>
+
+      {/* Design Mode: DualColumnTuner in the bottom bar */}
+      <BottomControlPanel
+        dualColumnProps={{ split, onSplitChange: setSplit }}
+      />
     </ManagementPageLayout>
   );
 }

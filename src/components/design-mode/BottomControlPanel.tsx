@@ -7,16 +7,23 @@ import NavigationMenu from "./NavigationMenu";
 import GlobalScaleControls from "./GlobalScaleControls";
 import GlobalLayoutControls from "./GlobalLayoutControls";
 import ComponentScaleControls from "./ComponentScaleControls";
+import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
 
 interface BottomControlPanelProps {
   hideSaveButton?: boolean;
   forceVisible?: boolean;
+  dualColumnProps?: {
+    split: number;
+    onSplitChange: (v: number) => void;
+    defaultSplit?: number;
+  };
 }
 
 export default function BottomControlPanel({
   hideSaveButton = false,
   forceVisible = false,
+  dualColumnProps,
 }: BottomControlPanelProps) {
   const { isMockupMode, toggleMockupMode, selectedElementId } = useMockup();
   const { settings, updateSettings, save } = useSettings();
@@ -63,6 +70,17 @@ export default function BottomControlPanel({
           settings={settings}
           updateSettings={updateSettings}
         />
+
+        {dualColumnProps && (
+          <>
+            <div className="bg-border h-8 w-px"></div>
+            <DualColumnTuner
+              split={dualColumnProps.split}
+              onSplitChange={dualColumnProps.onSplitChange}
+              defaultSplit={dualColumnProps.defaultSplit}
+            />
+          </>
+        )}
 
         <div className="border-border mx-4 h-10 border-l"></div>
 
