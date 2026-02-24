@@ -1,3 +1,4 @@
+use super::utils::float_to_scaled;
 use database::establish_connection;
 use database::recipe;
 use database::{NewRecipeItem, RecipeItem, RecipeList};
@@ -21,23 +22,6 @@ pub fn get_recipe_list_by_product(
 pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     recipe::delete_recipe_list(&mut conn, list_id).map_err(|e| e.to_string())
-}
-
-fn float_to_scaled(val: f64) -> (i32, i32) {
-    let s = format!("{:.4}", val);
-    let trimmed = s.trim_end_matches('0').trim_end_matches('.');
-    if trimmed.is_empty() {
-        return (0, 0);
-    }
-
-    let parts: Vec<&str> = trimmed.split('.').collect();
-    if parts.len() == 1 {
-        return (parts[0].parse().unwrap_or(0), 0);
-    }
-
-    let precision = parts[1].len() as i32;
-    let significand_str = format!("{}{}", parts[0], parts[1]);
-    (significand_str.parse().unwrap_or(0), precision)
 }
 
 #[tauri::command]

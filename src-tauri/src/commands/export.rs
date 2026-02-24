@@ -1,4 +1,3 @@
-use chrono::DateTime;
 use database::customer;
 use database::establish_connection;
 use database::receipt::{self, model::ReceiptList};
@@ -15,7 +14,6 @@ pub fn export_receipts(
     format: String,
     start_date: i64,
     end_date: i64,
-    _report_type: String,
 ) -> Result<String, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
@@ -38,7 +36,7 @@ pub fn export_receipts(
             .map_err(|e| e.to_string())?
             .1;
 
-        let date_str = DateTime::from_timestamp(header.datetime_unix, 0)
+        let date_str = chrono::DateTime::from_timestamp(header.datetime_unix, 0)
             .unwrap_or_default()
             .format("%d/%m/%Y")
             .to_string();

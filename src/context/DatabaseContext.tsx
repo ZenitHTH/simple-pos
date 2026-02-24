@@ -28,8 +28,10 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
         setDbExists(exists);
       } catch (err) {
         console.error("Failed to check database:", err);
-        // Assume it exists to fail safely into login screen or show error
-        setDbExists(true);
+        // If check fails, we don't know if it exists.
+        // Better to keep it null or set a specific state to show error UI.
+        // For now, setting it to null or handling it in the guard is safer.
+        setDbExists(null);
       }
     };
     checkDb();

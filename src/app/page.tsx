@@ -29,7 +29,6 @@ export default function Page() {
           price: p.satang / 100, // Convert satang to unit
           category: catMap[p.category_id] || "Unknown",
           image: p.image_path || "",
-          color: "#78350f", // Default color
         }));
         setProducts(mappedProducts);
       } catch (error) {

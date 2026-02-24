@@ -13,7 +13,7 @@ use commands::export::*;
 use commands::images::*;
 use commands::material::*;
 use commands::recipe::*;
-use commands::settings::*; // Import the new images module
+use commands::settings::*; // Settings Commands
 use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

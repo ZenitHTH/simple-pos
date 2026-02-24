@@ -89,6 +89,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
           customers={customers}
           selectedCustomerId={selectedCustomerId}
           onCustomerSelect={setSelectedCustomerId}
+          itemsCount={cartCount}
         />
       </div>
 
@@ -126,6 +127,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
             customers={customers}
             selectedCustomerId={selectedCustomerId}
             onCustomerSelect={setSelectedCustomerId}
+            itemsCount={cartCount}
           />
         </div>
       </Drawer>

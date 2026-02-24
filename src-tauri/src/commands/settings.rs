@@ -128,7 +128,13 @@ pub fn get_settings() -> Result<AppSettings, String> {
     }
 
     let content = fs::read_to_string(path).map_err(|e| e.to_string())?;
-    let settings: AppSettings = serde_json::from_str(&content).unwrap_or_default();
+    let settings: AppSettings = match serde_json::from_str(&content) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!("Failed to parse settings.json: {}. Using defaults.", e);
+            AppSettings::default()
+        }
+    };
     Ok(settings)
 }
 

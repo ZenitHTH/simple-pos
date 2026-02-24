@@ -15,6 +15,7 @@ interface CartProps {
   customers: Customer[];
   selectedCustomerId?: number;
   onCustomerSelect: (id: number | undefined) => void;
+  itemsCount: number;
 }
 
 export default function Cart({
@@ -26,6 +27,7 @@ export default function Cart({
   customers,
   selectedCustomerId,
   onCustomerSelect,
+  itemsCount,
 }: CartProps) {
   const { taxRate } = useTax();
   const { settings } = useSettings();
@@ -47,7 +49,7 @@ export default function Cart({
         <CardTitle className="flex items-center gap-3 text-[1.5em] font-bold">
           <span className="text-primary">Current Order</span>
           <span className="text-muted-foreground bg-muted/20 rounded-full px-3 py-1 text-[0.875em] font-normal">
-            {items.reduce((acc, item) => acc + item.quantity, 0)} items
+            {itemsCount} items
           </span>
         </CardTitle>
       </CardHeader>

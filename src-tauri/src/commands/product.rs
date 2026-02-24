@@ -84,7 +84,14 @@ pub fn update_product(
         category_id,
         satang,
     };
-    product::update_product(&mut conn, prod).map_err(|e| e.to_string())
+
+    let updated_prod = product::update_product(&mut conn, prod).map_err(|e| e.to_string())?;
+
+    // Sync price in stock table
+    use database::stock;
+    let _ = stock::sync_product_price_in_stock(&mut conn, id, satang);
+
+    Ok(updated_prod)
 }
 
 #[tauri::command]

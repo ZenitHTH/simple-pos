@@ -9,3 +9,4 @@ pub mod receipt;
 pub mod recipe;
 pub mod settings;
 pub mod stock;
+pub mod utils;

@@ -62,7 +62,6 @@
     --destructive: #7f1d1d;
     --destructive-foreground: #f8fafc;
 
-    --success: #15803d; /* green-700 for dark mode? Or green-500? */
     /* Usually success is brighter in dark mode */
     --success: #22c55e; /* green-500 */
     --success-foreground: #020617;
