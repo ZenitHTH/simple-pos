@@ -2,30 +2,31 @@ import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
 
-interface ModalProps {
+interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
   title: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  contentClassName?: string;
 }
 
-export function Modal({
+export function Drawer({
   isOpen,
   onClose,
   title,
   children,
   className,
   style,
-  contentClassName,
-}: ModalProps) {
+}: DrawerProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (isOpen) setVisible(true);
-    else setTimeout(() => setVisible(false), 200); // Wait for animation
+    else {
+      const timer = setTimeout(() => setVisible(false), 300); // Match transition duration
+      return () => clearTimeout(timer);
+    }
   }, [isOpen]);
 
   if (!visible && !isOpen) return null;
@@ -33,17 +34,19 @@ export function Modal({
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-200",
+        "fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm transition-opacity duration-300",
         isOpen ? "opacity-100" : "pointer-events-none opacity-0",
       )}
+      onClick={onClose}
     >
       <div
         className={cn(
-          "bg-card text-card-foreground border-border w-full max-w-md transform overflow-hidden rounded-2xl border shadow-xl transition-all duration-200",
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0",
+          "bg-card text-card-foreground border-border h-full w-full max-w-sm transform overflow-hidden border-l shadow-xl transition-transform duration-300 ease-in-out",
+          isOpen ? "translate-x-0" : "translate-x-full",
           className,
         )}
         style={style}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="border-border bg-muted/5 flex items-center justify-between border-b p-4">
           <h2 className="text-xl font-bold">{title}</h2>
@@ -54,7 +57,7 @@ export function Modal({
             <FaTimes />
           </button>
         </div>
-        <div className={cn("p-6", contentClassName)}>{children}</div>
+        <div className="h-[calc(100%-65px)] overflow-hidden">{children}</div>
       </div>
     </div>
   );

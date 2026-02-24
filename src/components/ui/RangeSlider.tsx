@@ -23,7 +23,7 @@ export default function RangeSlider({
       step={step}
       value={value}
       onChange={(e) => onChange(parseFloat(e.target.value))}
-      className="bg-secondary accent-primary h-2 w-full cursor-pointer appearance-none rounded-lg"
+      className="bg-secondary accent-primary [&::-webkit-slider-thumb]:bg-primary h-2 w-full cursor-pointer appearance-none rounded-lg [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
     />
   );
 }

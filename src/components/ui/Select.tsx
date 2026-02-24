@@ -58,7 +58,7 @@ export function Select({
       )}
       <div className="relative">
         <div
-          className="border-border bg-card text-foreground flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-2"
+          className="border-border bg-card text-foreground flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-3"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className={!selectedOption ? "text-muted-foreground" : ""}>
@@ -80,7 +80,7 @@ export function Select({
             {options.map((opt) => (
               <div
                 key={opt.value}
-                className={`hover:bg-muted/10 cursor-pointer px-3 py-2 transition-colors ${
+                className={`hover:bg-muted/10 cursor-pointer px-3 py-3 transition-colors ${
                   value === opt.value ? "bg-primary/10 text-primary" : ""
                 }`}
                 onClick={() => handleSelect(opt.value)}

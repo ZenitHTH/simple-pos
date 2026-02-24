@@ -57,7 +57,7 @@ export default function GlobalTable<T>({
                 {columns.map((col, index) => (
                   <td
                     key={index}
-                    className={`px-6 py-4 ${col.className || ""}`}
+                    className={`px-6 py-5 ${col.className || ""}`}
                   >
                     {col.render
                       ? col.render(item)
