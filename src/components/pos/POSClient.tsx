@@ -8,6 +8,8 @@ import POSProductGrid from "./POSProductGrid";
 import SelectableOverlay from "../design-mode/SelectableOverlay";
 import Cart from "../cart/Cart";
 import PaymentModal from "../payment/PaymentModal";
+import { useState } from "react";
+import { Drawer } from "../ui/Drawer";
 
 interface POSClientProps {
   initialProducts?: Product[];
@@ -37,6 +39,11 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
     setSelectedCustomerId,
   } = usePOSLogic(initialProducts);
 
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+
+  // Calculate Cart items count
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   // Calculate Cart Width
   const cartBaseWidth = 320; // w-80
 
@@ -46,7 +53,10 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
     <div className="bg-background box-border flex h-full gap-4 overflow-hidden p-4">
       {/* Left Side: Product Grid */}
       <div className="flex h-full min-w-0 flex-1 flex-col">
-        <POSHeader />
+        <POSHeader
+          cartCount={cartCount}
+          onOpenCart={() => setIsCartDrawerOpen(true)}
+        />
 
         <POSProductGrid
           products={productsSource}
@@ -90,6 +100,35 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         onConfirm={handleConfirmPayment}
         currency={currency}
       />
+
+      {/* Cart Drawer for Mobile */}
+      <Drawer
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
+        title="Current Order"
+        className="lg:hidden"
+      >
+        <div
+          className="h-full overflow-y-auto"
+          style={{
+            fontSize: `${settings?.cart_font_scale || 100}%`,
+          }}
+        >
+          <Cart
+            items={cartItems}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemove={handleRemove}
+            onCheckout={() => {
+              setIsCartDrawerOpen(false);
+              handleCheckout();
+            }}
+            currency={currency}
+            customers={customers}
+            selectedCustomerId={selectedCustomerId}
+            onCustomerSelect={setSelectedCustomerId}
+          />
+        </div>
+      </Drawer>
     </div>
   );
 }
