@@ -9,6 +9,7 @@ import { MockupProvider } from "@/context/MockupContext";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/common/SmoothScroll";
+import { ToastProvider } from "@/context/ToastContext";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -43,17 +44,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SettingsProvider>
-              <DatabaseProvider>
-                <MockupProvider>
-                  <DatabaseGuard>
-                    <Sidebar />
-                    <main className="flex h-screen flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
-                      {children}
-                    </main>
-                    <BottomControlPanel />
-                  </DatabaseGuard>
-                </MockupProvider>
-              </DatabaseProvider>
+              <ToastProvider>
+                <DatabaseProvider>
+                  <MockupProvider>
+                    <DatabaseGuard>
+                      <Sidebar />
+                      <main className="flex h-screen flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
+                        {children}
+                      </main>
+                      <BottomControlPanel />
+                    </DatabaseGuard>
+                  </MockupProvider>
+                </DatabaseProvider>
+              </ToastProvider>
             </SettingsProvider>
           </ThemeProvider>
         </SmoothScroll>

@@ -1,6 +1,7 @@
 export interface ReceiptList {
   receipt_id: number;
   datetime_unix: number;
+  customer_id?: number;
 }
 
 export interface Receipt {

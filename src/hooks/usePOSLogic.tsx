@@ -7,6 +7,7 @@ import { useTax } from "./useTax";
 import { exampleProducts, exampleCartItems } from "@/lib";
 import { useMockup } from "@/context/MockupContext";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useToast } from "@/context/ToastContext";
 
 /**
  * Custom hook to manage Point of Sale (POS) logic.
@@ -18,6 +19,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 export function usePOSLogic(initialProducts: Product[]) {
   const { isMockupMode, mockupView, setMockupView } = useMockup();
   const { dbKey } = useDatabase();
+  const { showToast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { currency } = useCurrency();
@@ -36,14 +38,13 @@ export function usePOSLogic(initialProducts: Product[]) {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [selectedCustomerId, setSelectedCustomerId] = useState<number | undefined>(undefined);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<
+    number | undefined
+  >(undefined);
 
   useEffect(() => {
     if (!dbKey) return;
-    Promise.all([
-      categoryApi.getAll(dbKey),
-      customerApi.getAll(dbKey)
-    ])
+    Promise.all([categoryApi.getAll(dbKey), customerApi.getAll(dbKey)])
       .then(([catData, custData]) => {
         setCategories(["All", ...catData.map((c) => c.name)]);
         setCustomers(custData);
@@ -137,13 +138,23 @@ export function usePOSLogic(initialProducts: Product[]) {
     setIsPaymentModalOpen(true);
   }, [cartItems.length]);
 
+  const cartTotal = useMemo(() => {
+    return (
+      cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) *
+      (1 + taxRate)
+    );
+  }, [cartItems, taxRate]);
+
   const handleConfirmPayment = useCallback(
     async (cashReceived: number) => {
       if (!dbKey) return;
       try {
         // 1. Create Invoice Header
         // calls the receipt API to create a new invoice in the database
-        const receiptList = await receiptApi.createInvoice(dbKey, selectedCustomerId);
+        const receiptList = await receiptApi.createInvoice(
+          dbKey,
+          selectedCustomerId,
+        );
         // Invoice created successfully
 
         // 2. Add Items
@@ -158,11 +169,11 @@ export function usePOSLogic(initialProducts: Product[]) {
         }
 
         // 3. Success Feedback
-        const total =
-          cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) *
-          (1 + taxRate);
-        const change = cashReceived - total;
-        alert(`Payment Successful!\nChange: ${currency}${change.toFixed(2)}`);
+        const change = cashReceived - cartTotal;
+        showToast(
+          `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
+          "success",
+        );
 
         // 4. Reset
         setCartItems([]);
@@ -170,18 +181,11 @@ export function usePOSLogic(initialProducts: Product[]) {
         setIsPaymentModalOpen(false);
       } catch (error) {
         console.error("Payment failed:", error);
-        alert("Payment failed. Please try again.");
+        showToast("Payment failed. Please try again.", "error");
       }
     },
-    [dbKey, cartItems, taxRate, currency, selectedCustomerId],
+    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast],
   );
-
-  const cartTotal = useMemo(() => {
-    return (
-      cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) *
-      (1 + taxRate)
-    );
-  }, [cartItems, taxRate]);
 
   const handleSetIsPaymentModalOpen = useCallback(
     (isOpen: boolean) => {

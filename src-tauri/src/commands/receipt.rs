@@ -2,6 +2,7 @@ use database::establish_connection;
 use database::receipt;
 use database::stock;
 use database::{NewReceipt, Receipt, ReceiptList};
+use diesel::Connection;
 
 #[tauri::command]
 pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptList, String> {
@@ -23,25 +24,31 @@ pub fn add_invoice_item(
 
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
-    // Fetch product to get the current price (satang)
-    use database::product;
-    let product_info = product::find_product(&mut conn, product_id).map_err(|e| e.to_string())?;
+    conn.transaction(|conn| {
+        // Fetch product to get the current price (satang)
+        use database::product;
+        let product_info = product::find_product(conn, product_id)
+            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
 
-    let item = NewReceipt {
-        receipt_id,
-        product_id,
-        quantity,
-        satang_at_sale: product_info.satang,
-    };
-    let saved_item = receipt::add_item(&mut conn, &item).map_err(|e| e.to_string())?;
+        let item = NewReceipt {
+            receipt_id,
+            product_id,
+            quantity,
+            satang_at_sale: product_info.satang,
+        };
+        let saved_item = receipt::add_item(conn, &item)
+            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
 
-    // Update stock
-    if let Ok(current_stock) = stock::get_stock(&mut conn, product_id) {
-        let new_qty = current_stock.quantity - quantity;
-        let _ = stock::update_stock(&mut conn, product_id, new_qty).map_err(|e| e.to_string())?;
-    }
+        // Update stock
+        if let Ok(current_stock) = stock::get_stock(conn, product_id) {
+            let new_qty = current_stock.quantity - quantity;
+            stock::update_stock(conn, product_id, new_qty)
+                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+        }
 
-    Ok(saved_item)
+        Ok(saved_item)
+    })
+    .map_err(|e: diesel::result::Error| e.to_string())
 }
 
 #[tauri::command]

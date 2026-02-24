@@ -101,7 +101,7 @@ pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
     }
 
     // Clean up product images link
-    let _ = product::remove_product_images_link(&mut conn, id);
+    product::remove_product_images_link(&mut conn, id).map_err(|e| e.to_string())?;
 
     product::remove_product(&mut conn, id).map_err(|e| e.to_string())
 }

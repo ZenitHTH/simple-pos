@@ -49,7 +49,8 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
         .map_err(|e| format!("Error connecting to {}: {}", database_url, e))?;
 
     // Set the encryption key
-    diesel::sql_query(format!("PRAGMA key = '{}';", key))
+    let escaped_key = key.replace('\'', "''");
+    diesel::sql_query(format!("PRAGMA key = '{}';", escaped_key))
         .execute(&mut conn)
         .map_err(|e| format!("Error setting encryption key: {}", e))?;
 
