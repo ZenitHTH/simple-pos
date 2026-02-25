@@ -17,14 +17,14 @@ pub enum CellValue {
     None,
 }
 
-impl ToString for CellValue {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for CellValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            CellValue::Text(s) => s.clone(),
-            CellValue::Number(n) => n.to_string(),
-            CellValue::Int(n) => n.to_string(),
-            CellValue::Bool(b) => b.to_string(),
-            CellValue::None => "".to_string(),
+            CellValue::Text(s) => write!(f, "{}", s),
+            CellValue::Number(n) => write!(f, "{}", n),
+            CellValue::Int(n) => write!(f, "{}", n),
+            CellValue::Bool(b) => write!(f, "{}", b),
+            CellValue::None => write!(f, ""),
         }
     }
 }

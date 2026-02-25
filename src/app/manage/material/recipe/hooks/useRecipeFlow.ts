@@ -51,8 +51,8 @@ export function useRecipeFlow({ onSaved }: { onSaved?: () => void } = {}) {
       // Fetch materials
       const mData = await materialApi.getAll(dbKey);
       setMaterials(mData);
-    } catch (err: any) {
-      setError(err.message || "Failed to load data");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -185,8 +185,8 @@ export function useRecipeFlow({ onSaved }: { onSaved?: () => void } = {}) {
       setSuccessMsg("Recipes saved successfully!");
       setTimeout(() => setSuccessMsg(null), 3000);
       onSaved?.();
-    } catch (err: any) {
-      setError(err.message || "Failed to save recipes");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to save recipes");
       setTimeout(() => setError(null), 5000);
     } finally {
       setSaving(false);

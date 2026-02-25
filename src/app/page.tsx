@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import POSClient from "@/components/pos/POSClient";
 import { Product } from "@/lib";
 import { productApi, categoryApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
 
-export default function Page() {
+function POSLoader() {
   const { dbKey } = useDatabase();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ export default function Page() {
         const mappedProducts: Product[] = backendProducts.map((p) => ({
           id: p.product_id,
           name: p.title,
-          price: p.satang / 100, // Convert satang to unit
+          price: p.satang / 100,
           category: catMap[p.category_id] || "Unknown",
           image: p.image_path || "",
         }));
@@ -43,10 +43,24 @@ export default function Page() {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        Loading...
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
       </div>
     );
   }
 
   return <POSClient initialProducts={products} />;
+}
+
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center">
+          <div className="border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
+        </div>
+      }
+    >
+      <POSLoader />
+    </Suspense>
+  );
 }

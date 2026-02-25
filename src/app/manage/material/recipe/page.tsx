@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
@@ -40,11 +40,19 @@ export default function RecipeBuilderPage() {
             </p>
           </div>
           <div className="bg-card border-border min-h-[600px] w-full overflow-hidden rounded-2xl border p-6 shadow-lg ring-1 ring-black/5 dark:ring-white/5">
-            <SimpleRecipeBuilder
-              onSaved={refresh}
-              split={split}
-              onSplitChange={setSplit}
-            />
+            <Suspense
+              fallback={
+                <div className="flex h-full min-h-[600px] items-center justify-center">
+                  <div className="border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
+                </div>
+              }
+            >
+              <SimpleRecipeBuilder
+                onSaved={refresh}
+                split={split}
+                onSplitChange={setSplit}
+              />
+            </Suspense>
           </div>
         </section>
 

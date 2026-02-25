@@ -23,8 +23,10 @@ export function useMaterialManagement() {
       const data = await materialApi.getAll(dbKey);
       setMaterials(data);
       setError(null);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch materials");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch materials",
+      );
       console.error(err);
     } finally {
       setLoading(false);
@@ -56,8 +58,10 @@ export function useMaterialManagement() {
     try {
       await materialApi.delete(dbKey, id);
       await fetchMaterials();
-    } catch (err: any) {
-      alert(`Failed to delete material: ${err.message || err}`);
+    } catch (err: unknown) {
+      alert(
+        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   };
 
@@ -87,8 +91,10 @@ export function useMaterialManagement() {
 
       await fetchMaterials();
       setIsModalOpen(false);
-    } catch (err: any) {
-      alert(`Failed to save material: ${err.message || err}`);
+    } catch (err: unknown) {
+      alert(
+        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,
+      );
     } finally {
       setIsSubmitting(false);
     }

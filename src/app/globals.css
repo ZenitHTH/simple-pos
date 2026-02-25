@@ -40,7 +40,7 @@
     --radius: 0.5rem;
 
     /* Typography (overridden at runtime by SettingsContext) */
-    --typography-font-family: Inter, sans-serif;
+    --typography-font-family: var(--font-noto-sans), Inter, sans-serif;
     --typography-base-size: 16px;
     --typography-heading-weight: 700;
     --typography-body-weight: 400;

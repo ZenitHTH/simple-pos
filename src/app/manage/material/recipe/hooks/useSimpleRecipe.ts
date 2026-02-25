@@ -67,8 +67,8 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
       ]);
       setProducts(pData);
       setMaterials(mData);
-    } catch (err: any) {
-      setError(err.message || "Failed to load data");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -98,8 +98,8 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
       } else {
         setRecipeItems([]);
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to load recipe");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to load recipe");
     }
   };
 
@@ -176,8 +176,8 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
       setSuccessMsg("Recipe saved successfully!");
       setTimeout(() => setSuccessMsg(null), 3000);
       onSaved?.();
-    } catch (err: any) {
-      setError(err.message || "Failed to save recipe");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to save recipe");
       setTimeout(() => setError(null), 5000);
     } finally {
       setSaving(false);
@@ -189,8 +189,10 @@ export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
     try {
       const mData = await materialApi.getAll(dbKey);
       setMaterials(mData);
-    } catch (err: any) {
-      setError(err.message || "Failed to refresh materials");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Failed to refresh materials",
+      );
     }
   };
 
