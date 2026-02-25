@@ -16,6 +16,7 @@ interface RecipeTableProps {
 }
 
 interface MaterialWithItem {
+  id: number;
   item: RecipeItem;
   mat: Material | undefined;
 }
@@ -62,7 +63,7 @@ export default function RecipeTable({ recipeRows }: RecipeTableProps) {
       {recipeRows.map(({ product, list, items, materials }) => {
         const productMaterials: MaterialWithItem[] = items.map((item) => {
           const mat = materials.find((m) => m.id === item.material_id);
-          return { item, mat };
+          return { id: item.id, item, mat };
         });
 
         return (
@@ -78,7 +79,7 @@ export default function RecipeTable({ recipeRows }: RecipeTableProps) {
             <GlobalTable
               columns={columns}
               data={productMaterials}
-              keyField="item"
+              keyField="id"
               emptyMessage="No materials linked."
             />
           </div>
