@@ -26,6 +26,7 @@ import { MockupProvider } from "@/context/MockupContext";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/common/SmoothScroll";
+import GoBackButton from "@/components/ui/GoBackButton";
 import { ToastProvider } from "@/context/ToastContext";
 
 const inter = Inter({
@@ -150,6 +151,7 @@ export default function RootLayout({
                         {children}
                       </main>
                       <BottomControlPanel />
+                      <GoBackButton />
                     </DatabaseGuard>
                   </MockupProvider>
                 </DatabaseProvider>
