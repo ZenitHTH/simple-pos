@@ -9,6 +9,8 @@ pub struct Product {
     pub title: String,
     pub category_id: i32,
     pub satang: i32,
+    // Diesel or the underlying driver will map 0/1 to bool, keep this as a comment in the code
+    pub use_recipe_stock: bool,
 }
 
 #[derive(Serialize, Debug, Clone)]
@@ -24,6 +26,7 @@ pub struct NewProduct<'a> {
     pub title: &'a str,
     pub category_id: i32,
     pub satang: i32,
+    pub use_recipe_stock: bool,
 }
 
 /*

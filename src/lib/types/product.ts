@@ -17,6 +17,7 @@ export interface BackendProduct {
   category_id: number;
   satang: number;
   image_path?: string;
+  use_recipe_stock: boolean;
 }
 
 export type NewProduct = Omit<BackendProduct, "product_id">;

@@ -31,4 +31,12 @@ export const productApi = {
   delete: async (key: string, id: number): Promise<void> => {
     await invoke("delete_product", { key, id });
   },
+
+  setStockMode: async (
+    key: string,
+    id: number,
+    useRecipe: boolean,
+  ): Promise<void> => {
+    await invoke("set_product_stock_mode", { key, id, useRecipe });
+  },
 };

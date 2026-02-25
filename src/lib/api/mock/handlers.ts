@@ -107,6 +107,7 @@ export const handlers = {
       title,
       category_id: categoryId,
       satang,
+      use_recipe_stock: false,
     };
     products.push(newProduct);
     // Also create initial empty stock
@@ -140,6 +141,16 @@ export const handlers = {
     products = products.filter((p) => p.product_id !== id);
     stocks = stocks.filter((s) => s.product_id !== id);
     productImages = productImages.filter((pi) => pi.product_id !== id);
+  },
+  set_product_stock_mode: ({
+    id,
+    useRecipe,
+  }: {
+    id: number;
+    useRecipe: boolean;
+  }) => {
+    const product = products.find((p) => p.product_id === id);
+    if (product) product.use_recipe_stock = useRecipe;
   },
 
   // Materials

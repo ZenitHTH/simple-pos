@@ -61,7 +61,9 @@ pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Err
     product_schema::table.load::<Product>(conn)
 }
 pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error> {
-    use product_schema::dsl::{category_id, product as product_dsl, product_id, satang, title};
+    use product_schema::dsl::{
+        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,
+    };
 
     diesel::update(product_dsl.find(prod.product_id))
         .set((
@@ -69,9 +71,22 @@ pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Prod
             title.eq(prod.title),
             category_id.eq(prod.category_id),
             satang.eq(prod.satang),
+            use_recipe_stock.eq(prod.use_recipe_stock),
         ))
         .returning(Product::as_returning())
         .get_result(conn)
+}
+
+pub fn set_product_stock_mode(
+    conn: &mut SqliteConnection,
+    id: i32,
+    use_recipe: bool,
+) -> Result<(), Error> {
+    use product_schema::dsl::{product, use_recipe_stock};
+    diesel::update(product.find(id))
+        .set(use_recipe_stock.eq(use_recipe))
+        .execute(conn)?;
+    Ok(())
 }
 
 pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Product, Error> {

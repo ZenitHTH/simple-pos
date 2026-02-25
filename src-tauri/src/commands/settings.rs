@@ -176,12 +176,10 @@ pub fn get_storage_info() -> Result<StorageInfo, String> {
     let settings = get_settings()?;
     let image_path = if let Some(p) = settings.image_storage_path {
         p
+    } else if let Some(parent) = db_path_buf.parent() {
+        parent.join("images").to_string_lossy().to_string()
     } else {
-        if let Some(parent) = db_path_buf.parent() {
-            parent.join("images").to_string_lossy().to_string()
-        } else {
-            return Err("Cannot determine image path".to_string());
-        }
+        return Err("Cannot determine image path".to_string());
     };
 
     Ok(StorageInfo {

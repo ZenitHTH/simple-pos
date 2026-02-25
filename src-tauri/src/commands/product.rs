@@ -25,7 +25,7 @@ pub fn create_product(
     if trimmed_title.len() > 100 {
         return Err("Product name is too long.".to_string());
     }
-    if satang < 0 || satang > 1_000_000_000 {
+    if !(0..=1_000_000_000).contains(&satang) {
         return Err("Invalid product price.".to_string());
     }
 
@@ -42,6 +42,7 @@ pub fn create_product(
         title: trimmed_title,
         category_id,
         satang,
+        use_recipe_stock: false, // Default to normal stock mode
     };
     product::insert_product(&mut conn, &new_prod).map_err(|e| e.to_string())
 }
@@ -63,7 +64,7 @@ pub fn update_product(
     if trimmed_title.len() > 100 {
         return Err("Product name is too long.".to_string());
     }
-    if satang < 0 || satang > 1_000_000_000 {
+    if !(0..=1_000_000_000).contains(&satang) {
         return Err("Invalid product price.".to_string());
     }
 
@@ -78,11 +79,15 @@ pub fn update_product(
         }
     }
 
+    // Get existing to preserve use_recipe_stock if not provided or implement full update
+    let existing = product::find_product(&mut conn, id).map_err(|e| e.to_string())?;
+
     let prod = Product {
         product_id: id,
         title: trimmed_title.to_string(),
         category_id,
         satang,
+        use_recipe_stock: existing.use_recipe_stock,
     };
 
     let updated_prod = product::update_product(&mut conn, prod).map_err(|e| e.to_string())?;
@@ -111,4 +116,9 @@ pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
     product::remove_product_images_link(&mut conn, id).map_err(|e| e.to_string())?;
 
     product::remove_product(&mut conn, id).map_err(|e| e.to_string())
+}
+#[tauri::command]
+pub fn set_product_stock_mode(key: String, id: i32, use_recipe: bool) -> Result<(), String> {
+    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    product::set_product_stock_mode(&mut conn, id, use_recipe).map_err(|e| e.to_string())
 }

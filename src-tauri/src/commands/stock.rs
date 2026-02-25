@@ -17,7 +17,7 @@ pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String> {
 
 #[tauri::command]
 pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
-    if quantity < 0 || quantity > 1_000_000 {
+    if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
 
@@ -36,7 +36,7 @@ pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock
 
 #[tauri::command]
 pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
-    if quantity < 0 || quantity > 1_000_000 {
+    if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
 

@@ -34,6 +34,7 @@ pub fn run() {
             create_product,
             update_product,
             delete_product,
+            set_product_stock_mode,
             // Stock Commands
             get_stock,
             get_all_stocks,

@@ -109,6 +109,34 @@ export function useProductManagement() {
     );
   });
 
+  const handleToggleStockMode = async (
+    productId: number,
+    currentMode: boolean,
+  ) => {
+    if (!dbKey) return;
+    const nextMode = !currentMode;
+    // Optimistic update — flip immediately so the Switch responds right away
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.product_id === productId ? { ...p, use_recipe_stock: nextMode } : p,
+      ),
+    );
+    try {
+      await productApi.setStockMode(dbKey, productId, nextMode);
+    } catch (err) {
+      // Roll back on failure
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.product_id === productId
+            ? { ...p, use_recipe_stock: currentMode }
+            : p,
+        ),
+      );
+      console.error("Failed to toggle stock mode:", err);
+      alert("Failed to toggle stock mode");
+    }
+  };
+
   return {
     products: filteredProducts,
     categories,
@@ -124,5 +152,6 @@ export function useProductManagement() {
     handleEdit,
     handleDelete,
     handleModalSubmit,
+    handleToggleStockMode,
   };
 }

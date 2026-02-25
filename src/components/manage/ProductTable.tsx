@@ -1,8 +1,9 @@
 import { useRouter } from "next/navigation";
 import { convertFileSrc } from "@/lib/api/invoke";
-import { BackendProduct, Category } from "@/lib";
-import { FaEdit, FaTrash, FaImage, FaUtensils } from "react-icons/fa";
+import { BackendProduct, Category, cn } from "@/lib";
+import { FaEdit, FaTrash, FaImage, FaUtensils, FaBoxes } from "react-icons/fa";
 import GlobalTable from "@/components/ui/GlobalTable";
+import { Switch } from "@/components/ui/Switch";
 import { AppSettings } from "@/lib";
 
 interface ProductTableProps {
@@ -10,6 +11,7 @@ interface ProductTableProps {
   categories: Category[];
   onEdit: (product: BackendProduct) => void;
   onDelete: (id: number) => void;
+  onToggleStockMode: (id: number, current: boolean) => void;
   settings: AppSettings;
 }
 
@@ -18,6 +20,7 @@ export default function ProductTable({
   categories,
   onEdit,
   onDelete,
+  onToggleStockMode,
 }: ProductTableProps) {
   const router = useRouter();
 
@@ -74,16 +77,34 @@ export default function ProductTable({
           className: "text-right",
           render: (product) => (
             <div className="flex justify-end gap-2">
+              <Switch
+                checked={product.use_recipe_stock}
+                onClick={() =>
+                  onToggleStockMode(
+                    product.product_id,
+                    product.use_recipe_stock,
+                  )
+                }
+                title={
+                  product.use_recipe_stock
+                    ? "Stock Mode: Recipe"
+                    : "Stock Mode: Normal"
+                }
+              />
               <button
                 onClick={() =>
                   router.push(
-                    `/manage/material/recipe?product_id=${product.product_id}`,
+                    product.use_recipe_stock
+                      ? `/manage/material/recipe?product_id=${product.product_id}`
+                      : `/manage/stock?product_id=${product.product_id}`,
                   )
                 }
                 className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
-                title="Create Recipe"
+                title={
+                  product.use_recipe_stock ? "Manage Recipe" : "Manage Stock"
+                }
               >
-                <FaUtensils />
+                {product.use_recipe_stock ? <FaUtensils /> : <FaBoxes />}
               </button>
               <button
                 onClick={() => onEdit(product)}

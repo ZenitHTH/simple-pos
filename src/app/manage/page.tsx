@@ -24,6 +24,7 @@ export default function ManagePage() {
     handleEdit,
     handleDelete,
     handleModalSubmit,
+    handleToggleStockMode,
   } = useProductManagement();
 
   return (
@@ -61,6 +62,7 @@ export default function ManagePage() {
         categories={categories}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onToggleStockMode={handleToggleStockMode}
         settings={settings}
       />
     </ManagementPageLayout>

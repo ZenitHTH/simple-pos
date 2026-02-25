@@ -6,6 +6,7 @@ const Switch = React.forwardRef<
   React.ComponentPropsWithoutRef<"button"> & { checked?: boolean }
 >(({ className, checked, ...props }, ref) => (
   <button
+    type="button"
     className={cn(
       "peer focus-visible:ring-ring focus-visible:ring-offset-background inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
       checked

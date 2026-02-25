@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { stockApi, productApi } from "@/lib";
 import { Stock, BackendProduct } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
@@ -12,9 +13,13 @@ export function useStockManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const searchParams = useSearchParams();
+  const targetProductId = searchParams.get("product_id");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingStock, setEditingStock] = useState<Stock | undefined>(undefined);
+  const [editingStock, setEditingStock] = useState<Stock | undefined>(
+    undefined,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -28,6 +33,16 @@ export function useStockManagement() {
         ]);
         setStocks(stockData);
         setProducts(productData);
+
+        // If product_id is provided in URL, pre-fill search query with product title
+        if (targetProductId) {
+          const product = productData.find(
+            (p) => p.product_id === Number(targetProductId),
+          );
+          if (product) {
+            setSearchQuery(product.title);
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch stock data:", err);
         setError("Failed to load stock data. Is the backend running?");
@@ -36,7 +51,7 @@ export function useStockManagement() {
       }
     };
     fetchData();
-  }, [dbKey]);
+  }, [dbKey, targetProductId]);
 
   const getProductName = (productId: number): string => {
     const product = products.find((p) => p.product_id === productId);

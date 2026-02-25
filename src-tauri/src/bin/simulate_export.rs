@@ -35,6 +35,7 @@ fn main() -> Result<(), String> {
             title: "Coffee",
             category_id: cat1.id,
             satang: 5000, // 50.00 THB
+            use_recipe_stock: false,
         },
     )
     .unwrap();
@@ -45,6 +46,7 @@ fn main() -> Result<(), String> {
             title: "Tea",
             category_id: cat1.id,
             satang: 4000, // 40.00 THB
+            use_recipe_stock: false,
         },
     )
     .unwrap();
@@ -119,8 +121,8 @@ fn main() -> Result<(), String> {
     println!("Database populated successfully!");
 
     // 4. Generate Export
-    use export_lib::thai_accounting::{build_thai_sales_tax_report, TaxReportRow};
-    use export_lib::{export_xlsx_sheets, CellValue, ExportTable};
+    use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
+    use export_lib::{CellValue, ExportTable, export_xlsx_sheets};
 
     // Fetch headers manually since we have an isolated script
     let headers: Vec<database::receipt::ReceiptList> =

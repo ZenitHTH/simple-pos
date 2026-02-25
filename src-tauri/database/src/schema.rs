@@ -44,6 +44,7 @@ diesel::table! {
         title -> Text,
         category_id -> Integer,
         satang -> Integer,
+        use_recipe_stock -> Bool,
     }
 }
 
