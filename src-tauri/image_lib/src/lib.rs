@@ -17,7 +17,11 @@ pub enum ImageError {
     Connection(String),
     #[error("Directory not found")]
     DirectoryNotFound,
+    #[error("Invalid file extension: {0}")]
+    InvalidExtension(String),
 }
+
+const ALLOWED_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "webp"];
 
 pub fn save_image(
     data: &[u8],
@@ -62,7 +66,13 @@ pub fn save_image(
     let extension = Path::new(filename)
         .extension()
         .and_then(|e| e.to_str())
-        .unwrap_or("bin");
+        .map(|e| e.to_lowercase())
+        .ok_or_else(|| ImageError::InvalidExtension("None".to_string()))?;
+
+    if !ALLOWED_EXTENSIONS.contains(&extension.as_str()) {
+        return Err(ImageError::InvalidExtension(extension));
+    }
+
     let safe_filename = format!("{}.{}", hash, extension);
     let file_path = save_dir.join(&safe_filename);
 

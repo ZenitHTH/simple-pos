@@ -11,7 +11,9 @@
     "fs:default",
     {
       "identifier": "fs:scope",
-      "allow": ["**"]
+      "allow": [
+        "**/simple-pos/data/**"
+      ]
     },
     "fs:allow-read",
     "fs:allow-write"

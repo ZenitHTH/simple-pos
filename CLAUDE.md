@@ -15,7 +15,7 @@ Simple POS is a desktop Point of Sale application built with Tauri (Rust backend
 ## Key Commands
 
 | Command | Description |
-|---------|-------------|
+| ------- | ----------- |
 | `npm run dev` | Start Next.js dev server with Turbopack |
 | `npm run build` | Build the Next.js app for production |
 | `npm start` | Start the Next.js production server |
@@ -59,7 +59,7 @@ Key patterns:
 ## Database Schema Highlights
 
 | Table | Key Fields |
-|-------|------------|
+| ----- | ---------- |
 | `product` | product_id, title, category_id, satang, use_recipe_stock |
 | `stock` | stock_id, product_id, quantity, satang |
 | `material` | id, name, type (volume/weight), volume, quantity, precision |

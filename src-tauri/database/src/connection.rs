@@ -40,6 +40,10 @@ pub fn get_database_path() -> Result<PathBuf, String> {
 }
 
 pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
+    if key.len() < 4 {
+        return Err("Encryption key must be at least 4 characters long".to_string());
+    }
+
     let database_path = get_database_path()?;
     let database_url = database_path
         .to_str()

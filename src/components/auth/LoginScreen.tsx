@@ -14,9 +14,8 @@ export default function LoginScreen() {
     try {
       await login(password);
     } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : String(err) || "Failed to login",
-      );
+      console.error("Login failed:", err);
+      setError("Invalid password or database error.");
     }
   };
 
