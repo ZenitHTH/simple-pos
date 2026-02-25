@@ -7,6 +7,7 @@ import { categoryApi, imageApi } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { Switch } from "@/components/ui/Switch";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -33,6 +34,7 @@ export default function ProductModal({
     title: initialData?.title || "",
     category_id: initialData?.category_id || 0,
     satang: initialData?.satang || 0,
+    use_recipe_stock: initialData?.use_recipe_stock || false,
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -52,6 +54,7 @@ export default function ProductModal({
         title: initialData?.title || "",
         category_id: initialData?.category_id || 0,
         satang: initialData?.satang || 0,
+        use_recipe_stock: initialData?.use_recipe_stock || false,
       });
       setImages([]);
       if (initialData && dbKey) {
@@ -160,6 +163,24 @@ export default function ProductModal({
               ฿{getPrice(formData.satang)}
             </div>
           </div>
+        </div>
+
+        <div className="border-border flex items-center justify-between rounded-lg border p-3">
+          <div className="space-y-0.5">
+            <label className="text-sm font-medium">Recipe Stock Mode</label>
+            <p className="text-muted-foreground text-xs">
+              Track stock based on recipe ingredients instead of unit quantity.
+            </p>
+          </div>
+          <Switch
+            checked={formData.use_recipe_stock}
+            onClick={() =>
+              setFormData({
+                ...formData,
+                use_recipe_stock: !formData.use_recipe_stock,
+              })
+            }
+          />
         </div>
 
         {/* Image Section */}
