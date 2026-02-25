@@ -55,7 +55,7 @@ const menuEntries: MenuEntry[] = [
         icon: <FaBoxOpen size={18} />,
       },
       {
-        name: "Stock Management",
+        name: "Inventory & Stock",
         path: "/manage/stock",
         icon: <FaWarehouse size={18} />,
       },
