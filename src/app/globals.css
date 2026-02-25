@@ -38,6 +38,14 @@
     --ring: #3b82f6;
 
     --radius: 0.5rem;
+
+    /* Typography (overridden at runtime by SettingsContext) */
+    --typography-font-family: Inter, sans-serif;
+    --typography-base-size: 16px;
+    --typography-heading-weight: 700;
+    --typography-body-weight: 400;
+    --typography-line-height: 1.6;
+    --typography-letter-spacing: 0em;
   }
 
   .dark {
@@ -119,7 +127,11 @@
 @layer base {
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-noto-sans), Arial, Helvetica, sans-serif;
+    font-family: var(--typography-font-family);
+    font-size: var(--typography-base-size);
+    font-weight: var(--typography-body-weight);
+    line-height: var(--typography-line-height);
+    letter-spacing: var(--typography-letter-spacing);
   }
 
   h1,

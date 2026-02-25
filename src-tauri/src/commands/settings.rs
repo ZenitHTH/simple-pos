@@ -49,6 +49,14 @@ pub struct AppSettings {
     // ── Payment ──
     pub payment_numpad_height: Option<f64>,
 
+    // ── Typography ──
+    pub typography_font_family: Option<String>,
+    pub typography_base_size: Option<f64>,
+    pub typography_heading_weight: Option<f64>,
+    pub typography_body_weight: Option<f64>,
+    pub typography_line_height: Option<f64>,
+    pub typography_letter_spacing: Option<f64>,
+
     // ── Storage Paths ──
     pub image_storage_path: Option<String>,
     pub db_storage_path: Option<String>,
@@ -99,6 +107,14 @@ impl Default for AppSettings {
 
             // ── Payment ──
             payment_numpad_height: Some(320.0),
+
+            // ── Typography ──
+            typography_font_family: None,
+            typography_base_size: None,
+            typography_heading_weight: None,
+            typography_body_weight: None,
+            typography_line_height: None,
+            typography_letter_spacing: None,
 
             // ── Storage Paths ──
             image_storage_path: None,

@@ -1,21 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/lib";
+import { AppSettings } from "@/lib/types";
 
 // --- Types ---
-interface TypographySettings {
-  fontFamily: string;
-  baseSize: number; // px (root font size)
-  headingWeight: number; // 400–900
-  bodyWeight: number; // 300–700
-  lineHeight: number; // 1.0–2.5
-  letterSpacing: number; // -0.05 to 0.15 em
-}
-
 interface TypographyTunerProps {
-  baseFontSize?: number;
-  setBaseFontSize?: (v: number) => void;
+  settings: AppSettings;
+  updateSettings: (updates: Partial<AppSettings>) => void;
 }
 
 // --- Font families available ---
@@ -37,6 +28,16 @@ const WEIGHT_OPTIONS = [
   { label: "Extrabold", value: 800 },
   { label: "Black", value: 900 },
 ];
+
+// --- Defaults (mirrors SettingsContext) ---
+const DEFAULTS = {
+  fontFamily: "Inter, sans-serif",
+  baseSize: 16,
+  headingWeight: 700,
+  bodyWeight: 400,
+  lineHeight: 1.6,
+  letterSpacing: 0,
+} as const;
 
 // --- Sub-components ---
 function SliderRow({
@@ -116,34 +117,35 @@ function WeightPills({
 
 // --- Main Component ---
 export function TypographyTuner({
-  baseFontSize = 16,
-  setBaseFontSize,
+  settings,
+  updateSettings,
 }: TypographyTunerProps) {
-  const [settings, setSettings] = useState<TypographySettings>({
-    fontFamily: FONT_FAMILIES[0].value,
-    baseSize: baseFontSize,
-    headingWeight: 700,
-    bodyWeight: 400,
-    lineHeight: 1.6,
-    letterSpacing: 0,
-  });
-
-  const update = (patch: Partial<TypographySettings>) => {
-    setSettings((s) => {
-      const next = { ...s, ...patch };
-      // Sync with page-level base size if handler provided
-      if (patch.baseSize !== undefined && setBaseFontSize) {
-        setBaseFontSize(patch.baseSize);
-      }
-      return next;
-    });
-  };
+  // Derive current values from settings with fallbacks
+  const fontFamily = settings.typography_font_family ?? DEFAULTS.fontFamily;
+  const baseSize = settings.typography_base_size ?? DEFAULTS.baseSize;
+  const headingWeight =
+    settings.typography_heading_weight ?? DEFAULTS.headingWeight;
+  const bodyWeight = settings.typography_body_weight ?? DEFAULTS.bodyWeight;
+  const lineHeight = settings.typography_line_height ?? DEFAULTS.lineHeight;
+  const letterSpacing =
+    settings.typography_letter_spacing ?? DEFAULTS.letterSpacing;
 
   const previewStyle = {
-    fontFamily: settings.fontFamily,
-    lineHeight: settings.lineHeight,
-    letterSpacing: `${settings.letterSpacing}em`,
-    fontSize: `${settings.baseSize}px`,
+    fontFamily,
+    lineHeight,
+    letterSpacing: `${letterSpacing}em`,
+    fontSize: `${baseSize}px`,
+  };
+
+  const handleReset = () => {
+    updateSettings({
+      typography_font_family: DEFAULTS.fontFamily,
+      typography_base_size: DEFAULTS.baseSize,
+      typography_heading_weight: DEFAULTS.headingWeight,
+      typography_body_weight: DEFAULTS.bodyWeight,
+      typography_line_height: DEFAULTS.lineHeight,
+      typography_letter_spacing: DEFAULTS.letterSpacing,
+    });
   };
 
   return (
@@ -152,7 +154,8 @@ export function TypographyTuner({
       <div>
         <h2 className="mb-1 text-3xl font-bold">Typography</h2>
         <p className="text-muted-foreground text-sm">
-          Live-tune font family, sizes, weights, and spacing.
+          Live-tune font family, sizes, weights, and spacing. Changes apply
+          globally. Click <strong>Save Changes</strong> to persist.
         </p>
       </div>
 
@@ -170,10 +173,12 @@ export function TypographyTuner({
               {FONT_FAMILIES.map((f) => (
                 <button
                   key={f.value}
-                  onClick={() => update({ fontFamily: f.value })}
+                  onClick={() =>
+                    updateSettings({ typography_font_family: f.value })
+                  }
                   className={cn(
                     "rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
-                    settings.fontFamily === f.value
+                    fontFamily === f.value
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/70",
                   )}
@@ -188,12 +193,12 @@ export function TypographyTuner({
           {/* Base Size */}
           <SliderRow
             label="Base Size"
-            value={settings.baseSize}
+            value={baseSize}
             min={12}
             max={24}
             step={1}
             unit="px"
-            onChange={(v) => update({ baseSize: v })}
+            onChange={(v) => updateSettings({ typography_base_size: v })}
           />
 
           {/* Heading Weight */}
@@ -202,8 +207,8 @@ export function TypographyTuner({
               Heading Weight
             </label>
             <WeightPills
-              value={settings.headingWeight}
-              onChange={(v) => update({ headingWeight: v })}
+              value={headingWeight}
+              onChange={(v) => updateSettings({ typography_heading_weight: v })}
               options={WEIGHT_OPTIONS.filter((o) => o.value >= 500)}
             />
           </div>
@@ -214,8 +219,8 @@ export function TypographyTuner({
               Body Weight
             </label>
             <WeightPills
-              value={settings.bodyWeight}
-              onChange={(v) => update({ bodyWeight: v })}
+              value={bodyWeight}
+              onChange={(v) => updateSettings({ typography_body_weight: v })}
               options={WEIGHT_OPTIONS.filter((o) => o.value <= 600)}
             />
           </div>
@@ -223,24 +228,26 @@ export function TypographyTuner({
           {/* Line Height */}
           <SliderRow
             label="Line Height"
-            value={settings.lineHeight}
+            value={lineHeight}
             min={1.0}
             max={2.5}
             step={0.05}
-            onChange={(v) => update({ lineHeight: v })}
+            onChange={(v) => updateSettings({ typography_line_height: v })}
             formatDisplay={(v) => v.toFixed(2)}
           />
 
           {/* Letter Spacing */}
           <SliderRow
             label="Letter Spacing"
-            value={settings.letterSpacing}
+            value={letterSpacing}
             min={-0.05}
             max={0.15}
             step={0.005}
             unit="em"
             onChange={(v) =>
-              update({ letterSpacing: parseFloat(v.toFixed(3)) })
+              updateSettings({
+                typography_letter_spacing: parseFloat(v.toFixed(3)),
+              })
             }
             formatDisplay={(v) =>
               v === 0 ? "0em" : `${v > 0 ? "+" : ""}${v.toFixed(3)}em`
@@ -249,16 +256,7 @@ export function TypographyTuner({
 
           {/* Reset */}
           <button
-            onClick={() =>
-              update({
-                fontFamily: FONT_FAMILIES[0].value,
-                baseSize: 16,
-                headingWeight: 700,
-                bodyWeight: 400,
-                lineHeight: 1.6,
-                letterSpacing: 0,
-              })
-            }
+            onClick={handleReset}
             className="text-muted-foreground hover:text-foreground w-full rounded-xl border border-dashed py-2 text-xs transition-colors"
           >
             Reset to defaults
@@ -279,8 +277,8 @@ export function TypographyTuner({
 
           <div
             style={{
-              fontSize: `${settings.baseSize * 2.5}px`,
-              fontWeight: settings.headingWeight,
+              fontSize: `${baseSize * 2.5}px`,
+              fontWeight: headingWeight,
             }}
             className="leading-tight tracking-tight"
           >
@@ -289,8 +287,8 @@ export function TypographyTuner({
 
           <div
             style={{
-              fontSize: `${settings.baseSize * 1.875}px`,
-              fontWeight: settings.headingWeight,
+              fontSize: `${baseSize * 1.875}px`,
+              fontWeight: headingWeight,
             }}
           >
             Heading 2
@@ -298,8 +296,8 @@ export function TypographyTuner({
 
           <div
             style={{
-              fontSize: `${settings.baseSize * 1.5}px`,
-              fontWeight: settings.headingWeight,
+              fontSize: `${baseSize * 1.5}px`,
+              fontWeight: headingWeight,
             }}
           >
             Heading 3
@@ -308,8 +306,8 @@ export function TypographyTuner({
           <div className="border-border border-t pt-4">
             <p
               style={{
-                fontWeight: settings.bodyWeight,
-                fontSize: `${settings.baseSize}px`,
+                fontWeight: bodyWeight,
+                fontSize: `${baseSize}px`,
               }}
             >
               The quick brown fox jumps over the lazy dog. This is body text
@@ -320,8 +318,8 @@ export function TypographyTuner({
           <p
             className="text-muted-foreground"
             style={{
-              fontSize: `${settings.baseSize * 0.875}px`,
-              fontWeight: settings.bodyWeight,
+              fontSize: `${baseSize * 0.875}px`,
+              fontWeight: bodyWeight,
             }}
           >
             Small text for captions, timestamps, or secondary info.
@@ -332,20 +330,16 @@ export function TypographyTuner({
               className="font-mono text-xs"
               style={{ fontFamily: "ui-monospace, monospace" }}
             >
-              family:{" "}
-              {
-                FONT_FAMILIES.find((f) => f.value === settings.fontFamily)
-                  ?.label
-              }
-              {" · "}base: {settings.baseSize}px{" · "}
-              h-weight: {settings.headingWeight}
+              family: {FONT_FAMILIES.find((f) => f.value === fontFamily)?.label}
+              {" · "}base: {baseSize}px{" · "}
+              h-weight: {headingWeight}
               {" · "}
-              lh: {settings.lineHeight.toFixed(2)}
+              lh: {lineHeight.toFixed(2)}
               {" · "}
               ls:{" "}
-              {settings.letterSpacing === 0
+              {letterSpacing === 0
                 ? "0"
-                : `${settings.letterSpacing > 0 ? "+" : ""}${settings.letterSpacing.toFixed(3)}`}
+                : `${letterSpacing > 0 ? "+" : ""}${letterSpacing.toFixed(3)}`}
               em
             </p>
           </div>

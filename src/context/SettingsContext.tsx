@@ -44,12 +44,19 @@ const DEFAULT_SETTINGS: AppSettings = {
   payment_modal_scale: 100.0,
   payment_modal_font_scale: 100.0,
   history_font_scale: 100.0,
-  payment_numpad_height: 320, // Default h-80 equivalent (approx)
+  payment_numpad_height: 320,
   cart_item_font_size: 100,
   cart_item_header_font_size: 100,
   cart_item_price_font_size: 100,
   cart_item_padding: 10,
   cart_item_margin: 8,
+  // ── Typography ──
+  typography_font_family: null,
+  typography_base_size: null,
+  typography_heading_weight: null,
+  typography_body_weight: null,
+  typography_line_height: null,
+  typography_letter_spacing: null,
   image_storage_path: null,
   db_storage_path: null,
 };
@@ -72,6 +79,42 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       document.documentElement.style.fontSize = `${settings.display_scale}%`;
     }
   }, [settings.display_scale]);
+
+  // Apply typography CSS custom properties
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--typography-font-family",
+      settings.typography_font_family ?? "Inter, sans-serif",
+    );
+    root.style.setProperty(
+      "--typography-base-size",
+      `${settings.typography_base_size ?? 16}px`,
+    );
+    root.style.setProperty(
+      "--typography-heading-weight",
+      String(settings.typography_heading_weight ?? 700),
+    );
+    root.style.setProperty(
+      "--typography-body-weight",
+      String(settings.typography_body_weight ?? 400),
+    );
+    root.style.setProperty(
+      "--typography-line-height",
+      String(settings.typography_line_height ?? 1.6),
+    );
+    root.style.setProperty(
+      "--typography-letter-spacing",
+      `${settings.typography_letter_spacing ?? 0}em`,
+    );
+  }, [
+    settings.typography_font_family,
+    settings.typography_base_size,
+    settings.typography_heading_weight,
+    settings.typography_body_weight,
+    settings.typography_line_height,
+    settings.typography_letter_spacing,
+  ]);
 
   const load = async () => {
     try {

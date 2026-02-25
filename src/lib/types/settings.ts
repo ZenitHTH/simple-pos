@@ -42,6 +42,14 @@ export interface AppSettings {
   // ── Payment ──
   payment_numpad_height: number | null;
 
+  // ── Typography ──
+  typography_font_family: string | null;
+  typography_base_size: number | null;
+  typography_heading_weight: number | null;
+  typography_body_weight: number | null;
+  typography_line_height: number | null;
+  typography_letter_spacing: number | null;
+
   // ── Storage Paths ──
   image_storage_path: string | null;
   db_storage_path: string | null;

@@ -10,7 +10,7 @@ import { useSettings } from "@/context/SettingsContext";
 
 export default function DesignTunerPage() {
   const [activeTab, setActiveTab] = useState<TunerTab>("selector");
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, save } = useSettings();
 
   // State for tuning variables
   const [radius, setRadius] = useState(0.5);
@@ -53,8 +53,8 @@ export default function DesignTunerPage() {
           {activeTab === "button" && <ButtonTuner />}
           {activeTab === "typography" && (
             <TypographyTuner
-              baseFontSize={baseFontSize}
-              setBaseFontSize={setBaseFontSize}
+              settings={settings}
+              updateSettings={updateSettings}
             />
           )}
           {activeTab === "cart" && (
@@ -68,6 +68,22 @@ export default function DesignTunerPage() {
           )}
         </div>
       </div>
+
+      {/* Save Changes Bar */}
+      {activeTab === "typography" && (
+        <div className="border-border bg-card fixed right-0 bottom-0 left-64 flex items-center justify-between border-t px-8 py-3 shadow-lg">
+          <p className="text-muted-foreground text-xs">
+            Typography changes are applied live. Save to persist across
+            sessions.
+          </p>
+          <button
+            onClick={save}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-5 py-2 text-sm font-semibold transition-colors"
+          >
+            Save Changes
+          </button>
+        </div>
+      )}
     </div>
   );
 }
