@@ -1,6 +1,13 @@
 # Database Module
 
-This crate `simple-pos-database` manages the data persistence layer for the Simple POS application. It uses **Diesel ORM** with **SQLite** to handle database operations.
+This crate `simple-pos-database` manages the data persistence layer for the Vibe POS application. It uses **Diesel ORM** with **SQLite** and **SQLCipher** to handle secure database operations.
+
+## Security & Encryption
+
+The database is encrypted using **SQLCipher** (256-bit AES).
+- **Encryption Key**: Managed internally by the application.
+- **Data Protection**: All tables, including products, customers, and transactions, are encrypted at rest.
+- **Direct Access**: The database file cannot be read using standard SQLite viewers without the correct key.
 
 ## Architecture
 
@@ -11,14 +18,17 @@ The module is structured to separate concerns between connection management and 
 ### Modules
 
 - **lib.rs**: The library entry point.
-- **connection.rs**: Handles the SQLite connection pool.
+- **connection.rs**: Handles the SQLite connection pool and SQLCipher initialization.
 - **Domain Modules**:
-  - `product`: Manages product data (barcode, name, price, etc.).
+  - `product`: Manages product data.
   - `category`: Manages product categories.
-  - `stock`: Manages inventory levels for products.
-  - `receipt`: Handles sales transactions and receipt generation.
-  - `image`: Manages image metadata and file paths.
-  - `product_image`: Handles the relationship between products and images.
+  - `stock`: Manages inventory levels.
+  - `receipt`: Handles sales transactions.
+  - `customer`: (New) Manages customer profiles.
+  - `material`: (New) Raw materials inventory.
+  - `recipe`: (New) Ingredients and proportions for products.
+  - `image`: Manages image metadata.
+  - `product_image`: Maps products to images.
 
 ## Database Schema
 
@@ -26,19 +36,18 @@ The following ER diagram illustrates the relationships between the database enti
 
 ![ER Diagram](./mermaid-diagram-2026-02-11-180323.svg)
 
-### Entities
+### Key Entities
 
-- **CATEGORY**: Groups products (`id`, `name`, `color`, `icon`).
-- **PRODUCT**: Items for sale (`id`, `name`, `price`, `image`, `sku`, `category_id`).
-- **STOCK**: Inventory tracking (`id`, `product_id`, `quantity`, `updated_at`).
-- **RECEIPT**: Sales transactions (`id`, `total`, `payment_type`, `created_at`).
-- **RECEIPT_ITEM**: Line items for receipts (`id`, `receipt_id`, `product_id`, `quantity`, `price`).
-- **IMAGES**: Image file metadata (`id`, `file_name`, `file_hash`, `file_path`, `created_at`).
-- **PRODUCT_IMAGES**: Link between products and images (`product_id`, `image_id`).
+- **CATEGORY**: Groups products.
+- **PRODUCT**: Items for sale.
+- **STOCK**: Inventory tracking.
+- **RECEIPT**: Sales transactions.
+- **CUSTOMER**: User/Client data.
+- **MATERIAL**: Raw ingredients.
+- **RECIPE**: Linking materials to products.
+- **IMAGES**: Metadata for local images.
 
-> **Terminology Note**: The backend commands often use the term **Invoice** (e.g., `create_invoice`, `get_invoices_by_date`), which corresponds directly to the **RECEIPT** entity in the database.
-
-> **Note**: Application settings (currency, tax, layout) are **not** stored in the database. They are persisted in a JSON file (`settings.json`) in the user's data directory.
+> **Note**: Application settings (currency, tax, layout) are persisted in a JSON file (`settings.json`) in the user's data directory, not in the database.
 
 ## Development
 
@@ -46,6 +55,7 @@ The following ER diagram illustrates the relationships between the database enti
 
 - Rust (latest stable)
 - Diesel CLI: `cargo install diesel_cli --no-default-features --features sqlite`
+- **SQLCipher**: Must be available on the system for linking.
 
 ### Setup
 

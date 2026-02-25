@@ -1,45 +1,38 @@
-# Simple POS
+# Vibe POS (Simple POS)
 
-A modern, lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for performance and simplicity.
+A professional, modern, and lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for high performance, security, and simplicity.
 
 ## Features
 
-- **Point of Sale Interface**: Fast and intuitive interface for processing sales.
-- **Product Management**: Add, update, and remove products with details like price, category, and images.
-- **Checkout Payment**: 
+- **Point of Sale Interface**: Fast and intuitive interface for processing sales with optimized touch support.
+- **Advanced Inventory Management**:
+  - **Product Management**: Detailed product tracking with categories and images.
+  - **Material & Recipe Management (New)**: Track raw materials and define recipes for complex items (e.g., drinks, food).
+  - **Real-time Stock Tracking**: Monitor inventory levels with low-stock alerts.
+- **Customer Management (New)**: Track customer information and purchase history.
+- **Checkout & Payment**:
   - **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
   - **Smart Change Calculation**: Automated change display with validity checks.
-  - **Responsive Layout**: Optimized for 1080x720 (3:2 Aspect Ratio) and scales up to 4K.
-  - **Receipt Generation**: Backend integration for transaction recording.
-- **Customizable UI**:
+  - **Receipt Generation**: Backend integration for secure transaction recording.
+- **Customizable UI & Design Mode**:
   - **Global Display Scaling**: Adjust the entire interface size from 50% to 200%.
-  - **Granular Control**: Independently resize the Sidebar, Cart panel, and Product Grid density.
-- **Design Mode (New)**: 
   - **WYSIWYG Editor**: Interactive mode to adjust layout scaling and component sizes in real-time.
-  - **Context-Aware Controls**: Automatically shows relevant settings for the active view (e.g., Numpad Height when editing Payment Modal).
-  - **Visual Feedback**: Immediate visual updates for font sizes, element dimensions, and spacing.
+  - **Responsive Layout**: Optimized for various resolutions (1080x720 up to 4K).
 - **Order History**: 
-  - View past transactions with date filtering.
-  - Search receipts by unique ID.
-  - Detailed receipt view with items and pricing.
-- **Stock Management (New)**:
-  - **Real-time Tracking**: Monitor inventory levels for all products.
-  - **Low Stock Alerts**: Visual indicators for items running low.
-  - **Easy Updates**: Quick adjustment of stock quantities.
-- **Settings**:
-  - **Modular Architecture**: Split into dedicated pages (General, Theme, Display, Currency, Tax, Export) for better performance.
-  - **Route-based Logic**: Only renders the components needed for the active settings tab.
-  - **Configure**: Tax rates, currency symbols, and display preferences.
-- **Cross-Platform**: Runs natively on Linux, macOS, and Windows.
+  - Comprehensive view of past transactions with filters and search.
+- **Security & Privacy**:
+  - **Encrypted Database**: Local data is protected via **SQLCipher** (AES-256 encryption).
+  - **Local-First**: Your data stays on your machine.
 
 ## Tech Stack
 
 - **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/)
 - **Backend**: [Tauri v2](https://v2.tauri.app/) (Rust)
-- **Database**: SQLite (via Diesel ORM in Rust)
+- **Database**: SQLite with **SQLCipher** (via Diesel ORM in Rust)
   - **Automatic Path Resolution**: Uses `directories` crate to store data securely in the system's local data directory (e.g., `~/.local/share/simple-pos` on Linux).
 - **State Management**: React Hooks & Context
 - **Performance**:
+  - **Turbopack**: Fast builds and HMR.
   - **Code Splitting**: Next.js App Router for optimal load times.
   - **Memoization**: `React.memo` and `useCallback` to minimize re-renders.
 

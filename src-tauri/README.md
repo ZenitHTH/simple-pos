@@ -1,6 +1,6 @@
 # Tauri Backend Architecture
 
-This directory contains the Rust backend for the Simple POS application, built with Tauri v2.
+This directory contains the Rust backend for the Vibe POS application, built with Tauri v2. It provides a secure, performant bridge between the frontend and the local system.
 
 ## Architecture
 
@@ -9,31 +9,30 @@ This directory contains the Rust backend for the Simple POS application, built w
 ## Structure
 
 - **`src/`**: Core Rust source files (`main.rs`, `lib.rs`, `commands/`).
-- **`database/`**: Local crate for database interactions (Diesel ORM).
+- **`database/`**: Local crate for database interactions (Diesel ORM + SQLCipher).
 - **`export_lib/`**: Local crate for handling data exports.
+- **`image_lib/`**: Local crate for image processing and storage.
 - **`tauri.conf.json`**: Tauri configuration file.
 
-## Prerequisites
+## Security
 
-### Windows
-- **Microsoft Visual Studio C++ Build Tools**
-- **OpenSSL**: Required for `sqlcipher`.
-  - Install OpenSSL (v1.1 or v3.0).
-  - Set `OPENSSL_DIR` (e.g., `C:\Program Files\OpenSSL-Win64`).
-  - Set `OPENSSL_LIB_DIR` (e.g., `C:\Program Files\OpenSSL-Win64\lib\VC\x64\MD`).
-  - Set `OPENSSL_INCLUDE_DIR` (e.g., `C:\Program Files\OpenSSL-Win64\include`).
+The backend uses **SQLCipher** to provide transparent 256-bit AES encryption for the SQLite database. This ensures that even if the `.db` file is accessed directly, the data remains protected.
 
 ## Key Commands
 
-The backend exposes several commands to the frontend:
+The backend exposes several command modules to the frontend:
 
 - **Product & Stock**:
   - `get_products`, `create_product`, `update_product`, `delete_product`
   - `get_stock`, `get_all_stocks`, `insert_stock`, `update_stock`, `remove_stock`
-- **Transactions**:
+- **Transactions & Invoices**:
   - `create_invoice`: Create a new sale record.
   - `get_invoices_by_date`, `get_invoice_detail`: Retrieve order history.
-  - `process_transaction`: Handle sales logic (deprecated/internal).
+- **Customer Management**:
+  - `get_customers`, `create_customer`, `update_customer`, `delete_customer`
+- **Material & Recipe**:
+  - `get_materials`, `update_material`, `delete_material`
+  - `get_recipes`, `create_recipe`, `update_recipe`, `delete_recipe` (Automates stock deduction based on ingredients)
 - **Categories**:
   - `get_categories`, `create_category`, `update_category`, `delete_category`
 - **Images**:
