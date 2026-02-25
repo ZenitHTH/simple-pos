@@ -21,8 +21,15 @@ fn main() -> Result<(), String> {
     match command.as_str() {
         "check" => {
             let key = get_arg(&args, "--key").ok_or("Missing --key argument")?;
-            let _conn =
+            let mut conn =
                 establish_connection(key).map_err(|e| format!("Connection failed: {}", e))?;
+
+            // Actually verify the connection by querying something that touches the schema
+            use diesel::RunQueryDsl;
+            diesel::sql_query("SELECT count(*) FROM sqlite_master;")
+                .execute(&mut conn)
+                .map_err(|e| format!("Verification query failed (likely wrong key): {}", e))?;
+
             let db_path = get_database_path().map_err(|e| e.to_string())?;
             println!("✅ Database exists at: {:?}", db_path);
             println!("✅ Successfully connected and decrypted database.");

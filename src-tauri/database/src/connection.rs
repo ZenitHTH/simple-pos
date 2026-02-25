@@ -49,14 +49,41 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
         .to_str()
         .ok_or_else(|| "Database path contains invalid unicode".to_string())?;
 
+    // 1. Try to connect with the key
     let mut conn = SqliteConnection::establish(database_url)
         .map_err(|e| format!("Error connecting to {}: {}", database_url, e))?;
 
-    // Set the encryption key
     let escaped_key = key.replace('\'', "''");
     diesel::sql_query(format!("PRAGMA key = '{}';", escaped_key))
         .execute(&mut conn)
         .map_err(|e| format!("Error setting encryption key: {}", e))?;
 
-    Ok(conn)
+    // Check if decryption works by performing a query that touches the master table
+    if diesel::sql_query("SELECT count(*) FROM sqlite_master;").execute(&mut conn).is_ok() {
+        return Ok(conn);
+    }
+
+    // 2. If it failed, check if the database is UNENCRYPTED
+    // We need a NEW connection because the previous one is now in an error state for SQLCipher
+    let mut conn = SqliteConnection::establish(database_url)
+        .map_err(|e| format!("Error connecting to {}: {}", database_url, e))?;
+
+    if diesel::sql_query("SELECT count(*) FROM sqlite_master;").execute(&mut conn).is_ok() {
+        // The database is unencrypted! Let's encrypt it with the provided key.
+        // In SQLCipher, PRAGMA rekey is used to set the initial key on an unencrypted database or change an existing one.
+        log::info!("Database is unencrypted. Encrypting now...");
+        diesel::sql_query(format!("PRAGMA rekey = '{}';", escaped_key))
+            .execute(&mut conn)
+            .map_err(|e| format!("Error encrypting unencrypted database: {}", e))?;
+
+        // Verify it's now encrypted and accessible
+        diesel::sql_query("SELECT count(*) FROM sqlite_master;")
+            .execute(&mut conn)
+            .map_err(|e| format!("Verification after encryption failed: {}", e))?;
+
+        return Ok(conn);
+    }
+
+    // 3. If it's still failing, then it's either the WRONG KEY or the database is corrupted
+    Err("Invalid encryption key or corrupted database".to_string())
 }
