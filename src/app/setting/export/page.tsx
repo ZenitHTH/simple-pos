@@ -3,7 +3,6 @@
 import { useSettings } from "@/context/SettingsContext";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import ExportSection from "@/components/settings/ExportSection";
-import SaveSettingsButton from "@/components/settings/SaveSettingsButton";
 import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
 
 export default function ExportSettingPage() {
@@ -17,7 +16,6 @@ export default function ExportSettingPage() {
       scaleKey="setting_page_scale"
       scrollable={true}
       layoutMaxWidth={settings.layout_max_width}
-      floatingActions={<SaveSettingsButton />}
     >
       <ExportSection />
     </ManagementPageLayout>

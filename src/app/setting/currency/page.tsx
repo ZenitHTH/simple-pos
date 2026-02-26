@@ -4,7 +4,6 @@ import { useSettings } from "@/context/SettingsContext";
 import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import CurrencySettings from "@/components/settings/CurrencySettings";
-import SaveSettingsButton from "@/components/settings/SaveSettingsButton";
 import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
 
 export default function CurrencySettingPage() {
@@ -25,7 +24,6 @@ export default function CurrencySettingPage() {
       scaleKey="setting_page_scale"
       scrollable={true}
       layoutMaxWidth={settings.layout_max_width}
-      floatingActions={<SaveSettingsButton />}
     >
       <CurrencySettings
         currency={settings.currency_symbol}

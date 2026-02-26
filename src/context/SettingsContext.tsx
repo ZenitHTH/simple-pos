@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useRef,
   ReactNode,
 } from "react";
 import { AppSettings, settingsApi } from "@/lib";
@@ -69,6 +70,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     load();
@@ -130,6 +133,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       const data = await settingsApi.getSettings();
       // Ensure display_scale exists (migration for old saves)
       setSettings({ ...DEFAULT_SETTINGS, ...data });
+      // Small delay to ensure state is set before initializing auto-save
+      setTimeout(() => setIsInitialized(true), 100);
     } catch (error) {
       console.error("Failed to load settings:", error);
     } finally {
@@ -150,6 +155,25 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       throw error;
     }
   };
+
+  // Auto-save effect
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      save().catch((err) => console.error("Auto-save failed:", err));
+    }, 500);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [settings, isInitialized]);
 
   const resetToCheckpoint = async () => {
     setLoading(true);

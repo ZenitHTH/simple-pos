@@ -4,7 +4,6 @@ import { useSettings } from "@/context/SettingsContext";
 import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import TaxSettings from "@/components/settings/TaxSettings";
-import SaveSettingsButton from "@/components/settings/SaveSettingsButton";
 import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
 
 export default function TaxSettingPage() {
@@ -29,7 +28,6 @@ export default function TaxSettingPage() {
       scaleKey="setting_page_scale"
       scrollable={true}
       layoutMaxWidth={settings.layout_max_width}
-      floatingActions={<SaveSettingsButton />}
     >
       <TaxSettings
         isTaxEnabled={settings.tax_enabled}

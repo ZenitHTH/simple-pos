@@ -6,7 +6,6 @@ import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import GeneralSettings from "@/components/settings/GeneralSettings";
 import ThemeSettings from "@/components/settings/ThemeSettings";
 import DisplaySettings from "@/components/settings/DisplaySettings";
-import SaveSettingsButton from "@/components/settings/SaveSettingsButton";
 import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
 
 export default function GeneralSettingPage() {
@@ -27,7 +26,6 @@ export default function GeneralSettingPage() {
       scaleKey="setting_page_scale"
       scrollable={true}
       layoutMaxWidth={settings.layout_max_width}
-      floatingActions={<SaveSettingsButton />}
     >
       <div className="space-y-6">
         <GeneralSettings
