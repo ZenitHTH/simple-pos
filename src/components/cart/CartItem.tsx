@@ -68,6 +68,7 @@ const CartItem = memo(function CartItem({
               src={imageSrc}
               alt={item.name}
               className="h-full w-full object-cover"
+              style={{ objectPosition: item.image_object_position || "center" }}
             />
           ) : (
             <div className="text-muted flex h-full w-full items-center justify-center text-[1em] font-bold opacity-30">

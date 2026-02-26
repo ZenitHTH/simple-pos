@@ -23,6 +23,7 @@ diesel::table! {
         file_hash -> Text,
         file_path -> Text,
         created_at -> Timestamp,
+        image_object_position -> Nullable<Text>,
     }
 }
 

@@ -26,7 +26,7 @@ pub use category::model::{Category, NewCategory};
 pub use connection::{establish_connection, get_database_path};
 pub use customer::model::{Customer, NewCustomer};
 pub use image::model::{Image, NewImage};
-pub use image::{get_image, get_image_by_hash, insert_image};
+pub use image::{get_image, get_image_by_hash, insert_image, update_image_path};
 pub use material::model::{Material, NewMaterial};
 pub use product::model::{NewProduct, Product};
 pub use product_image::model::{NewProductImage, ProductImage};

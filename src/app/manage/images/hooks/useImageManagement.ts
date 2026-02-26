@@ -12,6 +12,7 @@ export function useImageManagement() {
 
   // Linking Modal State
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [isPositionModalOpen, setIsPositionModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [productSearch, setProductSearch] = useState("");
 
@@ -97,6 +98,35 @@ export function useImageManagement() {
     setIsLinkModalOpen(true);
   };
 
+  const openPositionModal = (img: Image) => {
+    setSelectedImage(img);
+    setIsPositionModalOpen(true);
+  };
+
+  const handleUpdatePosition = async (position: string) => {
+    if (!dbKey || !selectedImage) return;
+
+    try {
+      await invoke("update_image_position", {
+        key: dbKey,
+        imageId: selectedImage.id,
+        position,
+      });
+      // Update local state
+      setImages((prev) =>
+        prev.map((img) =>
+          img.id === selectedImage.id
+            ? { ...img, image_object_position: position }
+            : img,
+        ),
+      );
+      setIsPositionModalOpen(false);
+    } catch (err) {
+      console.error("Failed to update position", err);
+      alert("Failed to update position");
+    }
+  };
+
   const toggleLink = async (productId: number, isLinked: boolean) => {
     if (!dbKey || !selectedImage) return;
 
@@ -147,6 +177,8 @@ export function useImageManagement() {
     loading,
     isLinkModalOpen,
     setIsLinkModalOpen,
+    isPositionModalOpen,
+    setIsPositionModalOpen,
     selectedImage,
     productSearch,
     setProductSearch,
@@ -154,6 +186,8 @@ export function useImageManagement() {
     handleUpload,
     onFileChange,
     openLinkModal,
+    openPositionModal,
+    handleUpdatePosition,
     toggleLink,
     getProductUsage,
     filteredProductsToLink,

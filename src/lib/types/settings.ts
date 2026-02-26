@@ -53,4 +53,5 @@ export interface AppSettings {
   // ── Storage Paths ──
   image_storage_path: string | null;
   db_storage_path: string | null;
+  theme_primary_color: string | null;
 }

@@ -97,6 +97,7 @@ pub fn save_image(
         file_name: filename,
         file_hash: &hash,
         file_path: file_path_str,
+        image_object_position: None,
     };
 
     let saved_image = insert_image(&mut conn, &new_image).map_err(ImageError::Database)?;

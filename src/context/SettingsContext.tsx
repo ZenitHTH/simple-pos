@@ -59,6 +59,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   typography_letter_spacing: null,
   image_storage_path: null,
   db_storage_path: null,
+  theme_primary_color: null,
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -107,6 +108,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       "--typography-letter-spacing",
       `${settings.typography_letter_spacing ?? 0}em`,
     );
+
+    // Apply primary theme color
+    if (settings.theme_primary_color) {
+      root.style.setProperty("--primary", settings.theme_primary_color);
+    } else {
+      root.style.removeProperty("--primary");
+    }
   }, [
     settings.typography_font_family,
     settings.typography_base_size,
@@ -114,6 +122,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     settings.typography_body_weight,
     settings.typography_line_height,
     settings.typography_letter_spacing,
+    settings.theme_primary_color,
   ]);
 
   const load = async () => {

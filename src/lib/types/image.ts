@@ -4,6 +4,7 @@ export interface Image {
   file_hash: string;
   file_path: string;
   created_at: string;
+  image_object_position?: string;
 }
 
 export interface ProductImage {

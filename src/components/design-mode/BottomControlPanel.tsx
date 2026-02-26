@@ -9,6 +9,7 @@ import GlobalLayoutControls from "./GlobalLayoutControls";
 import ComponentScaleControls from "./ComponentScaleControls";
 import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
+import { FaPalette } from "react-icons/fa";
 
 interface BottomControlPanelProps {
   hideSaveButton?: boolean;
@@ -64,6 +65,35 @@ export default function BottomControlPanel({
           }
           pathname={pathname}
         />
+
+        <div className="bg-border h-8 w-px"></div>
+
+        <div className="flex flex-col items-center gap-1">
+          <label className="text-muted-foreground flex items-center gap-1 text-[10px] font-medium tracking-wider uppercase">
+            <FaPalette className="text-[10px]" />
+            Theme
+          </label>
+          <div className="flex items-center gap-2">
+            <div className="border-border relative h-6 w-10 overflow-hidden rounded border">
+              <input
+                type="color"
+                value={settings.theme_primary_color || "#3b82f6"}
+                onChange={(e) =>
+                  updateSettings({ theme_primary_color: e.target.value })
+                }
+                className="absolute inset-0 h-full w-full scale-150 cursor-pointer border-none bg-transparent p-0"
+              />
+            </div>
+            {settings.theme_primary_color && (
+              <button
+                onClick={() => updateSettings({ theme_primary_color: null })}
+                className="text-muted-foreground hover:text-foreground text-[10px] underline"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+        </div>
 
         <ComponentScaleControls
           selectedId={selectedElementId}

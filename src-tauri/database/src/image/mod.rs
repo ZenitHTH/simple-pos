@@ -55,3 +55,27 @@ pub fn delete_image(
 
     diesel::delete(images.find(image_id)).execute(conn)
 }
+
+pub fn update_image_path(
+    conn: &mut SqliteConnection,
+    image_id: i32,
+    new_path: &str,
+) -> Result<usize, diesel::result::Error> {
+    use crate::schema::images::dsl::*;
+
+    diesel::update(images.find(image_id))
+        .set(file_path.eq(new_path))
+        .execute(conn)
+}
+
+pub fn update_image_position(
+    conn: &mut SqliteConnection,
+    image_id: i32,
+    position: &str,
+) -> Result<usize, diesel::result::Error> {
+    use crate::schema::images::dsl::*;
+
+    diesel::update(images.find(image_id))
+        .set(image_object_position.eq(position))
+        .execute(conn)
+}

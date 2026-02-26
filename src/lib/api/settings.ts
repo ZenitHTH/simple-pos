@@ -13,4 +13,11 @@ export const settingsApi = {
   getStorageInfo: async (): Promise<StorageInfo> => {
     return await invoke("get_storage_info");
   },
+
+  migrateImageDirectory: async (
+    key: string,
+    newPath: string,
+  ): Promise<void> => {
+    await invoke("migrate_image_directory", { key, newPath });
+  },
 };

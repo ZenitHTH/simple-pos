@@ -5,6 +5,7 @@ import { settingsApi } from "@/lib";
 import { StorageInfo } from "@/lib";
 import { FaFolderOpen, FaCog } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { useDatabase } from "@/context/DatabaseContext";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Button } from "@/components/ui/Button";
 
@@ -19,7 +20,9 @@ const GeneralSettings = memo(function GeneralSettings({
   dbStoragePath,
   onUpdateSettings,
 }: GeneralSettingsProps) {
+  const { dbKey } = useDatabase();
   const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
+  const [isMigrating, setIsMigrating] = useState(false);
 
   useEffect(() => {
     settingsApi.getStorageInfo().then(setStorageInfo).catch(console.error);
@@ -34,10 +37,23 @@ const GeneralSettings = memo(function GeneralSettings({
       });
 
       if (selected && typeof selected === "string") {
-        onUpdateSettings({ image_storage_path: selected });
+        if (dbKey) {
+          setIsMigrating(true);
+          try {
+            await settingsApi.migrateImageDirectory(dbKey, selected);
+            onUpdateSettings({ image_storage_path: selected });
+          } catch (err) {
+            console.error("Migration failed:", err);
+            alert("Failed to migrate images to new directory.");
+          } finally {
+            setIsMigrating(false);
+          }
+        } else {
+          onUpdateSettings({ image_storage_path: selected });
+        }
       }
     } catch (error) {
-      console.error("Failed to specific directory:", error);
+      console.error("Failed to specify directory:", error);
     }
   };
 
@@ -63,9 +79,13 @@ const GeneralSettings = memo(function GeneralSettings({
                   </span>
                 )}
               </div>
-              <Button onClick={handleSelectImageStorage} className="gap-2">
+              <Button
+                onClick={handleSelectImageStorage}
+                className="gap-2"
+                disabled={isMigrating}
+              >
                 <FaFolderOpen />
-                Browse
+                {isMigrating ? "Migrating..." : "Browse"}
               </Button>
               {imageStoragePath && (
                 <Button variant="secondary" onClick={handleResetStorage}>

@@ -18,6 +18,7 @@ pub struct ProductWithImage {
     #[serde(flatten)]
     pub product: Product,
     pub image_path: Option<String>,
+    pub image_object_position: Option<String>,
 }
 
 #[derive(Insertable)]

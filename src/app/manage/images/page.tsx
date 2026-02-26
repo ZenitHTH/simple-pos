@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { useImageManagement } from "./hooks/useImageManagement";
 import ImageGrid from "@/components/manage/ImageGrid";
 import LinkImageModal from "@/components/manage/LinkImageModal";
+import ImagePositionModal from "@/components/manage/ImagePositionModal";
 
 export default function ImageManagePage() {
   const {
@@ -20,6 +21,10 @@ export default function ImageManagePage() {
     handleUpload,
     onFileChange,
     openLinkModal,
+    openPositionModal,
+    handleUpdatePosition,
+    isPositionModalOpen,
+    setIsPositionModalOpen,
     toggleLink,
     getProductUsage,
     filteredProductsToLink,
@@ -50,6 +55,7 @@ export default function ImageManagePage() {
         images={images}
         getProductUsage={getProductUsage}
         openLinkModal={openLinkModal}
+        openPositionModal={openPositionModal}
         handleDelete={handleDelete}
       />
 
@@ -62,6 +68,13 @@ export default function ImageManagePage() {
         filteredProductsToLink={filteredProductsToLink}
         links={links}
         toggleLink={toggleLink}
+      />
+
+      <ImagePositionModal
+        isOpen={isPositionModalOpen}
+        onClose={() => setIsPositionModalOpen(false)}
+        image={selectedImage}
+        onUpdate={handleUpdatePosition}
       />
     </ManagementPageLayout>
   );

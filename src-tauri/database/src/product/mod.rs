@@ -106,17 +106,22 @@ pub fn get_all_products_with_images(
             product_images::table.on(product_schema::product_id.eq(product_images::product_id)),
         )
         .left_join(images::table.on(product_images::image_id.eq(images::id)))
-        .select((product_schema::all_columns, images::file_path.nullable()))
-        .load::<(Product, Option<String>)>(conn)?;
+        .select((
+            product_schema::all_columns,
+            images::file_path.nullable(),
+            images::image_object_position.nullable(),
+        ))
+        .load::<(Product, Option<String>, Option<String>)>(conn)?;
 
     let mut products_map: BTreeMap<i32, ProductWithImage> = BTreeMap::new();
 
-    for (prod, img_path) in raw_data {
+    for (prod, img_path, img_pos) in raw_data {
         products_map
             .entry(prod.product_id)
             .or_insert(ProductWithImage {
                 product: prod,
                 image_path: img_path,
+                image_object_position: img_pos,
             });
     }
 

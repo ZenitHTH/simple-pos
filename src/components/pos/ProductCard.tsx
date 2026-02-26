@@ -35,6 +35,9 @@ const ProductCard = memo(function ProductCard({
             src={imageSrc}
             alt={product.name}
             className="h-full w-full object-cover"
+            style={{
+              objectPosition: product.image_object_position || "center",
+            }}
             onError={() => setImageError(true)}
           />
         ) : (

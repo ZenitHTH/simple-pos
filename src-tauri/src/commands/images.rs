@@ -74,3 +74,14 @@ pub fn get_all_image_links(
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     db_get_all_links(&mut conn).map_err(|e| e.to_string())
 }
+
+#[command]
+pub fn update_image_position(
+    key: String,
+    image_id: i32,
+    position: String,
+) -> Result<usize, String> {
+    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    database::image::update_image_position(&mut conn, image_id, &position)
+        .map_err(|e| e.to_string())
+}

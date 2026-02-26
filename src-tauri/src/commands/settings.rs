@@ -60,6 +60,9 @@ pub struct AppSettings {
     // ── Storage Paths ──
     pub image_storage_path: Option<String>,
     pub db_storage_path: Option<String>,
+
+    // ── Theme ──
+    pub theme_primary_color: Option<String>,
 }
 
 impl Default for AppSettings {
@@ -119,6 +122,9 @@ impl Default for AppSettings {
             // ── Storage Paths ──
             image_storage_path: None,
             db_storage_path: None,
+
+            // ── Theme ──
+            theme_primary_color: None,
         }
     }
 }
@@ -186,4 +192,44 @@ pub fn get_storage_info() -> Result<StorageInfo, String> {
         image_path,
         db_path,
     })
+}
+
+#[command]
+pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), String> {
+    let mut conn = database::establish_connection(&key).map_err(|e| e.to_string())?;
+    let images = database::image::get_all_images(&mut conn).map_err(|e| e.to_string())?;
+
+    let new_path_buf = std::path::PathBuf::from(&new_path);
+    if !new_path_buf.exists() {
+        std::fs::create_dir_all(&new_path_buf).map_err(|e| e.to_string())?;
+    }
+
+    for image in images {
+        let old_path = std::path::PathBuf::from(&image.file_path);
+
+        // Use the actual filename from the old path
+        if let Some(filename) = old_path.file_name() {
+            let dest_path = new_path_buf.join(filename);
+
+            if old_path.exists() {
+                // If it's already in the same directory, skip
+                if old_path == dest_path {
+                    continue;
+                }
+
+                std::fs::copy(&old_path, &dest_path).map_err(|e| {
+                    format!("Failed to copy {:?} to {:?}: {}", old_path, dest_path, e)
+                })?;
+                database::update_image_path(&mut conn, image.id, &dest_path.to_string_lossy())
+                    .map_err(|e| e.to_string())?;
+
+                // Only remove if it's actually different (precaution)
+                if old_path != dest_path {
+                    let _ = std::fs::remove_file(&old_path);
+                }
+            }
+        }
+    }
+
+    Ok(())
 }

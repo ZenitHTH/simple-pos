@@ -49,4 +49,11 @@ export const imageApi = {
   getAllImageLinks: async (key: string): Promise<ProductImage[]> => {
     return await invoke("get_all_image_links", { key });
   },
+  updatePosition: async (
+    key: string,
+    imageId: number,
+    position: string,
+  ): Promise<number> => {
+    return await invoke("update_image_position", { key, imageId, position });
+  },
 };

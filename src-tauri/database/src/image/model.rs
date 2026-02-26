@@ -12,6 +12,7 @@ pub struct Image {
     pub file_hash: String,
     pub file_path: String,
     pub created_at: NaiveDateTime,
+    pub image_object_position: Option<String>,
 }
 
 #[derive(Insertable, Debug, PartialEq, Serialize, Deserialize)]
@@ -20,4 +21,5 @@ pub struct NewImage<'a> {
     pub file_name: &'a str,
     pub file_hash: &'a str,
     pub file_path: &'a str,
+    pub image_object_position: Option<String>,
 }

@@ -1,5 +1,5 @@
 import { Image, BackendProduct } from "@/lib";
-import { FaTrash, FaLink } from "react-icons/fa";
+import { FaTrash, FaLink, FaCrop } from "react-icons/fa";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { convertFileSrc } from "@/lib/api/invoke";
@@ -8,6 +8,7 @@ interface ImageGridProps {
   images: Image[];
   getProductUsage: (imageId: number) => BackendProduct[];
   openLinkModal: (img: Image) => void;
+  openPositionModal: (img: Image) => void;
   handleDelete: (img: Image) => void;
 }
 
@@ -15,6 +16,7 @@ export default function ImageGrid({
   images,
   getProductUsage,
   openLinkModal,
+  openPositionModal,
   handleDelete,
 }: ImageGridProps) {
   return (
@@ -29,6 +31,9 @@ export default function ImageGrid({
               <img
                 src={src}
                 alt={img.file_name}
+                style={{
+                  objectPosition: img.image_object_position || "center",
+                }}
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -40,6 +45,14 @@ export default function ImageGrid({
                   title="Link to Products"
                 >
                   <FaLink />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => openPositionModal(img)}
+                  title="Adjust Position"
+                >
+                  <FaCrop />
                 </Button>
                 <Button
                   size="sm"

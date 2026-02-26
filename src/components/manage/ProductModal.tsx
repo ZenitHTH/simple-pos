@@ -184,7 +184,7 @@ export default function ProductModal({
         </div>
 
         {/* Image Section */}
-        <div className="space-y-2">
+        <div className="space-y-4">
           <label className="block text-sm font-medium">Images</label>
           <div className="flex flex-wrap gap-2">
             {images.map((img) => (
@@ -196,6 +196,9 @@ export default function ProductModal({
                   src={convertFileSrc(img.file_path)}
                   alt={img.file_name}
                   className="h-full w-full object-cover"
+                  style={{
+                    objectPosition: img.image_object_position || "center",
+                  }}
                 />
                 <button
                   type="button"

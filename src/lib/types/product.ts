@@ -4,6 +4,7 @@ export interface Product {
   price: number;
   category: string;
   image: string; // URL to image
+  image_object_position?: string;
   color?: string; // Optional background color for placeholder
 }
 
@@ -17,7 +18,11 @@ export interface BackendProduct {
   category_id: number;
   satang: number;
   image_path?: string;
+  image_object_position?: string;
   use_recipe_stock: boolean;
 }
 
-export type NewProduct = Omit<BackendProduct, "product_id">;
+export type NewProduct = Omit<
+  BackendProduct,
+  "product_id" | "image_object_position"
+>;

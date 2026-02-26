@@ -40,6 +40,9 @@ export default function ProductTable({
                   src={convertFileSrc(product.image_path)}
                   alt={product.title}
                   className="h-full w-full object-cover"
+                  style={{
+                    objectPosition: product.image_object_position || "center",
+                  }}
                 />
               ) : (
                 <div className="text-muted-foreground flex h-full w-full items-center justify-center">

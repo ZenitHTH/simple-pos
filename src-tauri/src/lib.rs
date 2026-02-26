@@ -61,6 +61,7 @@ pub fn run() {
             get_settings,
             save_settings,
             get_storage_info,
+            migrate_image_directory,
             // Database Commands
             initialize_database,
             check_database_exists,
@@ -72,6 +73,7 @@ pub fn run() {
             get_all_images,
             delete_image,
             get_all_image_links,
+            update_image_position,
             // Material Commands
             get_materials,
             create_material,
