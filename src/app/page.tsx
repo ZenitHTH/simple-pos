@@ -29,6 +29,7 @@ function POSLoader() {
           price: p.satang / 100,
           category: catMap[p.category_id] || "Unknown",
           image: p.image_path || "",
+          image_object_position: p.image_object_position,
         }));
         setProducts(mappedProducts);
       } catch (error) {

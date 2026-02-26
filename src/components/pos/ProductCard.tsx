@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { Product } from "@/lib";
+import { Product, parseImageStyle } from "@/lib";
 import { convertFileSrc } from "@/lib/api/invoke";
 
 interface ProductCardProps {
@@ -25,7 +25,7 @@ const ProductCard = memo(function ProductCard({
       className="group bg-card text-card-foreground border-border hover:border-primary/50 cursor-pointer overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95"
     >
       <div
-        className="bg-muted/20 relative aspect-3/2 w-full"
+        className="bg-muted/20 relative aspect-square w-full overflow-hidden"
         style={{
           backgroundColor: !imageSrc ? product.color || "#e2e8f0" : undefined,
         }}
@@ -35,9 +35,7 @@ const ProductCard = memo(function ProductCard({
             src={imageSrc}
             alt={product.name}
             className="h-full w-full object-cover"
-            style={{
-              objectPosition: product.image_object_position || "center",
-            }}
+            style={parseImageStyle(product.image_object_position)}
             onError={() => setImageError(true)}
           />
         ) : (

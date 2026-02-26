@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
 
@@ -21,16 +22,22 @@ export function Modal({
   style,
   contentClassName,
 }: ModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) setVisible(true);
     else setTimeout(() => setVisible(false), 200);
   }, [isOpen]);
 
+  if (!mounted) return null;
   if (!visible && !isOpen) return null;
 
-  return (
+  return createPortal(
     <div
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-200",
@@ -40,7 +47,7 @@ export function Modal({
     >
       <div
         className={cn(
-          "bg-card text-card-foreground border-border w-full max-w-md transform overflow-hidden rounded-2xl border shadow-2xl ring-1 ring-black/10 transition-all duration-200 dark:ring-white/10",
+          "bg-card text-card-foreground border-border flex max-h-[90vh] w-full max-w-md transform flex-col rounded-2xl border shadow-2xl ring-1 ring-black/10 transition-all duration-200 dark:ring-white/10",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0",
           className,
         )}
@@ -56,8 +63,11 @@ export function Modal({
             <FaTimes size={14} />
           </button>
         </div>
-        <div className={cn("p-6", contentClassName)}>{children}</div>
+        <div className={cn("flex-1 overflow-y-auto p-6", contentClassName)}>
+          {children}
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

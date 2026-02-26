@@ -1,4 +1,4 @@
-import { Image, BackendProduct } from "@/lib";
+import { Image, BackendProduct, parseImageStyle } from "@/lib";
 import { FaTrash, FaLink, FaCrop } from "react-icons/fa";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -27,13 +27,11 @@ export default function ImageGrid({
 
         return (
           <Card key={img.id} className="group relative overflow-hidden">
-            <div className="bg-muted relative flex aspect-square items-center justify-center">
+            <div className="bg-muted relative flex aspect-square items-center justify-center overflow-hidden">
               <img
                 src={src}
                 alt={img.file_name}
-                style={{
-                  objectPosition: img.image_object_position || "center",
-                }}
+                style={parseImageStyle(img.image_object_position)}
                 className="h-full w-full object-cover"
                 loading="lazy"
               />

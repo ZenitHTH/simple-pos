@@ -2,7 +2,13 @@
 
 import { convertFileSrc } from "@/lib/api/invoke";
 import { useState, useEffect } from "react";
-import { BackendProduct, NewProduct, Category, Image } from "@/lib";
+import {
+  BackendProduct,
+  NewProduct,
+  Category,
+  Image,
+  parseImageStyle,
+} from "@/lib";
 import { categoryApi, imageApi } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
@@ -196,9 +202,7 @@ export default function ProductModal({
                   src={convertFileSrc(img.file_path)}
                   alt={img.file_name}
                   className="h-full w-full object-cover"
-                  style={{
-                    objectPosition: img.image_object_position || "center",
-                  }}
+                  style={parseImageStyle(img.image_object_position)}
                 />
                 <button
                   type="button"

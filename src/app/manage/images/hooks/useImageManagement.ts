@@ -104,15 +104,23 @@ export function useImageManagement() {
   };
 
   const handleUpdatePosition = async (position: string) => {
-    if (!dbKey || !selectedImage) return;
+    if (!dbKey || !selectedImage) {
+      console.error("Cannot update position: dbKey or selectedImage missing");
+      return;
+    }
 
     try {
+      console.log(
+        `Invoking update_image_position for image ${selectedImage.id} with pos: ${position}`,
+      );
+
       await invoke("update_image_position", {
         key: dbKey,
         imageId: selectedImage.id,
         position,
       });
-      // Update local state
+
+      // 1. Update images state locally
       setImages((prev) =>
         prev.map((img) =>
           img.id === selectedImage.id
@@ -120,10 +128,30 @@ export function useImageManagement() {
             : img,
         ),
       );
+
+      // 2. Update selectedImage to keep modal data fresh if it stays open (though we close it)
+      setSelectedImage((prev) =>
+        prev ? { ...prev, image_object_position: position } : null,
+      );
+
+      // 3. Update local products state too
+      setProducts((prev) =>
+        prev.map((p) => {
+          const isLinked = links.some(
+            (l) =>
+              l.image_id === selectedImage.id && l.product_id === p.product_id,
+          );
+          return isLinked ? { ...p, image_object_position: position } : p;
+        }),
+      );
+
+      // 4. Force a data refresh from DB to be 100% sure
+      await fetchData();
+
       setIsPositionModalOpen(false);
     } catch (err) {
-      console.error("Failed to update position", err);
-      alert("Failed to update position");
+      console.error("Failed to update position:", err);
+      alert("Failed to update position. Check console for details.");
     }
   };
 
@@ -134,7 +162,7 @@ export function useImageManagement() {
       if (isLinked) {
         await invoke("unlink_product_image", {
           key: dbKey,
-          productId,
+          productId: productId,
           imageId: selectedImage.id,
         });
         setLinks((prev) =>
@@ -146,7 +174,7 @@ export function useImageManagement() {
       } else {
         await invoke("link_product_image", {
           key: dbKey,
-          productId,
+          productId: productId,
           imageId: selectedImage.id,
         });
         setLinks((prev) => [
