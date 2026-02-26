@@ -126,7 +126,7 @@ describe('Simple POS Export & Customer Tests', () => {
         await browser.pause(1000);
 
         // Click the first available product card
-        const firstProduct = await $('//div[contains(@class,"product") or contains(@class,"card")]//button[1]');
+        const firstProduct = await $('//div[contains(@class, "cursor-pointer") and contains(@class, "group")][.//h3]');
         if (await firstProduct.isExisting()) {
             await clickElement(firstProduct);
             await browser.pause(500);
