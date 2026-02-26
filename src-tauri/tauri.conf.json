@@ -24,7 +24,8 @@
       "assetProtocol": {
         "enable": true,
         "scope": [
-          "**/simple-pos/data/images/**"
+          "**/.local/share/simple-pos/images/**",
+          "**/AppData/Roaming/simple-pos/images/**"
         ]
       }
     }

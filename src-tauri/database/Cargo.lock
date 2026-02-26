@@ -109,6 +109,7 @@ dependencies = [
  "diesel_migrations",
  "directories",
  "libsqlite3-sys",
+ "log",
  "serde",
  "serde_json",
 ]

@@ -12,7 +12,8 @@
     {
       "identifier": "fs:scope",
       "allow": [
-        "**/simple-pos/data/**"
+        "**/.local/share/simple-pos/**",
+        "**/AppData/Roaming/simple-pos/**"
       ]
     },
     "fs:allow-read",

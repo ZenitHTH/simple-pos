@@ -27,7 +27,15 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::default().build())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .setup(|_app| Ok(()))
+        .setup(|app| {
+            // Programmatically allow the images directory in the fs scope
+            use tauri_plugin_fs::FsExt;
+            if let Ok(mut images_dir) = app.path().app_local_data_dir() {
+                images_dir.push("images");
+                let _ = app.fs_scope().allow_directory(&images_dir, true);
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             // Product Commands
             get_products,
