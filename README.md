@@ -1,4 +1,4 @@
-# Vibe POS (Simple POS)
+# Vibe POS (Simple POS) v0.2.0
 
 A professional, modern, and lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for high performance, security, and simplicity.
 
@@ -9,17 +9,23 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
   - **Product Management**: Detailed product tracking with categories and images.
   - **Material & Recipe Management (New)**: Track raw materials and define recipes for complex items (e.g., drinks, food).
   - **Real-time Stock Tracking**: Monitor inventory levels with low-stock alerts.
-- **Customer Management (New)**: Track customer information and purchase history.
+- **Customer Management**: Track customer information and purchase history.
 - **Checkout & Payment**:
   - **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
+  - **Touch-Optimized Cart**: Large touch targets for interactive cart elements.
   - **Smart Change Calculation**: Automated change display with validity checks.
   - **Receipt Generation**: Backend integration for secure transaction recording.
 - **Customizable UI & Design Mode**:
   - **Global Display Scaling**: Adjust the entire interface size from 50% to 200%.
+  - **Auto-Save Settings**: Settings persist automatically in real-time as you tweak them.
   - **WYSIWYG Editor**: Interactive mode to adjust layout scaling and component sizes in real-time.
   - **Responsive Layout**: Optimized for various resolutions (1080x720 up to 4K).
-- **Order History**: 
+- **Data Export & Reporting**:
+  - Export transaction data to CSV, XLSX, and ODS.
+  - **Thai Accounting Integration**: Built-in support for Thai Sales Tax Reports (รายงานภาษีขาย).
+- **Order History**:
   - Comprehensive view of past transactions with filters and search.
+- **Mock API Mode**: Develop and test the UI directly in the browser without needing the Tauri backend.
 - **Security & Privacy**:
   - **Encrypted Database**: Local data is protected via **SQLCipher** (AES-256 encryption).
   - **Local-First**: Your data stays on your machine.
@@ -52,21 +58,25 @@ Before you begin, ensure you have the following installed:
 ## Setup & Development
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd simple-pos
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Run in Development Mode**
    This command starts both the Next.js frontend and the Tauri application window.
+
    ```bash
    npm run tauri dev
    ```
+
    > **Note for Linux Users**: The `tauri` script in `package.json` automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues. Using `npm run tauri dev` ensures this is applied.
 
 ## Building for Production
@@ -79,16 +89,18 @@ npm run tauri build
 
 The output binary will be located in `src-tauri/target/release/bundle/`.
 
-
 ## Troubleshooting
 
 ### Linux (NVIDIA GPUs)
+
 If you experience rendering issues, blank screens, or crashes on Linux with an NVIDIA GPU, you may need to disable the DMABUF renderer.
 
 Run the application with the following environment variable:
+
 ```bash
 WEBKIT_DISABLE_DMABUF_RENDERER=1 ./simple-pos
 ```
+
 or add it to your profile/environment variables.
 
 ## Architecture

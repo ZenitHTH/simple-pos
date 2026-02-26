@@ -39,8 +39,8 @@ The backend exposes several command modules to the frontend:
   - `save_image`: Save uploaded image to local storage.
   - `link_product_image`, `unlink_product_image`: Manage product-image relationships.
 - **Settings**:
-  - `get_settings`, `save_settings`: Manage application settings (persisted to `settings.json` in user data directory).
+  - `get_settings`, `save_settings`: Manage application settings (persisted to `settings.json` in user data directory; auto-saved by frontend).
 - **Export**:
-  - `export_receipts`: Export transaction data to CSV/Excel/ODS.
+  - `export_receipts`: Export transaction data to CSV/Excel/ODS, including Thai Accounting Export formats.
 - **System**:
   - `initialize_database`, `check_database_exists`
