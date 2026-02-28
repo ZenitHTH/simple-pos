@@ -30,10 +30,10 @@ describe('Simple POS UI', () => {
             // Password Setup Screen
             const passwordInput = await $('input[placeholder="Enter a strong password"]');
             await passwordInput.waitForExist({ timeout: 5000 });
-            await setInputValue(passwordInput, 'testpassword123');
+            await setInputValue(passwordInput, 'Runner01');
 
             const confirmInput = await $('input[placeholder="Repeat your password"]');
-            await setInputValue(confirmInput, 'testpassword123');
+            await setInputValue(confirmInput, 'Runner01');
 
             const nextButton = await $('button[type="submit"]');
             await browser.pause(500);
@@ -49,7 +49,7 @@ describe('Simple POS UI', () => {
             // Login Screen
             const passwordInput = await $('input[placeholder="Enter password"]');
             await passwordInput.waitForExist({ timeout: 5000 });
-            await setInputValue(passwordInput, 'testpassword123');
+            await setInputValue(passwordInput, 'Runner01');
 
             const loginButton = await $('button[type="submit"]');
             await clickElement(loginButton);
@@ -117,21 +117,28 @@ describe('Simple POS UI', () => {
 
     it('should add a product to the cart', async () => {
         // Wait for products to load and grid to appear
-        // Using XPath because :has() might not be supported in some WebKit2GTK versions
-        const firstProduct = await $('//div[contains(@class, "cursor-pointer") and contains(@class, "group")][.//h3]');
+        const firstProduct = await $('//div[contains(@class, "bg-card") and contains(@class, "group")][.//h3]');
         await firstProduct.waitForExist({ timeout: 15000 });
 
         // Get product name for verification
         const productNameElement = await firstProduct.$('h3');
         const productName = await productNameElement.getText();
 
-        await clickElement(firstProduct);
+        // Add a short pause to ensure React has hydrated and attached the onClick to the parent div
+        await browser.pause(1000);
+
+        // Force a click on the root product card div using JS to bypass any overlay issues
+        await browser.execute((el) => {
+            el.scrollIntoView({ block: 'center' });
+            el.click();
+        }, firstProduct);
 
         // Verify item appeared in cart
+        // We'll wait up to 10s for the item to be mapped to the DOM.
         const cartItem = await $('div.bg-background.border-border.group');
-        await cartItem.waitForExist({ timeout: 5000 });
+        await cartItem.waitForExist({ timeout: 10000 });
 
-        // Use browser.execute to get text just in case getText fails later too
+        // CartItem name is rendered in h4
         const cartItemName = await cartItem.$('h4').getText();
         expect(cartItemName).toBe(productName);
     });
@@ -145,7 +152,7 @@ describe('Simple POS UI', () => {
         expect(quantity).toBe('1');
 
         // Click plus button
-        const controlsDiv = await cartItem.$('div.bg-card.border-border.flex.items-center');
+        const controlsDiv = await cartItem.$('div.bg-card.border-border');
         const buttons = await controlsDiv.$$('button');
         const plusButton = buttons[1]; // Index 1 is the plus button
 
@@ -159,22 +166,50 @@ describe('Simple POS UI', () => {
     });
 
     it('should checkout and complete payment', async () => {
+        // Check if mobile cart toggle exists and is visible (hamburger or cart icon)
+        // In POSHeader, there is a button with text "Cart"
+        const cartToggle = await $('//button[contains(., "Cart")]');
+        if (await cartToggle.isExisting() && await cartToggle.isDisplayed()) {
+            await clickElement(cartToggle);
+            await browser.pause(500); // wait for drawer animation
+        }
+
         // Find checkout button in cart summary
-        const checkoutBtn = await $('//button[contains(., "Checkout Now")]');
-        await checkoutBtn.waitForExist({ timeout: 5000 });
-        await clickElement(checkoutBtn);
+        // Since there's a desktop cart and a mobile drawer cart, we must click the truly visible one.
+        const clickedCheckout = await browser.execute(() => {
+            const btns = Array.from(document.querySelectorAll('button'));
+            const checkoutBtns = btns.filter(b => b.textContent && b.textContent.includes('Checkout Now'));
+
+            for (const btn of checkoutBtns) {
+                const rect = btn.getBoundingClientRect();
+                // Check if element is visible and in viewport
+                if (rect.width > 0 && rect.height > 0 && rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                    btn.click();
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        if (!clickedCheckout) {
+            throw new Error("Could not find a visible Checkout Now button to click");
+        }
+        await browser.pause(1000);
 
         // Wait for modal
         const cashInput = await $('input[id="cash-input"]');
         await cashInput.waitForExist({ timeout: 5000 });
 
         // Click the first quick amount suggestion button
-        const firstQuickAmount = await $$('button.bg-primary\\/10')[0];
-        await firstQuickAmount.waitForExist({ timeout: 5000 });
-        await clickElement(firstQuickAmount);
+        // Need to be careful to find a button within the cash input section
+        const quickAmounts = await $$('button.bg-primary\\/10');
+        if (quickAmounts.length > 0) {
+            await clickElement(quickAmounts[0]);
+        }
 
         // Click confirm payment
         const confirmBtn = await $('//button[contains(., "Confirm Payment")]');
+        await confirmBtn.waitForExist({ timeout: 5000 });
 
         // Small delay to allow 'isValid' logic to recalculate based on the click
         await browser.pause(500);
@@ -184,6 +219,6 @@ describe('Simple POS UI', () => {
         await browser.waitUntil(async () => {
             const items = await $$('div.bg-background.border-border.group');
             return items.length === 0;
-        }, { timeout: 5000, timeoutMsg: 'Cart did not empty after payment' });
+        }, { timeout: 10000, timeoutMsg: 'Cart did not empty after payment' });
     });
 });

@@ -134,7 +134,9 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, []);
 
   const handleCheckout = useCallback(() => {
+    console.log("usePOSLogic: handleCheckout called, cart length =", cartItems.length);
     if (cartItems.length === 0) return;
+    console.log("usePOSLogic: setting isPaymentModalOpen to true");
     setIsPaymentModalOpen(true);
   }, [cartItems.length]);
 

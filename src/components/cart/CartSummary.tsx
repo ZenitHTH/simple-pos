@@ -70,7 +70,10 @@ const CartSummary = memo(function CartSummary({
       </div>
 
       <button
-        onClick={onCheckout}
+        onClick={() => {
+          console.log("CartSummary: Checkout Now clicked");
+          onCheckout();
+        }}
         className="bg-primary text-primary-foreground shadow-primary/30 hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[1.125em] font-bold shadow-lg transition-all active:scale-[0.98]"
       >
         Checkout Now

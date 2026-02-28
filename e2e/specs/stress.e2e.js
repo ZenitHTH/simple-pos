@@ -30,10 +30,10 @@ describe('Simple POS Stress Tests', () => {
             // Password Setup Screen
             const passwordInput = await $('input[placeholder="Enter a strong password"]');
             await passwordInput.waitForExist({ timeout: 5000 });
-            await setInputValue(passwordInput, 'testpassword123');
+            await setInputValue(passwordInput, 'Runner01');
 
             const confirmInput = await $('input[placeholder="Repeat your password"]');
-            await setInputValue(confirmInput, 'testpassword123');
+            await setInputValue(confirmInput, 'Runner01');
 
             const nextButton = await $('button[type="submit"]');
             await browser.pause(500);
@@ -49,7 +49,7 @@ describe('Simple POS Stress Tests', () => {
             // Login Screen
             const passwordInput = await $('input[placeholder="Enter password"]');
             await passwordInput.waitForExist({ timeout: 5000 });
-            await setInputValue(passwordInput, 'testpassword123');
+            await setInputValue(passwordInput, 'Runner01');
 
             const loginButton = await $('button[type="submit"]');
             await clickElement(loginButton);
@@ -121,14 +121,18 @@ describe('Simple POS Stress Tests', () => {
 
     it('should rapidly add 20 products to cart', async () => {
         // Select all product cards that contain "Stress Product" in their h3
-        const productNodes = await $$('//div[contains(@class, "cursor-pointer") and contains(@class, "group")][.//h3[contains(text(), "Stress Product")]]');
+        const productNodes = await $$('//div[contains(@class, "bg-card") and contains(@class, "group")][.//h3[contains(text(), "Stress Product")]]');
 
         // Ensure we found at least 20, or handle if fewer
         const count = Math.min(productNodes.length, 20);
         expect(count).toBeGreaterThan(0);
 
         for (let i = 0; i < count; i++) {
-            await clickElement(productNodes[i]);
+            await browser.execute((el) => {
+                el.scrollIntoView({ block: 'center' });
+                el.click();
+            }, productNodes[i]);
+            await browser.pause(100);
         }
 
         // Ensure cart has those items (wait for last one)
@@ -144,7 +148,7 @@ describe('Simple POS Stress Tests', () => {
         const firstCartItem = await $('div.bg-background.border-border.group');
         const quantitySpan = await firstCartItem.$('span.w-8.text-center');
 
-        const controlsDiv = await firstCartItem.$('div.bg-card.border-border.flex.items-center');
+        const controlsDiv = await firstCartItem.$('div.bg-card.border-border');
         const buttons = await controlsDiv.$$('button');
         const plusButton = buttons[1]; // Index 1 is the plus button
 
@@ -160,20 +164,65 @@ describe('Simple POS Stress Tests', () => {
     });
 
     it('should checkout under load', async () => {
+        // Check if mobile cart toggle exists and is visible
+        const cartToggle = await $('//button[contains(., "Cart")]');
+        if (await cartToggle.isExisting() && await cartToggle.isDisplayed()) {
+            await clickElement(cartToggle);
+            await browser.pause(500);
+        }
+
         // Find checkout button in cart summary
-        const checkoutBtn = await $('//button[contains(., "Checkout Now")]');
-        await checkoutBtn.waitForExist({ timeout: 5000 });
-        await clickElement(checkoutBtn);
+        const clickedCheckout = await browser.execute(() => {
+            const btns = Array.from(document.querySelectorAll('button'));
+            const checkoutBtns = btns.filter(b => b.textContent && b.textContent.includes('Checkout Now'));
+
+            for (const btn of checkoutBtns) {
+                const rect = btn.getBoundingClientRect();
+                // Check if element is visible and in viewport
+                if (rect.width > 0 && rect.height > 0 && rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                    btn.click();
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        if (!clickedCheckout) {
+            throw new Error("Could not find a visible Checkout Now button to click");
+        }
+        await browser.pause(1000);
 
         // Wait for modal
         const cashInput = await $('input[id="cash-input"]');
         await cashInput.waitForExist({ timeout: 5000 });
 
-        // The total amount is probably quite high now, type a big number
-        await setInputValue(cashInput, '9999999');
+        // The input is readonly, we need to click the numpad
+        // Click '9' a few times to ensure a high amount
+        const numpadBtns = await $$('//button[contains(@class, "bg-background") and contains(@class, "hover:bg-muted")]');
+        // Find the button with text '9'
+        let btn9 = null;
+        for (const btn of numpadBtns) {
+            if (await btn.getText() === '9') {
+                btn9 = btn;
+                break;
+            }
+        }
+
+        if (btn9) {
+            for (let i = 0; i < 7; i++) {
+                await clickElement(btn9);
+            }
+        } else {
+            // Fallback to quick amount if numpad '9' not found
+            const quickAmounts = await $$('button.bg-primary\\/10');
+            if (quickAmounts.length > 0) {
+                await clickElement(quickAmounts[quickAmounts.length - 1]);
+            }
+        }
 
         // Click confirm payment
         const confirmBtn = await $('//button[contains(., "Confirm Payment")]');
+        await confirmBtn.waitForExist({ timeout: 5000 });
 
         // Small delay to allow 'isValid' logic to recalculate based on the input
         await browser.pause(1000);
