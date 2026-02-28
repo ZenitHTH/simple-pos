@@ -1,5 +1,6 @@
 import { invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc } from "@tauri-apps/api/core";
 import { mockInvoke } from "./mock";
+import { logger } from "../logger";
 
 /**
  * A wrapper around Tauri's invoke that falls back to a mock implementation
@@ -14,13 +15,13 @@ export async function invoke<T>(command: string, args?: Record<string, any>): Pr
         try {
             return await tauriInvoke<T>(command, args);
         } catch (error) {
-            console.error(`Tauri invoke error [${command}]:`, error);
+            logger.error(`Tauri invoke error [${command}]:`, error);
             throw error;
         }
     }
 
     // Fallback to mock implementation
-    console.log(`[Mock API] Invoking command: ${command}`, args);
+    logger.debug(`[Mock API] Invoking command: ${command}`, args);
     return await mockInvoke<T>(command, args);
 }
 

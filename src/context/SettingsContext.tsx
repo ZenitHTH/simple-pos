@@ -9,6 +9,7 @@ import {
   ReactNode,
 } from "react";
 import { AppSettings, settingsApi } from "@/lib";
+import { logger } from "@/lib/logger";
 
 interface SettingsContextType {
   settings: AppSettings;
@@ -136,7 +137,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       // Small delay to ensure state is set before initializing auto-save
       setTimeout(() => setIsInitialized(true), 100);
     } catch (error) {
-      console.error("Failed to load settings:", error);
+      logger.error("Failed to load settings:", error);
     } finally {
       setLoading(false);
     }
@@ -151,7 +152,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       await settingsApi.saveSettings(settings);
       // Optionally fetch again or just assume success
     } catch (error) {
-      console.error("Failed to save settings:", error);
+      logger.error("Failed to save settings:", error);
       throw error;
     }
   };
@@ -165,7 +166,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     }
 
     saveTimeoutRef.current = setTimeout(() => {
-      save().catch((err) => console.error("Auto-save failed:", err));
+      save().catch((err) => logger.error("Auto-save failed:", err));
     }, 500);
 
     return () => {
