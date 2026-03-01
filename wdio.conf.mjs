@@ -45,7 +45,7 @@ export const config = {
   // ensure we are running `tauri-driver` before the session starts so that we can proxy the webdriver requests
   beforeSession: () => {
     // Clear Tauri app data to ensure fresh E2E test runs
-    const appDataPath = path.resolve(os.homedir(), '.local', 'share', 'com.simple-pos.app');
+    const appDataPath = path.resolve(os.homedir(), '.local', 'share', 'simple-pos');
     if (fs.existsSync(appDataPath)) {
       try { fs.rmSync(appDataPath, { recursive: true, force: true }); } catch (e) { }
     }
@@ -70,6 +70,11 @@ export const config = {
   // note that afterSession might not run if the session fails to start, so we also run the cleanup on shutdown
   afterSession: () => {
     closeTauriDriver();
+    // Clean database after test UI
+    const appDataPath = path.resolve(os.homedir(), '.local', 'share', 'simple-pos');
+    if (fs.existsSync(appDataPath)) {
+      try { fs.rmSync(appDataPath, { recursive: true, force: true }); } catch (e) { }
+    }
   },
 };
 
