@@ -13,10 +13,12 @@ describe('Simple POS Full Simulation (Stress) Test', () => {
         await btn.waitForDisplayed({ timeout: 10000 });
         await clickElement(btn);
 
-        let input = await $('//div[label[contains(text(), "Category Name")]]/input');
-        await input.waitForDisplayed({ timeout: 5000 });
+        const catModalRoot = await $('//html//div[contains(@class, "fixed") and .//h2[text()="New Category"]]');
+        await catModalRoot.waitForDisplayed({ timeout: 5000 });
+
+        let input = await catModalRoot.$('.//div[label[contains(text(), "Category Name")]]/input');
         await setInputValue(input, "Stress Category");
-        await clickElement(await $('button[type="submit"]'));
+        await clickElement(await catModalRoot.$('button[type="submit"]'));
 
         let row = await $('//table//td[contains(., "Stress Category")]');
         await row.waitForExist({ timeout: 10000 });
@@ -27,15 +29,17 @@ describe('Simple POS Full Simulation (Stress) Test', () => {
         await btn.waitForDisplayed({ timeout: 10000 });
         await clickElement(btn);
 
-        input = await $('//div[label[contains(text(), "Title")]]/input');
-        await input.waitForDisplayed({ timeout: 5000 });
+        const prodModalRoot = await $('//html//div[contains(@class, "fixed") and .//h2[text()="New Product"]]');
+        await prodModalRoot.waitForDisplayed({ timeout: 5000 });
+
+        input = await prodModalRoot.$('.//div[label[contains(text(), "Title")]]/input');
         await setInputValue(input, "Stress Product");
 
-        input = await $('//div[label[contains(text(), "Price")]]/input');
+        input = await prodModalRoot.$('.//div[label[contains(text(), "Price")]]/input');
         await setInputValue(input, "25000"); // ฿250
 
         await selectCustomDropdownByText("Category", "Stress Category");
-        await clickElement(await $('button[type="submit"]'));
+        await clickElement(await prodModalRoot.$('button[type="submit"]'));
 
         row = await $('//table//td[contains(., "Stress Product")]');
         await row.waitForExist({ timeout: 10000 });
@@ -59,24 +63,26 @@ describe('Simple POS Full Simulation (Stress) Test', () => {
         await btn.waitForDisplayed({ timeout: 10000 });
         await clickElement(btn);
 
-        input = await $('//div[label[contains(text(), "Material Name")]]/input');
-        await input.waitForDisplayed({ timeout: 5000 });
+        const matModalRoot = await $('//html//div[contains(@class, "fixed") and .//h2[text()="Add Material"]]');
+        await matModalRoot.waitForDisplayed({ timeout: 5000 });
+
+        input = await matModalRoot.$('.//div[label[contains(text(), "Material Name")]]/input');
         await setInputValue(input, "Stress Material");
 
-        input = await $('//div[label[contains(text(), "Volume")]]/input');
+        input = await matModalRoot.$('.//div[label[contains(text(), "Volume")]]/input');
         await setInputValue(input, "1000"); // 1000 Grams
 
-        input = await $('//div[label[contains(text(), "Quantity")]]/input');
+        input = await matModalRoot.$('.//div[label[contains(text(), "Quantity")]]/input');
         await setInputValue(input, "10"); // 10 Packs
 
         await selectCustomDropdownByText("Type / Unit", "Pack");
-        await clickElement(await $('button[type="submit"]'));
+        await clickElement(await matModalRoot.$('button[type="submit"]'));
 
         row = await $('//table//td[contains(., "Stress Material")]');
         await row.waitForExist({ timeout: 10000 });
 
         // --- 4. CREATE RECIPE ---
-        btn = await $('//button[.//span[contains(text(), "Recipe Builder")]]');
+        btn = await $('//a[.//span[contains(text(), "Recipe Builder")]]');
         await btn.waitForDisplayed({ timeout: 5000 });
         await clickElement(btn);
 
@@ -93,12 +99,13 @@ describe('Simple POS Full Simulation (Stress) Test', () => {
         await input.waitForDisplayed({ timeout: 5000 });
         await setInputValue(input, "Stress Material");
 
-        btn = await $('//div[.//span[text()="Stress Material"]]//button');
+        // Find the div containing the span "Stress Material", then find the parent button
+        btn = await $('//div[.//span[text()="Stress Material"]]/button');
         await btn.waitForDisplayed({ timeout: 5000 });
-        await clickElement(btn);
-        await browser.pause(500);
+        await browser.execute((el) => { if (el) el.click(); }, btn);
+        await browser.pause(1000);
 
-        input = await $('//div[div[p[text()="Stress Material"]]]//input[@type="number"]');
+        input = await $('//input[@type="number"]');
         await input.waitForDisplayed({ timeout: 5000 });
         await setInputValue(input, "250"); // Uses 250 Grams
 
@@ -109,7 +116,7 @@ describe('Simple POS Full Simulation (Stress) Test', () => {
         await browser.pause(1000); // give time for success message
 
         // --- 5. POS CHECKOUT ---
-        await navigateTo("Main Page", "Point of Sale");
+        await navigateTo(null, "Main Page");
         // Note: Navigate helper assumes a link name exactly matching text. 
         // POS usually has "Point of Sale" or just click a home icon. Let's assume there's a link "Point of Sale" or "Home".
         // Instead of helper, let's just click the App Logo or "Point of Sale" in sidebar.

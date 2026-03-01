@@ -16,7 +16,7 @@ describe('Simple POS Recipe Builder Tests', () => {
         await clickElement(rawMatTab);
         await browser.pause(500);
 
-        const recipeBuilderBtn = await $('//button[.//span[contains(text(), "Recipe Builder")]]');
+        const recipeBuilderBtn = await $('//a[.//span[contains(text(), "Recipe Builder")]]');
         await recipeBuilderBtn.waitForDisplayed({ timeout: 5000 });
         await clickElement(recipeBuilderBtn);
 
@@ -37,14 +37,14 @@ describe('Simple POS Recipe Builder Tests', () => {
 
         // Click the + button to add the material
         // Find the div containing the span "Plastic Shell", then find the button inside it
-        const materialItemPlusBtn = await $('//div[.//span[text()="Plastic Shell"]]//button');
+        const materialItemPlusBtn = await $('//div[.//span[text()="Plastic Shell"]]/button');
         await materialItemPlusBtn.waitForDisplayed({ timeout: 5000 });
-        await clickElement(materialItemPlusBtn);
-        await browser.pause(500);
+        await browser.execute((el) => { if (el) el.click(); }, materialItemPlusBtn);
+        await browser.pause(1000);
 
         // Update the added material's volume to 2
         // Wait for it to appear in target pane
-        const targetVolumeInput = await $('//div[div[p[text()="Plastic Shell"]]]//input[@type="number"]');
+        const targetVolumeInput = await $('//input[@type="number"]');
         await targetVolumeInput.waitForDisplayed({ timeout: 5000 });
         await setInputValue(targetVolumeInput, "2");
 

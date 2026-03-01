@@ -33,7 +33,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         </button>
       </div>
 
-      <p className="meta-text">v0.1.1 • Built with Tauri v2 & Next.js 16</p>
+      <p className="meta-text">v0.2.0 • Built with Tauri v2 & Next.js 16</p>
     </div>
   );
 }

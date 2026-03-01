@@ -125,10 +125,22 @@ async function navigateTo(groupName, linkName) {
 
 // Interacts with the custom Select.tsx component
 async function selectCustomDropdownByText(labelName, optionText) {
-    const selectTrigger = await $(`//label[contains(text(), "${labelName}")]/following-sibling::div`);
+    // The onClick is attached to the first child div of the relative wrapper div
+    const selectTrigger = await $(`//label[contains(text(), "${labelName}")]/following-sibling::div/div[1]`);
     await selectTrigger.waitForDisplayed({ timeout: 5000 });
     await selectTrigger.scrollIntoView({ block: 'center' });
-    await clickElement(selectTrigger);
+
+    // Use JS to dispatch a click event instead of W3C Actions as Tauri has limitations
+    await browser.execute((el) => {
+        if (el) {
+            el.dispatchEvent(new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            }));
+        }
+    }, selectTrigger);
+
     await browser.pause(1000); // Wait for dropdown animation
 
     // We use JS to bypass overlays/portals and dispatch a real MouseEvent
