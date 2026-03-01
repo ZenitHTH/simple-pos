@@ -14,6 +14,8 @@ import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Switch } from "@/components/ui/Switch";
+import { Button } from "@/components/ui/Button";
+import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -131,14 +133,14 @@ export default function ProductModal({
           label="Title"
           required
           value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
         />
 
         <Select
           label="Category"
           value={formData.category_id ? String(formData.category_id) : ""}
           onChange={(val) =>
-            setFormData({ ...formData, category_id: parseInt(String(val), 10) })
+            setFormData((prev) => ({ ...prev, category_id: parseInt(String(val), 10) }))
           }
           options={categories.map((cat) => ({
             value: String(cat.id),
@@ -155,25 +157,25 @@ export default function ProductModal({
             min="0"
             value={formData.satang}
             onChange={(e) =>
-              setFormData({
-                ...formData,
+              setFormData((prev) => ({
+                ...prev,
                 satang: parseInt(e.target.value) || 0,
-              })
+              }))
             }
           />
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label className="mb-1.5 block text-sm font-semibold">
               Display Price
             </label>
-            <div className="border-border bg-muted/10 text-foreground rounded-lg border px-3 py-2">
+            <div className="border-border bg-muted/5 text-foreground flex h-11 items-center rounded-xl border px-3 py-2 text-sm font-semibold">
               ฿{getPrice(formData.satang)}
             </div>
           </div>
         </div>
 
-        <div className="border-border flex items-center justify-between rounded-lg border p-3">
+        <div className="border-border bg-card/50 flex items-center justify-between rounded-xl border p-4">
           <div className="space-y-0.5">
-            <label className="text-sm font-medium">Recipe Stock Mode</label>
+            <label className="text-sm font-semibold">Recipe Stock Mode</label>
             <p className="text-muted-foreground text-xs">
               Track stock based on recipe ingredients instead of unit quantity.
             </p>
@@ -189,9 +191,11 @@ export default function ProductModal({
           />
         </div>
 
+        <Separator />
+
         {/* Image Section */}
         <div className="space-y-4">
-          <label className="block text-sm font-medium">Images</label>
+          <label className="mb-1.5 block text-sm font-semibold">Images</label>
           <div className="flex flex-wrap gap-2">
             {images.map((img) => (
               <div
@@ -229,21 +233,21 @@ export default function ProductModal({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
-          <button
+        <div className="flex justify-end gap-3 pt-6">
+          <Button
             type="button"
+            variant="ghost"
             onClick={onClose}
-            className="text-muted hover:text-foreground px-4 py-2 text-sm font-medium transition-colors"
+            disabled={isSubmitting}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             disabled={isSubmitting || isUploading}
-            className="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-50"
           >
-            {isSubmitting ? "Saving..." : "Save Product"}
-          </button>
+            {isSubmitting ? "Saving..." : initialData ? "Update Product" : "Save Product"}
+          </Button>
         </div>
       </form>
     </Modal>
