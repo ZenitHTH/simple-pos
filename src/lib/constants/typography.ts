@@ -5,22 +5,10 @@ export const FONT_FAMILIES = [
   { label: "Prompt", value: "'Prompt', sans-serif" },
   { label: "Kanit", value: "'Kanit', sans-serif" },
   { label: "Sarabun", value: "'Sarabun', sans-serif" },
-  { label: "Chakra Petch", value: "'Chakra Petch', sans-serif" },
-  { label: "Bai Jamjuree", value: "'Bai Jamjuree', sans-serif" },
   {
     label: "Noto Sans (Thai/Intl)",
     value: "'Noto Sans Thai', 'Noto Sans', sans-serif",
   },
-  {
-    label: "Noto Serif (Thai/Intl)",
-    value: "'Noto Serif Thai', 'Noto Serif', serif",
-  },
-  { label: "Mali (Handwritten)", value: "'Mali', cursive" },
-  { label: "Itim (Playful)", value: "'Itim', cursive" },
-  { label: "Srisakdi (Fancy)", value: "'Srisakdi', cursive" },
-  { label: "Montserrat", value: "'Montserrat', sans-serif" },
-  { label: "Roboto", value: "'Roboto', sans-serif" },
-  { label: "Geist", value: "'Geist', sans-serif" },
   { label: "System UI", value: "system-ui, sans-serif" },
   { label: "Mono", value: "ui-monospace, monospace" },
 ];
