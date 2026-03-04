@@ -1,7 +1,7 @@
 use chrono::{TimeZone, Utc};
 use database::customer;
 use database::establish_connection;
-use database::receipt::{self, model::ReceiptList};
+use database::receipt::model::ReceiptList;
 
 use crate::commands::settings::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};

@@ -39,6 +39,7 @@ fn test_product_operations() {
         title: "Apple",
         category_id: cat.id,
         satang: 1500,
+        use_recipe_stock: false,
     };
     let inserted = database::product::insert_product(&mut conn, &new_prod).unwrap();
     assert_eq!(inserted.title, "Apple");
@@ -60,6 +61,7 @@ fn test_receipt_operations() {
             title: "Apple",
             category_id: cat.id,
             satang: 1500,
+            use_recipe_stock: false,
         },
     )
     .unwrap();
