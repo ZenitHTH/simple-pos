@@ -5,6 +5,7 @@ import POSClient from "@/components/pos/POSClient";
 import { Product } from "@/lib";
 import { productApi, categoryApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 export default function MockupPage() {
   const { dbKey } = useDatabase();
@@ -40,7 +41,7 @@ export default function MockupPage() {
           setProducts(generateMockProducts());
         }
       } catch (error) {
-        console.error("Failed to load products, using mock data:", error);
+        logger.error("Failed to load products, using mock data:", error);
         setProducts(generateMockProducts());
       } finally {
         setLoading(false);

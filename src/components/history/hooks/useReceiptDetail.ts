@@ -4,6 +4,7 @@ import { ReceiptList as ReceiptListType, Receipt } from "@/lib";
 import { Product } from "@/lib";
 import { receiptApi, productApi } from "@/lib";
 import { useMockup } from "@/context/MockupContext";
+import { logger } from "@/lib/logger";
 
 export const formatDate = (unix: number) => {
   return new Date(unix * 1000).toLocaleString("th-TH", {
@@ -75,7 +76,7 @@ export function useReceiptDetail(receipt: ReceiptListType) {
         }));
         setProducts(mapped);
       })
-      .catch(console.error);
+      .catch(logger.error);
 
     async function loadDetail() {
       if (!dbKey) return;
@@ -87,7 +88,7 @@ export function useReceiptDetail(receipt: ReceiptListType) {
         );
         setReceiptItems(items);
       } catch (error) {
-        console.error("Failed to load details", error);
+        logger.error("Failed to load details", error);
       } finally {
         setLoadingDetail(false);
       }

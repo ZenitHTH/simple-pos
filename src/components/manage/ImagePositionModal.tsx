@@ -7,6 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import NumberSlider from "@/components/ui/NumberSlider";
 import { convertFileSrc } from "@/lib/api/invoke";
+import { logger } from "@/lib/logger";
 
 interface ImagePositionModalProps {
   isOpen: boolean;
@@ -110,8 +111,8 @@ export default function ImagePositionModal({
         height: 100,
       };
 
-      console.log("Current Cropper Area:", area);
-      console.log("Current Zoom Level:", zoom);
+      logger.info("Current Cropper Area:", area);
+      logger.info("Current Zoom Level:", zoom);
 
       let pX = 50;
       let pY = 50;
@@ -134,12 +135,12 @@ export default function ImagePositionModal({
       pY = Math.round(Math.max(0, Math.min(100, pY)));
 
       const packedPosition = `${pX}% ${pY}%|${zoom.toFixed(2)}`;
-      console.log("Final Packed Position for Save:", packedPosition);
+      logger.info("Final Packed Position for Save:", packedPosition);
 
       await onUpdate(packedPosition);
       onClose();
     } catch (err) {
-      console.error("Critical: Failed to save position:", err);
+      logger.error("Critical: Failed to save position:", err);
       alert("Error saving: " + err);
     } finally {
       setIsSubmitting(false);

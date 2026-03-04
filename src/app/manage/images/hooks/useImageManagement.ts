@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
 import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
+import { logger } from "@/lib/logger";
 
 export function useImageManagement() {
   const { dbKey } = useDatabase();
@@ -30,7 +31,7 @@ export function useImageManagement() {
       setLinks(lnks);
       setProducts(prods);
     } catch (err) {
-      console.error("Failed to fetch data", err);
+      logger.error("Failed to fetch data", err);
     } finally {
       setLoading(false);
     }
@@ -62,7 +63,7 @@ export function useImageManagement() {
       setImages((prev) => prev.filter((i) => i.id !== image.id));
       setLinks((prev) => prev.filter((l) => l.image_id !== image.id));
     } catch (err) {
-      console.error("Failed to delete image", err);
+      logger.error("Failed to delete image", err);
       alert("Failed to delete image");
     }
   };
@@ -87,7 +88,7 @@ export function useImageManagement() {
       });
       fetchData(); // Refresh all to get new ID and sort
     } catch (err) {
-      console.error("Upload failed", err);
+      logger.error("Upload failed", err);
       alert("Upload failed: " + err);
     }
   };
@@ -105,12 +106,12 @@ export function useImageManagement() {
 
   const handleUpdatePosition = async (position: string) => {
     if (!dbKey || !selectedImage) {
-      console.error("Cannot update position: dbKey or selectedImage missing");
+      logger.error("Cannot update position: dbKey or selectedImage missing");
       return;
     }
 
     try {
-      console.log(
+      logger.info(
         `Invoking update_image_position for image ${selectedImage.id} with pos: ${position}`,
       );
 
@@ -150,7 +151,7 @@ export function useImageManagement() {
 
       setIsPositionModalOpen(false);
     } catch (err) {
-      console.error("Failed to update position:", err);
+      logger.error("Failed to update position:", err);
       alert("Failed to update position. Check console for details.");
     }
   };
@@ -183,7 +184,7 @@ export function useImageManagement() {
         ]);
       }
     } catch (err) {
-      console.error("Failed to toggle link", err);
+      logger.error("Failed to toggle link", err);
     }
   };
 

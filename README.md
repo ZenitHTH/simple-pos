@@ -103,36 +103,4 @@ WEBKIT_DISABLE_DMABUF_RENDERER=1 ./simple-pos
 
 or add it to your profile/environment variables.
 
-## Architecture
 
-![Architecture Diagram](./mermaid-diagram-2026-02-11-181614.svg)
-
-## Project Structure
-
-- **`src/`**: Next.js frontend source code.
-  - `app/`: Application routes and pages (`page.tsx`, `layout.tsx`).
-    - `about/`: About page.
-    - `history/`: Order history page.
-    - `manage/`: Management interface.
-      - `categories/`: Category management.
-      - `stock/`: Stock management.
-    - `mockup/`: Mockup data interface.
-    - `setting/`: Settings section.
-      - `general/`: General settings.
-      - `theme/`: Appearance settings.
-      - `display/`: Display scaling.
-      - `currency/`: Currency configuration.
-      - `tax/`: Tax rules.
-      - `export/`: Data export.
-  - `components/`: Reusable React components (`cart`, `design-mode`, `filters`, `layout`, `payment`, `pos`, `ui`).
-  - `context/`: Global state management (`DatabaseContext`, `SettingsContext`, `MockupContext`).
-  - `hooks/`: Custom React hooks.
-  - `lib/`: Utility functions and API wrappers (`api.ts`).
-  - `types/`: Shared TypeScript definitions.
-- **`src-tauri/`**: Rust backend source code.
-  - `src/`: Core Rust source files (`main.rs`, `lib.rs`, `commands/`).
-  - `database/`: Local crate for database interactions.
-  - `export_lib/`: Local crate for handling exports.
-  - `capabilities/`: Tauri permission capabilities.
-  - `icons/`: Application icons.
-  - `tauri.conf.json`: Tauri configuration file.

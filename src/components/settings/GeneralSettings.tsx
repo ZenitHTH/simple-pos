@@ -9,6 +9,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Button } from "@/components/ui/Button";
+import { logger } from "@/lib/logger";
 
 interface GeneralSettingsProps {
   imageStoragePath?: string;
@@ -27,7 +28,7 @@ const GeneralSettings = memo(function GeneralSettings({
   const [isMigrating, setIsMigrating] = useState(false);
 
   useEffect(() => {
-    settingsApi.getStorageInfo().then(setStorageInfo).catch(console.error);
+    settingsApi.getStorageInfo().then(setStorageInfo).catch(logger.error);
   }, []);
 
   const handleSelectImageStorage = async () => {
@@ -56,14 +57,14 @@ const GeneralSettings = memo(function GeneralSettings({
           onUpdateSettings({ image_storage_path: selected });
           showToast("Image migration successful", "success");
         } catch (error: any) {
-          console.error("Failed to migrate images:", error);
+          logger.error("Failed to migrate images:", error);
           showToast(`Migration failed: ${error.message || error}`, "error");
         } finally {
           setIsMigrating(false);
         }
       }
     } catch (error) {
-      console.error("Failed to select directory:", error);
+      logger.error("Failed to select directory:", error);
     }
   };
 
@@ -81,7 +82,7 @@ const GeneralSettings = memo(function GeneralSettings({
       onUpdateSettings({ image_storage_path: undefined });
       showToast("Images reset to default location", "success");
     } catch (error: any) {
-      console.error("Failed to reset images:", error);
+      logger.error("Failed to reset images:", error);
       showToast(`Reset failed: ${error.message || error}`, "error");
     } finally {
       setIsMigrating(false);
@@ -157,7 +158,7 @@ const GeneralSettings = memo(function GeneralSettings({
                       onUpdateSettings({ db_storage_path: selected });
                     }
                   } catch (error) {
-                    console.error("Failed to select directory:", error);
+                    logger.error("Failed to select directory:", error);
                   }
                 }}
                 className="gap-2"

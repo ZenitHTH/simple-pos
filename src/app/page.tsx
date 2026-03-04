@@ -5,6 +5,7 @@ import POSClient from "@/components/pos/POSClient";
 import { Product } from "@/lib";
 import { productApi, categoryApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 function POSLoader() {
   const { dbKey } = useDatabase();
@@ -33,7 +34,7 @@ function POSLoader() {
         }));
         setProducts(mappedProducts);
       } catch (error) {
-        console.error("Failed to load products:", error);
+        logger.error("Failed to load products:", error);
       } finally {
         setLoading(false);
       }

@@ -25,6 +25,8 @@ Simple POS is a desktop Point of Sale application built with Tauri (Rust backend
 
 ## Architecture
 
+![Architecture Diagram](./mermaid-diagram-2026-02-11-181614.svg)
+
 ### Database Layer (Rust - `src-tauri/database/`)
 
 The database uses Diesel ORM with SQLite and SQLCipher encryption. Key models:
@@ -98,3 +100,33 @@ Use Diesel CLI: `diesel migration generate <name>`, then implement in `src-tauri
 ## E2E Testing
 
 Uses WebdriverIO with `tauri-driver` to test the desktop app. Configuration in `wdio.conf.mjs`.
+
+## Project Structure
+
+- **`src/`**: Next.js frontend source code.
+  - `app/`: Application routes and pages (`page.tsx`, `layout.tsx`).
+    - `about/`: About page.
+    - `history/`: Order history page.
+    - `manage/`: Management interface.
+      - `categories/`: Category management.
+      - `stock/`: Stock management.
+    - `mockup/`: Mockup data interface.
+    - `setting/`: Settings section.
+      - `general/`: General settings.
+      - `theme/`: Appearance settings.
+      - `display/`: Display scaling.
+      - `currency/`: Currency configuration.
+      - `tax/`: Tax rules.
+      - `export/`: Data export.
+  - `components/`: Reusable React components (`cart`, `design-mode`, `filters`, `layout`, `payment`, `pos`, `ui`).
+  - `context/`: Global state management (`DatabaseContext`, `SettingsContext`, `MockupContext`).
+  - `hooks/`: Custom React hooks.
+  - `lib/`: Utility functions and API wrappers (`api.ts`).
+  - `types/`: Shared TypeScript definitions.
+- **`src-tauri/`**: Rust backend source code.
+  - `src/`: Core Rust source files (`main.rs`, `lib.rs`, `commands/`).
+  - `database/`: Local crate for database interactions.
+  - `export_lib/`: Local crate for handling exports.
+  - `capabilities/`: Tauri permission capabilities.
+  - `icons/`: Application icons.
+  - `tauri.conf.json`: Tauri configuration file.

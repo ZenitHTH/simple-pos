@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 export default function LoginScreen() {
   const { login, isLoading } = useDatabase();
@@ -14,7 +15,7 @@ export default function LoginScreen() {
     try {
       await login(password);
     } catch (err: unknown) {
-      console.error("Login failed:", err);
+      logger.error("Login failed:", err);
       setError("Invalid password or database error.");
     }
   };
@@ -43,11 +44,10 @@ export default function LoginScreen() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`text-primary-foreground w-full rounded-md px-4 py-2 font-medium ${
-              isLoading
+            className={`text-primary-foreground w-full rounded-md px-4 py-2 font-medium ${isLoading
                 ? "bg-primary/50 cursor-not-allowed"
                 : "bg-primary hover:bg-primary/90 focus:ring-primary focus:ring-2 focus:ring-offset-2 focus:outline-none"
-            }`}
+              }`}
           >
             {isLoading ? "Connecting..." : "Login"}
           </button>

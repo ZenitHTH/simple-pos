@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ export default function ProductModal({
 
   useEffect(() => {
     if (isOpen && dbKey) {
-      categoryApi.getAll(dbKey).then(setCategories).catch(console.error);
+      categoryApi.getAll(dbKey).then(setCategories).catch(logger.error);
     }
   }, [isOpen, dbKey]);
 
@@ -70,7 +71,7 @@ export default function ProductModal({
         imageApi
           .getByProduct(dbKey, initialData.product_id)
           .then(setImages)
-          .catch(console.error);
+          .catch(logger.error);
       }
     }
   }, [isOpen, initialData, dbKey]);
@@ -86,7 +87,7 @@ export default function ProductModal({
             imageApi
               .linkToProduct(dbKey, savedProduct.product_id, img.id)
               .catch((err) => {
-                console.warn("Failed to link image:", err);
+                logger.warn("Failed to link image:", err);
               }),
           ),
         );
@@ -105,7 +106,7 @@ export default function ProductModal({
         const savedImage = await imageApi.save(dbKey, bytes, file.name);
         setImages((prev) => [...prev, savedImage]);
       } catch (err) {
-        console.error("Failed to upload image:", err);
+        logger.error("Failed to upload image:", err);
         alert("Failed to upload image.");
       } finally {
         setIsUploading(false);

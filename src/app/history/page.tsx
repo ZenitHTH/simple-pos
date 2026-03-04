@@ -12,6 +12,7 @@ import ReceiptDetailModal from "@/components/history/ReceiptDetailModal";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/SettingsContext";
+import { logger } from "@/lib/logger";
 
 export default function HistoryPage() {
   const { dbKey } = useDatabase();
@@ -56,7 +57,7 @@ export default function HistoryPage() {
       const data = await receiptApi.getInvoicesByDate(dbKey, start, end);
       setReceipts(data.sort((a, b) => b.datetime_unix - a.datetime_unix));
     } catch (error) {
-      console.error("Failed to fetch receipts:", error);
+      logger.error("Failed to fetch receipts:", error);
     } finally {
       setLoading(false);
     }
@@ -99,7 +100,7 @@ export default function HistoryPage() {
         alert("Receipt not found");
       }
     } catch (error) {
-      console.error("Search failed:", error);
+      logger.error("Search failed:", error);
       alert("Receipt not found");
     } finally {
       setLoading(false);

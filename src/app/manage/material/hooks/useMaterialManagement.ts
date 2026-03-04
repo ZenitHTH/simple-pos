@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import { materialApi } from "@/lib";
 import { Material } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 export function useMaterialManagement() {
   const { dbKey } = useDatabase();
@@ -27,7 +28,7 @@ export function useMaterialManagement() {
       setError(
         err instanceof Error ? err.message : "Failed to fetch materials",
       );
-      console.error(err);
+      logger.error("Failed to fetch materials:", err);
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 import { handlers } from "./handlers";
+import { logger } from "@/lib/logger";
 
 /**
  * Mock implementation of Tauri's invoke.
@@ -14,11 +15,11 @@ export async function mockInvoke<T>(command: string, args?: Record<string, any>)
         try {
             return handler(args) as T;
         } catch (error) {
-            console.error(`[Mock API] Error in handler for command "${command}":`, error);
+            logger.error(`[Mock API] Error in handler for command "${command}":`, error);
             throw error;
         }
     }
 
-    console.warn(`[Mock API] No mock handler implemented for command: ${command}`);
+    logger.warn(`[Mock API] No mock handler implemented for command: ${command}`);
     throw new Error(`[Mock API] Command not found: ${command}`);
 }

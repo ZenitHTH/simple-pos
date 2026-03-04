@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { customerApi } from "@/lib";
 import { Customer, NewCustomer } from "@/lib";
+import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -25,7 +26,7 @@ export function useCustomerManagement() {
             const data = await customerApi.getAll(dbKey);
             setCustomers(data);
         } catch (err) {
-            console.error("Failed to fetch customers:", err);
+            logger.error("Failed to fetch customers:", err);
             setError("Failed to load customers. Is the backend running?");
         } finally {
             setLoading(false);
@@ -67,7 +68,7 @@ export function useCustomerManagement() {
             setIsModalOpen(false);
             return result;
         } catch (err) {
-            console.error("Failed to save customer:", err);
+            logger.error("Failed to save customer:", err);
             alert(err);
         } finally {
             setIsSubmitting(false);

@@ -8,6 +8,7 @@ import { useSettings } from "@/context/SettingsContext";
 import SelectableOverlay from "../design-mode/SelectableOverlay";
 import { Modal } from "@/components/ui/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
+import { logger } from "@/lib/logger";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export default function PaymentModal({
 
   // Reset state when modal opens
   useEffect(() => {
-    console.log("PaymentModal: isOpen changed to", isOpen);
+    logger.info("PaymentModal: isOpen changed to", isOpen);
     if (isOpen) {
       setCashReceived("");
       setIsProcessing(false);
@@ -62,7 +63,7 @@ export default function PaymentModal({
     try {
       await onConfirm(cashValue);
     } catch (error) {
-      console.error("Payment failed:", error);
+      logger.error("Payment failed:", error);
       setIsProcessing(false);
     }
   };

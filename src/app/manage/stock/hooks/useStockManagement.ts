@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { stockApi, productApi } from "@/lib";
 import { Stock, BackendProduct } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 export function useStockManagement() {
   const { dbKey } = useDatabase();
@@ -44,7 +45,7 @@ export function useStockManagement() {
           }
         }
       } catch (err) {
-        console.error("Failed to fetch stock data:", err);
+        logger.error("Failed to fetch stock data:", err);
         setError("Failed to load stock data. Is the backend running?");
       } finally {
         setLoading(false);
@@ -75,7 +76,7 @@ export function useStockManagement() {
       await stockApi.remove(dbKey, stockId);
       setStocks(stocks.filter((s) => s.stock_id !== stockId));
     } catch (err) {
-      console.error("Failed to delete stock:", err);
+      logger.error("Failed to delete stock:", err);
       alert("Failed to delete stock entry");
     }
   };
@@ -97,7 +98,7 @@ export function useStockManagement() {
       }
       setIsModalOpen(false);
     } catch (err) {
-      console.error("Failed to save stock:", err);
+      logger.error("Failed to save stock:", err);
       alert("Failed to save stock entry");
     } finally {
       setIsSubmitting(false);

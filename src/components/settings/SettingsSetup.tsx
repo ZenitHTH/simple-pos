@@ -5,6 +5,7 @@ import { useSettings } from "@/context/SettingsContext";
 import { FaCheck, FaCog } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
 import { CURRENCIES } from "./CurrencySettings";
+import { logger } from "@/lib/logger";
 
 interface SettingsSetupProps {
   onComplete: () => void;
@@ -20,7 +21,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
       await save();
       onComplete();
     } catch (error) {
-      console.error("Failed to save settings:", error);
+      logger.error("Failed to save settings:", error);
     } finally {
       setSaving(false);
     }
@@ -70,11 +71,11 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
                     (c) => c.symbol === settings.currency_symbol,
                   )
                     ? [
-                        {
-                          value: "CUSTOM",
-                          label: `Custom (${settings.currency_symbol})`,
-                        },
-                      ]
+                      {
+                        value: "CUSTOM",
+                        label: `Custom (${settings.currency_symbol})`,
+                      },
+                    ]
                     : []),
                 ]}
               />
@@ -130,11 +131,10 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className={`text-primary-foreground shadow-primary/30 flex w-full transform items-center justify-center gap-2 rounded-xl px-6 py-4 text-lg font-bold shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] ${
-              saving
+            className={`text-primary-foreground shadow-primary/30 flex w-full transform items-center justify-center gap-2 rounded-xl px-6 py-4 text-lg font-bold shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] ${saving
                 ? "bg-primary/70 cursor-not-allowed"
                 : "bg-primary hover:bg-primary/90"
-            }`}
+              }`}
           >
             {saving ? "Saving..." : "Finish Setup"}
             {!saving && <FaCheck />}

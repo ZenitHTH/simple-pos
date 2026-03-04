@@ -9,6 +9,7 @@ import {
 } from "@/lib";
 import { RecipeItem, RecipeList } from "@/lib/types/recipe";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 export interface RecipeRow {
   product: BackendProduct;
@@ -44,7 +45,7 @@ export function useRecipeTable() {
       }
       setRows(result);
     } catch (e) {
-      console.error("Failed to load recipe table", e);
+      logger.error("Failed to load recipe table", e);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { productApi, categoryApi } from "@/lib";
 import { BackendProduct, NewProduct, Category } from "@/lib";
+import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -30,7 +31,7 @@ export function useProductManagement() {
       setProducts(data);
       setCategories(fetchedCategories);
     } catch (err) {
-      console.error("Failed to fetch products:", err);
+      logger.error("Failed to fetch products:", err);
       setError("Failed to load products. Is the backend running?");
     } finally {
       setLoading(false);
@@ -59,7 +60,7 @@ export function useProductManagement() {
       await productApi.delete(dbKey, id);
       setProducts(products.filter((p) => p.product_id !== id));
     } catch (err) {
-      console.error("Failed to delete product:", err);
+      logger.error("Failed to delete product:", err);
       alert(err);
     }
   };
@@ -93,7 +94,7 @@ export function useProductManagement() {
       setIsModalOpen(false);
       return result;
     } catch (err) {
-      console.error("Failed to save product:", err);
+      logger.error("Failed to save product:", err);
       alert(err);
     } finally {
       setIsSubmitting(false);
@@ -132,7 +133,7 @@ export function useProductManagement() {
             : p,
         ),
       );
-      console.error("Failed to toggle stock mode:", err);
+      logger.error("Failed to toggle stock mode:", err);
       alert("Failed to toggle stock mode");
     }
   };

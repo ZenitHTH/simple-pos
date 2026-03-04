@@ -5,7 +5,7 @@ import { receiptApi } from "@/lib";
 import { FaFileExport, FaFolderOpen } from "react-icons/fa";
 import { save } from "@tauri-apps/plugin-dialog";
 import SettingsSection from "@/components/ui/SettingsSection";
-
+import { logger } from "@/lib/logger";
 import { useDatabase } from "@/context/DatabaseContext";
 
 export default function ExportSection() {
@@ -55,7 +55,7 @@ export default function ExportSection() {
           throw new Error(`Unsupported format: ${format}`);
       }
     } catch (error) {
-      console.error(`Export failed for format ${format}:`, error);
+      logger.error(`Export failed for format ${format}:`, error);
       alert(`Export failed for ${format.toUpperCase()}: ` + error);
     } finally {
       setLoading(false);
@@ -112,11 +112,10 @@ export default function ExportSection() {
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-all ${
-                    format === f
-                      ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
-                      : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
-                  }`}
+                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-all ${format === f
+                    ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
+                    : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
+                    }`}
                 >
                   {f}
                 </button>

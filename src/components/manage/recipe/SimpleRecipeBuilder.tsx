@@ -16,6 +16,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { Select } from "@/components/ui/Select";
 import { UNIT_OPTIONS } from "@/lib";
 import { DualColumnBuilder } from "@/components/ui/DualColumnBuilder";
+import { logger } from "@/lib/logger";
 
 import {
   MaterialSourceItem,
@@ -76,7 +77,7 @@ export default function SimpleRecipeBuilder({
         const material = JSON.parse(materialData);
         addMaterial(material);
       } catch (err) {
-        console.error("Failed to parse material data", err);
+        logger.error("Failed to parse material data", err);
       }
     }
   };
@@ -99,7 +100,7 @@ export default function SimpleRecipeBuilder({
       await refreshMaterials();
       setIsMaterialModalOpen(false);
     } catch (err) {
-      console.error("Failed to create material", err);
+      logger.error("Failed to create material", err);
     } finally {
       setIsCreatingMaterial(false);
     }

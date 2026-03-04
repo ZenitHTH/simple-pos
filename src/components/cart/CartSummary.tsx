@@ -3,6 +3,7 @@ import { CardFooter } from "@/components/ui/Card";
 import { Customer } from "@/lib";
 import { Select } from "@/components/ui/Select";
 import { useTax } from "@/hooks/useTax";
+import { logger } from "@/lib/logger";
 
 interface CartSummaryProps {
   subtotal: number;
@@ -71,7 +72,7 @@ const CartSummary = memo(function CartSummary({
 
       <button
         onClick={() => {
-          console.log("CartSummary: Checkout Now clicked");
+          logger.info("CartSummary: Checkout Now clicked");
           onCheckout();
         }}
         className="bg-primary text-primary-foreground shadow-primary/30 hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[1.125em] font-bold shadow-lg transition-all active:scale-[0.98]"

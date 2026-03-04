@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
 import { categoryApi, receiptApi, customerApi } from "@/lib";
+import { logger } from "@/lib/logger";
 import { useCurrency } from "./useCurrency";
 import { useTax } from "./useTax";
 import { exampleProducts, exampleCartItems } from "@/lib";
@@ -50,7 +51,7 @@ export function usePOSLogic(initialProducts: Product[]) {
         setCustomers(custData);
       })
       .catch((err) => {
-        console.error("Failed to fetch initial pos data", err);
+        logger.error("Failed to fetch initial pos data", err);
       });
   }, [dbKey]);
 
@@ -134,9 +135,9 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, []);
 
   const handleCheckout = useCallback(() => {
-    console.log("usePOSLogic: handleCheckout called, cart length =", cartItems.length);
+    logger.info("usePOSLogic: handleCheckout called, cart length =", cartItems.length);
     if (cartItems.length === 0) return;
-    console.log("usePOSLogic: setting isPaymentModalOpen to true");
+    logger.info("usePOSLogic: setting isPaymentModalOpen to true");
     setIsPaymentModalOpen(true);
   }, [cartItems.length]);
 
@@ -182,7 +183,7 @@ export function usePOSLogic(initialProducts: Product[]) {
         setSelectedCustomerId(undefined);
         setIsPaymentModalOpen(false);
       } catch (error) {
-        console.error("Payment failed:", error);
+        logger.error("Payment failed:", error);
         showToast("Payment failed. Please try again.", "error");
       }
     },

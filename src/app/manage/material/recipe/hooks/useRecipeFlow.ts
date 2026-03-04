@@ -18,6 +18,7 @@ import {
   AppSettings,
 } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { logger } from "@/lib/logger";
 
 const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
@@ -252,7 +253,7 @@ export function useRecipeFlow({ onSaved }: { onSaved?: () => void } = {}) {
         setEdges((eds) => [...eds, ...newEdges]);
       }
     } catch (err) {
-      console.error("Failed to load recipe items", err);
+      logger.error("Failed to load recipe items:", err);
     }
   };
 

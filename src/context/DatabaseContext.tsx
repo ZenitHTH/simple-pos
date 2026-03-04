@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { invoke } from "@/lib/api/invoke";
+import { logger } from "@/lib/logger";
 
 interface DatabaseContextType {
   dbKey: string | null;
@@ -27,7 +28,7 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
         const exists: boolean = await invoke("check_database_exists");
         setDbExists(exists);
       } catch (err) {
-        console.error("Failed to check database:", err);
+        logger.error("Failed to check database:", err);
         // If check fails, we don't know if it exists.
         // Better to keep it null or set a specific state to show error UI.
         // For now, setting it to null or handling it in the guard is safer.
@@ -44,7 +45,7 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
       setDbKey(key);
       setDbExists(true); // Ensure we mark it as existing after successful init
     } catch (error) {
-      console.error("Failed to initialize DB:", error);
+      logger.error("Failed to initialize DB:", error);
       throw error;
     } finally {
       setIsLoading(false);

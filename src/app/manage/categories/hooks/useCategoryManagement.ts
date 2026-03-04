@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { categoryApi } from "@/lib";
 import { Category } from "@/lib";
+import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -24,7 +25,7 @@ export function useCategoryManagement() {
         const data = await categoryApi.getAll(dbKey);
         setCategories(data);
       } catch (err) {
-        console.error("Failed to fetch categories:", err);
+        logger.error("Failed to fetch categories:", err);
         setError("Failed to load categories.");
       } finally {
         setLoading(false);
@@ -50,7 +51,7 @@ export function useCategoryManagement() {
       await categoryApi.delete(dbKey, id);
       setCategories(categories.filter((c) => c.id !== id));
     } catch (err) {
-      console.error(err);
+      logger.error("Failed to delete category:", err);
       alert("Failed to delete category");
     }
   };
@@ -73,7 +74,7 @@ export function useCategoryManagement() {
       }
       setIsModalOpen(false);
     } catch (err) {
-      console.error(err);
+      logger.error("Failed to save category:", err);
       alert("Failed to save category");
     } finally {
       setIsSubmitting(false);
