@@ -4,7 +4,7 @@ use database::establish_connection;
 use database::receipt::{self, model::ReceiptList};
 
 use crate::commands::settings::get_settings;
-use export_lib::thai_accounting::{build_thai_sales_tax_report, TaxReportRow};
+use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
 use std::path::PathBuf;
 use tauri::command;
 
@@ -18,10 +18,28 @@ pub fn export_receipts(
 ) -> Result<String, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
-    // Fetch Receipts in range
-    let headers: Vec<ReceiptList> =
-        receipt::find_headers_by_date_range(&mut conn, start_date, end_date)
-            .map_err(|e| e.to_string())?;
+    // Path validation
+    let path = PathBuf::from(&export_path);
+    if !path.is_absolute() {
+        return Err("Export path must be absolute".to_string());
+    }
+    if path
+        .components()
+        .any(|c| matches!(c, std::path::Component::ParentDir))
+    {
+        return Err("Export path cannot contain '..' components".to_string());
+    }
+
+    // Join receipt_list and receipt_item to fetch everything in one query (N+1 fix)
+    use database::schema::{receipt_item, receipt_list};
+    use diesel::prelude::*;
+    let all_data: Vec<(ReceiptList, database::Receipt)> = receipt_list::table
+        .inner_join(receipt_item::table.on(receipt_item::receipt_id.eq(receipt_list::receipt_id)))
+        .filter(receipt_list::datetime_unix.ge(start_date))
+        .filter(receipt_list::datetime_unix.le(end_date))
+        .order(receipt_list::datetime_unix.desc())
+        .load::<(ReceiptList, database::Receipt)>(&mut conn)
+        .map_err(|e| e.to_string())?;
 
     // Fetch customers
     let customers = customer::get_all_customers(&mut conn).unwrap_or_default();
@@ -30,13 +48,20 @@ pub fn export_receipts(
     let settings = get_settings().map_err(|e| e.to_string())?;
     let vat_rate = settings.tax_rate;
 
+    // Group items by receipt
+    use std::collections::BTreeMap;
+    let mut receipt_groups: BTreeMap<i32, (ReceiptList, Vec<database::Receipt>)> = BTreeMap::new();
+    for (header, item) in all_data {
+        receipt_groups
+            .entry(header.receipt_id)
+            .or_insert((header, Vec::new()))
+            .1
+            .push(item);
+    }
+
     let mut report_rows = Vec::new();
 
-    for header in headers {
-        let items = receipt::get_full_receipt(&mut conn, header.receipt_id)
-            .map_err(|e| e.to_string())?
-            .1;
-
+    for (header, items) in receipt_groups.into_values().rev() {
         let date_str = Utc
             .timestamp_opt(header.datetime_unix, 0)
             .single()

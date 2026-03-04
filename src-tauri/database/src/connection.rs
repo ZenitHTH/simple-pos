@@ -51,35 +51,41 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
 
     // 1. Try to connect with the key
     let mut conn = SqliteConnection::establish(database_url)
-        .map_err(|e| format!("Error connecting to {}: {}", database_url, e))?;
+        .map_err(|_| "Failed to establish database connection".to_string())?;
 
     let escaped_key = key.replace('\'', "''");
     diesel::sql_query(format!("PRAGMA key = '{}';", escaped_key))
         .execute(&mut conn)
-        .map_err(|e| format!("Error setting encryption key: {}", e))?;
+        .map_err(|_| "Error setting encryption key".to_string())?;
 
     // Check if decryption works by performing a query that touches the master table
-    if diesel::sql_query("SELECT count(*) FROM sqlite_master;").execute(&mut conn).is_ok() {
+    if diesel::sql_query("SELECT count(*) FROM sqlite_master;")
+        .execute(&mut conn)
+        .is_ok()
+    {
         return Ok(conn);
     }
 
     // 2. If it failed, check if the database is UNENCRYPTED
     // We need a NEW connection because the previous one is now in an error state for SQLCipher
     let mut conn = SqliteConnection::establish(database_url)
-        .map_err(|e| format!("Error connecting to {}: {}", database_url, e))?;
+        .map_err(|_| "Failed to establish database connection".to_string())?;
 
-    if diesel::sql_query("SELECT count(*) FROM sqlite_master;").execute(&mut conn).is_ok() {
+    if diesel::sql_query("SELECT count(*) FROM sqlite_master;")
+        .execute(&mut conn)
+        .is_ok()
+    {
         // The database is unencrypted! Let's encrypt it with the provided key.
         // In SQLCipher, PRAGMA rekey is used to set the initial key on an unencrypted database or change an existing one.
-        log::info!("Database is unencrypted. Encrypting now...");
+        log::debug!("Database setup: initial encryption required.");
         diesel::sql_query(format!("PRAGMA rekey = '{}';", escaped_key))
             .execute(&mut conn)
-            .map_err(|e| format!("Error encrypting unencrypted database: {}", e))?;
+            .map_err(|_| "Error encrypting database".to_string())?;
 
         // Verify it's now encrypted and accessible
         diesel::sql_query("SELECT count(*) FROM sqlite_master;")
             .execute(&mut conn)
-            .map_err(|e| format!("Verification after encryption failed: {}", e))?;
+            .map_err(|_| "Database verification failed after encryption".to_string())?;
 
         return Ok(conn);
     }

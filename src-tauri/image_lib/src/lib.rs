@@ -50,11 +50,10 @@ pub fn save_image(
     let save_dir = if let Some(d) = target_dir {
         d.to_path_buf()
     } else {
-        if let Some(parent) = db_path.parent() {
-            parent.join("images")
-        } else {
-            return Err(ImageError::DirectoryNotFound);
-        }
+        db_path
+            .parent()
+            .map(|p| p.join("images"))
+            .ok_or(ImageError::DirectoryNotFound)?
     };
 
     if !save_dir.exists() {

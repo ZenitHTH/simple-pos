@@ -142,6 +142,23 @@ fn get_settings_path() -> Result<PathBuf, String> {
     Ok(data_dir.join("settings.json"))
 }
 
+fn validate_path(path_str: &str) -> Result<(), String> {
+    let path = PathBuf::from(path_str);
+    if !path.is_absolute() {
+        return Err(format!("Path '{}' must be absolute", path_str));
+    }
+    if path
+        .components()
+        .any(|c| matches!(c, std::path::Component::ParentDir))
+    {
+        return Err(format!(
+            "Path '{}' cannot contain '..' components",
+            path_str
+        ));
+    }
+    Ok(())
+}
+
 #[command]
 pub fn get_settings() -> Result<AppSettings, String> {
     let path = get_settings_path()?;
@@ -162,6 +179,14 @@ pub fn get_settings() -> Result<AppSettings, String> {
 
 #[command]
 pub fn save_settings(settings: AppSettings) -> Result<(), String> {
+    // Validate storage paths if provided
+    if let Some(ref p) = settings.db_storage_path {
+        validate_path(p)?;
+    }
+    if let Some(ref p) = settings.image_storage_path {
+        validate_path(p)?;
+    }
+
     let path = get_settings_path()?;
     let content = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
     fs::write(path, content).map_err(|e| e.to_string())?;
@@ -196,12 +221,15 @@ pub fn get_storage_info() -> Result<StorageInfo, String> {
 
 #[command]
 pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), String> {
+    validate_path(&new_path)?;
+
     let mut conn = database::establish_connection(&key).map_err(|e| e.to_string())?;
     let images = database::image::get_all_images(&mut conn).map_err(|e| e.to_string())?;
 
     let new_path_buf = std::path::PathBuf::from(&new_path);
     if !new_path_buf.exists() {
-        std::fs::create_dir_all(&new_path_buf).map_err(|e| format!("Error creating new directory: {}", e))?;
+        std::fs::create_dir_all(&new_path_buf)
+            .map_err(|e| format!("Error creating new directory: {}", e))?;
     }
 
     for image in images {
@@ -217,11 +245,15 @@ pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), Stri
 
             // Copy file to new location
             std::fs::copy(&old_path, &dest_path).map_err(|e| {
-                format!("Failed to copy {} to {}: {}", image.file_name, dest_path_str, e)
+                format!(
+                    "Failed to copy {} to {}: {}",
+                    image.file_name, dest_path_str, e
+                )
             })?;
 
             // Update database record
-            database::image::update_image_path(&mut conn, image.id, &dest_path_str).map_err(|e| e.to_string())?;
+            database::image::update_image_path(&mut conn, image.id, &dest_path_str)
+                .map_err(|e| e.to_string())?;
 
             // Delete old file only if it's different (extra precaution)
             if old_path != dest_path {

@@ -45,7 +45,7 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
       setDbKey(key);
       setDbExists(true); // Ensure we mark it as existing after successful init
     } catch (error) {
-      logger.error("Failed to initialize DB:", error);
+      logger.error("Failed to initialize DB. Please check your credentials and try again.");
       throw error;
     } finally {
       setIsLoading(false);

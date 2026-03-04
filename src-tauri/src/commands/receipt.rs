@@ -72,26 +72,27 @@ pub fn add_invoice_item(
 
                 for r_item in recipe_items {
                     if let Ok(mut mat) = material::find_material(conn, r_item.material_id) {
-                        // Calculate total volume to deduct
-                        // volume_use is scaled by volume_use_precision
-                        let recipe_scaled_vol =
-                            r_item.volume_use as f64 / 10f64.powi(r_item.volume_use_precision);
-                        let total_deduction_vol = recipe_scaled_vol * (quantity as f64);
+                        // Calculate total volume to deduct using integer arithmetic to maintain precision
+                        // volume_use is significand, quantity is integer.
+                        let total_deduction_scaled = (r_item.volume_use as i64) * (quantity as i64);
 
+                        // Align precisions
                         // mat.volume is scaled by mat.precision
-                        let mat_unit_vol = mat.volume as f64 / 10f64.powi(mat.precision);
+                        // total_deduction_scaled is scaled by r_item.volume_use_precision
+                        let deduction_aligned = if mat.precision >= r_item.volume_use_precision {
+                            total_deduction_scaled * 10i64.pow((mat.precision - r_item.volume_use_precision) as u32)
+                        } else {
+                            total_deduction_scaled / 10i64.pow((r_item.volume_use_precision - mat.precision) as u32)
+                        };
 
-                        // Current total volume: unit_vol * quantity
-                        let current_total_vol = mat_unit_vol * (mat.quantity as f64);
-                        let new_total_vol = current_total_vol - total_deduction_vol;
+                        // Current total volume: mat.volume * mat.quantity
+                        let current_total_vol_scaled = (mat.volume as i64) * (mat.quantity as i64);
+                        let new_total_vol_scaled = current_total_vol_scaled - deduction_aligned;
 
-                        // New quantity = new_total_vol / unit_vol
-                        if mat_unit_vol > 0.0 {
-                            mat.quantity = (new_total_vol / mat_unit_vol).round() as i32;
+                        // New quantity = new_total_vol_scaled / mat.volume
+                        if mat.volume > 0 {
+                            mat.quantity = (new_total_vol_scaled / mat.volume as i64) as i32;
                         }
-
-                        // material::update_material(conn, mat)
-                        //     .map_err(|_| diesel::result::Error::RollbackTransaction)?;
 
                         material::update_material(conn, mat.clone())
                             .map_err(|_| diesel::result::Error::RollbackTransaction)?;
@@ -100,10 +101,7 @@ pub fn add_invoice_item(
                         let hist_item = database::NewReceiptItemMaterial {
                             receipt_item_id: saved_item.id,
                             material_id: r_item.material_id,
-                            volume_used: (recipe_scaled_vol
-                                * (quantity as f64)
-                                * 10f64.powi(r_item.volume_use_precision))
-                            .round() as i32,
+                            volume_used: total_deduction_scaled as i32,
                             precision: r_item.volume_use_precision,
                         };
                         receipt::add_item_material(conn, &hist_item)
@@ -154,34 +152,30 @@ pub fn get_accumulated_report(
 
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
-    // 1. Get products accumulation
-    // We group by product_id and title to get sums
-    let products = receipt_list::table
+    // 1. Get products accumulation using SQL aggregation
+    let product_stats = receipt_list::table
         .inner_join(receipt_item::table.on(receipt_item::receipt_id.eq(receipt_list::receipt_id)))
         .inner_join(product::table.on(product::product_id.eq(receipt_item::product_id)))
         .filter(receipt_list::datetime_unix.ge(start_unix))
         .filter(receipt_list::datetime_unix.le(end_unix))
-        .select((product::product_id, product::title, receipt_item::quantity))
-        .load::<(i32, String, i32)>(&mut conn)
-        .map_err(|e| e.to_string())?;
-
-    use std::collections::HashMap;
-    let mut product_map: HashMap<i32, (String, i64)> = HashMap::new();
-    for (id, title, qty) in products {
-        let entry = product_map.entry(id).or_insert((title, 0));
-        entry.1 += qty as i64;
-    }
-    let product_stats = product_map
+        .group_by((product::product_id, product::title))
+        .select((
+            product::product_id,
+            product::title,
+            diesel::dsl::sum(receipt_item::quantity),
+        ))
+        .load::<(i32, String, Option<i64>)>(&mut conn)
+        .map_err(|e| e.to_string())?
         .into_iter()
-        .map(|(id, (title, qty))| ProductAccumulation {
+        .map(|(id, title, qty)| ProductAccumulation {
             product_id: id,
             title,
-            total_quantity: qty,
+            total_quantity: qty.unwrap_or(0),
         })
         .collect::<Vec<_>>();
 
-    // 2. Get materials accumulation
-    let materials = receipt_list::table
+    // 2. Get materials accumulation using SQL aggregation
+    let material_stats = receipt_list::table
         .inner_join(receipt_item::table.on(receipt_item::receipt_id.eq(receipt_list::receipt_id)))
         .inner_join(
             receipt_item_material::table
@@ -190,26 +184,20 @@ pub fn get_accumulated_report(
         .inner_join(material::table.on(material::id.eq(receipt_item_material::material_id)))
         .filter(receipt_list::datetime_unix.ge(start_unix))
         .filter(receipt_list::datetime_unix.le(end_unix))
+        .group_by((material::id, material::name, receipt_item_material::precision))
         .select((
             material::id,
             material::name,
-            receipt_item_material::volume_used,
+            diesel::dsl::sum(receipt_item_material::volume_used),
             receipt_item_material::precision,
         ))
-        .load::<(i32, String, i32, i32)>(&mut conn)
-        .map_err(|e| e.to_string())?;
-
-    let mut material_map: HashMap<i32, (String, i64, i32)> = HashMap::new();
-    for (id, name, vol, prec) in materials {
-        let entry = material_map.entry(id).or_insert((name, 0, prec));
-        entry.1 += vol as i64;
-    }
-    let material_stats = material_map
+        .load::<(i32, String, Option<i64>, i32)>(&mut conn)
+        .map_err(|e| e.to_string())?
         .into_iter()
-        .map(|(id, (name, vol, prec))| MaterialAccumulation {
+        .map(|(id, name, vol, prec)| MaterialAccumulation {
             material_id: id,
             name,
-            total_volume_used: vol,
+            total_volume_used: vol.unwrap_or(0),
             precision: prec,
         })
         .collect::<Vec<_>>();

@@ -20,12 +20,26 @@ pub fn link_product_image(
     image_id: i32,
 ) -> Result<database::product_image::model::ProductImage, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+
+    // Validate existence
+    database::product::find_product(&mut conn, product_id)
+        .map_err(|_| format!("Product with ID {} does not exist", product_id))?;
+    database::image::get_image(&mut conn, image_id)
+        .map_err(|_| format!("Image with ID {} does not exist", image_id))?;
+
     db_link_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
 }
 
 #[command]
 pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+
+    // Validate existence (Optional but good for security report compliance)
+    database::product::find_product(&mut conn, product_id)
+        .map_err(|_| format!("Product with ID {} does not exist", product_id))?;
+    database::image::get_image(&mut conn, image_id)
+        .map_err(|_| format!("Image with ID {} does not exist", image_id))?;
+
     db_unlink_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
 }
 
