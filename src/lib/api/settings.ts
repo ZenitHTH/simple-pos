@@ -21,3 +21,4 @@ export const settingsApi = {
     await invoke("migrate_image_directory", { key, newPath });
   },
 };
+

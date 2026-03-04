@@ -6,6 +6,7 @@ import { StorageInfo } from "@/lib";
 import { FaFolderOpen, FaCog } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useToast } from "@/context/ToastContext";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Button } from "@/components/ui/Button";
 
@@ -21,6 +22,7 @@ const GeneralSettings = memo(function GeneralSettings({
   onUpdateSettings,
 }: GeneralSettingsProps) {
   const { dbKey } = useDatabase();
+  const { showToast } = useToast();
   const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
   const [isMigrating, setIsMigrating] = useState(false);
 
@@ -29,6 +31,11 @@ const GeneralSettings = memo(function GeneralSettings({
   }, []);
 
   const handleSelectImageStorage = async () => {
+    if (!dbKey) {
+      showToast("You must be logged in to migrate images", "error");
+      return;
+    }
+
     try {
       const selected = await open({
         directory: true,
@@ -37,28 +44,48 @@ const GeneralSettings = memo(function GeneralSettings({
       });
 
       if (selected && typeof selected === "string") {
-        if (dbKey) {
-          setIsMigrating(true);
-          try {
-            await settingsApi.migrateImageDirectory(dbKey, selected);
-            onUpdateSettings({ image_storage_path: selected });
-          } catch (err) {
-            console.error("Migration failed:", err);
-            alert("Failed to migrate images to new directory.");
-          } finally {
-            setIsMigrating(false);
-          }
-        } else {
+        if (!dbKey) {
           onUpdateSettings({ image_storage_path: selected });
+          return;
+        }
+
+        setIsMigrating(true);
+        showToast("Migrating images to new location...", "info");
+        try {
+          await settingsApi.migrateImageDirectory(dbKey, selected);
+          onUpdateSettings({ image_storage_path: selected });
+          showToast("Image migration successful", "success");
+        } catch (error: any) {
+          console.error("Failed to migrate images:", error);
+          showToast(`Migration failed: ${error.message || error}`, "error");
+        } finally {
+          setIsMigrating(false);
         }
       }
     } catch (error) {
-      console.error("Failed to specify directory:", error);
+      console.error("Failed to select directory:", error);
     }
   };
 
-  const handleResetStorage = () => {
-    onUpdateSettings({ image_storage_path: undefined });
+  const handleResetStorage = async () => {
+    if (!dbKey || !storageInfo) return;
+
+    try {
+      // Calculate default path from db_path
+      const dbDir = storageInfo.db_path.substring(0, storageInfo.db_path.lastIndexOf("/"));
+      const defaultPath = `${dbDir}/images`;
+
+      setIsMigrating(true);
+      showToast("Resetting images to default location...", "info");
+      await settingsApi.migrateImageDirectory(dbKey, defaultPath);
+      onUpdateSettings({ image_storage_path: undefined });
+      showToast("Images reset to default location", "success");
+    } catch (error: any) {
+      console.error("Failed to reset images:", error);
+      showToast(`Reset failed: ${error.message || error}`, "error");
+    } finally {
+      setIsMigrating(false);
+    }
   };
 
   return (

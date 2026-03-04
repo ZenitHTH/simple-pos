@@ -201,32 +201,31 @@ pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), Stri
 
     let new_path_buf = std::path::PathBuf::from(&new_path);
     if !new_path_buf.exists() {
-        std::fs::create_dir_all(&new_path_buf).map_err(|e| e.to_string())?;
+        std::fs::create_dir_all(&new_path_buf).map_err(|e| format!("Error creating new directory: {}", e))?;
     }
 
     for image in images {
         let old_path = std::path::PathBuf::from(&image.file_path);
+        let dest_path = new_path_buf.join(&image.file_name);
+        let dest_path_str = dest_path.to_string_lossy().to_string();
 
-        // Use the actual filename from the old path
-        if let Some(filename) = old_path.file_name() {
-            let dest_path = new_path_buf.join(filename);
+        if old_path.exists() {
+            // If it's already in the same directory, skip
+            if old_path == dest_path {
+                continue;
+            }
 
-            if old_path.exists() {
-                // If it's already in the same directory, skip
-                if old_path == dest_path {
-                    continue;
-                }
+            // Copy file to new location
+            std::fs::copy(&old_path, &dest_path).map_err(|e| {
+                format!("Failed to copy {} to {}: {}", image.file_name, dest_path_str, e)
+            })?;
 
-                std::fs::copy(&old_path, &dest_path).map_err(|e| {
-                    format!("Failed to copy {:?} to {:?}: {}", old_path, dest_path, e)
-                })?;
-                database::update_image_path(&mut conn, image.id, &dest_path.to_string_lossy())
-                    .map_err(|e| e.to_string())?;
+            // Update database record
+            database::image::update_image_path(&mut conn, image.id, &dest_path_str).map_err(|e| e.to_string())?;
 
-                // Only remove if it's actually different (precaution)
-                if old_path != dest_path {
-                    let _ = std::fs::remove_file(&old_path);
-                }
+            // Delete old file only if it's different (extra precaution)
+            if old_path != dest_path {
+                let _ = std::fs::remove_file(&old_path);
             }
         }
     }
