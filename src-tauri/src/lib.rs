@@ -54,6 +54,7 @@ pub fn run() {
             add_invoice_item,
             get_invoice_detail,
             get_invoices_by_date,
+            get_accumulated_report,
             // Category Commands
             get_categories,
             create_category,

@@ -56,4 +56,24 @@ export const receiptApi = {
       reportType: reportType,
     });
   },
+
+  getAccumulatedReport: async (
+    key: string,
+    startDate: number,
+    endDate: number,
+  ): Promise<{
+    products: { product_id: number; title: string; total_quantity: number }[];
+    materials: {
+      material_id: number;
+      name: string;
+      total_volume_used: number;
+      precision: number;
+    }[];
+  }> => {
+    return await invoke("get_accumulated_report", {
+      key,
+      startUnix: startDate,
+      endUnix: endDate,
+    });
+  },
 };

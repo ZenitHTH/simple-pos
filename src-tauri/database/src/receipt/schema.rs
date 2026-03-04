@@ -16,5 +16,17 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    receipt_item_material (id) {
+        id -> Integer,
+        receipt_item_id -> Integer,
+        material_id -> Integer,
+        volume_used -> Integer,
+        precision -> Integer,
+    }
+}
+
 diesel::joinable!(receipt_item -> receipt_list (receipt_id));
-diesel::allow_tables_to_appear_in_same_query!(receipt_list, receipt_item);
+diesel::joinable!(receipt_item_material -> receipt_item (receipt_item_id));
+
+diesel::allow_tables_to_appear_in_same_query!(receipt_list, receipt_item, receipt_item_material);

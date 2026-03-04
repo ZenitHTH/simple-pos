@@ -1,7 +1,7 @@
 pub mod model;
 pub mod schema;
 
-use self::schema::{receipt_item, receipt_list};
+use self::schema::{receipt_item, receipt_item_material, receipt_list};
 use chrono::Utc; // Ensure you add `chrono` to your Cargo.toml
 use diesel::prelude::*;
 pub use model::*;
@@ -42,6 +42,16 @@ pub fn add_item(
     diesel::insert_into(receipt_item::table)
         .values(new_item)
         .returning(Receipt::as_returning())
+        .get_result(conn)
+}
+
+pub fn add_item_material(
+    conn: &mut SqliteConnection,
+    new_item_material: &NewReceiptItemMaterial,
+) -> Result<ReceiptItemMaterial, diesel::result::Error> {
+    diesel::insert_into(receipt_item_material::table)
+        .values(new_item_material)
+        .returning(ReceiptItemMaterial::as_returning())
         .get_result(conn)
 }
 

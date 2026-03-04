@@ -18,3 +18,21 @@ export interface NewReceipt {
   quantity: number;
   satang_at_sale: number;
 }
+
+export interface ProductAccumulation {
+  product_id: number;
+  title: string;
+  total_quantity: number;
+}
+
+export interface MaterialAccumulation {
+  material_id: number;
+  name: string;
+  total_volume_used: number;
+  precision: number;
+}
+
+export interface AccumulatedReport {
+  products: ProductAccumulation[];
+  materials: MaterialAccumulation[];
+}

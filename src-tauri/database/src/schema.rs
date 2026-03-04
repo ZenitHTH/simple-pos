@@ -67,9 +67,19 @@ diesel::table! {
 }
 
 diesel::table! {
+    receipt_item_material (id) {
+        id -> Integer,
+        receipt_item_id -> Integer,
+        material_id -> Integer,
+        volume_used -> Integer,
+        precision -> Integer,
+    }
+}
+
+diesel::table! {
     receipt_list (receipt_id) {
         receipt_id -> Integer,
-        datetime_unix -> Integer,
+        datetime_unix -> BigInt,
         customer_id -> Nullable<Integer>,
     }
 }
@@ -106,6 +116,8 @@ diesel::joinable!(product_images -> images (image_id));
 diesel::joinable!(product_images -> product (product_id));
 diesel::joinable!(receipt_item -> product (product_id));
 diesel::joinable!(receipt_item -> receipt_list (receipt_id));
+diesel::joinable!(receipt_item_material -> material (material_id));
+diesel::joinable!(receipt_item_material -> receipt_item (receipt_item_id));
 diesel::joinable!(receipt_list -> customer (customer_id));
 diesel::joinable!(recipe_item -> material (material_id));
 diesel::joinable!(recipe_item -> recipe_list (recipe_list_id));
@@ -120,8 +132,15 @@ diesel::allow_tables_to_appear_in_same_query!(
     product,
     product_images,
     receipt_item,
+    receipt_item_material,
     receipt_list,
     recipe_item,
     recipe_list,
     stock,
+);
+
+diesel::allow_columns_to_appear_in_same_group_by_clause!(
+    material::id,
+    material::name,
+    receipt_item_material::precision,
 );
