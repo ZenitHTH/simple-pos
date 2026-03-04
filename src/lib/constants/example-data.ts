@@ -6,7 +6,7 @@ export const exampleProducts: Product[] = [
     name: "Iced Americano",
     price: 4.5,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/americano.png",
     color: "#78350f",
   },
   {
@@ -14,7 +14,7 @@ export const exampleProducts: Product[] = [
     name: "Cappuccino",
     price: 5.0,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/cappuccino.png",
     color: "#d97706",
   },
   {
@@ -22,7 +22,7 @@ export const exampleProducts: Product[] = [
     name: "Latte",
     price: 5.25,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/latte.png",
     color: "#b45309",
   },
   {
@@ -30,7 +30,7 @@ export const exampleProducts: Product[] = [
     name: "Espresso",
     price: 3.5,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/espresso.png",
     color: "#451a03",
   },
   {
@@ -38,7 +38,7 @@ export const exampleProducts: Product[] = [
     name: "Mocha",
     price: 5.5,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/mocha.png",
     color: "#92400e",
   },
   {
@@ -46,7 +46,7 @@ export const exampleProducts: Product[] = [
     name: "Caramel Macchiato",
     price: 5.75,
     category: "Coffee",
-    image: "",
+    image: "/mock/images/caramel_macchiato.png",
     color: "#d97706",
   },
   {
@@ -54,7 +54,7 @@ export const exampleProducts: Product[] = [
     name: "Matcha Latte",
     price: 5.5,
     category: "Tea",
-    image: "",
+    image: "/mock/images/matcha_latte.png",
     color: "#166534",
   },
   {
@@ -62,7 +62,7 @@ export const exampleProducts: Product[] = [
     name: "Croissant",
     price: 3.75,
     category: "Bakery",
-    image: "",
+    image: "/mock/images/croissant.png",
     color: "#f59e0b",
   },
   {
@@ -70,7 +70,7 @@ export const exampleProducts: Product[] = [
     name: "Blueberry Muffin",
     price: 4.0,
     category: "Bakery",
-    image: "",
+    image: "/mock/images/blueberry_muffin.png",
     color: "#6366f1",
   },
   {
@@ -78,7 +78,7 @@ export const exampleProducts: Product[] = [
     name: "Cheesecake",
     price: 6.5,
     category: "Dessert",
-    image: "",
+    image: "/mock/images/cheesecake.png",
     color: "#eab308",
   },
   {
@@ -86,7 +86,7 @@ export const exampleProducts: Product[] = [
     name: "Chocolate Cake",
     price: 6.0,
     category: "Dessert",
-    image: "",
+    image: "/mock/images/chocolate_cake.png",
     color: "#3f3f46",
   },
   {
@@ -94,7 +94,7 @@ export const exampleProducts: Product[] = [
     name: "Iced Tea",
     price: 3.5,
     category: "Tea",
-    image: "",
+    image: "/mock/images/iced_tea.png",
     color: "#ef4444",
   },
 ];
