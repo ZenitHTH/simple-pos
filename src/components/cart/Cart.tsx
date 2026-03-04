@@ -44,53 +44,57 @@ export default function Cart({
   }
 
   return (
-    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-xl">
-      <CardHeader className="bg-card/50 z-10 border-b backdrop-blur-sm">
-        <CardTitle className="flex items-center gap-3 text-[1.5em] font-bold">
-          <span className="text-primary">Current Order</span>
-          <span className="text-muted-foreground bg-muted/20 rounded-full px-3 py-1 text-[0.875em] font-normal">
-            {itemsCount} items
+    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-2xl transition-all duration-300">
+      <CardHeader className="bg-card/80 z-20 border-b backdrop-blur-md">
+        <CardTitle className="flex items-center justify-between gap-3 text-[1.5em] font-black">
+          <div className="flex items-center gap-2">
+            <span className="text-primary">Current Order</span>
+          </div>
+          <span className="bg-primary/10 text-primary rounded-full px-4 py-1 text-[0.6em] font-bold">
+            {itemsCount} {itemsCount === 1 ? "item" : "items"}
           </span>
         </CardTitle>
       </CardHeader>
 
       <CardContent
-        className="scrollbar-thin flex-1 overflow-y-auto px-2 py-2"
+        className="custom-scrollbar flex-1 overflow-y-auto px-3 py-4"
         data-lenis-prevent
       >
         <div
+          className="flex flex-col"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: `${settings.cart_item_margin ?? 8}px`,
+            gap: `${settings.cart_item_margin ?? 10}px`,
           }}
         >
           {items.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              currency={currency}
-              onUpdateQuantity={onUpdateQuantity}
-              onRemove={onRemove}
-              itemFontSize={settings.cart_item_font_size ?? undefined}
-              headerFontSize={settings.cart_item_header_font_size ?? undefined}
-              priceFontSize={settings.cart_item_price_font_size ?? undefined}
-              itemPadding={settings.cart_item_padding ?? undefined}
-            />
+            <div key={item.id} className="animate-in fade-in slide-in-from-right-4 duration-300">
+              <CartItem
+                item={item}
+                currency={currency}
+                onUpdateQuantity={onUpdateQuantity}
+                onRemove={onRemove}
+                itemFontSize={settings.cart_item_font_size ?? undefined}
+                headerFontSize={settings.cart_item_header_font_size ?? undefined}
+                priceFontSize={settings.cart_item_price_font_size ?? undefined}
+                itemPadding={settings.cart_item_padding ?? undefined}
+              />
+            </div>
           ))}
         </div>
       </CardContent>
 
-      <CartSummary
-        subtotal={subtotal}
-        tax={tax}
-        total={total}
-        currency={currency}
-        onCheckout={onCheckout}
-        customers={customers}
-        selectedCustomerId={selectedCustomerId}
-        onCustomerSelect={onCustomerSelect}
-      />
+      <div className="bg-card z-20 mt-auto border-t shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+        <CartSummary
+          subtotal={subtotal}
+          tax={tax}
+          total={total}
+          currency={currency}
+          onCheckout={onCheckout}
+          customers={customers}
+          selectedCustomerId={selectedCustomerId}
+          onCustomerSelect={onCustomerSelect}
+        />
+      </div>
     </Card>
   );
 }
