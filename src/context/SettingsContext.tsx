@@ -42,6 +42,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   setting_page_scale: 100.0,
   setting_page_font_scale: 100.0,
   header_font_scale: 100.0,
+  button_scale: 100.0,
+  button_font_scale: 100.0,
   layout_max_width: 1280.0,
   payment_modal_scale: 100.0,
   payment_modal_font_scale: 100.0,
@@ -62,6 +64,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   image_storage_path: null,
   db_storage_path: null,
   theme_primary_color: null,
+  theme_radius: 0.5,
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -119,6 +122,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     } else {
       root.style.removeProperty("--primary");
     }
+
+    // Apply radius
+    if (settings.theme_radius !== null) {
+      root.style.setProperty("--radius", `${settings.theme_radius}rem`);
+    } else {
+      root.style.removeProperty("--radius");
+    }
+
+    // Apply button scales
+    root.style.setProperty("--button-scale", `${(settings.button_scale ?? 100) / 100}`);
+    root.style.setProperty("--button-font-scale", `${(settings.button_font_scale ?? 100) / 100}`);
   }, [
     settings.typography_font_family,
     settings.typography_base_size,
@@ -127,6 +141,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     settings.typography_line_height,
     settings.typography_letter_spacing,
     settings.theme_primary_color,
+    settings.theme_radius,
+    settings.button_scale,
+    settings.button_font_scale,
   ]);
 
   const load = async () => {

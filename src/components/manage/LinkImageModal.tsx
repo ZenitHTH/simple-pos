@@ -53,9 +53,13 @@ export default function LinkImageModal({
             return (
               <div
                 key={product.product_id}
-                className="hover:bg-muted flex items-center justify-between rounded-md p-2"
+                className={`hover:bg-muted flex items-center justify-between rounded-md p-2 transition-colors ${
+                  isLinked ? "bg-primary/5 border-primary/20 border" : ""
+                }`}
               >
-                <span>{product.title}</span>
+                <span className={isLinked ? "text-primary font-semibold" : ""}>
+                  {product.title}
+                </span>
                 <Button
                   size="sm"
                   variant={isLinked ? "default" : "outline"}

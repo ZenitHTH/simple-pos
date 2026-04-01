@@ -9,6 +9,7 @@ import {
 import { NavButton } from "./NavButton";
 import { GlobalStylesPanel } from "./GlobalStylesPanel";
 import { CartItemStylesPanel } from "./CartItemStylesPanel";
+import { ButtonStylesPanel } from "./ButtonStylesPanel";
 import { AppSettings } from "@/lib";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 
@@ -17,27 +18,20 @@ export type TunerTab = "selector" | "button" | "typography" | "cart";
 interface TunerSidebarProps {
   activeTab: TunerTab;
   setActiveTab: (tab: TunerTab) => void;
-  radius: number;
-  setRadius: (v: number) => void;
-  baseFontSize: number;
-  setBaseFontSize: (v: number) => void;
-  primaryColor: string;
-  setPrimaryColor: (v: string) => void;
   settings: AppSettings;
   updateSettings: (updates: Partial<AppSettings>) => void;
+  // Local state for tuner's own preview zoom
+  previewZoom: number;
+  setPreviewZoom: (v: number) => void;
 }
 
 export function TunerSidebar({
   activeTab,
   setActiveTab,
-  radius,
-  setRadius,
-  baseFontSize,
-  setBaseFontSize,
-  primaryColor,
-  setPrimaryColor,
   settings,
   updateSettings,
+  previewZoom,
+  setPreviewZoom,
 }: TunerSidebarProps) {
   return (
     <div className="border-border bg-card flex h-full w-64 shrink-0 flex-col border-r p-4">
@@ -78,16 +72,21 @@ export function TunerSidebar({
         data-lenis-prevent
       >
         <GlobalStylesPanel
-          radius={radius}
-          setRadius={setRadius}
-          baseFontSize={baseFontSize}
-          setBaseFontSize={setBaseFontSize}
-          primaryColor={primaryColor}
-          setPrimaryColor={setPrimaryColor}
+          settings={settings}
+          updateSettings={updateSettings}
+          previewZoom={previewZoom}
+          setPreviewZoom={setPreviewZoom}
         />
 
         {activeTab === "cart" && (
           <CartItemStylesPanel
+            settings={settings}
+            updateSettings={updateSettings}
+          />
+        )}
+
+        {activeTab === "button" && (
+          <ButtonStylesPanel
             settings={settings}
             updateSettings={updateSettings}
           />

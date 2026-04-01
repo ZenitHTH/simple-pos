@@ -173,15 +173,30 @@ export function useImageManagement() {
           ),
         );
       } else {
+        // Enforce exclusivity: Unlink any other product currently using this image
+        const existingLinks = links.filter((l) => l.image_id === selectedImage.id);
+        for (const link of existingLinks) {
+          await invoke("unlink_product_image", {
+            key: dbKey,
+            productId: link.product_id,
+            imageId: selectedImage.id,
+          });
+        }
+
         await invoke("link_product_image", {
           key: dbKey,
           productId: productId,
           imageId: selectedImage.id,
         });
+
+        // Update local state: remove all old links for this image, add new one
         setLinks((prev) => [
-          ...prev,
+          ...prev.filter((l) => l.image_id !== selectedImage.id),
           { product_id: productId, image_id: selectedImage.id },
         ]);
+
+        // Auto-close modal after selection as per "click only one" requirement
+        setIsLinkModalOpen(false);
       }
     } catch (err) {
       logger.error("Failed to toggle link", err);

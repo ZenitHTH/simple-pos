@@ -36,7 +36,7 @@ export default function ExportSection() {
       });
       if (!path || !dbKey) return;
 
-      await receiptApi.exportReceipts(dbKey, path, ext, start, end, reportType);
+      await receiptApi.exportReceipts(dbKey, path, ext, start, end);
       alert(`${label} Export successful!`);
     };
 

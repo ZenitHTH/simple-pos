@@ -18,6 +18,7 @@ export interface AppSettings {
   setting_page_scale: number;
   payment_modal_scale: number;
   material_table_scale: number;
+  button_scale: number;
 
   // ── Font Scales ──
   header_font_scale: number;
@@ -31,6 +32,7 @@ export interface AppSettings {
   payment_modal_font_scale: number;
   material_table_font_scale: number;
   history_font_scale: number | null;
+  button_font_scale: number;
 
   // ── Cart Item Styling ──
   cart_item_font_size: number | null;
@@ -54,4 +56,5 @@ export interface AppSettings {
   image_storage_path: string | null;
   db_storage_path: string | null;
   theme_primary_color: string | null;
+  theme_radius: number | null;
 }

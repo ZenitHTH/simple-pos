@@ -14,10 +14,10 @@ export function NavButton({
   return (
     <button
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 transition-all ${
+      className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200 active:scale-[0.98] ${
         active
-          ? "bg-primary text-primary-foreground shadow-md"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 font-bold"
+          : "text-muted-foreground hover:bg-secondary hover:text-foreground font-medium"
       }`}
     >
       {icon}

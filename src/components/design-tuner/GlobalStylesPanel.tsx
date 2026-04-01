@@ -1,19 +1,21 @@
+"use client";
+
+import { AppSettings } from "@/lib/types";
+import { SidebarSlider } from "./SidebarSlider";
+
 interface GlobalStylesPanelProps {
-  radius: number;
-  setRadius: (v: number) => void;
-  baseFontSize: number;
-  setBaseFontSize: (v: number) => void;
-  primaryColor: string;
-  setPrimaryColor: (v: string) => void;
+  settings: AppSettings;
+  updateSettings: (updates: Partial<AppSettings>) => void;
+  // Local state for tuner's own preview zoom
+  previewZoom: number;
+  setPreviewZoom: (v: number) => void;
 }
 
 export function GlobalStylesPanel({
-  radius,
-  setRadius,
-  baseFontSize,
-  setBaseFontSize,
-  primaryColor,
-  setPrimaryColor,
+  settings,
+  updateSettings,
+  previewZoom,
+  setPreviewZoom,
 }: GlobalStylesPanelProps) {
   return (
     <div className="border-border mt-8 border-t px-2 pt-4">
@@ -21,78 +23,68 @@ export function GlobalStylesPanel({
         Global Styles
       </h2>
       <div className="space-y-4">
-        <div>
-          <div className="mb-1 flex items-center justify-between">
-            <label className="text-muted-foreground text-xs">Radius</label>
-            <span className="text-muted-foreground text-xs">
-              {radius}rem
-            </span>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="2"
-            step="0.1"
-            value={radius}
-            onChange={(e) => setRadius(parseFloat(e.target.value))}
-            className="w-full"
-          />
-        </div>
-        <div>
-          <div className="mb-1 flex items-center justify-between">
-            <label className="text-muted-foreground text-xs">
-              Base Scale (Px)
-            </label>
-            <span className="text-muted-foreground text-xs">
-              {baseFontSize}px
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() =>
-                setBaseFontSize(Math.max(12, baseFontSize - 1))
-              }
-              className="bg-secondary hover:bg-secondary/80 text-foreground flex h-6 w-6 items-center justify-center rounded text-xs"
-            >
-              -
-            </button>
-            <input
-              type="range"
-              min="12"
-              max="32"
-              step="1"
-              value={baseFontSize}
-              onChange={(e) => setBaseFontSize(parseInt(e.target.value))}
-              className="flex-1"
-            />
-            <button
-              onClick={() =>
-                setBaseFontSize(Math.min(32, baseFontSize + 1))
-              }
-              className="bg-secondary hover:bg-secondary/80 text-foreground flex h-6 w-6 items-center justify-center rounded text-xs"
-            >
-              +
-            </button>
-          </div>
-        </div>
-        <div>
-          <label className="text-muted-foreground mb-1 block text-xs">
+        {/* Radius Slider */}
+        <SidebarSlider
+          label="Radius"
+          value={settings.theme_radius ?? 0.5}
+          onChange={(v) => updateSettings({ theme_radius: v })}
+          min={0}
+          max={2}
+          step={0.1}
+          unit="rem"
+        />
+
+        {/* Preview Zoom Slider - This only affects the tuner preview div */}
+        <SidebarSlider
+          label="Preview Zoom"
+          value={previewZoom}
+          onChange={setPreviewZoom}
+          min={12}
+          max={32}
+          step={1}
+          unit="px"
+        />
+
+        {/* Primary Color Picker */}
+        <div className="space-y-2">
+          <label className="text-muted-foreground block text-xs font-medium">
             Primary Color
           </label>
           <div className="flex gap-2">
             <input
               type="color"
-              value={primaryColor}
-              onChange={(e) => setPrimaryColor(e.target.value)}
-              className="h-8 w-8 cursor-pointer rounded border-0 p-0"
+              value={settings.theme_primary_color ?? "#3b82f6"}
+              onChange={(e) =>
+                updateSettings({ theme_primary_color: e.target.value })
+              }
+              className="h-8 w-8 cursor-pointer rounded-lg border-0 p-0 overflow-hidden shadow-sm"
             />
             <input
               type="text"
-              value={primaryColor}
-              onChange={(e) => setPrimaryColor(e.target.value)}
-              className="border-input bg-background flex-1 rounded border px-2 text-xs"
+              value={settings.theme_primary_color ?? "#3b82f6"}
+              onChange={(e) =>
+                updateSettings({ theme_primary_color: e.target.value })
+              }
+              className="border-input bg-background flex-1 rounded-lg border px-3 py-1 text-xs font-mono shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
+              placeholder="#3b82f6"
             />
           </div>
+        </div>
+
+        {/* Reset Buttons */}
+        <div className="pt-2">
+          <button
+            onClick={() => {
+              updateSettings({
+                theme_primary_color: "#3b82f6",
+                theme_radius: 0.5,
+              });
+              setPreviewZoom(16);
+            }}
+            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] transition-colors uppercase tracking-wider font-semibold"
+          >
+            Reset Globals
+          </button>
         </div>
       </div>
     </div>
