@@ -13,6 +13,7 @@ diesel::table! {
         name -> Text,
         tax_id -> Nullable<Text>,
         address -> Nullable<Text>,
+        branch -> Text,
     }
 }
 
