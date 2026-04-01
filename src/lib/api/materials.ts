@@ -17,8 +17,8 @@ export const materialApi = {
       key,
       name,
       type: type_,
-      volume,
-      quantity,
+      volume: Number(volume),
+      quantity: Number(quantity),
     });
   },
 
@@ -32,11 +32,11 @@ export const materialApi = {
   ): Promise<Material> => {
     return await invoke("update_material", {
       key,
-      id,
+      id: Number(id),
       name,
       type: type_,
-      volume,
-      quantity,
+      volume: Number(volume),
+      quantity: Number(quantity),
     });
   },
 

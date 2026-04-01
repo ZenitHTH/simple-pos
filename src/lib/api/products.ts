@@ -10,8 +10,8 @@ export const productApi = {
     return await invoke("create_product", {
       key,
       title: product.title,
-      categoryId: product.category_id,
-      satang: product.satang,
+      categoryId: Number(product.category_id),
+      satang: Number(product.satang),
       useRecipe: product.use_recipe_stock,
     });
   },
@@ -22,15 +22,15 @@ export const productApi = {
   ): Promise<BackendProduct> => {
     return await invoke("update_product", {
       key,
-      id: product.product_id,
+      id: Number(product.product_id),
       title: product.title,
-      categoryId: product.category_id,
-      satang: product.satang,
+      categoryId: Number(product.category_id),
+      satang: Number(product.satang),
     });
   },
 
   delete: async (key: string, id: number): Promise<void> => {
-    await invoke("delete_product", { key, id });
+    await invoke("delete_product", { key, id: Number(id) });
   },
 
   setStockMode: async (
@@ -38,6 +38,6 @@ export const productApi = {
     id: number,
     useRecipe: boolean,
   ): Promise<void> => {
-    await invoke("set_product_stock_mode", { key, id, useRecipe });
+    await invoke("set_product_stock_mode", { key, id: Number(id), useRecipe });
   },
 };

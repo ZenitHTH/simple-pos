@@ -29,6 +29,7 @@ export async function invoke<T>(command: string, args?: Record<string, any>): Pr
 
   if (isTauri) {
     try {
+      logger.debug(`[Tauri API] Invoking command: ${command}`, sanitizeArgs(args));
       return await tauriInvoke<T>(command, args);
     } catch (error) {
       logger.error(`Tauri invoke error [${command}]:`, error);

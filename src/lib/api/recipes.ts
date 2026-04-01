@@ -26,9 +26,9 @@ export const recipeApi = {
   ): Promise<RecipeItem> => {
     return await invoke("add_recipe_item", {
       key,
-      recipeListId,
-      materialId,
-      volumeUse,
+      recipeListId: Number(recipeListId),
+      materialId: Number(materialId),
+      volumeUse: Number(volumeUse),
       unit,
     });
   },
@@ -37,7 +37,10 @@ export const recipeApi = {
     key: string,
     recipeListId: number,
   ): Promise<RecipeItem[]> => {
-    return await invoke("get_recipe_items", { key, recipeListId });
+    return await invoke("get_recipe_items", {
+      key,
+      recipeListId: Number(recipeListId),
+    });
   },
 
   updateItem: async (
@@ -48,13 +51,16 @@ export const recipeApi = {
   ): Promise<RecipeItem> => {
     return await invoke("update_recipe_item", {
       key,
-      itemId,
-      volumeUse,
+      itemId: Number(itemId),
+      volumeUse: Number(volumeUse),
       unit,
     });
   },
 
   deleteItem: async (key: string, itemId: number): Promise<number> => {
-    return await invoke("delete_recipe_item", { key, itemId });
+    return await invoke("delete_recipe_item", {
+      key,
+      itemId: Number(itemId),
+    });
   },
 };

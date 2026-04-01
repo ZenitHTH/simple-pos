@@ -6,7 +6,10 @@ export const receiptApi = {
     key: string,
     customerId?: number,
   ): Promise<ReceiptList> => {
-    return await invoke("create_invoice", { key, customerId });
+    return await invoke("create_invoice", {
+      key,
+      customerId: customerId ? Number(customerId) : undefined,
+    });
   },
 
   addInvoiceItem: async (
@@ -17,9 +20,9 @@ export const receiptApi = {
   ): Promise<Receipt> => {
     return await invoke("add_invoice_item", {
       key,
-      receiptId,
-      productId,
-      quantity,
+      receiptId: Number(receiptId),
+      productId: Number(productId),
+      quantity: Number(quantity),
     });
   },
 
@@ -27,7 +30,7 @@ export const receiptApi = {
     key: string,
     receiptId: number,
   ): Promise<[ReceiptList, Receipt[]]> => {
-    return await invoke("get_invoice_detail", { key, receiptId });
+    return await invoke("get_invoice_detail", { key, receiptId: Number(receiptId) });
   },
 
   getInvoicesByDate: async (
@@ -37,8 +40,8 @@ export const receiptApi = {
   ): Promise<ReceiptList[]> => {
     return await invoke("get_invoices_by_date", {
       key,
-      startUnix,
-      endUnix,
+      startUnix: Number(startUnix),
+      endUnix: Number(endUnix),
     });
   },
 
@@ -53,8 +56,8 @@ export const receiptApi = {
       key,
       exportPath,
       format,
-      startDate,
-      endDate,
+      startDate: Number(startDate),
+      endDate: Number(endDate),
     });
   },
 
@@ -73,8 +76,8 @@ export const receiptApi = {
   }> => {
     return await invoke("get_accumulated_report", {
       key,
-      startUnix,
-      endUnix,
+      startUnix: Number(startUnix),
+      endUnix: Number(endUnix),
     });
   },
 };
