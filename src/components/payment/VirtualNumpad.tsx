@@ -23,7 +23,7 @@ const VirtualNumpad = memo(
             <button
               key={key}
               onClick={() => onPress(key)}
-              className="bg-card text-foreground border-border hover:bg-muted/10 active:bg-primary/5 focus:ring-primary/20 flex items-center justify-center rounded-2xl border text-3xl font-bold shadow-sm transition-all outline-none focus:ring-2 active:scale-95"
+              className="bg-card text-foreground border-border active:bg-primary active:text-primary-foreground focus:ring-primary/40 flex items-center justify-center rounded-2xl border text-4xl font-black shadow-sm transition-all outline-none focus:ring-4 active:scale-92 active:shadow-inner touch-manipulation"
               type="button"
             >
               {key}
@@ -35,15 +35,15 @@ const VirtualNumpad = memo(
         <div className="col-span-1 grid grid-cols-1 gap-3">
           <button
             onClick={onBackspace}
-            className="flex items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10 text-destructive transition-all hover:bg-destructive/20 active:scale-95"
+            className="flex items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10 text-destructive transition-all active:bg-destructive active:text-white active:scale-92 active:shadow-inner touch-manipulation"
             type="button"
             aria-label="Backspace"
           >
-            <FaBackspace size={28} />
+            <FaBackspace size={32} />
           </button>
           <button
             onClick={onClear}
-            className="bg-muted/10 text-muted-foreground border-border hover:bg-muted/20 flex items-center justify-center rounded-2xl border text-xl font-bold transition-all active:scale-95"
+            className="bg-muted/20 text-muted-foreground border-border hover:bg-muted/30 active:bg-foreground active:text-background flex items-center justify-center rounded-2xl border text-xl font-black transition-all active:scale-92 active:shadow-inner touch-manipulation"
             type="button"
             aria-label="Clear All"
           >

@@ -61,7 +61,7 @@ const CartSummary = memo(function CartSummary({
             {tax.toFixed(2)}
           </span>
         </div>
-        <div className="text-foreground border-border flex justify-between border-t border-dashed pt-3 text-[1.5em] font-bold">
+        <div className="text-foreground border-border flex justify-between border-t border-dashed pt-4 text-[1.6em] font-black tracking-tight">
           <span>Total</span>
           <span className="text-primary">
             {currency}
@@ -75,9 +75,9 @@ const CartSummary = memo(function CartSummary({
           logger.info("CartSummary: Checkout Now clicked");
           onCheckout();
         }}
-        className="bg-primary text-primary-foreground shadow-primary/30 hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[1.125em] font-bold shadow-lg transition-all active:scale-[0.98]"
+        className="bg-primary text-primary-foreground shadow-primary/40 hover:bg-primary/95 flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-[1.3em] font-black shadow-xl transition-all active:scale-95 active:brightness-90 touch-manipulation"
       >
-        Checkout Now
+        CHECKOUT NOW
       </button>
     </CardFooter>
   );

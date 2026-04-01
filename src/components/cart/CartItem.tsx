@@ -55,10 +55,10 @@ const CartItem = memo(function CartItem({
       style={containerStyle}
     >
       {/* Top row: image + info + delete */}
-      <div className="flex items-center gap-3 p-2.5">
+      <div className="flex items-center gap-4 p-3.5">
         {/* Thumbnail */}
         <div
-          className="border-border/50 h-14 w-14 shrink-0 overflow-hidden rounded-lg border"
+          className="border-border/50 h-16 w-16 shrink-0 overflow-hidden rounded-xl border shadow-sm"
           style={{
             backgroundColor: !imageSrc ? item.color || "#e2e8f0" : undefined,
           }}
@@ -71,7 +71,7 @@ const CartItem = memo(function CartItem({
               style={parseImageStyle(item.image_object_position)}
             />
           ) : (
-            <div className="text-muted flex h-full w-full items-center justify-center text-[1em] font-bold opacity-30">
+            <div className="text-muted flex h-full w-full items-center justify-center text-[1.25em] font-bold opacity-30">
               {item.name.charAt(0)}
             </div>
           )}
@@ -80,13 +80,13 @@ const CartItem = memo(function CartItem({
         {/* Name + Price */}
         <div className="min-w-0 flex-1">
           <h4
-            className="text-foreground truncate text-[0.875em] leading-tight font-medium"
+            className="text-foreground truncate text-[1em] leading-tight font-bold tracking-tight"
             style={headerStyle}
           >
             {item.name}
           </h4>
           <div
-            className="text-primary mt-0.5 text-[1em] font-bold"
+            className="text-primary mt-1 text-[1.15em] font-black"
             style={priceStyle}
           >
             {currency}
@@ -94,36 +94,36 @@ const CartItem = memo(function CartItem({
           </div>
         </div>
 
-        {/* Delete — touch-friendly 44px target */}
+        {/* Delete — extra large touch target */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-muted/40 hover:text-destructive active:text-destructive hover:bg-destructive/10 active:bg-destructive/15 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-colors"
+          className="text-muted/40 hover:text-destructive active:text-white hover:bg-destructive/10 active:bg-destructive flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all active:scale-90"
         >
-          <FaTrash size={14} />
+          <FaTrash size={16} />
         </button>
       </div>
 
       {/* Bottom row: unit price + quantity controls */}
-      <div className="flex items-center justify-between px-2.5 pb-2.5">
-        <span className="text-muted-foreground text-[0.75em]">
+      <div className="flex items-center justify-between px-3.5 pb-3.5">
+        <span className="text-muted-foreground text-[0.8em] font-medium opacity-70">
           {currency}
           {item.price.toFixed(2)} each
         </span>
-        <div className="bg-card border-border flex items-center rounded-lg border">
+        <div className="bg-muted/30 border-border/50 flex items-center gap-1 rounded-2xl border p-1 shadow-inner">
           <button
             onClick={() => onUpdateQuantity(item.id, -1)}
-            className="hover:bg-muted/20 active:bg-muted/30 text-muted hover:text-foreground flex h-11 w-11 items-center justify-center rounded-l-lg transition-colors"
+            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground flex h-12 w-12 items-center justify-center rounded-xl shadow-sm transition-all active:scale-90 active:shadow-lg active:brightness-110 touch-manipulation"
           >
-            <FaMinus size={12} />
+            <FaMinus size={14} />
           </button>
-          <span className="w-8 text-center text-[0.875em] font-semibold select-none">
+          <span className="w-12 text-center text-[1.15em] font-black select-none transition-transform duration-200">
             {item.quantity}
           </span>
           <button
             onClick={() => onUpdateQuantity(item.id, 1)}
-            className="hover:bg-muted/20 active:bg-muted/30 text-muted hover:text-foreground flex h-11 w-11 items-center justify-center rounded-r-lg transition-colors"
+            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground flex h-12 w-12 items-center justify-center rounded-xl shadow-sm transition-all active:scale-90 active:shadow-lg active:brightness-110 touch-manipulation"
           >
-            <FaPlus size={12} />
+            <FaPlus size={14} />
           </button>
         </div>
       </div>

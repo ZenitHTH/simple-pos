@@ -62,7 +62,7 @@ const POSProductGrid = memo(function POSProductGrid({
 
   return (
     <>
-      <div className="mb-4 shrink-0">
+      <div className="mb-6 shrink-0">
         <ProductFilter
           searchQuery={searchQuery}
           onSearchChange={onSearchChange}
@@ -74,11 +74,11 @@ const POSProductGrid = memo(function POSProductGrid({
 
       {/* Product Grid - Scrollable Area */}
       <div
-        className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pr-2"
+        className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pr-4 -mr-4"
         data-lenis-prevent
       >
         <div
-          className={`grid ${gridColsClass} relative gap-4 pb-4`}
+          className={`grid ${gridColsClass} relative gap-5 pb-6`}
           style={{ fontSize: `${settings?.grid_font_scale || 100}%` }}
         >
           <SelectableOverlay id="grid_scale" />

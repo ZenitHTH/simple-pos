@@ -75,16 +75,16 @@ const CashInput = memo(
         </div>
 
         {/* Quick Suggestions */}
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
           {quickAmounts.map((amount) => (
-            <Button
+            <button
               key={`quick-${amount}`}
               onClick={() => onChange(amount.toString())}
-              variant="outline"
-              className="bg-primary/10 hover:bg-primary/20 text-primary border-primary/20 h-auto rounded-xl border px-4 py-2 text-sm font-bold transition-colors"
+              className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 active:bg-primary active:text-white flex h-14 items-center justify-center rounded-2xl border text-lg font-black tracking-tight transition-all active:scale-92 active:shadow-inner touch-manipulation"
+              type="button"
             >
               {formatCurrency(amount, currency)}
-            </Button>
+            </button>
           ))}
         </div>
 

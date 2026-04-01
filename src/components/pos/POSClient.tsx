@@ -40,22 +40,25 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
   } = usePOSLogic(initialProducts);
 
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isCartVisible, setIsCartVisible] = useState(true);
 
   // Calculate Cart items count
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Calculate Cart Width
   const cartBaseWidth = 320; // w-80
-
-  const cartDynamicWidth = `${cartBaseWidth * ((settings?.cart_scale || 100) / 100)}px`;
+  const cartWidthMultiplier = (settings?.cart_scale || 100) / 100;
+  const cartDynamicWidth = isCartVisible ? `${cartBaseWidth * cartWidthMultiplier}px` : "0px";
 
   return (
-    <div className="bg-background box-border flex h-full gap-4 overflow-hidden p-4">
+    <div className="bg-background box-border flex h-full gap-6 overflow-hidden p-6">
       {/* Left Side: Product Grid */}
-      <div className="flex h-full min-w-0 flex-1 flex-col">
+      <div className="flex h-full min-w-0 flex-1 flex-col pr-2">
         <POSHeader
           cartCount={cartCount}
           onOpenCart={() => setIsCartDrawerOpen(true)}
+          isCartVisible={isCartVisible}
+          onToggleCart={() => setIsCartVisible(!isCartVisible)}
         />
 
         <POSProductGrid
@@ -73,7 +76,9 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
       {/* Right Side: Cart Sidebar */}
       <div
-        className="relative hidden h-full shrink-0 transition-all duration-300 lg:block"
+        className={`relative hidden h-full shrink-0 transition-all duration-500 md:block ${
+          isCartVisible ? "opacity-100" : "w-0 overflow-hidden opacity-0 pointer-events-none"
+        }`}
         style={{
           width: cartDynamicWidth,
           fontSize: `${settings?.cart_font_scale || 100}%`,
@@ -102,12 +107,12 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         currency={currency}
       />
 
-      {/* Cart Drawer for Mobile */}
+      {/* Cart Drawer for Mobile (strictly small screens) */}
       <Drawer
         isOpen={isCartDrawerOpen}
         onClose={() => setIsCartDrawerOpen(false)}
         title="Current Order"
-        className="lg:hidden"
+        className="md:hidden"
       >
         <div
           className="h-full overflow-y-auto"
