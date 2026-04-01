@@ -39,18 +39,9 @@ pub fn get_database_path() -> Result<PathBuf, String> {
     Ok(data_dir.join("database.db"))
 }
 
-fn is_valid_key(key: &str) -> bool {
-    // Restrict to alphanumeric to prevent SQL injection in PRAGMA
-    key.chars().all(|c| c.is_alphanumeric())
-}
-
 pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
     if key.len() < 4 {
         return Err("Encryption key must be at least 4 characters long".to_string());
-    }
-
-    if !is_valid_key(key) {
-        return Err("Encryption key must be alphanumeric".to_string());
     }
 
     let database_path = get_database_path()?;
