@@ -12,38 +12,38 @@ export const imageApi = {
 
   linkToProduct: async (
     key: string,
-    product_id: number,
-    image_id: number,
+    productId: number,
+    imageId: number,
   ): Promise<ProductImage> => {
     return await invoke("link_product_image", {
       key,
-      product_id,
-      image_id,
+      productId,
+      imageId,
     });
   },
 
   unlink: async (
     key: string,
-    product_id: number,
-    image_id: number,
+    productId: number,
+    imageId: number,
   ): Promise<number> => {
     return await invoke("unlink_product_image", {
       key,
-      product_id,
-      image_id,
+      productId,
+      imageId,
     });
   },
 
-  getByProduct: async (key: string, product_id: number): Promise<Image[]> => {
-    return await invoke("get_product_images", { key, product_id });
+  getByProduct: async (key: string, productId: number): Promise<Image[]> => {
+    return await invoke("get_product_images", { key, productId });
   },
 
   getAllImages: async (key: string): Promise<Image[]> => {
     return await invoke("get_all_images", { key });
   },
 
-  deleteImage: async (key: string, image_id: number): Promise<void> => {
-    await invoke("delete_image", { key, image_id });
+  deleteImage: async (key: string, imageId: number): Promise<void> => {
+    await invoke("delete_image", { key, imageId });
   },
 
   getAllImageLinks: async (key: string): Promise<ProductImage[]> => {
@@ -51,9 +51,9 @@ export const imageApi = {
   },
   updatePosition: async (
     key: string,
-    image_id: number,
+    imageId: number,
     position: string,
   ): Promise<number> => {
-    return await invoke("update_image_position", { key, image_id, position });
+    return await invoke("update_image_position", { key, imageId, position });
   },
 };

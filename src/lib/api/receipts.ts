@@ -4,64 +4,64 @@ import { ReceiptList, Receipt } from "../types";
 export const receiptApi = {
   createInvoice: async (
     key: string,
-    customer_id?: number,
+    customerId?: number,
   ): Promise<ReceiptList> => {
-    return await invoke("create_invoice", { key, customer_id });
+    return await invoke("create_invoice", { key, customerId });
   },
 
   addInvoiceItem: async (
     key: string,
-    receipt_id: number,
-    product_id: number,
+    receiptId: number,
+    productId: number,
     quantity: number,
   ): Promise<Receipt> => {
     return await invoke("add_invoice_item", {
       key,
-      receipt_id,
-      product_id,
+      receiptId,
+      productId,
       quantity,
     });
   },
 
   getInvoiceDetail: async (
     key: string,
-    receipt_id: number,
+    receiptId: number,
   ): Promise<[ReceiptList, Receipt[]]> => {
-    return await invoke("get_invoice_detail", { key, receipt_id });
+    return await invoke("get_invoice_detail", { key, receiptId });
   },
 
   getInvoicesByDate: async (
     key: string,
-    start_unix: number,
-    end_unix: number,
+    startUnix: number,
+    endUnix: number,
   ): Promise<ReceiptList[]> => {
     return await invoke("get_invoices_by_date", {
       key,
-      start_unix,
-      end_unix,
+      startUnix,
+      endUnix,
     });
   },
 
   exportReceipts: async (
     key: string,
-    export_path: string,
+    exportPath: string,
     format: string,
-    start_date: number,
-    end_date: number,
+    startDate: number,
+    endDate: number,
   ): Promise<string> => {
     return await invoke("export_receipts", {
       key,
-      export_path,
+      exportPath,
       format,
-      start_date,
-      end_date,
+      startDate,
+      endDate,
     });
   },
 
   getAccumulatedReport: async (
     key: string,
-    start_unix: number,
-    end_unix: number,
+    startUnix: number,
+    endUnix: number,
   ): Promise<{
     products: { product_id: number; title: string; total_quantity: number }[];
     materials: {
@@ -73,8 +73,8 @@ export const receiptApi = {
   }> => {
     return await invoke("get_accumulated_report", {
       key,
-      start_unix,
-      end_unix,
+      startUnix,
+      endUnix,
     });
   },
 };

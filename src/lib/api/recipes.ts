@@ -2,59 +2,59 @@ import { invoke } from "./invoke";
 import { RecipeList, RecipeItem } from "../types";
 
 export const recipeApi = {
-  createList: async (key: string, product_id: number): Promise<RecipeList> => {
-    return await invoke("create_recipe_list", { key, product_id });
+  createList: async (key: string, productId: number): Promise<RecipeList> => {
+    return await invoke("create_recipe_list", { key, productId });
   },
 
   getListByProduct: async (
     key: string,
-    product_id: number,
+    productId: number,
   ): Promise<RecipeList | null> => {
-    return await invoke("get_recipe_list_by_product", { key, product_id });
+    return await invoke("get_recipe_list_by_product", { key, productId });
   },
 
-  deleteList: async (key: string, list_id: number): Promise<number> => {
-    return await invoke("delete_recipe_list", { key, list_id });
+  deleteList: async (key: string, listId: number): Promise<number> => {
+    return await invoke("delete_recipe_list", { key, listId });
   },
 
   addItem: async (
     key: string,
-    recipe_list_id: number,
-    material_id: number,
-    volume_use: number,
+    recipeListId: number,
+    materialId: number,
+    volumeUse: number,
     unit: string,
   ): Promise<RecipeItem> => {
     return await invoke("add_recipe_item", {
       key,
-      recipe_list_id,
-      material_id,
-      volume_use,
+      recipeListId,
+      materialId,
+      volumeUse,
       unit,
     });
   },
 
   getItems: async (
     key: string,
-    recipe_list_id: number,
+    recipeListId: number,
   ): Promise<RecipeItem[]> => {
-    return await invoke("get_recipe_items", { key, recipe_list_id });
+    return await invoke("get_recipe_items", { key, recipeListId });
   },
 
   updateItem: async (
     key: string,
-    item_id: number,
-    volume_use: number,
+    itemId: number,
+    volumeUse: number,
     unit: string,
   ): Promise<RecipeItem> => {
     return await invoke("update_recipe_item", {
       key,
-      item_id,
-      volume_use,
+      itemId,
+      volumeUse,
       unit,
     });
   },
 
-  deleteItem: async (key: string, item_id: number): Promise<number> => {
-    return await invoke("delete_recipe_item", { key, item_id });
+  deleteItem: async (key: string, itemId: number): Promise<number> => {
+    return await invoke("delete_recipe_item", { key, itemId });
   },
 };

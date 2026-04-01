@@ -10,9 +10,9 @@ export const productApi = {
     return await invoke("create_product", {
       key,
       title: product.title,
-      category_id: product.category_id,
+      categoryId: product.category_id,
       satang: product.satang,
-      use_recipe: product.use_recipe_stock,
+      useRecipe: product.use_recipe_stock,
     });
   },
 
@@ -24,7 +24,7 @@ export const productApi = {
       key,
       id: product.product_id,
       title: product.title,
-      category_id: product.category_id,
+      categoryId: product.category_id,
       satang: product.satang,
     });
   },
@@ -36,8 +36,8 @@ export const productApi = {
   setStockMode: async (
     key: string,
     id: number,
-    use_recipe: boolean,
+    useRecipe: boolean,
   ): Promise<void> => {
-    await invoke("set_product_stock_mode", { key, id, use_recipe });
+    await invoke("set_product_stock_mode", { key, id, useRecipe });
   },
 };

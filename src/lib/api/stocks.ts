@@ -6,27 +6,27 @@ export const stockApi = {
     return await invoke("get_all_stocks", { key });
   },
 
-  getByProduct: async (key: string, product_id: number): Promise<Stock> => {
-    return await invoke("get_stock", { key, product_id });
+  getByProduct: async (key: string, productId: number): Promise<Stock> => {
+    return await invoke("get_stock", { key, productId });
   },
 
   add: async (
     key: string,
-    product_id: number,
+    productId: number,
     quantity: number,
   ): Promise<Stock> => {
-    return await invoke("insert_stock", { key, product_id, quantity });
+    return await invoke("insert_stock", { key, productId, quantity });
   },
 
   update: async (
     key: string,
-    product_id: number,
+    productId: number,
     quantity: number,
   ): Promise<Stock> => {
-    return await invoke("update_stock", { key, product_id, quantity });
+    return await invoke("update_stock", { key, productId, quantity });
   },
 
-  remove: async (key: string, stock_id: number): Promise<number> => {
-    return await invoke("remove_stock", { key, stock_id });
+  remove: async (key: string, stockId: number): Promise<number> => {
+    return await invoke("remove_stock", { key, stockId });
   },
 };
