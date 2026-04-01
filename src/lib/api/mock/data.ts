@@ -219,14 +219,21 @@ export const mockRecipeItems: RecipeItem[] = [
 ];
 
 export const mockCustomers: Customer[] = [
-  { id: 1, name: "John Doe", tax_id: "1234567890123", address: "123 Main St" },
+  {
+    id: 1,
+    name: "John Doe",
+    tax_id: "1234567890123",
+    address: "123 Main St",
+    branch: "00000",
+  },
   {
     id: 2,
     name: "Jane Smith",
     tax_id: "9876543210987",
     address: "456 Oak Ave",
+    branch: "00001",
   },
-  { id: 3, name: "Coffee Lover", tax_id: null, address: null },
+  { id: 3, name: "Coffee Lover", tax_id: null, address: null, branch: "00000" },
 ];
 
 export const mockStocks: Stock[] = [

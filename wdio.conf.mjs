@@ -10,6 +10,18 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 let tauriDriver;
 let exit = false;
 
+const isWindows = process.platform === 'win32';
+const isMac = process.platform === 'darwin';
+
+const getAppDataPath = () => {
+  if (isWindows) {
+    return path.join(process.env.APPDATA, 'simple-pos');
+  } else if (isMac) {
+    return path.join(os.homedir(), 'Library', 'Application Support', 'simple-pos');
+  }
+  return path.join(os.homedir(), '.local', 'share', 'simple-pos');
+};
+
 export const config = {
   host: '127.0.0.1',
   port: 4444,
@@ -19,7 +31,7 @@ export const config = {
     {
       maxInstances: 1,
       'tauri:options': {
-        application: './src-tauri/target/debug/app',
+        application: `./src-tauri/target/debug/app${isWindows ? '.exe' : ''}`,
       },
     },
   ],
@@ -45,16 +57,23 @@ export const config = {
   // ensure we are running `tauri-driver` before the session starts so that we can proxy the webdriver requests
   beforeSession: () => {
     // Clear Tauri app data to ensure fresh E2E test runs
-    const appDataPath = path.resolve(os.homedir(), '.local', 'share', 'simple-pos');
+    const appDataPath = getAppDataPath();
     if (fs.existsSync(appDataPath)) {
-      try { fs.rmSync(appDataPath, { recursive: true, force: true }); } catch (e) { }
+      try {
+        fs.rmSync(appDataPath, { recursive: true, force: true });
+      } catch (e) {}
     }
 
-    tauriDriver = spawn(
-      path.resolve(os.homedir(), '.cargo', 'bin', 'tauri-driver'),
-      [],
-      { stdio: [null, process.stdout, process.stderr] }
+    const tauriDriverPath = path.resolve(
+      os.homedir(),
+      '.cargo',
+      'bin',
+      `tauri-driver${isWindows ? '.exe' : ''}`
     );
+
+    tauriDriver = spawn(tauriDriverPath, [], {
+      stdio: [null, process.stdout, process.stderr],
+    });
     tauriDriver.on('error', (error) => {
       console.error('tauri-driver error:', error);
       process.exit(1);
@@ -71,9 +90,11 @@ export const config = {
   afterSession: () => {
     closeTauriDriver();
     // Clean database after test UI
-    const appDataPath = path.resolve(os.homedir(), '.local', 'share', 'simple-pos');
+    const appDataPath = getAppDataPath();
     if (fs.existsSync(appDataPath)) {
-      try { fs.rmSync(appDataPath, { recursive: true, force: true }); } catch (e) { }
+      try {
+        fs.rmSync(appDataPath, { recursive: true, force: true });
+      } catch (e) {}
     }
   },
 };

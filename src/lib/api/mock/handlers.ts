@@ -139,6 +139,14 @@ export const handlers = {
     return product;
   },
   delete_product: ({ id }: { id: number }) => {
+    // Check if product is in any receipts
+    const hasReceipts = receipts.some((r) => r.product_id === id);
+    if (hasReceipts) {
+      throw new Error(
+        "Cannot delete product: it is currently referenced in past receipts. Try archiving instead.",
+      );
+    }
+
     products = products.filter((p) => p.product_id !== id);
     stocks = stocks.filter((s) => s.product_id !== id);
     productImages = productImages.filter((pi) => pi.product_id !== id);
@@ -278,14 +286,20 @@ export const handlers = {
     const newCustomer: Customer = {
       id: Math.max(0, ...customers.map((c) => c.id)) + 1,
       ...customer,
+      branch: customer.branch || "00000",
     };
     customers.push(newCustomer);
     return newCustomer;
   },
   update_customer: (customer: Customer) => {
     const index = customers.findIndex((c) => c.id === customer.id);
-    if (index !== -1) customers[index] = customer;
-    return customer;
+    if (index !== -1) {
+      customers[index] = {
+        ...customer,
+        branch: customer.branch || "00000",
+      };
+    }
+    return customers[index];
   },
 
   // Stocks
@@ -394,6 +408,7 @@ export const handlers = {
     const newList: ReceiptList = {
       receipt_id: newId,
       datetime_unix: Math.floor(Date.now() / 1000),
+      customer_id: customerId,
     };
     receiptLists.push(newList);
     return newList;

@@ -28,6 +28,7 @@ pub fn update_customer_record(
             name.eq(&update_data.name),
             tax_id.eq(&update_data.tax_id),
             address.eq(&update_data.address),
+            branch.eq(update_data.branch.as_deref().unwrap_or("00000")),
         ))
         .returning(Customer::as_returning())
         .get_result(conn)

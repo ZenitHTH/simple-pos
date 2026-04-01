@@ -1,4 +1,4 @@
-# Vibe POS (Simple POS) v0.2.0
+# Vibe POS (Simple POS) v0.2.1
 
 A professional, modern, and lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for high performance, security, and simplicity.
 
@@ -50,7 +50,9 @@ Before you begin, ensure you have the following installed:
 - **Rust & Cargo** (latest stable)
 - **System Dependencies**:
   - **Linux**: Build essentials, webkit2gtk (see [Tauri Linux Setup](https://v2.tauri.app/start/prerequisites/#linux))
-  - **macOS**: Build your own , i don't have mac.
+  - **macOS**:
+    - **Xcode Command Line Tools**: `xcode-select --install`
+    - **OpenSSL**: `brew install openssl`. Ensure `OPENSSL_DIR` and `OPENSSL_LIB_DIR` are correctly set in your environment.
   - **Windows**:
     - Microsoft Visual Studio C++ Build Tools
     - **OpenSSL**: Required for database encryption (`sqlcipher`). Set `OPENSSL_DIR` and `OPENSSL_LIB_DIR` environment variables.

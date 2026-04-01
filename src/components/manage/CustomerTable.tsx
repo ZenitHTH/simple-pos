@@ -26,7 +26,11 @@ export default function CustomerTable({
             render: (c) => c.tax_id || "-",
         },
         {
-            header: "Address / Branch",
+            header: "Branch",
+            render: (c) => (c.branch === "00000" ? "Head Office" : c.branch),
+        },
+        {
+            header: "Address",
             render: (c) => c.address || "-",
         },
         {

@@ -9,6 +9,7 @@ pub struct Customer {
     pub name: String,
     pub tax_id: Option<String>,
     pub address: Option<String>,
+    pub branch: String,
 }
 
 #[derive(Insertable, Deserialize)]
@@ -17,4 +18,5 @@ pub struct NewCustomer {
     pub name: String,
     pub tax_id: Option<String>,
     pub address: Option<String>,
+    pub branch: Option<String>,
 }

@@ -12,6 +12,7 @@ export const productApi = {
       title: product.title,
       categoryId: product.category_id,
       satang: product.satang,
+      use_recipe: product.use_recipe_stock,
     });
   },
 

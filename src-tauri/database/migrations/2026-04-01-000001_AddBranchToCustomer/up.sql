@@ -1,0 +1,2 @@
+-- Up Migration
+ALTER TABLE customer ADD COLUMN branch VARCHAR NOT NULL DEFAULT '00000';

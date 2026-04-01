@@ -23,6 +23,7 @@ export default function CustomerModal({
         name: "",
         tax_id: "",
         address: "",
+        branch: "00000",
     });
 
     useEffect(() => {
@@ -31,9 +32,10 @@ export default function CustomerModal({
                 name: initialData.name,
                 tax_id: initialData.tax_id || "",
                 address: initialData.address || "",
+                branch: initialData.branch || "00000",
             });
         } else {
-            setFormData({ name: "", tax_id: "", address: "" });
+            setFormData({ name: "", tax_id: "", address: "", branch: "00000" });
         }
     }, [initialData, isOpen]);
 
@@ -65,6 +67,15 @@ export default function CustomerModal({
                         setFormData({ ...formData, tax_id: e.target.value })
                     }
                     placeholder="เลขประจำตัวผู้เสียภาษีอากร"
+                />
+
+                <Input
+                    label="Branch ID (Head Office = 00000)"
+                    value={formData.branch || "00000"}
+                    onChange={(e) =>
+                        setFormData({ ...formData, branch: e.target.value })
+                    }
+                    placeholder="00000"
                 />
 
                 <div className="w-full">

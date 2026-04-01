@@ -71,12 +71,16 @@ pub fn export_receipts(
 
         let invoice_no = format!("INV-{:06}", header.receipt_id);
 
-        let (customer_name, tax_id, branch_address) = if let Some(cid) = header.customer_id {
+        let (customer_name, tax_id, branch_status) = if let Some(cid) = header.customer_id {
             if let Some(c) = customers.iter().find(|c| c.id == cid) {
                 (
                     c.name.clone(),
                     c.tax_id.clone().unwrap_or_else(|| "-".to_string()),
-                    c.address.clone().unwrap_or_else(|| "-".to_string()),
+                    if c.branch == "00000" {
+                        "สำนักงานใหญ่".to_string()
+                    } else {
+                        format!("สาขาที่ {}", c.branch)
+                    },
                 )
             } else {
                 ("ลูกค้าทั่วไป".to_string(), "-".to_string(), "-".to_string())
@@ -100,7 +104,7 @@ pub fn export_receipts(
             invoice_no,
             customer_name,
             tax_id,
-            branch_address,
+            branch_address: branch_status, // Use status instead of raw address
             amount_before_vat,
             vat_amount,
             grand_total,

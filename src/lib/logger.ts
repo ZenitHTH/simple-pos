@@ -3,37 +3,72 @@ import { info, error, warn, debug } from "@tauri-apps/plugin-log";
 // We check if the environment has Tauri available
 // Using typeof window ensures we don't crash in SSR (Next.js server)
 const isTauri = () => {
-    // @ts-ignore
-    return typeof window !== "undefined" && window.__TAURI__ !== undefined;
+  // @ts-ignore
+  return typeof window !== "undefined" && window.__TAURI__ !== undefined;
+};
+
+/**
+ * Basic PII Redaction
+ * Redacts 13-digit numbers (likely Thai Tax IDs) and masks sensitive patterns.
+ */
+function sanitize(input: any): any {
+  if (typeof input === "string") {
+    // Redact 13-digit numbers
+    return input.replace(/\b\d{13}\b/g, "[REDACTED-ID]");
+  }
+  if (input && typeof input === "object") {
+    const sanitized: any = Array.isArray(input) ? [] : {};
+    for (const key in input) {
+      if (
+        key.toLowerCase().includes("tax") ||
+        key.toLowerCase().includes("address") ||
+        key.toLowerCase().includes("key")
+      ) {
+        sanitized[key] = "[REDACTED]";
+      } else {
+        sanitized[key] = sanitize(input[key]);
+      }
+    }
+    return sanitized;
+  }
+  return input;
 }
 
 export const logger = {
-    info: async (message: string, ...args: any[]) => {
-        if (isTauri()) {
-            await info(message, ...args);
-        } else {
-            console.info("[INFO]", message, ...args);
-        }
-    },
-    error: async (message: string, ...args: any[]) => {
-        if (isTauri()) {
-            await error(message, ...args);
-        } else {
-            console.error("[ERROR]", message, ...args);
-        }
-    },
-    warn: async (message: string, ...args: any[]) => {
-        if (isTauri()) {
-            await warn(message, ...args);
-        } else {
-            console.warn("[WARN]", message, ...args);
-        }
-    },
-    debug: async (message: string, ...args: any[]) => {
-        if (isTauri()) {
-            await debug(message, ...args);
-        } else {
-            console.debug("[DEBUG]", message, ...args);
-        }
-    },
+  info: async (message: string, ...args: any[]) => {
+    const sMsg = sanitize(message);
+    const sArgs = args.map(sanitize);
+    if (isTauri()) {
+      await info(sMsg, ...sArgs);
+    } else {
+      console.info("[INFO]", sMsg, ...sArgs);
+    }
+  },
+  error: async (message: string, ...args: any[]) => {
+    const sMsg = sanitize(message);
+    const sArgs = args.map(sanitize);
+    if (isTauri()) {
+      await error(sMsg, ...sArgs);
+    } else {
+      console.error("[ERROR]", sMsg, ...sArgs);
+    }
+  },
+  warn: async (message: string, ...args: any[]) => {
+    const sMsg = sanitize(message);
+    const sArgs = args.map(sanitize);
+    if (isTauri()) {
+      await warn(sMsg, ...sArgs);
+    } else {
+      console.warn("[WARN]", sMsg, ...sArgs);
+    }
+  },
+  debug: async (message: string, ...args: any[]) => {
+    const sMsg = sanitize(message);
+    const sArgs = args.map(sanitize);
+    if (isTauri()) {
+      await debug(sMsg, ...sArgs);
+    } else {
+      console.debug("[DEBUG]", sMsg, ...sArgs);
+    }
+  },
 };

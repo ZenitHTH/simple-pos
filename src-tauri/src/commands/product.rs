@@ -15,6 +15,7 @@ pub fn create_product(
     title: String,
     category_id: i32,
     satang: i32,
+    use_recipe: bool,
 ) -> Result<Product, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
@@ -42,7 +43,7 @@ pub fn create_product(
         title: trimmed_title,
         category_id,
         satang,
-        use_recipe_stock: false, // Default to normal stock mode
+        use_recipe_stock: use_recipe,
     };
     product::insert_product(&mut conn, &new_prod).map_err(|e| e.to_string())
 }
@@ -103,14 +104,18 @@ pub fn update_product(
 pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
-    // Check if the product is used in stock or receipts
+    // Check if the product is used in past receipts
     let has_deps = product::check_product_dependencies(&mut conn, id).map_err(|e| e.to_string())?;
     if has_deps {
         return Err(
-            "Cannot delete product: it is currently referenced in stock or past receipts."
+            "Cannot delete product: it is currently referenced in past receipts. Try archiving instead."
                 .to_string(),
         );
     }
+
+    // Clean up associated stock record
+    use database::stock;
+    let _ = stock::remove_stock_by_product(&mut conn, id);
 
     // Clean up product images link
     product::remove_product_images_link(&mut conn, id).map_err(|e| e.to_string())?;

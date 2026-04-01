@@ -32,18 +32,13 @@ pub fn check_product_dependencies(
     target_id: i32,
 ) -> Result<bool, Error> {
     use crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item};
-    use crate::schema::stock::dsl::{product_id as stock_pid, stock};
 
-    let stock_count: i64 = stock
-        .filter(stock_pid.eq(target_id))
-        .count()
-        .get_result(conn)?;
     let receipt_count: i64 = receipt_item
         .filter(receipt_pid.eq(target_id))
         .count()
         .get_result(conn)?;
 
-    Ok(stock_count > 0 || receipt_count > 0)
+    Ok(receipt_count > 0)
 }
 
 pub fn find_product_by_title(
