@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { Input } from "@/components/ui/Input";
 
 interface ProductFilterProps {
   searchQuery: string;
@@ -38,18 +39,18 @@ const ProductFilter = memo(function ProductFilter({
       {/* Search Bar + Scan */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1">
-          <FaSearch className="text-muted-foreground absolute top-1/2 left-5 -translate-y-1/2 text-xl" />
-          <input
+          <FaSearch className="text-muted-foreground absolute top-1/2 left-5 -translate-y-1/2 text-xl z-10" />
+          <Input
             type="text"
             placeholder="Search items..."
-            className="bg-card text-card-foreground border-border focus:ring-primary/40 focus:border-primary placeholder:text-muted-foreground/50 w-full rounded-2xl border py-4.5 pr-14 pl-12 text-xl transition-all focus:ring-4 focus:outline-none"
+            className="h-[70px] rounded-2xl pl-12 pr-14 text-xl"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange("")}
-              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-4 -translate-y-1/2 p-2 transition-colors rounded-full hover:bg-muted"
+              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-4 -translate-y-1/2 p-2 transition-colors rounded-full hover:bg-muted z-10"
             >
               <FaTimes size={22} />
             </button>

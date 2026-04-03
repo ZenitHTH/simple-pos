@@ -1,4 +1,5 @@
 import { FaSearch } from "react-icons/fa";
+import { Input } from "@/components/ui/Input";
 
 interface DateFilterProps {
   startDate: string;
@@ -19,28 +20,20 @@ export default function DateFilter({
 }: DateFilterProps) {
   return (
     <div className="bg-card text-card-foreground border-border mb-8 flex flex-wrap items-end gap-4 rounded-2xl border p-6 shadow-sm">
-      <div>
-        <label className="text-muted-foreground mb-2 block text-sm font-medium">
-          Start Date
-        </label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => onStartDateChange(e.target.value)}
-          className="bg-background border-border focus:border-primary focus:ring-primary/20 rounded-xl border px-4 py-2 outline-none focus:ring-2"
-        />
-      </div>
-      <div>
-        <label className="text-muted-foreground mb-2 block text-sm font-medium">
-          End Date
-        </label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => onEndDateChange(e.target.value)}
-          className="bg-background border-border focus:border-primary focus:ring-primary/20 rounded-xl border px-4 py-2 outline-none focus:ring-2"
-        />
-      </div>
+      <Input
+        label="Start Date"
+        type="date"
+        value={startDate}
+        onChange={(e) => onStartDateChange(e.target.value)}
+        className="max-w-[200px]"
+      />
+      <Input
+        label="End Date"
+        type="date"
+        value={endDate}
+        onChange={(e) => onEndDateChange(e.target.value)}
+        className="max-w-[200px]"
+      />
       <button
         onClick={onFilter}
         disabled={loading}

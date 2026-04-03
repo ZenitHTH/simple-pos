@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import {
@@ -10,6 +8,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { cn } from "@/lib";
+import { Input } from "@/components/ui/Input";
 
 interface PasswordSetupScreenProps {
   onSuccess?: () => void;
@@ -66,48 +65,40 @@ export default function PasswordSetupScreen({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            <div>
-              <label className="text-foreground mb-1 block text-sm font-medium">
-                Create Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="border-input focus:ring-primary/20 focus:border-primary bg-background focus:bg-card text-foreground w-full rounded-xl border px-4 py-3 pr-10 transition-all focus:ring-2 focus:outline-none"
-                  placeholder="Enter a strong password"
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center pr-3"
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
+            <div className="relative">
+              <Input
+                label="Create Password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter a strong password"
+                autoFocus
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-muted-foreground hover:text-foreground absolute right-0 top-[34px] flex h-11 items-center pr-3 z-10"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
-            <div>
-              <label className="text-foreground mb-1 block text-sm font-medium">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="border-input focus:ring-primary/20 focus:border-primary bg-background focus:bg-card text-foreground w-full rounded-xl border px-4 py-3 pr-10 transition-all focus:ring-2 focus:outline-none"
-                  placeholder="Repeat your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center pr-3"
-                >
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
+            <div className="relative">
+              <Input
+                label="Confirm Password"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Repeat your password"
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="text-muted-foreground hover:text-foreground absolute right-0 top-[34px] flex h-11 items-center pr-3 z-10"
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
           </div>
 

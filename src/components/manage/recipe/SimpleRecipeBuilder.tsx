@@ -14,6 +14,7 @@ import { cn, materialApi } from "@/lib";
 import MaterialModal from "@/components/manage/MaterialModal";
 import { useDatabase } from "@/context/DatabaseContext";
 import { Select } from "@/components/ui/Select";
+import { Input } from "@/components/ui/Input";
 import { UNIT_OPTIONS } from "@/lib";
 import { DualColumnBuilder } from "@/components/ui/DualColumnBuilder";
 import { logger } from "@/lib/logger";
@@ -150,13 +151,13 @@ export default function SimpleRecipeBuilder({
                 </button>
               </div>
               <div className="relative">
-                <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base" />
-                <input
+                <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base z-10" />
+                <Input
                   type="text"
                   placeholder="Search materials..."
                   value={materialSearch}
                   onChange={(e) => setMaterialSearch(e.target.value)}
-                  className="border-border bg-muted/30 focus:ring-primary/50 w-full rounded-xl border py-3 pr-4 pl-12 text-base outline-none focus:ring-2"
+                  className="pl-12"
                 />
               </div>
             </>
@@ -205,13 +206,13 @@ export default function SimpleRecipeBuilder({
 
               {!selectedProduct ? (
                 <div className="relative">
-                  <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base" />
-                  <input
+                  <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base z-10" />
+                  <Input
                     type="text"
                     placeholder="Search products to build recipe..."
                     value={productSearch}
                     onChange={(e) => setProductSearch(e.target.value)}
-                    className="border-border bg-muted/30 focus:ring-primary/50 w-full rounded-xl border py-3 pr-4 pl-12 text-base outline-none focus:ring-2"
+                    className="pl-12"
                   />
                 </div>
               ) : (

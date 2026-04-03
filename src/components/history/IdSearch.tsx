@@ -1,4 +1,5 @@
 import { FaSearch } from "react-icons/fa";
+import { Input } from "@/components/ui/Input";
 
 interface IdSearchProps {
   searchId: string;
@@ -20,14 +21,14 @@ export default function IdSearch({
       </h3>
       <div className="flex gap-4">
         <div className="relative max-w-xs flex-1">
-          <FaSearch className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2" />
-          <input
+          <FaSearch className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2 z-10" />
+          <Input
             type="text"
             value={searchId}
             onChange={(e) => onSearchIdChange(e.target.value)}
             placeholder="Enter Receipt ID"
             onKeyDown={(e) => e.key === "Enter" && onSearch()}
-            className="bg-background border-border focus:border-primary focus:ring-primary/20 w-full rounded-xl border py-2.5 pr-4 pl-10 outline-none focus:ring-2"
+            className="pl-10"
           />
         </div>
         <button

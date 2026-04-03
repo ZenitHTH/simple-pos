@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSettings } from "@/context/SettingsContext";
 import { FaCheck, FaCog } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
+import { Input } from "@/components/ui/Input";
 import { CURRENCIES } from "./CurrencySettings";
 import { logger } from "@/lib/logger";
 
@@ -106,22 +107,18 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
               </label>
 
               {settings.tax_enabled && (
-                <div>
-                  <label className="text-foreground mb-1 block text-sm font-medium">
-                    Tax Rate (%)
-                  </label>
-                  <input
-                    type="number"
-                    value={settings.tax_rate}
-                    onChange={(e) =>
-                      updateSettings({
-                        tax_rate: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                    className="border-border focus:ring-primary/20 focus:border-primary bg-background text-foreground w-full rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:outline-none"
-                    placeholder="7.0"
-                  />
-                </div>
+                <Input
+                  label="Tax Rate (%)"
+                  type="number"
+                  value={settings.tax_rate}
+                  onChange={(e) =>
+                    updateSettings({
+                      tax_rate: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  placeholder="7.0"
+                  step="0.01"
+                />
               )}
             </div>
           </div>

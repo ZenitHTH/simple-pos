@@ -5,6 +5,7 @@ import { receiptApi } from "@/lib";
 import { FaFileExport, FaFolderOpen } from "react-icons/fa";
 import { save } from "@tauri-apps/plugin-dialog";
 import SettingsSection from "@/components/ui/SettingsSection";
+import { Select } from "@/components/ui/Select";
 import { logger } from "@/lib/logger";
 import { useDatabase } from "@/context/DatabaseContext";
 
@@ -66,23 +67,21 @@ export default function ExportSection() {
     <SettingsSection title="Export Data" icon={FaFileExport}>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Report Type
-            </label>
-            <select
-              value={reportType}
-              onChange={(e) => setReportType(e.target.value)}
-              className="bg-background border-border focus:border-primary focus:ring-primary/20 w-full rounded-xl border px-4 py-2 outline-none focus:ring-2"
-            >
-              <option value="sales_tax">
-                Sales Tax Report (รายงานภาษีขาย)
-              </option>
-              <option value="sales_detail">
-                Sales Detail Report (รายละเอียดการขาย)
-              </option>
-            </select>
-          </div>
+          <Select
+            label="Report Type"
+            value={reportType}
+            onChange={(value) => setReportType(value as string)}
+            options={[
+              {
+                value: "sales_tax",
+                label: "Sales Tax Report (รายงานภาษีขาย)",
+              },
+              {
+                value: "sales_detail",
+                label: "Sales Detail Report (รายละเอียดการขาย)",
+              },
+            ]}
+          />
 
           <div>
             <label className="mb-2 block text-sm font-medium">

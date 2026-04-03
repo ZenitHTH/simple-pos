@@ -2,6 +2,7 @@ import React from "react";
 import { FaBoxes, FaPlus, FaBoxOpen, FaTrash } from "react-icons/fa";
 import { BackendProduct, Material, UNIT_OPTIONS } from "@/lib";
 import { Select } from "@/components/ui/Select";
+import { Input } from "@/components/ui/Input";
 
 interface MaterialSourceItemProps {
   material: Material;
@@ -94,7 +95,7 @@ export function RecipeTargetItem({
         <label className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
           Volume
         </label>
-        <input
+        <Input
           type="number"
           min="0.0000"
           step="0.25"
@@ -102,7 +103,7 @@ export function RecipeTargetItem({
           onChange={(e) =>
             onUpdate(item.material_id, parseFloat(e.target.value), item.unit)
           }
-          className="bg-background border-border focus:ring-primary/50 h-10 w-full rounded-xl border px-3 text-center text-sm font-semibold outline-none focus:ring-2"
+          className="h-10 text-center text-sm font-semibold"
         />
       </div>
 

@@ -59,6 +59,7 @@ fn main() -> Result<(), String> {
             name: "Test Company Co., Ltd.".to_string(),
             tax_id: Some("1234567890123".to_string()),
             address: Some("123 Test Street, Bangkok".to_string()),
+            branch: Some("00000".to_string()),
         },
     )
     .unwrap();
@@ -69,6 +70,7 @@ fn main() -> Result<(), String> {
             name: "John Doe".to_string(),
             tax_id: None,
             address: None,
+            branch: None,
         },
     )
     .unwrap();

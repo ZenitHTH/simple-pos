@@ -7,9 +7,11 @@ import { receiptApi } from "@/lib/api/receipts";
 import { ProductAccumulation, MaterialAccumulation } from "@/lib/types/receipt";
 import { logger } from "@/lib/logger";
 import { useToast } from "@/context/ToastContext";
+import { useDatabase } from "@/context/DatabaseContext";
 
 export default function ReportPage() {
     const { showToast } = useToast();
+    const { dbKey } = useDatabase();
     const [startDate, setStartDate] = useState(() => {
         const d = new Date();
         d.setDate(d.getDate() - 30);
@@ -23,9 +25,9 @@ export default function ReportPage() {
     const [materials, setMaterials] = useState<MaterialAccumulation[]>([]);
 
     const fetchReport = async () => {
+        if (!dbKey) return;
         setLoading(true);
         try {
-            const dbKey = (window as any).dbKey || "";
             const startUnix = Math.floor(new Date(startDate).getTime() / 1000);
             const endUnix = Math.floor(new Date(endDate).getTime() / 1000) + 86399; // End of day
 
@@ -41,8 +43,10 @@ export default function ReportPage() {
     };
 
     useEffect(() => {
-        fetchReport();
-    }, []);
+        if (dbKey) {
+            fetchReport();
+        }
+    }, [dbKey]);
 
     const productColumns: Column<ProductAccumulation>[] = [
         {
