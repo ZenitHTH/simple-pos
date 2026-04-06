@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { NavButton } from "./NavButton";
 import { GlobalStylesPanel } from "./GlobalStylesPanel";
+import { ThemePresetsPanel } from "./ThemePresetsPanel";
 import { CartItemStylesPanel } from "./CartItemStylesPanel";
 import { ButtonStylesPanel } from "./ButtonStylesPanel";
 import { AppSettings } from "@/lib";
@@ -34,7 +35,7 @@ export function TunerSidebar({
   setPreviewZoom,
 }: TunerSidebarProps) {
   return (
-    <div className="border-border bg-card flex h-full w-64 shrink-0 flex-col border-r p-4">
+    <div className="border-border bg-card/60 flex h-full w-64 shrink-0 flex-col border-r p-4 backdrop-blur-md">
       <GlobalHeader
         title="Design Tuner"
         icon={FaPalette}
@@ -68,9 +69,14 @@ export function TunerSidebar({
       </div>
 
       <div
-        className="mt-2 min-h-0 flex-1 space-y-2 overflow-y-auto pb-30"
+        className="mt-2 min-h-0 flex-1 space-y-2 overflow-y-auto pb-30 custom-scrollbar"
         data-lenis-prevent
       >
+        <ThemePresetsPanel
+          settings={settings}
+          updateSettings={updateSettings}
+        />
+
         <GlobalStylesPanel
           settings={settings}
           updateSettings={updateSettings}

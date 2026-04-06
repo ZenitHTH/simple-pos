@@ -78,6 +78,7 @@ export function GlobalStylesPanel({
               updateSettings({
                 theme_primary_color: "#3b82f6",
                 theme_radius: 0.5,
+                theme_preset: null,
               });
               setPreviewZoom(16);
             }}

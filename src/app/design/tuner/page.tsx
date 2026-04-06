@@ -17,7 +17,12 @@ export default function DesignTunerPage() {
   const [previewZoom, setPreviewZoom] = useState(16);
 
   return (
-    <div className="bg-background text-foreground flex h-screen overflow-hidden">
+    <div className="bg-zinc-950 text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/30">
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[120px]" />
+      </div>
+
       <TunerSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -28,9 +33,9 @@ export default function DesignTunerPage() {
       />
 
       {/* Main Content */}
-      <div className="relative flex-1 overflow-hidden flex flex-col">
+      <div className="relative flex-1 overflow-hidden flex flex-col z-10">
         <div
-          className="bg-background/50 flex-1 overflow-y-auto p-8 custom-scrollbar"
+          className="bg-zinc-900/50 flex-1 overflow-y-auto p-8 custom-scrollbar backdrop-blur-3xl"
           data-lenis-prevent
           style={{
             zoom: previewZoom / 16,
@@ -58,18 +63,18 @@ export default function DesignTunerPage() {
         </div>
 
         {/* Global Action Bar */}
-        <div className="border-border bg-card/80 absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-md transition-all hover:shadow-primary/10">
-          <div className="flex flex-col pr-4 border-r border-border">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        <div className="border-white/10 bg-zinc-900/80 absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-md transition-all hover:shadow-primary/10">
+          <div className="flex flex-col pr-4 border-r border-white/10">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
               Design Mode
             </span>
-            <span className="text-xs font-medium">Changes apply live</span>
+            <span className="text-xs font-medium text-zinc-300">Changes apply live</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={resetToCheckpoint}
-              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all hover:bg-secondary text-muted-foreground hover:text-foreground"
+              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all hover:bg-zinc-800 text-zinc-400 hover:text-white"
             >
               <FaUndo className="text-xs" />
               Discard
