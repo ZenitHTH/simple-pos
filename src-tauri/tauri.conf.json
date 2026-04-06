@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Simple POS",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "identifier": "com.simple-pos.app",
   "build": {
     "frontendDist": "../out",
@@ -20,7 +20,14 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost; style-src 'self' 'unsafe-inline'; script-src 'self'",
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "**/.local/share/simple-pos/images/**",
+          "**/AppData/Roaming/simple-pos/images/**"
+        ]
+      }
     }
   },
   "bundle": {

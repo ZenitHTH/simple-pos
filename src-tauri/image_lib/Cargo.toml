@@ -1,0 +1,18 @@
+[package]
+name = "image_lib"
+version = "0.2.0"
+edition = "2024"
+
+[dependencies]
+atomic-write-file = "0.1"
+sha2 = "0.10"
+hex = "0.4"
+image = { version = "0.24", features = ["jpeg", "png", "webp"] } # Removed avif due to missing NASM
+diesel = { version = "^2.3.6", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+database = { path = "../database" }
+thiserror = "1.0"
+directories = "5.0" # To find app data dir if needed
+
+[lib]
+name = "image_lib"
+path = "src/lib.rs"

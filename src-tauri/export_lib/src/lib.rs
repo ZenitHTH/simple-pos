@@ -1,5 +1,6 @@
 pub mod csv_export;
 pub mod ods_export;
+pub mod thai_accounting;
 pub mod xlsx_export;
 
 use serde::{Deserialize, Serialize};
@@ -16,14 +17,14 @@ pub enum CellValue {
     None,
 }
 
-impl ToString for CellValue {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for CellValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            CellValue::Text(s) => s.clone(),
-            CellValue::Number(n) => n.to_string(),
-            CellValue::Int(n) => n.to_string(),
-            CellValue::Bool(b) => b.to_string(),
-            CellValue::None => "".to_string(),
+            CellValue::Text(s) => write!(f, "{}", s),
+            CellValue::Number(n) => write!(f, "{}", n),
+            CellValue::Int(n) => write!(f, "{}", n),
+            CellValue::Bool(b) => write!(f, "{}", b),
+            CellValue::None => write!(f, ""),
         }
     }
 }
@@ -109,4 +110,12 @@ impl ExportTable {
     pub fn export_ods<P: AsRef<Path>>(&self, path: P) -> Result<(), Box<dyn Error>> {
         ods_export::export_to_ods(self, path)
     }
+}
+
+/// Export multiple named ExportTables as separate sheets in one xlsx file.
+pub fn export_xlsx_sheets<P: AsRef<Path>>(
+    sheets: &[(&str, &ExportTable)],
+    path: P,
+) -> Result<(), Box<dyn Error>> {
+    xlsx_export::export_to_xlsx_sheets(sheets, path)
 }

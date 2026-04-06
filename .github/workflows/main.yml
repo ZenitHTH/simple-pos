@@ -52,6 +52,14 @@ jobs:
           libayatana-appindicator3-dev \
           librsvg2-dev
 
+    - name: Setup OpenSSL (Windows)
+      if: matrix.platform == 'windows-latest'
+      run: |
+        choco install openssl
+        echo "OPENSSL_DIR=C:\Program Files\OpenSSL-Win64" >> $env:GITHUB_ENV
+        echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL-Win64\lib" >> $env:GITHUB_ENV
+        echo "OPENSSL_INCLUDE_DIR=C:\Program Files\OpenSSL-Win64\include" >> $env:GITHUB_ENV
+
     - name: Install frontend dependencies
       run: npm install
 

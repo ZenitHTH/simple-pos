@@ -1,0 +1,2 @@
+-- SQLite does not support DROP COLUMN in older versions.
+-- To revert, recreate the table without the unit column if needed.

@@ -1,4 +1,4 @@
-use crate::receipt::schema::{receipt_item, receipt_list};
+use crate::receipt::schema::{receipt_item, receipt_item_material, receipt_list};
 use chrono::{DateTime, FixedOffset, NaiveDateTime};
 use diesel::prelude::*;
 use serde::Serialize;
@@ -9,6 +9,7 @@ use serde::Serialize;
 pub struct ReceiptList {
     pub receipt_id: i32,
     pub datetime_unix: i64,
+    pub customer_id: Option<i32>,
 }
 
 impl ReceiptList {
@@ -30,6 +31,7 @@ impl ReceiptList {
 #[diesel(table_name = receipt_list)]
 pub struct NewReceiptList {
     pub datetime_unix: i64,
+    pub customer_id: Option<i32>,
 }
 
 // --- Receipt (Items) ---
@@ -41,6 +43,7 @@ pub struct Receipt {
     pub receipt_id: i32,
     pub product_id: i32,
     pub quantity: i32,
+    pub satang_at_sale: i32,
 }
 
 #[derive(Insertable)]
@@ -49,4 +52,26 @@ pub struct NewReceipt {
     pub receipt_id: i32,
     pub product_id: i32,
     pub quantity: i32,
+    pub satang_at_sale: i32,
+}
+
+// --- Receipt Item Material (Historical usage) ---
+#[derive(Queryable, Selectable, Serialize, Associations, Debug, Clone)]
+#[diesel(table_name = receipt_item_material)]
+#[diesel(belongs_to(Receipt, foreign_key = receipt_item_id))]
+pub struct ReceiptItemMaterial {
+    pub id: i32,
+    pub receipt_item_id: i32,
+    pub material_id: i32,
+    pub volume_used: i32,
+    pub precision: i32,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = receipt_item_material)]
+pub struct NewReceiptItemMaterial {
+    pub receipt_item_id: i32,
+    pub material_id: i32,
+    pub volume_used: i32,
+    pub precision: i32,
 }

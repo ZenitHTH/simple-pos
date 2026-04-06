@@ -1,97 +1,158 @@
 import { useState, useEffect } from "react";
-import { productApi } from "@/lib/api";
-import { BackendProduct, NewProduct } from "@/lib/types";
+import { productApi, categoryApi } from "@/lib";
+import { BackendProduct, NewProduct, Category } from "@/lib";
+import { logger } from "@/lib/logger";
+
+import { useDatabase } from "@/context/DatabaseContext";
 
 export function useProductManagement() {
-    const [products, setProducts] = useState<BackendProduct[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
+  const { dbKey } = useDatabase();
+  const [products, setProducts] = useState<BackendProduct[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-    // Modal State
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingProduct, setEditingProduct] = useState<BackendProduct | undefined>(undefined);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<
+    BackendProduct | undefined
+  >(undefined);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+  const fetchProducts = async () => {
+    if (!dbKey) return;
+    try {
+      setLoading(true);
+      const [data, fetchedCategories] = await Promise.all([
+        productApi.getAll(dbKey),
+        categoryApi.getAll(dbKey),
+      ]);
+      setProducts(data);
+      setCategories(fetchedCategories);
+    } catch (err) {
+      logger.error("Failed to fetch products:", err);
+      setError("Failed to load products. Is the backend running?");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const fetchProducts = async () => {
-        try {
-            setLoading(true);
-            const data = await productApi.getAll();
-            setProducts(data);
-        } catch (err) {
-            console.error("Failed to fetch products:", err);
-            setError("Failed to load products. Is the backend running?");
-        } finally {
-            setLoading(false);
-        }
-    };
+  useEffect(() => {
+    fetchProducts();
+  }, [dbKey]);
 
-    const handleCreate = () => {
-        setEditingProduct(undefined);
-        setIsModalOpen(true);
-    };
+  const handleCreate = () => {
+    setEditingProduct(undefined);
+    setIsModalOpen(true);
+  };
 
-    const handleEdit = (product: BackendProduct) => {
-        setEditingProduct(product);
-        setIsModalOpen(true);
-    };
+  const handleEdit = (product: BackendProduct) => {
+    setEditingProduct(product);
+    setIsModalOpen(true);
+  };
 
-    const handleDelete = async (id: number) => {
-        if (!confirm("Are you sure you want to delete this product?")) return;
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this product?") || !dbKey)
+      return;
 
-        try {
-            await productApi.delete(id);
-            setProducts(products.filter(p => p.product_id !== id));
-        } catch (err) {
-            console.error("Failed to delete product:", err);
-            alert("Failed to delete product");
-        }
-    };
+    try {
+      await productApi.delete(dbKey, id);
+      setProducts(products.filter((p) => p.product_id !== id));
+    } catch (err) {
+      logger.error("Failed to delete product:", err);
+      alert(err);
+    }
+  };
 
-    const handleModalSubmit = async (data: NewProduct) => {
-        try {
-            setIsSubmitting(true);
-            if (editingProduct) {
-                const updated = await productApi.update({
-                    ...data,
-                    product_id: editingProduct.product_id,
-                });
-                setProducts(products.map(p => p.product_id === updated.product_id ? updated : p));
-            } else {
-                const created = await productApi.create(data);
-                setProducts([...products, created]);
-            }
-            setIsModalOpen(false);
-        } catch (err) {
-            console.error("Failed to save product:", err);
-            alert("Failed to save product");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  const handleModalSubmit = async (
+    data: NewProduct,
+    afterSubmit?: (saved: BackendProduct) => Promise<void>,
+  ): Promise<BackendProduct | undefined> => {
+    if (!dbKey) return;
+    try {
+      setIsSubmitting(true);
+      let result: BackendProduct;
+      if (editingProduct) {
+        const updated = await productApi.update(dbKey, {
+          ...data,
+          product_id: editingProduct.product_id,
+        });
+        result = updated;
+      } else {
+        const created = await productApi.create(dbKey, data);
+        result = created;
+      }
 
-    const filteredProducts = products.filter(product =>
-        product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.catagory.toLowerCase().includes(searchQuery.toLowerCase())
+      if (afterSubmit) {
+        await afterSubmit(result);
+      }
+
+      // Re-fetch to get updated state (including images)
+      await fetchProducts();
+
+      setIsModalOpen(false);
+      return result;
+    } catch (err) {
+      logger.error("Failed to save product:", err);
+      alert(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const categoryName =
+      categories.find((c) => c.id === product.category_id)?.name || "Unknown";
+    return (
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      categoryName.toLowerCase().includes(searchQuery.toLowerCase())
     );
+  });
 
-    return {
-        products: filteredProducts,
-        loading,
-        error,
-        searchQuery,
-        setSearchQuery,
-        isModalOpen,
-        setIsModalOpen,
-        editingProduct,
-        isSubmitting,
-        handleCreate,
-        handleEdit,
-        handleDelete,
-        handleModalSubmit
-    };
+  const handleToggleStockMode = async (
+    productId: number,
+    currentMode: boolean,
+  ) => {
+    if (!dbKey) return;
+    const nextMode = !currentMode;
+    // Optimistic update — flip immediately so the Switch responds right away
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.product_id === productId ? { ...p, use_recipe_stock: nextMode } : p,
+      ),
+    );
+    try {
+      await productApi.setStockMode(dbKey, productId, nextMode);
+    } catch (err) {
+      // Roll back on failure
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.product_id === productId
+            ? { ...p, use_recipe_stock: currentMode }
+            : p,
+        ),
+      );
+      logger.error("Failed to toggle stock mode:", err);
+      alert("Failed to toggle stock mode");
+    }
+  };
+
+  return {
+    products: filteredProducts,
+    categories,
+    loading,
+    error,
+    searchQuery,
+    setSearchQuery,
+    isModalOpen,
+    setIsModalOpen,
+    editingProduct,
+    isSubmitting,
+    handleCreate,
+    handleEdit,
+    handleDelete,
+    handleModalSubmit,
+    handleToggleStockMode,
+  };
 }

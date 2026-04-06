@@ -2,7 +2,7 @@ diesel::table! {
     product (product_id) {
         product_id -> Integer,
         title -> Text,
-        catagory -> Text,
+        category_id -> Integer,
         satang -> Integer,
     }
 }

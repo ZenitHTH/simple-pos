@@ -1,0 +1,246 @@
+<style>
+  :root {
+    --bg-dark: #000000;
+    --card-dark: #1c1c1e;
+    --border-dark: #38383a;
+    --primary-blue: #0a84ff;
+    --text-muted: #8e8e93;
+    --radius-apple: 12px;
+  }
+
+  .mockup-container {
+    background: var(--bg-dark);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    height: 600px;
+    border-radius: var(--radius-apple);
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+  }
+
+  .mockup-sidebar {
+    width: 240px;
+    background: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .sidebar-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+    margin-top: 24px;
+  }
+  .sidebar-header:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #efeff4;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    margin-bottom: 2px;
+  }
+
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+
+  .nav-item:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--primary-blue);
+  }
+
+  .mockup-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-area {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background: radial-gradient(circle at center, #1c1c1e 0%, #000000 100%);
+  }
+
+  .tuner-card {
+    background: var(--card-dark);
+    border-radius: 20px;
+    padding: 32px;
+    border: 1px solid var(--border-dark);
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .card-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .card-header p {
+    margin: 0 0 24px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .apple-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.2s;
+  }
+
+  .apple-btn-primary {
+    background: var(--primary-blue);
+    color: white;
+  }
+
+  .apple-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  .action-bar {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(28, 28, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #34c759;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #34c759;
+  }
+
+  .status-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: #34c759;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+
+<h2>Design Tuner: Refined Navigation</h2>
+<p class="subtitle">Replacing emojis with clean, consistent React-style icons.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Vibe POS - Design Tuner (v2.1)</div>
+  <div class="mockup-body" style="padding: 0;">
+    <div class="mockup-container">
+      <div class="mockup-sidebar">
+        <div class="sidebar-header">Layout Presets</div>
+        <div class="nav-item">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+          </div>
+          <span>Compact POS</span>
+        </div>
+        <div class="nav-item active">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <span>Cozy Desktop</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <span>High Contrast</span>
+        </div>
+
+        <div class="sidebar-header">Global Styles</div>
+        <div class="nav-item active">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg>
+          </div>
+          <span>Buttons</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+          </div>
+          <span>Typography</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+          </div>
+          <span>Grid & Spacing</span>
+        </div>
+      </div>
+
+      <div class="mockup-main">
+        <div class="preview-area">
+          <div class="tuner-card">
+            <div class="card-header">
+              <h3>Preview: Cozy Desktop</h3>
+              <p>Testing primary blue and 10px border radius.</p>
+            </div>
+            <div class="button-grid">
+              <button class="apple-btn apple-btn-primary">Main Action</button>
+              <button class="apple-btn apple-btn-secondary">Secondary</button>
+              <button class="apple-btn" style="background: rgba(255, 69, 58, 0.2); color: #ff453a;">Danger</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <div style="display: flex; align-items: center; gap: 8px; padding-right: 12px; border-right: 1px solid var(--border-dark);">
+            <div class="status-dot"></div>
+            <span class="status-text">Live</span>
+          </div>
+          <button class="apple-btn apple-btn-secondary" style="font-size: 11px; padding: 6px 12px;">Reset</button>
+          <button class="apple-btn apple-btn-primary" style="font-size: 11px; padding: 6px 20px;">Save Design</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

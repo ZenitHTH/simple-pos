@@ -14,6 +14,7 @@ use serde::Serialize;
 pub struct Stock {
     pub stock_id: i32,
     pub product_id: i32,
+    pub satang: i32,
     pub quantity: i32,
 }
 
@@ -22,4 +23,5 @@ pub struct Stock {
 pub struct NewStock {
     pub product_id: i32,
     pub quantity: i32,
+    pub satang: i32,
 }

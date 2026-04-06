@@ -1,0 +1,6 @@
+[env]
+# OpenSSL configuration for Windows
+# These paths are specific to the OpenSSL installation on this machine.
+# If you move to another machine, ensure OpenSSL is installed and update these paths or use OPENSSL_DIR environment variable if standard.
+OPENSSL_INCLUDE_DIR = "C:\\Program Files\\OpenSSL-Win64\\include"
+OPENSSL_LIB_DIR = "C:\\Program Files\\OpenSSL-Win64\\lib\\VC\\x64\\MD"

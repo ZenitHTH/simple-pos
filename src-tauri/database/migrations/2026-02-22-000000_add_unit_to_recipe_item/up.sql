@@ -1,0 +1,1 @@
+ALTER TABLE recipe_item ADD COLUMN unit TEXT NOT NULL DEFAULT 'Pieces';

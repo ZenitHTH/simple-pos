@@ -31,8 +31,29 @@ pub fn remove_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<usize,
     diesel::delete(stock_schemata::dsl::stock.find(stock_id)).execute(conn)
 }
 
+pub fn remove_stock_by_product(conn: &mut SqliteConnection, target_product_id: i32) -> Result<usize, Error> {
+    use stock_schemata::dsl::{product_id, stock as stock_dsl};
+    diesel::delete(stock_dsl.filter(product_id.eq(target_product_id))).execute(conn)
+}
+
 pub fn get_stock(conn: &mut SqliteConnection, product_id_target: i32) -> Result<Stock, Error> {
     stock_schemata::table
         .filter(stock_schemata::product_id.eq(product_id_target))
         .first::<Stock>(conn)
+}
+
+pub fn get_all_stocks(conn: &mut SqliteConnection) -> Result<Vec<Stock>, Error> {
+    stock_schemata::table.load::<Stock>(conn)
+}
+
+pub fn sync_product_price_in_stock(
+    conn: &mut SqliteConnection,
+    target_product_id: i32,
+    new_price: i32,
+) -> Result<usize, Error> {
+    use stock_schemata::dsl::{product_id, satang, stock as stock_dsl};
+
+    diesel::update(stock_dsl.filter(product_id.eq(target_product_id)))
+        .set(satang.eq(new_price))
+        .execute(conn)
 }

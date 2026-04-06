@@ -1,18 +1,54 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Noto_Sans,
+  Noto_Sans_Thai,
+  Prompt,
+  Sarabun,
+  Inter,
+  Kanit,
+} from "next/font/google";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
-import { SettingsProvider } from "./context/SettingsContext";
-import { MockupProvider } from "./context/MockupContext";
-import BottomControlPanel from './components/design-mode/BottomControlPanel';
+import Sidebar from "@/components/layout/Sidebar";
+import { SettingsProvider } from "@/context/SettingsContext";
+import { DatabaseProvider } from "@/context/DatabaseContext";
+import DatabaseGuard from "@/components/common/DatabaseGuard";
+import { MockupProvider } from "@/context/MockupContext";
+import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
+import { ThemeProvider } from "@/components/theme-provider";
+import SmoothScroll from "@/components/common/SmoothScroll";
+import GoBackButton from "@/components/ui/GoBackButton";
+import { ToastProvider } from "@/context/ToastContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const prompt = Prompt({
+  variable: "--font-prompt",
+  subsets: ["thai", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const sarabun = Sarabun({
+  variable: "--font-sarabun",
+  subsets: ["thai", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const kanit = Kanit({
+  variable: "--font-kanit",
+  subsets: ["thai", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const notoSansThai = Noto_Sans_Thai({
+  variable: "--font-noto-sans-thai",
+  subsets: ["thai", "latin"],
+});
+
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
 });
 
@@ -27,19 +63,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex bg-background`}
+        className={`${inter.variable} ${prompt.variable} ${sarabun.variable} ${kanit.variable} ${notoSansThai.variable} ${notoSans.variable} bg-background text-foreground flex antialiased`}
       >
-        <SettingsProvider>
-          <MockupProvider>
-            <Sidebar />
-            <main className="flex-1 h-screen overflow-hidden pt-16 lg:pt-0 flex flex-col">
-              {children}
-            </main>
-            <BottomControlPanel />
-          </MockupProvider>
-        </SettingsProvider>
+        <SmoothScroll>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SettingsProvider>
+              <ToastProvider>
+                <DatabaseProvider>
+                  <MockupProvider>
+                    <DatabaseGuard>
+                      <Sidebar />
+                      <main className="flex h-screen flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
+                        {children}
+                      </main>
+                      <BottomControlPanel />
+                      <GoBackButton />
+                    </DatabaseGuard>
+                  </MockupProvider>
+                </DatabaseProvider>
+              </ToastProvider>
+            </SettingsProvider>
+          </ThemeProvider>
+        </SmoothScroll>
       </body>
     </html>
   );

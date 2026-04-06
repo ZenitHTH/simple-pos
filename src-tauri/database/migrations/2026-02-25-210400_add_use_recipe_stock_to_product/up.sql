@@ -1,0 +1,1 @@
+ALTER TABLE product ADD COLUMN use_recipe_stock INTEGER NOT NULL DEFAULT 0;
