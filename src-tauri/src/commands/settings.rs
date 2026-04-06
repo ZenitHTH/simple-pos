@@ -63,6 +63,8 @@ pub struct AppSettings {
 
     // ── Theme ──
     pub theme_primary_color: Option<String>,
+    pub theme_radius: Option<f64>,
+    pub theme_preset: Option<String>,
 }
 
 impl Default for AppSettings {
@@ -125,6 +127,8 @@ impl Default for AppSettings {
 
             // ── Theme ──
             theme_primary_color: None,
+            theme_radius: Some(0.5),
+            theme_preset: Some("cozy".to_string()),
         }
     }
 }

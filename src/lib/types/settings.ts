@@ -57,4 +57,5 @@ export interface AppSettings {
   db_storage_path: string | null;
   theme_primary_color: string | null;
   theme_radius: number | null;
+  theme_preset: "compact" | "cozy" | "custom" | null;
 }

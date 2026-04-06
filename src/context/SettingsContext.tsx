@@ -20,6 +20,19 @@ interface SettingsContextType {
   resetToDefault: () => void; // Reverts to hardcoded defaults
 }
 
+export const THEME_PRESETS = {
+  compact: {
+    theme_radius: 0.3,
+    button_scale: 90,
+    display_scale: 95,
+  },
+  cozy: {
+    theme_radius: 0.8,
+    button_scale: 110,
+    display_scale: 105,
+  },
+};
+
 const DEFAULT_SETTINGS: AppSettings = {
   currency_symbol: "$",
   tax_enabled: true,
@@ -65,6 +78,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   db_storage_path: null,
   theme_primary_color: null,
   theme_radius: 0.5,
+  theme_preset: "cozy",
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -161,7 +175,20 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   };
 
   const updateSettings = (updates: Partial<AppSettings>) => {
-    setSettings((prev) => ({ ...prev, ...updates }));
+    setSettings((prev) => {
+      let next = { ...prev, ...updates };
+
+      // Auto-apply preset values if theme_preset is changing to a known preset
+      if (updates.theme_preset && updates.theme_preset !== "custom") {
+        const preset =
+          THEME_PRESETS[updates.theme_preset as keyof typeof THEME_PRESETS];
+        if (preset) {
+          next = { ...next, ...preset };
+        }
+      }
+
+      return next;
+    });
   };
 
   const save = async () => {
