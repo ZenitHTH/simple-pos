@@ -1,0 +1,250 @@
+<style>
+  :root {
+    --bg-dark: #000000;
+    --card-dark: #1c1c1e;
+    --border-dark: #38383a;
+    --primary-blue: #0a84ff;
+    --text-muted: #8e8e93;
+    --radius-apple: 12px;
+  }
+
+  .mockup-container {
+    background: var(--bg-dark);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    height: 600px;
+    border-radius: var(--radius-apple);
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+  }
+
+  .mockup-sidebar {
+    width: 240px;
+    background: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .sidebar-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    padding-left: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: white;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-item i {
+    color: var(--primary-blue);
+    font-size: 16px;
+  }
+
+  .mockup-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-area {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background: radial-gradient(circle at center, #1c1c1e 0%, #000000 100%);
+  }
+
+  .tuner-card {
+    background: var(--card-dark);
+    border-radius: 20px;
+    padding: 32px;
+    border: 1px solid var(--border-dark);
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .card-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .card-header p {
+    margin: 0 0 24px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .apple-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.2s;
+  }
+
+  .apple-btn-primary {
+    background: var(--primary-blue);
+    color: white;
+  }
+
+  .apple-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  .apple-btn:active {
+    transform: scale(0.96);
+  }
+
+  .action-bar {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(28, 28, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #34c759;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #34c759;
+  }
+
+  .status-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #34c759;
+  }
+</style>
+
+<h2>Design Tuner: Apple-Inspired Dark Mode</h2>
+<p class="subtitle">A high-fidelity mockup featuring glassmorphism and modern dark aesthetics.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Vibe POS - Design Tuner (v2.0 Concept)</div>
+  <div class="mockup-body" style="padding: 0;">
+    <div class="mockup-container">
+      <div class="mockup-sidebar">
+        <div class="sidebar-header">Layout Presets</div>
+        <div class="nav-item">
+          <span style="font-size: 18px;">📱</span>
+          <span>Compact (POS)</span>
+        </div>
+        <div class="nav-item active">
+          <span style="font-size: 18px;">💻</span>
+          <span>Cozy (Desktop)</span>
+        </div>
+        <div class="nav-item">
+          <span style="font-size: 18px;">👓</span>
+          <span>High Contrast</span>
+        </div>
+
+        <div class="sidebar-header" style="margin-top: 32px;">Elements</div>
+        <div class="nav-item active"><span>Buttons</span></div>
+        <div class="nav-item"><span>Typography</span></div>
+        <div class="nav-item"><span>Grid & Spacing</span></div>
+      </div>
+
+      <div class="mockup-main">
+        <div class="preview-area">
+          <div class="tuner-card">
+            <div class="card-header">
+              <h3>Button Variants</h3>
+              <p>Testing scales and border radius in the "Cozy" preset.</p>
+            </div>
+            <div class="button-grid">
+              <button class="apple-btn apple-btn-primary">Order Now</button>
+              <button class="apple-btn apple-btn-secondary">Add Item</button>
+              <button class="apple-btn" style="background: transparent; border: 1px solid white;">Cancel</button>
+              <button class="apple-btn" style="background: rgba(255, 69, 58, 0.2); color: #ff453a;">Delete</button>
+            </div>
+          </div>
+
+          <div class="tuner-card">
+            <div class="card-header">
+              <h3>Interactive State</h3>
+              <p>Hover and active feedback for touch and click.</p>
+            </div>
+            <div class="button-grid">
+               <button class="apple-btn apple-btn-primary" style="filter: brightness(1.2);">Hover State</button>
+               <button class="apple-btn apple-btn-primary" style="transform: scale(0.96);">Pressed State</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <div style="display: flex; align-items: center; gap: 8px; padding-right: 16px; border-right: 1px solid var(--border-dark);">
+            <div class="status-dot"></div>
+            <span class="status-text">Live Sync Active</span>
+          </div>
+          <button class="apple-btn apple-btn-secondary" style="font-size: 12px;">Discard</button>
+          <button class="apple-btn apple-btn-primary" style="font-size: 12px; padding: 8px 24px;">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="glassmorphism" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Glassmorphism Sidebar</h3>
+      <p>Keep the translucent blur effect for the navigation.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="presets" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Layout Presets</h3>
+      <p>Add quick-toggle presets like "POS Tablet" and "Desktop".</p>
+    </div>
+  </div>
+  <div class="option" data-choice="status-bar" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Active Status Indicator</h3>
+      <p>Show a "Live Sync" status in the action bar.</p>
+    </div>
+  </div>
+</div>
