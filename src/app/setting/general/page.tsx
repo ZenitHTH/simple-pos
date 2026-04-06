@@ -18,6 +18,10 @@ export default function GeneralSettingPage() {
     [updateSettings],
   );
 
+  /**
+   * General Settings Page correctly utilizes ManagementPageLayout
+   * with 'setting_page_scale' to ensure consistent scaling.
+   */
   return (
     <ManagementPageLayout
       title="General Settings"
