@@ -1,7 +1,8 @@
 use database::establish_connection;
 use database::product_image::{
     get_all_links as db_get_all_links, get_linked_images as db_get_images,
-    link_product_image as db_link_image, unlink_product_image as db_unlink_image,
+    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,
+    unlink_product_image as db_unlink_image,
 };
 use image_lib::save_image as lib_save_image;
 use tauri::command;
@@ -41,6 +42,17 @@ pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Resu
         .map_err(|_| format!("Image with ID {} does not exist", image_id))?;
 
     db_unlink_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
+}
+
+#[command]
+pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, String> {
+    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+
+    // Validate existence
+    database::product::find_product(&mut conn, product_id)
+        .map_err(|_| format!("Product with ID {} does not exist", product_id))?;
+
+    db_clear_product_images(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
 #[command]

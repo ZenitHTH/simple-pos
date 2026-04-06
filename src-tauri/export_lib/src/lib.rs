@@ -29,6 +29,16 @@ impl std::fmt::Display for CellValue {
     }
 }
 
+/// Sanitizes a string to prevent Formula Injection (CSV/XLSX/ODS).
+/// Prepends a single quote if the string starts with =, +, -, or @.
+pub fn sanitize_cell_text(s: &str) -> String {
+    if s.starts_with('=') || s.starts_with('+') || s.starts_with('-') || s.starts_with('@') {
+        format!("'{}", s)
+    } else {
+        s.to_string()
+    }
+}
+
 // Helper implementations for easy conversion
 impl From<&str> for CellValue {
     fn from(s: &str) -> Self {

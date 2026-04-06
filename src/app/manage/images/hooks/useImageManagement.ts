@@ -173,15 +173,11 @@ export function useImageManagement() {
           ),
         );
       } else {
-        // Enforce exclusivity: Unlink any other product currently using this image
-        const existingLinks = links.filter((l) => l.image_id === selectedImage.id);
-        for (const link of existingLinks) {
-          await invoke("unlink_product_image", {
-            key: dbKey,
-            productId: link.product_id,
-            imageId: selectedImage.id,
-          });
-        }
+        // Enforce product exclusivity: Clear any other images currently linked to this product
+        await invoke("clear_product_images", {
+          key: dbKey,
+          productId: productId,
+        });
 
         await invoke("link_product_image", {
           key: dbKey,
@@ -189,9 +185,9 @@ export function useImageManagement() {
           imageId: selectedImage.id,
         });
 
-        // Update local state: remove all old links for this image, add new one
+        // Update local state: remove all old links for this product, add the new one
         setLinks((prev) => [
-          ...prev.filter((l) => l.image_id !== selectedImage.id),
+          ...prev.filter((l) => l.product_id !== productId),
           { product_id: productId, image_id: selectedImage.id },
         ]);
 

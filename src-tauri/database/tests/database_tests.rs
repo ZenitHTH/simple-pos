@@ -110,6 +110,7 @@ fn test_customer_operations() {
         name: "John Doe".to_string(),
         tax_id: Some("1234567890123".to_string()),
         address: Some("123 Street".to_string()),
+        branch: Some("00000".to_string()),
     };
     let inserted = database::customer::insert_customer(&mut conn, &new_cust).unwrap();
     assert_eq!(inserted.name, "John Doe");

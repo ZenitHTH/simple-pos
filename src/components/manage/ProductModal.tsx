@@ -47,7 +47,7 @@ export default function ProductModal({
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
-  const [images, setImages] = useState<Image[]>([]);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
@@ -65,12 +65,16 @@ export default function ProductModal({
         satang: initialData?.satang || 0,
         use_recipe_stock: initialData?.use_recipe_stock || false,
       });
-      setImages([]);
+      setSelectedImage(null);
       if (initialData && dbKey) {
         // Fetch existing images
         imageApi
           .getByProduct(dbKey, initialData.product_id)
-          .then(setImages)
+          .then((imgs) => {
+            if (imgs && imgs.length > 0) {
+              setSelectedImage(imgs[0]);
+            }
+          })
           .catch(logger.error);
       }
     }
@@ -80,17 +84,18 @@ export default function ProductModal({
     e.preventDefault();
 
     await onSubmit(formData, async (savedProduct) => {
-      if (dbKey && images.length > 0) {
-        // Link all current images to the product
-        await Promise.all(
-          images.map((img) =>
-            imageApi
-              .linkToProduct(dbKey, savedProduct.product_id, img.id)
-              .catch((err) => {
-                logger.warn("Failed to link image:", err);
-              }),
-          ),
-        );
+      if (dbKey) {
+        // Clear old links first
+        await imageApi.clearProductImage(dbKey, savedProduct.product_id);
+
+        if (selectedImage) {
+          // Link the selected one
+          await imageApi
+            .linkToProduct(dbKey, savedProduct.product_id, selectedImage.id)
+            .catch((err) => {
+              logger.warn("Failed to link image:", err);
+            });
+        }
       }
     });
   };
@@ -104,7 +109,7 @@ export default function ProductModal({
 
       try {
         const savedImage = await imageApi.save(dbKey, bytes, file.name);
-        setImages((prev) => [...prev, savedImage]);
+        setSelectedImage(savedImage);
       } catch (err) {
         logger.error("Failed to upload image:", err);
         alert("Failed to upload image.");
@@ -196,41 +201,41 @@ export default function ProductModal({
 
         {/* Image Section */}
         <div className="space-y-4">
-          <label className="mb-1.5 block text-sm font-semibold">Images</label>
+          <label className="mb-1.5 block text-sm font-semibold">Product Image</label>
           <div className="flex flex-wrap gap-2">
-            {images.map((img) => (
+            {selectedImage && (
               <div
-                key={img.id}
+                key={selectedImage.id}
                 className="group relative h-16 w-16 overflow-hidden rounded border"
               >
                 <img
-                  src={convertFileSrc(img.file_path)}
-                  alt={img.file_name}
+                  src={convertFileSrc(selectedImage.file_path)}
+                  alt={selectedImage.file_name}
                   className="h-full w-full object-cover"
-                  style={parseImageStyle(img.image_object_position)}
+                  style={parseImageStyle(selectedImage.image_object_position)}
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setImages(images.filter((i) => i.id !== img.id))
-                  }
+                  onClick={() => setSelectedImage(null)}
                   className="bg-destructive text-destructive-foreground absolute top-0 right-0 rounded-bl p-1 opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   <FaTrash size={10} />
                 </button>
               </div>
-            ))}
-            <label className="border-border hover:bg-muted/10 flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded border border-dashed transition-colors">
-              <FaImage className="text-muted-foreground mb-1" />
-              <span className="text-muted-foreground text-xs">Add</span>
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleFileChange}
-                disabled={isUploading}
-              />
-            </label>
+            )}
+            {!selectedImage && (
+              <label className="border-border hover:bg-muted/10 flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded border border-dashed transition-colors">
+                <FaImage className="text-muted-foreground mb-1" />
+                <span className="text-muted-foreground text-xs">Add</span>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                />
+              </label>
+            )}
           </div>
         </div>
 

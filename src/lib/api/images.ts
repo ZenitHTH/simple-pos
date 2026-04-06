@@ -34,6 +34,16 @@ export const imageApi = {
     });
   },
 
+  clearProductImage: async (
+    key: string,
+    productId: number,
+  ): Promise<number> => {
+    return await invoke("clear_product_images", {
+      key,
+      productId,
+    });
+  },
+
   getByProduct: async (key: string, productId: number): Promise<Image[]> => {
     return await invoke("get_product_images", { key, productId });
   },

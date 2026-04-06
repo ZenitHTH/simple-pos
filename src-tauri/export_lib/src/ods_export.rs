@@ -1,4 +1,4 @@
-use super::{CellValue, ExportTable};
+use super::{CellValue, ExportTable, sanitize_cell_text};
 
 use spreadsheet_ods::{Sheet, WorkBook};
 use std::error::Error;
@@ -19,7 +19,10 @@ pub fn export_to_ods<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(),
         for (col_idx, cell) in row.iter().enumerate() {
             let current_col = col_idx as u32;
             match cell {
-                CellValue::Text(s) => sheet.set_value(current_row, current_col, s.clone()),
+                CellValue::Text(s) => {
+                    let sanitized = sanitize_cell_text(s);
+                    sheet.set_value(current_row, current_col, sanitized)
+                }
                 CellValue::Number(n) => sheet.set_value(current_row, current_col, *n),
                 CellValue::Int(n) => sheet.set_value(current_row, current_col, *n),
                 CellValue::Bool(b) => sheet.set_value(current_row, current_col, *b),

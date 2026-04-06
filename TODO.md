@@ -1,7 +1,7 @@
 # project TODO
 
 ## Bugs
-- [ ] **Image-Product Linking Confusion**: Resolve conflict in image linking logic. Currently, one product can be linked to multiple images, and the exclusivity logic in `useImageManagement.ts` only prevents one image from being linked to multiple products, which is counter-intuitive.
+- [x] **Image-Product Linking Confusion**: Resolve conflict in image linking logic. Currently, one product can be linked to multiple images, and the exclusivity logic in `useImageManagement.ts` only prevents one image from being linked to multiple products, which is counter-intuitive.
     - **Affected Files**: 
         - `src-tauri/database/src/image/**`
         - `src/app/manage/images/**`

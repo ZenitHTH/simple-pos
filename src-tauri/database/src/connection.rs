@@ -53,8 +53,8 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
     let mut conn = SqliteConnection::establish(database_url)
         .map_err(|_| "Failed to establish database connection".to_string())?;
 
-    let escaped_key = key.replace('\'', "''");
-    diesel::sql_query(format!("PRAGMA key = '{}';", escaped_key))
+    let hex_key = hex::encode(key);
+    diesel::sql_query(format!("PRAGMA key = \"x'{}'\";", hex_key))
         .execute(&mut conn)
         .map_err(|_| "Error setting encryption key".to_string())?;
 
@@ -78,7 +78,7 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
         // The database is unencrypted! Let's encrypt it with the provided key.
         // In SQLCipher, PRAGMA rekey is used to set the initial key on an unencrypted database or change an existing one.
         log::debug!("Database setup: initial encryption required.");
-        diesel::sql_query(format!("PRAGMA rekey = '{}';", escaped_key))
+        diesel::sql_query(format!("PRAGMA rekey = \"x'{}'\";", hex_key))
             .execute(&mut conn)
             .map_err(|_| "Error encrypting database".to_string())?;
 

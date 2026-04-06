@@ -29,6 +29,11 @@ pub fn save_image(
     target_dir: Option<&Path>,
     key: &str,
 ) -> Result<Image, ImageError> {
+    // 0. Sanitize filename to prevent path traversal
+    if filename.contains('/') || filename.contains('\\') || filename.contains("..") {
+        return Err(ImageError::InvalidExtension("Traversal characters detected".to_string()));
+    }
+
     // 1. Calculate Hash
     let mut hasher = Sha256::new();
     hasher.update(data);

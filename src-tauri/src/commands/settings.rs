@@ -238,7 +238,15 @@ pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), Stri
 
     for image in images {
         let old_path = std::path::PathBuf::from(&image.file_path);
-        let dest_path = new_path_buf.join(&image.file_name);
+        
+        // Use the actual filename from the current path (which is hash-based and safe)
+        // instead of image.file_name (which is the original user-provided name)
+        let actual_filename = match old_path.file_name() {
+            Some(name) => name,
+            None => continue, // Should not happen for valid paths
+        };
+        
+        let dest_path = new_path_buf.join(actual_filename);
         let dest_path_str = dest_path.to_string_lossy().to_string();
 
         if old_path.exists() {

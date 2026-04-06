@@ -52,3 +52,32 @@ src/types/next.d.ts
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Tauri/Rust build artifacts
+/src-tauri/target/
+/src-tauri/gen/
+/target/
+/src-tauri/database/target/
+/src-tauri/database/gen/
+/src-tauri/database/Cargo.lock
+/src-tauri/image_lib/target/
+/src-tauri/image_lib/Cargo.lock
+/src-tauri/export_lib/target/
+/src-tauri/export_lib/Cargo.lock
+
+# Local databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# Generated Diagrams
+mermaid-diagram-*.png
+mermaid-diagram-*.svg
+
+# Agent State & Workspace Misc
+.gemini/
+.superpowers/
+.claude/
+skills-lock.json
+test_product.js

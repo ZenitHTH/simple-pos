@@ -1,4 +1,4 @@
-use super::{CellValue, ExportTable};
+use super::{CellValue, ExportTable, sanitize_cell_text};
 use rust_xlsxwriter::*;
 use std::error::Error;
 use std::path::Path;
@@ -30,7 +30,8 @@ pub fn export_to_xlsx_sheets<P: AsRef<Path>>(
                 let current_col = col_idx as u16;
                 match cell {
                     CellValue::Text(s) => {
-                        worksheet.write(current_row, current_col, s.as_str())?;
+                        let sanitized = sanitize_cell_text(s);
+                        worksheet.write(current_row, current_col, sanitized.as_str())?;
                     }
                     CellValue::Number(n) => {
                         worksheet.write(current_row, current_col, *n)?;

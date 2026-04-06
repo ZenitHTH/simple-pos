@@ -31,6 +31,15 @@ pub fn unlink_product_image(
         .execute(conn)
 }
 
+pub fn unlink_all_product_images(
+    conn: &mut SqliteConnection,
+    prod_id: i32,
+) -> Result<usize, diesel::result::Error> {
+    use crate::schema::product_images::dsl::*;
+
+    diesel::delete(product_images.filter(product_id.eq(prod_id))).execute(conn)
+}
+
 pub fn get_linked_images(
     conn: &mut SqliteConnection,
     prod_id: i32,

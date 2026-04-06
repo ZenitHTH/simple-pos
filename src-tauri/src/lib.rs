@@ -78,6 +78,7 @@ pub fn run() {
             save_image,
             link_product_image,
             unlink_product_image,
+            clear_product_images,
             get_product_images,
             get_all_images,
             delete_image,

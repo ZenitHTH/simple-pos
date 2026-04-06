@@ -16,7 +16,8 @@ fn test_encryption_workflow() {
     // 1. Create and Write with Key
     {
         let mut conn = SqliteConnection::establish(db_url).unwrap();
-        diesel::sql_query("PRAGMA key = 'password';").execute(&mut conn).unwrap();
+        let hex_key = hex::encode("password");
+        diesel::sql_query(format!("PRAGMA key = \"x'{}'\";", hex_key)).execute(&mut conn).unwrap();
         
         diesel::sql_query("CREATE TABLE secrets (id INTEGER PRIMARY KEY, msg TEXT);")
             .execute(&mut conn).unwrap();
@@ -37,7 +38,8 @@ fn test_encryption_workflow() {
     // 3. Try Read WITH Wrong Key (Should Fail)
     {
         let mut conn = SqliteConnection::establish(db_url).unwrap();
-        diesel::sql_query("PRAGMA key = 'wrong';").execute(&mut conn).unwrap();
+        let hex_key = hex::encode("wrong");
+        diesel::sql_query(format!("PRAGMA key = \"x'{}'\";", hex_key)).execute(&mut conn).unwrap();
         let result = diesel::sql_query("SELECT * FROM secrets;").execute(&mut conn);
         assert!(result.is_err(), "Should not be able to read with wrong key");
     }
@@ -45,7 +47,8 @@ fn test_encryption_workflow() {
     // 4. Try Read WITH Correct Key (Should Succeed)
     {
         let mut conn = SqliteConnection::establish(db_url).unwrap();
-        diesel::sql_query("PRAGMA key = 'password';").execute(&mut conn).unwrap();
+        let hex_key = hex::encode("password");
+        diesel::sql_query(format!("PRAGMA key = \"x'{}'\";", hex_key)).execute(&mut conn).unwrap();
         let result = diesel::sql_query("SELECT * FROM secrets;").execute(&mut conn);
         assert!(result.is_ok(), "Should be able to read with correct key");
     }
