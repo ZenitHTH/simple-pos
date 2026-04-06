@@ -5,9 +5,9 @@ The `export_lib` crate provides a flexible and extensible framework for exportin
 ## Supported Formats
 
 - **CSV**: Standard comma-separated values for universal compatibility.
-- **XLSX**: Microsoft Excel format, supporting multiple sheets and formatted data.
+- **XLSX**: Microsoft Excel format, supporting multiple sheets, cell formatting, and automated column width.
 - **ODS**: OpenDocument Spreadsheet format for open-source alternatives like LibreOffice.
-- **Thai Accounting**: Specialized export logic tailored for Thai accounting standards and reporting requirements.
+- **Thai Accounting**: Specialized export logic tailored for Thai accounting standards and Sales Tax Reporting (รายงานภาษีขาย).
 
 ## Core Concepts
 
@@ -29,10 +29,17 @@ A type-safe enum representing different kinds of spreadsheet data:
 ```rust
 use export_lib::{ExportTable, CellValue};
 
-let mut table = ExportTable::new(vec!["ID".to_string(), "Name".to_string(), "Price".to_string()]);
+// Create a new table with headers
+let mut table = ExportTable::new(vec![
+    "ID".to_string(), 
+    "Name".to_string(), 
+    "Price".to_string()
+]);
+
+// Add data rows
 table.add_row(vec![
     CellValue::Int(1),
-    CellValue::Text("Iced Coffee".to_string()),
+    CellValue::Text("Iced Americano".to_string()),
     CellValue::Number(45.0)
 ]);
 
@@ -46,3 +53,4 @@ table.export_xlsx("report.xlsx")?;
 - **Multi-Sheet Export**: Support for creating Excel workbooks with multiple named sheets.
 - **Generic Interface**: Add new formats easily by implementing a new writer module.
 - **Automatic Formatting**: Handles date and number conversion as required by the target format.
+- **Thai Character Support**: Proper encoding and handling for Thai text in all export formats.

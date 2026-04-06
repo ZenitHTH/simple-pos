@@ -5,9 +5,9 @@ This crate `simple-pos-database` manages the data persistence layer for the Vibe
 ## Security & Encryption
 
 The database is encrypted using **SQLCipher** (256-bit AES).
-- **Encryption Key**: Managed internally by the application.
+- **Encryption Key**: User-provided key required to establish a connection.
 - **Data Protection**: All tables, including products, customers, and transactions, are encrypted at rest.
-- **Direct Access**: The database file cannot be read using standard SQLite viewers without the correct key.
+- **Direct Access**: The database file cannot be read using standard SQLite viewers without the correct key and SQLCipher support.
 
 ## Architecture
 
@@ -17,18 +17,18 @@ The module is structured to separate concerns between connection management and 
 
 ### Modules
 
-- **lib.rs**: The library entry point.
-- **connection.rs**: Handles the SQLite connection pool and SQLCipher initialization.
+- **`lib.rs`**: The library entry point.
+- **`connection.rs`**: Handles the SQLite connection pool and SQLCipher initialization.
 - **Domain Modules**:
-  - `product`: Manages product data.
-  - `category`: Manages product categories.
-  - `stock`: Manages inventory levels.
-  - `receipt`: Handles sales transactions.
-  - `customer`: (New) Manages customer profiles.
-  - `material`: (New) Raw materials inventory.
-  - `recipe`: (New) Ingredients and proportions for products.
-  - `image`: Manages image metadata.
-  - `product_image`: Maps products to images.
+  - **`product`**: Manages product metadata and stock modes.
+  - **`category`**: Manages hierarchical or flat product categories.
+  - **`stock`**: Manages inventory levels for products.
+  - **`receipt`**: Handles sales transactions and line items.
+  - **`customer`**: Manages customer profiles (Tax ID, Address, Branch).
+  - **`material`**: Tracks raw materials inventory.
+  - **`recipe`**: Defines ingredients and proportions for complex products.
+  - **`image`**: Manages metadata for local images.
+  - **`product_image`**: Maps many-to-many (or 1:N) relationships between products and images.
 
 ## Database Schema
 
@@ -42,12 +42,12 @@ The following ER diagram illustrates the relationships between the database enti
 - **PRODUCT**: Items for sale.
 - **STOCK**: Inventory tracking.
 - **RECEIPT**: Sales transactions.
-- **CUSTOMER**: User/Client data.
+- **CUSTOMER**: User/Client data for invoicing.
 - **MATERIAL**: Raw ingredients.
-- **RECIPE**: Linking materials to products.
-- **IMAGES**: Metadata for local images.
+- **RECIPE**: Linking materials to products for automated stock deduction.
+- **IMAGES**: Metadata for content-addressed local images.
 
-> **Note**: Application settings (currency, tax, layout) are persisted in a JSON file (`settings.json`) in the user's data directory, not in the database.
+> **Note**: Application UI settings (currency, tax, layout scaling) are persisted in a JSON file (`settings.json`) in the user's data directory, not in the encrypted database.
 
 ## Development
 
@@ -59,8 +59,8 @@ The following ER diagram illustrates the relationships between the database enti
 
 ### Setup
 
-1.  Ensure `.env` is configured with `DATABASE_URL`.
-2.  Run migrations:
-    ```bash
-    diesel migration run
-    ```
+1. Ensure your environment is set up for SQLCipher.
+2. Run migrations:
+   ```bash
+   diesel migration run
+   ```

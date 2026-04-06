@@ -7,7 +7,7 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
 - **Point of Sale Interface**: Fast and intuitive interface for processing sales with optimized touch support.
 - **Advanced Inventory Management**:
   - **Product Management**: Detailed product tracking with categories and images.
-  - **Material & Recipe Management (New)**: Track raw materials and define recipes for complex items (e.g., drinks, food).
+  - **Material & Recipe Management**: Track raw materials and define recipes for complex items (e.g., drinks, food).
   - **Real-time Stock Tracking**: Monitor inventory levels with low-stock alerts.
 - **Customer Management**: Track customer information and purchase history.
 - **Checkout & Payment**:
@@ -15,11 +15,12 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
   - **Touch-Optimized Cart**: Large touch targets for interactive cart elements.
   - **Smart Change Calculation**: Automated change display with validity checks.
   - **Receipt Generation**: Backend integration for secure transaction recording.
-- **Customizable UI & Design Mode**:
-  - **Global Display Scaling**: Adjust the entire interface size from 50% to 200%.
-  - **Auto-Save Settings**: Settings persist automatically in real-time as you tweak them.
-  - **WYSIWYG Editor**: Interactive mode to adjust layout scaling and component sizes in real-time.
-  - **Responsive Layout**: Optimized for various resolutions (1080x720 up to 4K).
+- **Modern Design Tuner (New)**:
+  - **Apple-Inspired Dark Mode**: A sleek, flat interface with glassmorphism and modern aesthetics.
+  - **Layout Presets**: Quickly toggle between **Compact POS** (high density) and **Cozy Desktop** (spacious) modes.
+  - **Interactive Preview**: Real-time visualization of button styles, typography, and UI elements.
+  - **Fluid Animations**: Powered by `framer-motion` for a premium, responsive feel.
+  - **Global Display Scaling**: Adjust the entire interface size from 50% to 200% with real-time feedback.
 - **Data Export & Reporting**:
   - Export transaction data to CSV, XLSX, and ODS.
   - **Thai Accounting Integration**: Built-in support for Thai Sales Tax Reports (รายงานภาษีขาย).
@@ -32,15 +33,26 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
 
 ## Tech Stack
 
-- **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/)
+- **Frontend**: [Next.js 16](https://nextjs.org/) (React 19), [Tailwind CSS 4](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/)
 - **Backend**: [Tauri v2](https://v2.tauri.app/) (Rust)
 - **Database**: SQLite with **SQLCipher** (via Diesel ORM in Rust)
   - **Automatic Path Resolution**: Uses `directories` crate to store data securely in the system's local data directory (e.g., `~/.local/share/simple-pos` on Linux).
-- **State Management**: React Hooks & Context
-- **Performance**:
-  - **Turbopack**: Fast builds and HMR.
-  - **Code Splitting**: Next.js App Router for optimal load times.
-  - **Memoization**: `React.memo` and `useCallback` to minimize re-renders.
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/) (Font Awesome & more)
+- **State Management**: React Hooks & Context (optimized with specialized providers)
+
+## Project Structure
+
+The project has been refactored into a highly organized, production-grade structure:
+
+- **`src/app/`**: Next.js App Router pages and layouts.
+- **`src/components/`**: Modularized UI components, including UI primitives and feature-specific components.
+- **`src/context/`**: Global state management (Settings, Database, Mockup, Toast).
+- **`src/lib/`**: Reorganized core library:
+  - **`api/`**: Module-based service layer for backend communication.
+  - **`types/`**: Specialized TypeScript definitions for each domain.
+  - **`utils/`**: Shared helper functions.
+  - **`constants/`**: Permanent application constants and example data.
+- **`src-tauri/`**: Rust backend source code and specialized crates.
 
 ## Prerequisites
 
@@ -52,34 +64,24 @@ Before you begin, ensure you have the following installed:
   - **Linux**: Build essentials, webkit2gtk (see [Tauri Linux Setup](https://v2.tauri.app/start/prerequisites/#linux))
   - **macOS**:
     - **Xcode Command Line Tools**: `xcode-select --install`
-    - **OpenSSL**: `brew install openssl`. Ensure `OPENSSL_DIR` and `OPENSSL_LIB_DIR` are correctly set in your environment.
+    - **OpenSSL**: `brew install openssl`.
   - **Windows**:
     - Microsoft Visual Studio C++ Build Tools
-    - **OpenSSL**: Required for database encryption (`sqlcipher`). Set `OPENSSL_DIR` and `OPENSSL_LIB_DIR` environment variables.
+    - **OpenSSL**: Required for database encryption (`sqlcipher`).
 
 ## Setup & Development
 
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd simple-pos
-   ```
-
-2. **Install dependencies**
-
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Run in Development Mode**
-   This command starts both the Next.js frontend and the Tauri application window.
-
+2. **Run in Development Mode**
    ```bash
    npm run tauri dev
    ```
 
-   > **Note for Linux Users**: The `tauri` script in `package.json` automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues. Using `npm run tauri dev` ensures this is applied.
+   > **Note for Linux Users**: The `tauri` script in `package.json` automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues.
 
 ## Building for Production
 
@@ -89,20 +91,6 @@ To build a standalone executable for your operating system:
 npm run tauri build
 ```
 
-The output binary will be located in `src-tauri/target/release/bundle/`.
+## Known Issues & Tasks
 
-## Troubleshooting
-
-### Linux (NVIDIA GPUs)
-
-If you experience rendering issues, blank screens, or crashes on Linux with an NVIDIA GPU, you may need to disable the DMABUF renderer.
-
-Run the application with the following environment variable:
-
-```bash
-WEBKIT_DISABLE_DMABUF_RENDERER=1 ./simple-pos
-```
-
-or add it to your profile/environment variables.
-
-
+See the [TODO.md](./TODO.md) file for current bugs, pending tasks, and architectural decisions under discussion.
