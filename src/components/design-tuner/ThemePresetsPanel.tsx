@@ -3,6 +3,7 @@
 import { AppSettings } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
 import { FaLayerGroup, FaCoffee } from "react-icons/fa";
+import { THEME_PRESETS } from "@/context/SettingsContext";
 
 interface ThemePresetsPanelProps {
   settings: AppSettings;
@@ -19,30 +20,14 @@ export function ThemePresetsPanel({
       label: "Compact",
       icon: <FaLayerGroup />,
       description: "Tight spacing for power users",
-      values: {
-        theme_preset: "compact" as const,
-        sidebar_scale: 0.85,
-        cart_scale: 0.9,
-        grid_scale: 0.9,
-        button_scale: 0.85,
-        display_scale: 0.9,
-        theme_radius: 0.4,
-      },
+      values: THEME_PRESETS.compact,
     },
     {
       id: "cozy",
       label: "Cozy",
       icon: <FaCoffee />,
       description: "Comfortable touch targets",
-      values: {
-        theme_preset: "cozy" as const,
-        sidebar_scale: 1.0,
-        cart_scale: 1.0,
-        grid_scale: 1.0,
-        button_scale: 1.0,
-        display_scale: 1.0,
-        theme_radius: 0.8,
-      },
+      values: THEME_PRESETS.cozy,
     },
   ];
 

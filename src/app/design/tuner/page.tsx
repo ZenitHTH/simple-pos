@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SelectorTuner } from "@/components/design-tuner/SelectorTuner";
 import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
@@ -11,7 +11,14 @@ import { FaSave, FaUndo } from "react-icons/fa";
 
 export default function DesignTunerPage() {
   const [activeTab, setActiveTab] = useState<TunerTab>("selector");
-  const { settings, updateSettings, save, resetToCheckpoint } = useSettings();
+  const { settings, updateSettings, save, resetToCheckpoint, setAutoSave } =
+    useSettings();
+
+  // Disable auto-save when entering this page
+  useEffect(() => {
+    setAutoSave(false);
+    return () => setAutoSave(true);
+  }, [setAutoSave]);
 
   // Local state for tuning preview zoom (doesn't affect actual app scale)
   const [previewZoom, setPreviewZoom] = useState(16);

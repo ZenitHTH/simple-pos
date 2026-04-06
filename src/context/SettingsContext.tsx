@@ -18,18 +18,27 @@ interface SettingsContextType {
   save: () => Promise<void>;
   resetToCheckpoint: () => void; // Reverts to last saved state
   resetToDefault: () => void; // Reverts to hardcoded defaults
+  setAutoSave: (enabled: boolean) => void;
 }
 
 export const THEME_PRESETS = {
   compact: {
-    theme_radius: 0.3,
-    button_scale: 90,
-    display_scale: 95,
+    theme_preset: "compact" as const,
+    sidebar_scale: 85,
+    cart_scale: 90,
+    grid_scale: 90,
+    button_scale: 85,
+    display_scale: 90,
+    theme_radius: 0.4,
   },
   cozy: {
+    theme_preset: "cozy" as const,
+    sidebar_scale: 100,
+    cart_scale: 100,
+    grid_scale: 100,
+    button_scale: 100,
+    display_scale: 100,
     theme_radius: 0.8,
-    button_scale: 110,
-    display_scale: 105,
   },
 };
 
@@ -89,6 +98,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -105,9 +115,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   // Apply typography CSS custom properties
   useEffect(() => {
     const root = document.documentElement;
+    
+    // Basic sanitization for CSS variables
+    const safeFont = (f: string | null) => (f?.includes(";") ? "Inter" : f);
+    const safeColor = (c: string | null) => (c?.includes(";") ? "#3b82f6" : c);
+
     root.style.setProperty(
       "--typography-font-family",
-      settings.typography_font_family ?? "Inter, sans-serif",
+      safeFont(settings.typography_font_family) ?? "Inter, sans-serif",
     );
     root.style.setProperty(
       "--typography-base-size",
@@ -131,8 +146,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     );
 
     // Apply primary theme color
-    if (settings.theme_primary_color) {
-      root.style.setProperty("--primary", settings.theme_primary_color);
+    const primaryColor = safeColor(settings.theme_primary_color);
+    if (primaryColor) {
+      root.style.setProperty("--primary", primaryColor);
     } else {
       root.style.removeProperty("--primary");
     }
@@ -203,7 +219,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   // Auto-save effect
   useEffect(() => {
-    if (!isInitialized) return;
+    if (!isInitialized || !autoSaveEnabled) return;
 
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -218,7 +234,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [settings, isInitialized]);
+  }, [settings, isInitialized, autoSaveEnabled]);
 
   const resetToCheckpoint = async () => {
     setLoading(true);
@@ -238,6 +254,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         save,
         resetToCheckpoint,
         resetToDefault,
+        setAutoSave: setAutoSaveEnabled,
       }}
     >
       {children}
