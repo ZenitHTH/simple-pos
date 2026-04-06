@@ -72,6 +72,7 @@ let mockSettings: AppSettings = {
   typography_letter_spacing: null,
   image_storage_path: null,
   db_storage_path: null,
+  theme_preset: "cozy",
 };
 
 export const handlers = {
