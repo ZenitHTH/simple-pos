@@ -1,58 +1,57 @@
 # On-Canvas Hybrid Editor Design Spec
 
 **Date**: 2026-04-08
-**Status**: Draft
+**Status**: Approved
 **Topic**: Refinement of Design Mode with Direct Manipulation and Contextual Controls.
 
 ## 1. Overview
-The Vibe POS WYSIWYG editor currently relies on a bottom fixed bar for all adjustments. To create a more professional and intuitive design experience, we are implementing a "Hybrid Editor" that allows users to resize components directly by dragging handles and perform precise tweaks via a floating, tabbed "Mini-Tuner".
+The Vibe POS WYSIWYG editor is transitioning from a fixed bottom control bar to a "Hybrid Editor" system. This system allows users to resize components directly via corner drag handles and perform precise adjustments through a floating, tabbed "MiniTuner" that anchors to the selected element.
 
 ## 2. Goals
-- Provide immediate visual feedback during scaling (Direct Manipulation).
-- Keep controls close to the point of interaction (Mini-Tuners).
-- Maintain 1:1 scale for the editor interface itself (Portals).
-- Support both mouse and touch input effectively.
+- **Immediate Feedback**: Provide real-time visual scaling during drag operations.
+- **Contextual Proximity**: Keep controls close to the point of interaction to minimize eye and hand movement.
+- **Visual Reference**: Provide a "Ghost Outline" showing the 100% scale mark during modification.
+- **Scale Independence**: Ensure the editor UI itself remains at 100% scale regardless of the component's zoom level.
 
 ## 3. Architecture
 
 ### 3.1 Components
-- **SelectableOverlay (Updated)**: Acts as the interaction hub. It will now host the drag handles and trigger the `MiniTuner`.
-- **DragHandle**: Small, circular handles positioned at the corners of the `SelectableOverlay`.
-- **MiniTuner (New)**: A tabbed interface for precise settings.
-    - Uses **React Portal** to render at the end of `<body>` to avoid parent `zoom` and `overflow: hidden`.
-    - **Positioning**: Anchors to the top-right of the selected element's bounding box.
-- **GhostOutline (New)**: A faint rectangle showing the original size of the component during a live drag session.
+- **SelectableOverlay (Enhanced)**: 
+    - Hosts four circular **Drag Handles** at its corners.
+    - Manages local drag state (`isDragging`, `dragDelta`) to trigger real-time updates.
+- **MiniTuner (New)**:
+    - **Portal-based**: Renders via React Portal at the `<body>` level to stay at 1:1 scale (100%).
+    - **Smart Positioning**: Uses `getBoundingClientRect()` to anchor to the selected element.
+    - **Smart Flipping**: Automatically flips its anchor position (Top-Right, Bottom-Left, etc.) if it detects it will be cut off by the screen boundary.
+    - **Glassmorphism UI**: Uses a blurred, translucent background for a premium feel.
+- **GhostOutline (New)**: A dashed rectangle that appears behind the element during a drag, locked at the original 100% size for spatial context.
 
 ### 3.2 State Management
-- Uses existing `SettingsContext` for persistent values.
-- Uses `MockupContext` to track `selectedElementId`.
-- **Internal Drag State**: Local component state in `SelectableOverlay` to track `isDragging` and `startPointerCoords`.
+- **SettingsContext**: Continues to store persistent values (e.g., `sidebar_scale`, `cart_scale`).
+- **MockupContext**: Tracks the `selectedElementId` to determine which component is being edited.
 
 ## 4. Interaction Model
 
 ### 4.1 Direct Manipulation (Drag to Scale)
-1. **User interaction**: MouseDown/TouchStart on a corner handle.
-2. **Logic**:
-    - Record initial `display_scale` and pointer position.
-    - On move: Calculate horizontal/vertical delta.
-    - Map delta to percentage change (e.g., 10px drag = 1% scale change).
-    - Call `updateSettings` in real-time.
-3. **Visuals**: Component resizes instantly; a "Ghost Outline" stays at the 100% mark for reference.
+1. **Trigger**: MouseDown/TouchStart on any corner handle of a `SelectableOverlay`.
+2. **Action**: Dragging moves the handle; the distance is mapped to a percentage change (approx. 5px = 1% scale).
+3. **Update**: `updateSettings` is called in real-time, causing the component to resize immediately.
+4. **Visuals**: A "Ghost Outline" shows the original 100% size.
 
-### 4.2 Floating Mini-Tuner (Tabbed Controls)
-- **Trigger**: Appears automatically when a component is selected.
+### 4.2 Floating MiniTuner (Tabbed Controls)
 - **Tabs**:
-    - **Layout**: Scale slider, Padding controls.
-    - **Style**: Font Scale, Icon Scale, Color pickers.
-- **Precision**: Uses numeric inputs and range sliders for fine-tuning.
+    - **Layout 📐**: Sliders for **Component Scale** (50%–200%) and **Inner Padding** (0px–40px).
+    - **Style ✨**: Sliders for **Font Scale** (80%–150%) and **Icon Scale** (80%–150%), plus a **Primary Color Grid** for theme selection.
+- **Precision**: Uses range sliders with numeric value displays for fine-tuning.
 
-## 5. Testing Strategy
-- **Unit Tests**: Verify the delta-to-scale calculation logic in a utility function.
-- **E2E Tests (WDIO)**: 
-    - Verify that clicking a component opens the `MiniTuner`.
-    - Verify that dragging a handle actually updates the CSS `zoom` or `scale` of the target.
-    - Verify that the `MiniTuner` is NOT itself scaled by the `AppShell` zoom.
+## 5. Implementation Roadmap
+- [ ] Update `SelectableOverlay` with `framer-motion` handles and drag logic.
+- [ ] Implement `MiniTuner` portal component with "Smart Flipping" logic.
+- [ ] Add Layout and Style tabs to `MiniTuner`.
+- [ ] Integrate real-time `SettingsContext` updates for all controls.
 
-## 6. Dependencies
-- **Framer Motion**: (Optional but recommended) for spring physics during scaling transitions.
-- **Lucide React**: (Existing) for icons in the Tuner.
+## 6. Testing Strategy
+- **Visual Regression**: Ensure `MiniTuner` remains sharp (100% scale) when components are zoomed.
+- **Boundary Testing**: Verify that `MiniTuner` flips correctly at all four screen corners.
+- **Touch Validation**: Ensure drag handles are large enough (hit area) and responsive on touch devices.
+- **Performance**: Monitor frame rates during real-time scaling updates to ensure no lag on mid-range hardware.

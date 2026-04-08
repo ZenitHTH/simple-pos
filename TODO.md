@@ -17,7 +17,7 @@
 ### 🎨 UX & Aesthetics (Refined Design)
 - [ ] **On-Canvas Hybrid Editor**: Combine direct manipulation with precision controls.
     - **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
-    - **Tabbed Mini-Tuner**: implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
+    - **Tabbed Mini-Tuner**: implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style). Use **Smart Flipping** logic to ensure it stays visible near screen edges.
     - **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
 - [ ] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
 - [ ] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
