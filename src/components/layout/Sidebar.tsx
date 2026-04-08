@@ -20,6 +20,8 @@ import {
 import { useSettings } from "@/context/SettingsContext";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { cn } from "@/lib";
+import { SidebarItem } from "./sidebar/SidebarItem";
+import { SidebarGroup } from "./sidebar/SidebarGroup";
 
 interface MenuItem {
   name: string;
@@ -139,117 +141,6 @@ export default function Sidebar() {
 
   if (pathname.startsWith("/design/tuner")) return null;
 
-  const renderMenuItem = (item: MenuItem) => {
-    const isActive = pathname === item.path;
-    return (
-      <Link
-        key={item.path}
-        href={item.path}
-        className={cn(
-          "group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200",
-          isActive
-            ? "bg-primary text-primary-foreground shadow-primary/20 shadow-md"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground",
-        )}
-      >
-        <span
-          className={cn(
-            isActive
-              ? "text-primary-foreground"
-              : "text-muted-foreground group-hover:text-foreground",
-          )}
-        >
-          {item.icon}
-        </span>
-        <span className="text-[1em] font-medium">{item.name}</span>
-      </Link>
-    );
-  };
-
-  const renderMenuGroup = (group: MenuGroup) => {
-    const isExpanded = expandedGroups[group.name] ?? false;
-    const hasActiveChild = group.children.some(
-      (child) => pathname === child.path,
-    );
-
-    return (
-      <div key={group.name}>
-        <button
-          onClick={() => toggleGroup(group.name)}
-          className={cn(
-            "group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200",
-            hasActiveChild
-              ? "text-primary bg-primary/10"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground",
-          )}
-        >
-          <span
-            className={cn(
-              hasActiveChild
-                ? "text-primary"
-                : "text-muted-foreground group-hover:text-foreground",
-            )}
-          >
-            {group.icon}
-          </span>
-          <span className="flex-1 text-left text-[1em] font-medium">
-            {group.name}
-          </span>
-          <span
-            className={cn(
-              "transition-transform duration-200",
-              hasActiveChild
-                ? "text-primary"
-                : "text-muted-foreground group-hover:text-foreground",
-            )}
-          >
-            {isExpanded ? (
-              <FaChevronDown size={12} />
-            ) : (
-              <FaChevronRight size={12} />
-            )}
-          </span>
-        </button>
-
-        <div
-          className={cn(
-            "overflow-hidden transition-all duration-200",
-            isExpanded ? "mt-1 max-h-96 opacity-100" : "max-h-0 opacity-0",
-          )}
-        >
-          <div className="border-border/50 ml-4 space-y-1 border-l-2 pl-3">
-            {group.children.map((child) => {
-              const isActive = pathname === child.path;
-              return (
-                <Link
-                  key={child.path}
-                  href={child.path}
-                  className={cn(
-                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[0.9em] transition-all duration-200",
-                    isActive
-                      ? "bg-primary text-primary-foreground shadow-primary/20 shadow-sm"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  <span
-                    className={cn(
-                      isActive
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground group-hover:text-foreground",
-                    )}
-                  >
-                    {child.icon}
-                  </span>
-                  <span className="font-medium">{child.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <>
       {/* Mobile Header */}
@@ -306,7 +197,25 @@ export default function Sidebar() {
             data-lenis-prevent
           >
             {menuEntries.map((entry) =>
-              isGroup(entry) ? renderMenuGroup(entry) : renderMenuItem(entry),
+              isGroup(entry) ? (
+                <SidebarGroup
+                  key={entry.name}
+                  name={entry.name}
+                  icon={entry.icon}
+                  children={entry.children}
+                  isExpanded={expandedGroups[entry.name] ?? false}
+                  onToggle={() => toggleGroup(entry.name)}
+                  currentPath={pathname}
+                />
+              ) : (
+                <SidebarItem
+                  key={entry.path}
+                  name={entry.name}
+                  path={entry.path}
+                  icon={entry.icon}
+                  isActive={pathname === entry.path}
+                />
+              ),
             )}
           </nav>
 

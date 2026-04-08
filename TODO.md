@@ -14,9 +14,11 @@
     - **Problem**: Currently, scaling the `html` element makes the control bar scale too, causing it to jump around and potentially look blurry on HD displays.
     - **Solution**: Move `display_scale` logic from the root `html` element to a dedicated content wrapper inside `RootLayout`, keeping the control bar at a constant 100% scale.
 
-### 🎨 UX & Aesthetics (Brainstormed Ideas)
-- [ ] **On-Canvas Direct Manipulation**: Add drag handles to the `SelectableOverlay` for resizing components directly on the screen.
-- [ ] **Floating Mini-Tuners**: Display small contextual menus next to selected components for quick adjustments.
+### 🎨 UX & Aesthetics (Refined Design)
+- [ ] **On-Canvas Hybrid Editor**: Combine direct manipulation with precision controls.
+    - **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
+    - **Tabbed Mini-Tuner**: implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
+    - **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
 - [ ] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
 - [ ] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
 - [ ] **Color Sampler**: Add a tool to pick colors directly from product images to set as the primary theme color.
