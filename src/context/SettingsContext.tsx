@@ -105,13 +105,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     load();
   }, []);
 
-  // Apply scaling whenever settings.display_scale changes
-  useEffect(() => {
-    if (settings.display_scale) {
-      document.documentElement.style.fontSize = `${settings.display_scale}%`;
-    }
-  }, [settings.display_scale]);
-
   // Apply typography CSS custom properties
   useEffect(() => {
     const root = document.documentElement;

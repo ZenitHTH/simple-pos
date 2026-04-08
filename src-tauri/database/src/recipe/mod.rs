@@ -96,39 +96,41 @@ pub fn deduct_stock_from_recipe(
 
         for r_item in recipe_items {
             if let Ok(mut mat) = material::find_material(conn, r_item.material_id) {
-                // Calculate total volume to deduct using integer arithmetic to maintain precision
                 let total_deduction_scaled = (r_item.volume_use as i64) * (quantity as i64);
+                let deduction_aligned = calculate_aligned_deduction(
+                    total_deduction_scaled,
+                    r_item.volume_use_precision,
+                    mat.precision,
+                );
 
-                // Align precisions
-                let deduction_aligned = if mat.precision >= r_item.volume_use_precision {
-                    total_deduction_scaled
-                        * 10i64.pow((mat.precision - r_item.volume_use_precision) as u32)
-                } else {
-                    total_deduction_scaled
-                        / 10i64.pow((r_item.volume_use_precision - mat.precision) as u32)
-                };
-
-                // Current total volume: mat.volume * mat.quantity
                 let current_total_vol_scaled = (mat.volume as i64) * (mat.quantity as i64);
                 let new_total_vol_scaled = current_total_vol_scaled - deduction_aligned;
 
-                // New quantity = new_total_vol_scaled / mat.volume
                 if mat.volume > 0 {
                     mat.quantity = (new_total_vol_scaled / mat.volume as i64) as i32;
                 }
 
                 material::update_material(conn, mat.clone())?;
 
-                // Record historical usage
-                let hist_item = NewReceiptItemMaterial {
-                    receipt_item_id: saved_receipt_item_id,
-                    material_id: r_item.material_id,
-                    volume_used: total_deduction_scaled as i32,
-                    precision: r_item.volume_use_precision,
-                };
-                receipt::add_item_material(conn, &hist_item)?;
+                receipt::add_item_material(
+                    conn,
+                    &NewReceiptItemMaterial {
+                        receipt_item_id: saved_receipt_item_id,
+                        material_id: r_item.material_id,
+                        volume_used: total_deduction_scaled as i32,
+                        precision: r_item.volume_use_precision,
+                    },
+                )?;
             }
         }
     }
     Ok(())
+}
+
+fn calculate_aligned_deduction(total_scaled: i64, from_prec: i32, to_prec: i32) -> i64 {
+    if to_prec >= from_prec {
+        total_scaled * 10i64.pow((to_prec - from_prec) as u32)
+    } else {
+        total_scaled / 10i64.pow((from_prec - to_prec) as u32)
+    }
 }

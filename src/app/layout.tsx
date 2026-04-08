@@ -13,11 +13,10 @@ import { SettingsProvider } from "@/context/SettingsContext";
 import { DatabaseProvider } from "@/context/DatabaseContext";
 import DatabaseGuard from "@/components/common/DatabaseGuard";
 import { MockupProvider } from "@/context/MockupContext";
-import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/common/SmoothScroll";
-import GoBackButton from "@/components/ui/GoBackButton";
 import { ToastProvider } from "@/context/ToastContext";
+import AppShell from "@/components/layout/AppShell";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -79,12 +78,7 @@ export default function RootLayout({
                 <DatabaseProvider>
                   <MockupProvider>
                     <DatabaseGuard>
-                      <Sidebar />
-                      <main className="flex h-screen flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
-                        {children}
-                      </main>
-                      <BottomControlPanel />
-                      <GoBackButton />
+                      <AppShell>{children}</AppShell>
                     </DatabaseGuard>
                   </MockupProvider>
                 </DatabaseProvider>

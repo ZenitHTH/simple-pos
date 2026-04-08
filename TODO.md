@@ -10,7 +10,7 @@
 ## Planned Improvements (Design Mode)
 
 ### 🛠️ Core Fixes
-- [ ] **Solid UI Isolation**: Decouple the `BottomControlPanel` from global scaling.
+- [x] **Solid UI Isolation**: Decouple the `BottomControlPanel` from global scaling.
     - **Problem**: Currently, scaling the `html` element makes the control bar scale too, causing it to jump around and potentially look blurry on HD displays.
     - **Solution**: Move `display_scale` logic from the root `html` element to a dedicated content wrapper inside `RootLayout`, keeping the control bar at a constant 100% scale.
 
