@@ -1,3 +1,10 @@
+#[macro_export]
+macro_rules! conn {
+    ($key:expr) => {
+        database::establish_connection(&$key).map_err(|e| e.to_string())?
+    };
+}
+
 pub fn float_to_scaled(val: f64) -> (i32, i32) {
     let s = format!("{:.4}", val);
     let trimmed = s.trim_end_matches('0').trim_end_matches('.');

@@ -63,58 +63,12 @@ pub fn add_invoice_item(
 
         // Update stock
         if product_info.use_recipe_stock {
-            use database::material;
             use database::recipe;
-
-            if let Ok(Some(recipe_list)) = recipe::get_recipe_list_by_product(conn, product_id) {
-                let recipe_items = recipe::get_items_by_recipe_list_id(conn, recipe_list.id)
-                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-
-                for r_item in recipe_items {
-                    if let Ok(mut mat) = material::find_material(conn, r_item.material_id) {
-                        // Calculate total volume to deduct using integer arithmetic to maintain precision
-                        // volume_use is significand, quantity is integer.
-                        let total_deduction_scaled = (r_item.volume_use as i64) * (quantity as i64);
-
-                        // Align precisions
-                        // mat.volume is scaled by mat.precision
-                        // total_deduction_scaled is scaled by r_item.volume_use_precision
-                        let deduction_aligned = if mat.precision >= r_item.volume_use_precision {
-                            total_deduction_scaled * 10i64.pow((mat.precision - r_item.volume_use_precision) as u32)
-                        } else {
-                            total_deduction_scaled / 10i64.pow((r_item.volume_use_precision - mat.precision) as u32)
-                        };
-
-                        // Current total volume: mat.volume * mat.quantity
-                        let current_total_vol_scaled = (mat.volume as i64) * (mat.quantity as i64);
-                        let new_total_vol_scaled = current_total_vol_scaled - deduction_aligned;
-
-                        // New quantity = new_total_vol_scaled / mat.volume
-                        if mat.volume > 0 {
-                            mat.quantity = (new_total_vol_scaled / mat.volume as i64) as i32;
-                        }
-
-                        material::update_material(conn, mat.clone())
-                            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-
-                        // Record historical usage
-                        let hist_item = database::NewReceiptItemMaterial {
-                            receipt_item_id: saved_item.id,
-                            material_id: r_item.material_id,
-                            volume_used: total_deduction_scaled as i32,
-                            precision: r_item.volume_use_precision,
-                        };
-                        receipt::add_item_material(conn, &hist_item)
-                            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-                    }
-                }
-            }
+            recipe::deduct_stock_from_recipe(conn, product_id, quantity, saved_item.id)
+                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
         } else {
-            if let Ok(current_stock) = stock::get_stock(conn, product_id) {
-                let new_qty = current_stock.quantity - quantity;
-                stock::update_stock(conn, product_id, new_qty)
-                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-            }
+            stock::deduct_stock(conn, product_id, quantity)
+                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
         }
 
         Ok(saved_item)

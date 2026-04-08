@@ -80,3 +80,55 @@ pub fn remove_recipe_item(
 ) -> Result<usize, diesel::result::Error> {
     diesel::delete(recipe_item::table.find(item_id)).execute(conn)
 }
+
+pub fn deduct_stock_from_recipe(
+    conn: &mut SqliteConnection,
+    product_id: i32,
+    quantity: i32,
+    saved_receipt_item_id: i32,
+) -> Result<(), diesel::result::Error> {
+    use crate::material;
+    use crate::receipt;
+    use crate::NewReceiptItemMaterial;
+
+    if let Ok(Some(recipe_list)) = get_recipe_list_by_product(conn, product_id) {
+        let recipe_items = get_items_by_recipe_list_id(conn, recipe_list.id)?;
+
+        for r_item in recipe_items {
+            if let Ok(mut mat) = material::find_material(conn, r_item.material_id) {
+                // Calculate total volume to deduct using integer arithmetic to maintain precision
+                let total_deduction_scaled = (r_item.volume_use as i64) * (quantity as i64);
+
+                // Align precisions
+                let deduction_aligned = if mat.precision >= r_item.volume_use_precision {
+                    total_deduction_scaled
+                        * 10i64.pow((mat.precision - r_item.volume_use_precision) as u32)
+                } else {
+                    total_deduction_scaled
+                        / 10i64.pow((r_item.volume_use_precision - mat.precision) as u32)
+                };
+
+                // Current total volume: mat.volume * mat.quantity
+                let current_total_vol_scaled = (mat.volume as i64) * (mat.quantity as i64);
+                let new_total_vol_scaled = current_total_vol_scaled - deduction_aligned;
+
+                // New quantity = new_total_vol_scaled / mat.volume
+                if mat.volume > 0 {
+                    mat.quantity = (new_total_vol_scaled / mat.volume as i64) as i32;
+                }
+
+                material::update_material(conn, mat.clone())?;
+
+                // Record historical usage
+                let hist_item = NewReceiptItemMaterial {
+                    receipt_item_id: saved_receipt_item_id,
+                    material_id: r_item.material_id,
+                    volume_used: total_deduction_scaled as i32,
+                    precision: r_item.volume_use_precision,
+                };
+                receipt::add_item_material(conn, &hist_item)?;
+            }
+        }
+    }
+    Ok(())
+}

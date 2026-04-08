@@ -57,3 +57,15 @@ pub fn sync_product_price_in_stock(
         .set(satang.eq(new_price))
         .execute(conn)
 }
+
+pub fn deduct_stock(
+    conn: &mut SqliteConnection,
+    product_id: i32,
+    quantity_to_deduct: i32,
+) -> Result<(), Error> {
+    if let Ok(current_stock) = get_stock(conn, product_id) {
+        let new_qty = current_stock.quantity - quantity_to_deduct;
+        update_stock(conn, product_id, new_qty)?;
+    }
+    Ok(())
+}
