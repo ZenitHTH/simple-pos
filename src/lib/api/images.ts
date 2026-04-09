@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { Image, ProductImage } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { Image, ProductImage } from "@/lib/types";
 
 export const imageApi = {
   save: async (

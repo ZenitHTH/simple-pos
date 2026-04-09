@@ -3,7 +3,7 @@ import CartItem from "./CartItem";
 import CartSummary from "./CartSummary";
 import CartEmpty from "./CartEmpty";
 import { useTax } from "@/hooks/useTax";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 
 interface CartProps {

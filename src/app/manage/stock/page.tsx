@@ -9,7 +9,7 @@ import StockTable from "@/components/manage/StockTable";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 
 // New imports for unification
-import { useMaterialManagement } from "../material/hooks/useMaterialManagement";
+import { useMaterialManagement } from "@/app/manage/material/hooks/useMaterialManagement";
 import MaterialTable from "@/components/manage/MaterialTable";
 import MaterialModal from "@/components/manage/MaterialModal";
 import { useSearchParams, useRouter } from "next/navigation";

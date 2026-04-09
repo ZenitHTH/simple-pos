@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { Image } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { Image } from "@/lib/types";
 
 export const imageHandlers = {
   save_image: ({ filename }: { filename: string }) => {

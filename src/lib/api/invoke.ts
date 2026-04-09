@@ -1,6 +1,6 @@
 import { invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc } from "@tauri-apps/api/core";
 import { mockInvoke } from "./mock";
-import { logger, sanitize } from "../logger";
+import { logger, sanitize } from "@/lib/logger";
 
 /**
  * Redacts sensitive fields from arguments for secure logging.

@@ -1,7 +1,7 @@
 "use client";
 
-import { useMockup } from "../../context/MockupContext";
-import { useSettings } from "@/context/SettingsContext";
+import { useMockup } from "@/context/MockupContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 import { motion } from "framer-motion";
 import { useState } from "react";

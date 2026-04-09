@@ -1,4 +1,4 @@
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 
 export function useCurrency() {
   const { settings, updateSettings, resetToDefault } = useSettings();

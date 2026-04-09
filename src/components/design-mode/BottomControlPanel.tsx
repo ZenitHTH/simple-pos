@@ -1,7 +1,7 @@
 "use client";
 
-import { useMockup } from "../../context/MockupContext";
-import { useSettings } from "../../context/SettingsContext";
+import { useMockup } from "@/context/MockupContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "./NavigationMenu";
 import GlobalScaleControls from "./GlobalScaleControls";

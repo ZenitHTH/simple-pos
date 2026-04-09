@@ -4,8 +4,8 @@ import CashInput from "./CashInput";
 import ChangeDisplay from "./ChangeDisplay";
 import PaymentFooter from "./PaymentFooter";
 
-import { useSettings } from "@/context/SettingsContext";
-import SelectableOverlay from "../design-mode/SelectableOverlay";
+import { useSettings } from "@/context/settings/SettingsContext";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Modal } from "@/components/ui/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { logger } from "@/lib/logger";

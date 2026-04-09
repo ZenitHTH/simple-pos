@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { Material } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { Material } from "@/lib/types";
 
 export const materialApi = {
   getAll: async (key: string): Promise<Material[]> => {

@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { Stock } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { Stock } from "@/lib/types";
 
 export const stockHandlers = {
   get_all_stocks: () => state.stocks,

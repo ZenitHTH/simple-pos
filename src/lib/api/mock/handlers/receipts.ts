@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { ReceiptList, Receipt } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { ReceiptList, Receipt } from "@/lib/types";
 
 export const receiptHandlers = {
   create_invoice: ({ customerId }: { customerId?: number }) => {

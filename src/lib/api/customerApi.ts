@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { Customer, NewCustomer } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { Customer, NewCustomer } from "@/lib/types";
 
 export const customerApi = {
     getAll: (key: string): Promise<Customer[]> => invoke("get_customers", { key }),

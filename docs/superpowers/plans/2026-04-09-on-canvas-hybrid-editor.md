@@ -31,7 +31,7 @@ import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMockup } from "@/context/MockupContext";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 
 export default function MiniTuner() {
@@ -166,7 +166,7 @@ Update `src/components/design-mode/SelectableOverlay.tsx`.
 "use client";
 
 import { useMockup } from "../../context/MockupContext";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";

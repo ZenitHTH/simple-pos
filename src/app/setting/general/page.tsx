@@ -1,6 +1,6 @@
 "use client";
 
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import GeneralSettings from "@/components/settings/GeneralSettings";

@@ -9,7 +9,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/layout/Sidebar";
-import { SettingsProvider } from "@/context/SettingsContext";
+import { SettingsProvider } from "@/context/settings/SettingsContext";
 import { DatabaseProvider } from "@/context/DatabaseContext";
 import DatabaseGuard from "@/components/common/DatabaseGuard";
 import { MockupProvider } from "@/context/MockupContext";

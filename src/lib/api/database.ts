@@ -1,4 +1,4 @@
-import { invoke } from "./invoke";
+import { invoke } from "@/lib/api/invoke";
 
 export const databaseApi = {
   initializeDatabase: async (key: string): Promise<void> => {

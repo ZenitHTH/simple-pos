@@ -11,7 +11,7 @@ import ReceiptDetailModal from "@/components/history/ReceiptDetailModal";
 
 import { useDatabase } from "@/context/DatabaseContext";
 import { useMockup } from "@/context/MockupContext";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { logger } from "@/lib/logger";
 
 export default function HistoryPage() {

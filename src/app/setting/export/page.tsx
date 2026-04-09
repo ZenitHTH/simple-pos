@@ -1,6 +1,6 @@
 "use client";
 
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import ExportSection from "@/components/settings/ExportSection";
 import ResetSettingsButton from "@/components/settings/ResetSettingsButton";

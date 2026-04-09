@@ -3,7 +3,7 @@
 import { AppSettings } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
 import { FaLayerGroup, FaCoffee } from "react-icons/fa";
-import { THEME_PRESETS } from "@/context/SettingsContext";
+import { THEME_PRESETS } from "@/context/settings/constants";
 
 interface ThemePresetsPanelProps {
   settings: AppSettings;

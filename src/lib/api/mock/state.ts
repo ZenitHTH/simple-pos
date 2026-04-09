@@ -12,7 +12,7 @@ import {
   ProductImage,
   ReceiptList,
   Receipt,
-} from "../../types";
+} from "@/lib/types";
 
 export const state = {
   categories: [...data.mockCategories] as Category[],

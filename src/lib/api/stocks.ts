@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { Stock } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { Stock } from "@/lib/types";
 
 export const stockApi = {
   getAll: async (key: string): Promise<Stock[]> => {

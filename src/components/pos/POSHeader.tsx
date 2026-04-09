@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { FaReceipt, FaShoppingCart, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import GlobalHeader from "../ui/GlobalHeader";
+import GlobalHeader from "@/components/ui/GlobalHeader";
 
 interface POSHeaderProps {
   cartCount: number;

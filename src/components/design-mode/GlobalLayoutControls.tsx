@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useMockup } from "@/context/MockupContext";
 import { FaHistory, FaCompass } from "react-icons/fa";
 import { AppSettings } from "@/lib";
-import NumberStepper from "../ui/NumberStepper";
-import NumberSlider from "../ui/NumberSlider";
+import NumberStepper from "@/components/ui/NumberStepper";
+import NumberSlider from "@/components/ui/NumberSlider";
 
 interface GlobalLayoutControlsProps {
   settings: AppSettings;

@@ -2,8 +2,8 @@
 
 import { useMemo, memo } from "react";
 import ProductCard from "./ProductCard";
-import ProductFilter from "../filters/ProductFilter";
-import SelectableOverlay from "../design-mode/SelectableOverlay";
+import ProductFilter from "@/components/filters/ProductFilter";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Product } from "@/lib";
 import { AppSettings } from "@/lib";
 

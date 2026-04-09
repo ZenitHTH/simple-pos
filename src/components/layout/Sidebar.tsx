@@ -17,7 +17,7 @@ import {
   FaImages,
 } from "react-icons/fa";
 
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { cn } from "@/lib";
 import { SidebarItem } from "./sidebar/SidebarItem";

@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { AppSettings, StorageInfo } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { AppSettings, StorageInfo } from "@/lib/types";
 
 export const settingsApi = {
   getSettings: async (): Promise<AppSettings> => {

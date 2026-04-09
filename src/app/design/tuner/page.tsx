@@ -6,7 +6,7 @@ import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
 import { CartItemTuner } from "@/components/design-tuner/CartItemTuner";
 import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
 export default function DesignTunerPage() {

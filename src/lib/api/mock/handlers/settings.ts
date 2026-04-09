@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { AppSettings } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { AppSettings } from "@/lib/types";
 
 export const settingHandlers = {
   get_settings: () => state.mockSettings,

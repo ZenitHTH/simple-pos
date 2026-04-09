@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { BackendProduct } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { BackendProduct } from "@/lib/types";
 
 export const productHandlers = {
   get_products: () => state.products,

@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { Category } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { Category } from "@/lib/types";
 
 export const categoryApi = {
   getAll: async (key: string): Promise<Category[]> => {

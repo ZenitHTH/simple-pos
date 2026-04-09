@@ -2,7 +2,7 @@
 
 import { FaPlus } from "react-icons/fa";
 import CategoryModal from "@/components/manage/CategoryModal";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { useCategoryManagement } from "./hooks/useCategoryManagement";
 import CategoryTable from "@/components/manage/CategoryTable";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";

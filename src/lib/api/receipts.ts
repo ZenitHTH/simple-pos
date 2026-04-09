@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { ReceiptList, Receipt } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { ReceiptList, Receipt, AccumulatedReport } from "@/lib/types";
 
 export const receiptApi = {
   createInvoice: async (
@@ -63,15 +63,7 @@ export const receiptApi = {
     key: string,
     startUnix: number,
     endUnix: number,
-  ): Promise<{
-    products: { product_id: number; title: string; total_quantity: number }[];
-    materials: {
-      material_id: number;
-      name: string;
-      total_volume_used: number;
-      precision: number;
-    }[];
-  }> => {
+  ): Promise<AccumulatedReport> => {
     return await invoke("get_accumulated_report", {
       key,
       startUnix: Number(startUnix),

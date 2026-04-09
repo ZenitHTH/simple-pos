@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { RecipeList, RecipeItem } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { RecipeList, RecipeItem } from "@/lib/types";
 
 export const recipeApi = {
   createList: async (key: string, productId: number): Promise<RecipeList> => {

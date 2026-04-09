@@ -2,7 +2,7 @@
 
 import { FaPlus } from "react-icons/fa";
 import ProductModal from "@/components/manage/ProductModal";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { useProductManagement } from "./hooks/useProductManagement";
 import ProductTable from "@/components/manage/ProductTable";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";

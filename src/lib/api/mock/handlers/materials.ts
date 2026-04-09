@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { Material } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { Material } from "@/lib/types";
 
 export const materialHandlers = {
   get_materials: () => state.materials,

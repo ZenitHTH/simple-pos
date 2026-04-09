@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import LoginScreen from "../auth/LoginScreen";
-import WelcomeScreen from "../layout/WelcomeScreen";
-import PasswordSetupScreen from "../auth/PasswordSetupScreen";
-import SettingsSetup from "../settings/SettingsSetup";
+import LoginScreen from "@/components/auth/LoginScreen";
+import WelcomeScreen from "@/components/layout/WelcomeScreen";
+import PasswordSetupScreen from "@/components/auth/PasswordSetupScreen";
+import SettingsSetup from "@/components/settings/SettingsSetup";
 
 type SetupStep = "welcome" | "db-setup" | "settings" | "complete";
 

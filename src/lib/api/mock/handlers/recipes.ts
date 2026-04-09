@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { RecipeList, RecipeItem } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { RecipeList, RecipeItem } from "@/lib/types";
 
 export const recipeHandlers = {
   get_recipe_list_by_product: ({ productId }: { productId: number }) => {

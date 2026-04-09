@@ -1,5 +1,5 @@
-import { invoke } from "./invoke";
-import { BackendProduct, NewProduct } from "../types";
+import { invoke } from "@/lib/api/invoke";
+import { BackendProduct, NewProduct } from "@/lib/types";
 
 export const productApi = {
   getAll: async (key: string): Promise<BackendProduct[]> => {

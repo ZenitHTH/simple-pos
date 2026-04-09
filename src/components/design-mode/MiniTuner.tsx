@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaLayerGroup, FaMagic, FaCheckCircle } from "react-icons/fa";
 import { useColorSampler } from "@/hooks/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 
 type Tab = "layout" | "style";

@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { Category } from "../../../types";
+import { state } from "@/lib/api/mock/state";
+import { Category } from "@/lib/types";
 
 export const categoryHandlers = {
   get_categories: () => state.categories,

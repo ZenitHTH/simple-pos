@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import Sidebar from "./Sidebar";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";

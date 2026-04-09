@@ -2,14 +2,14 @@
 
 import { usePOSLogic } from "@/hooks/usePOSLogic";
 import { Product } from "@/lib";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import POSHeader from "./POSHeader";
 import POSProductGrid from "./POSProductGrid";
-import SelectableOverlay from "../design-mode/SelectableOverlay";
-import Cart from "../cart/Cart";
-import PaymentModal from "../payment/PaymentModal";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
+import Cart from "@/components/cart/Cart";
+import PaymentModal from "@/components/payment/PaymentModal";
 import { useState } from "react";
-import { Drawer } from "../ui/Drawer";
+import { Drawer } from "@/components/ui/Drawer";
 
 interface POSClientProps {
   initialProducts?: Product[];

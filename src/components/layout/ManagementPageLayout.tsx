@@ -1,9 +1,9 @@
 "use client";
 
 import { FaSearch } from "react-icons/fa";
-import GlobalHeader from "../ui/GlobalHeader";
-import ScalableContainer from "../design-mode/ScalableContainer";
-import ScrollableContainer from "../ui/ScrollableContainer";
+import GlobalHeader from "@/components/ui/GlobalHeader";
+import ScalableContainer from "@/components/design-mode/ScalableContainer";
+import ScrollableContainer from "@/components/ui/ScrollableContainer";
 
 import { AppSettings } from "@/lib";
 

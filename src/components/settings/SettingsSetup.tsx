@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSettings } from "@/context/SettingsContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import { FaCheck, FaCog } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
