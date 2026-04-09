@@ -12,17 +12,15 @@ export const receiptApi = {
     });
   },
 
-  addInvoiceItem: async (
+  addInvoiceItems: async (
     key: string,
     receiptId: number,
-    productId: number,
-    quantity: number,
-  ): Promise<Receipt> => {
-    return await invoke("add_invoice_item", {
+    items: { productId: number; quantity: number }[],
+  ): Promise<void> => {
+    return await invoke("add_invoice_items", {
       key,
       receiptId: Number(receiptId),
-      productId: Number(productId),
-      quantity: Number(quantity),
+      items: items.map((i) => [Number(i.productId), Number(i.quantity)]),
     });
   },
 

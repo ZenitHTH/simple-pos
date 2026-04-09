@@ -5,6 +5,7 @@ import { useSettings } from "@/context/SettingsContext";
 import Sidebar from "./Sidebar";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";
+import MiniTuner from "@/components/design-mode/MiniTuner";
 
 /**
  * AppShell handles the core layout and scaling isolation.
@@ -39,6 +40,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       */}
       <BottomControlPanel />
       <GoBackButton />
+      <MiniTuner />
     </div>
   );
 }

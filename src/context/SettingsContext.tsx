@@ -214,6 +214,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isInitialized || !autoSaveEnabled) return;
 
+    // Skip the very first save after initialization to avoid redundant disk I/O
+    if (isFirstLoadAfterInit.current) {
+      isFirstLoadAfterInit.current = false;
+      return;
+    }
+
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }

@@ -28,6 +28,7 @@ function POSLoader() {
           id: p.product_id,
           name: p.title,
           price: p.satang / 100,
+          satang: p.satang,
           category: catMap[p.category_id] || "Unknown",
           image: p.image_path || "",
           image_object_position: p.image_object_position,

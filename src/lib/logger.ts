@@ -8,15 +8,21 @@ const isTauri = () => {
 };
 
 /**
- * Basic PII Redaction
+ * Basic PII Redaction with Circular Reference protection
  * Redacts 13-digit numbers (likely Thai Tax IDs) and masks sensitive patterns.
  */
-function sanitize(input: any): any {
+export function sanitize(input: any, seen = new WeakSet()): any {
+  if (input === null || input === undefined) return input;
+
   if (typeof input === "string") {
     // Redact 13-digit numbers
     return input.replace(/\b\d{13}\b/g, "[REDACTED-ID]");
   }
-  if (input && typeof input === "object") {
+
+  if (typeof input === "object") {
+    if (seen.has(input)) return "[Circular]";
+    seen.add(input);
+
     const sanitized: any = Array.isArray(input) ? [] : {};
     for (const key in input) {
       if (
@@ -26,7 +32,7 @@ function sanitize(input: any): any {
       ) {
         sanitized[key] = "[REDACTED]";
       } else {
-        sanitized[key] = sanitize(input[key]);
+        sanitized[key] = sanitize(input[key], seen);
       }
     }
     return sanitized;

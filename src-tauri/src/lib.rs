@@ -51,7 +51,7 @@ pub fn run() {
             remove_stock,
             // Receipt Commands
             create_invoice,
-            add_invoice_item,
+            add_invoice_items,
             get_invoice_detail,
             get_invoices_by_date,
             get_accumulated_report,

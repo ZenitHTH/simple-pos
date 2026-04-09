@@ -34,46 +34,46 @@ pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptLi
 }
 
 #[tauri::command]
-pub fn add_invoice_item(
+pub fn add_invoice_items(
     key: String,
     receipt_id: i32,
-    product_id: i32,
-    quantity: i32,
-) -> Result<Receipt, String> {
-    if quantity <= 0 || quantity > 10_000 {
-        return Err("Invalid quantity.".to_string());
-    }
-
+    items: Vec<(i32, i32)>, // Vec<(product_id, quantity)>
+) -> Result<(), String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
     conn.transaction(|conn| {
-        // Fetch product to get the current price (satang)
         use database::product;
-        let product_info = product::find_product(conn, product_id)
-            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+        use database::recipe;
 
-        let item = NewReceipt {
-            receipt_id,
-            product_id,
-            quantity,
-            satang_at_sale: product_info.satang,
-        };
-        let saved_item = receipt::add_item(conn, &item)
-            .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+        for (product_id, quantity) in items {
+            if quantity <= 0 || quantity > 10_000 {
+                return Err(diesel::result::Error::RollbackTransaction);
+            }
 
-        // Update stock
-        if product_info.use_recipe_stock {
-            use database::recipe;
-            recipe::deduct_stock_from_recipe(conn, product_id, quantity, saved_item.id)
+            let product_info = product::find_product(conn, product_id)
                 .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-        } else {
-            stock::deduct_stock(conn, product_id, quantity)
+
+            let item = NewReceipt {
+                receipt_id,
+                product_id,
+                quantity,
+                satang_at_sale: product_info.satang,
+            };
+            let saved_item = receipt::add_item(conn, &item)
                 .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+
+            // Update stock
+            if product_info.use_recipe_stock {
+                recipe::deduct_stock_from_recipe(conn, product_id, quantity, saved_item.id)
+                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+            } else {
+                stock::deduct_stock(conn, product_id, quantity)
+                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+            }
         }
-
-        Ok(saved_item)
+        Ok(())
     })
-    .map_err(|e: diesel::result::Error| e.to_string())
+    .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

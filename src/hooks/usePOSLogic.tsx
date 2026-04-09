@@ -142,10 +142,11 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, [cartItems.length]);
 
   const cartTotal = useMemo(() => {
-    return (
-      cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) *
-      (1 + taxRate)
-    );
+    const totalSatang = cartItems.reduce((sum, item) => {
+      const itemSatang = item.satang ?? Math.round(item.price * 100);
+      return sum + itemSatang * item.quantity;
+    }, 0);
+    return (totalSatang * (1 + taxRate)) / 100;
   }, [cartItems, taxRate]);
 
   const handleConfirmPayment = useCallback(
@@ -153,23 +154,20 @@ export function usePOSLogic(initialProducts: Product[]) {
       if (!dbKey) return;
       try {
         // 1. Create Invoice Header
-        // calls the receipt API to create a new invoice in the database
         const receiptList = await receiptApi.createInvoice(
           dbKey,
           selectedCustomerId,
         );
-        // Invoice created successfully
 
-        // 2. Add Items
-        // Iterates through cart items and adds them to the invoice
-        for (const item of cartItems) {
-          await receiptApi.addInvoiceItem(
-            dbKey,
-            receiptList.receipt_id,
-            item.id,
-            item.quantity,
-          );
-        }
+        // 2. Add Items in bulk for atomicity
+        await receiptApi.addInvoiceItems(
+          dbKey,
+          receiptList.receipt_id,
+          cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          })),
+        );
 
         // 3. Success Feedback
         const change = cashReceived - cartTotal;

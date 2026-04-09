@@ -13,16 +13,14 @@ Refine the "Design Mode" into a professional WYSIWYG suite including On-Canvas D
     *   **Architecture**: Render via React Portal to avoid parent zoom/clipping.
     *   **Layout**: Tabbed organization (Tab A: Layout, Tab B: Style).
     *   **Positioning**: Anchors to the top-right of the selection bounding box.
+    *   **Visibility during Drag**: **Follow & Update** (A) - Stay anchored and follow the component while it is being resized.
 3.  **Color Sampler**:
     *   **Split Logic**: Manual picker for Global Theme (Bottom Bar); Sampler for Product Card colors.
     *   **Sampler Mechanism**: Auto-extract top 3 colors from the product's `<img>` tag using a hidden canvas.
     *   **UI**: 3 circular swatches in the "Style" tab of the Mini-Tuner.
-
-## 🕒 Pending Clarifying Question
-*   **Color Application**: Should clicking an extracted swatch apply the color **instantly** (Real-time feedback), or should there be an **"Apply"** button to confirm the choice?
-    *   *Agent Recommendation*: Instant Update for a smoother UX.
+    *   **Application**: **Explicit Apply** (B) - Clicking a swatch shows a preview; user must click "Apply" to confirm.
 
 ## 🚀 Next Steps
-1.  Finalize the Color Application question.
-2.  Write the combined Design Spec.
-3.  Invoke `writing-plans` for implementation.
+1.  Write the combined Design Spec.
+2.  Invoke `writing-plans` for implementation.
+

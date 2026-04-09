@@ -1,21 +1,12 @@
 import { invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc } from "@tauri-apps/api/core";
 import { mockInvoke } from "./mock";
-import { logger } from "../logger";
-
-const SENSITIVE_FIELDS = ["key", "tax_id", "address"];
+import { logger, sanitize } from "../logger";
 
 /**
  * Redacts sensitive fields from arguments for secure logging.
  */
 function sanitizeArgs(args?: Record<string, any>): Record<string, any> | undefined {
-  if (!args) return args;
-  const sanitized = { ...args };
-  for (const field of SENSITIVE_FIELDS) {
-    if (field in sanitized) {
-      sanitized[field] = "[REDACTED]";
-    }
-  }
-  return sanitized;
+  return args ? sanitize(args) : args;
 }
 
 /**

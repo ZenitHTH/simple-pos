@@ -2,6 +2,7 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  satang?: number; // Integer unit for precise calculations
   category: string;
   image: string; // URL to image
   image_object_position?: string;
