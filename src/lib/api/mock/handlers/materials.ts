@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { Material } from "../../types";
+import { Material } from "../../../types";
 
 export const materialHandlers = {
   get_materials: () => state.materials,

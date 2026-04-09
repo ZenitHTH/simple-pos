@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { Stock } from "../../types";
+import { Stock } from "../../../types";
 
 export const stockHandlers = {
   get_all_stocks: () => state.stocks,

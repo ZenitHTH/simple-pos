@@ -1,0 +1,44 @@
+# Gemini Context Ignore File
+
+# Dependencies
+node_modules/
+target/
+src-tauri/target/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# IDEs and Tools
+.vscode/
+.zed/
+.idea/
+.superpowers/
+.claude/
+.gemini/
+.gemini_security/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables (Secrets)
+.env
+.env.*
+!.env.example
+
+# Large assets
+public/mock/images/
+src-tauri/icons/
+
+# Test artifacts
+e2e/screenshots/
+e2e/videos/

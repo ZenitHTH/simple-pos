@@ -100,6 +100,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isFirstLoadAfterInit = useRef(true);
 
   useEffect(() => {
     load();

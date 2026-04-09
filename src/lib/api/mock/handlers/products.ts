@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { BackendProduct } from "../../types";
+import { BackendProduct } from "../../../types";
 
 export const productHandlers = {
   get_products: () => state.products,

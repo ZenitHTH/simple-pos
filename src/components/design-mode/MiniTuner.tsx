@@ -1,7 +1,13 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaLayerGroup, FaMagic, FaCheckCircle } from "react-icons/fa";
 import { useColorSampler } from "@/hooks/useColorSampler";
+import { useMockup } from "@/context/MockupContext";
+import { useSettings } from "@/context/SettingsContext";
+import { cn } from "@/lib";
 
 type Tab = "layout" | "style";
 
@@ -116,11 +122,15 @@ export default function MiniTuner() {
 
   if (!mounted || !portalRoot || !selectedElementId) return null;
 
-  const currentScale = settings[selectedElementId as keyof typeof settings] || 100;
-  const fontScaleId = selectedElementId.endsWith("_scale") 
+  const rawScale = settings[selectedElementId as keyof typeof settings];
+  const currentScale = typeof rawScale === "number" ? rawScale : 100;
+
+  const fontScaleId = selectedElementId.endsWith("_scale")
     ? (selectedElementId.replace("_scale", "_font_scale") as keyof typeof settings)
     : null;
-  const currentFontScale = fontScaleId ? (settings[fontScaleId] as number || 100) : 100;
+
+  const rawFontScale = fontScaleId ? settings[fontScaleId] : null;
+  const currentFontScale = typeof rawFontScale === "number" ? rawFontScale : 100;
 
   const handleApplyColor = () => {
     if (previewColor) {
@@ -239,9 +249,11 @@ export default function MiniTuner() {
                       min="50"
                       max="200"
                       value={currentFontScale}
-                      onChange={(e) =>
-                        updateSettings({ [fontScaleId]: Number(e.target.value) })
-                      }
+                      onChange={(e) => {
+                        if (fontScaleId) {
+                          updateSettings({ [fontScaleId]: Number(e.target.value) });
+                        }
+                      }}
                       className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
                     />
                   </div>

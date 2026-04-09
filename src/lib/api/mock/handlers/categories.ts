@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { Category } from "../../types";
+import { Category } from "../../../types";
 
 export const categoryHandlers = {
   get_categories: () => state.categories,

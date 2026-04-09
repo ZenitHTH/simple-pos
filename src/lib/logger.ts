@@ -43,7 +43,7 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 export const logger = {
   info: async (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
-    const sArgs = args.map(sanitize);
+    const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
       await info(sMsg, ...sArgs);
     } else {
@@ -52,7 +52,7 @@ export const logger = {
   },
   error: async (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
-    const sArgs = args.map(sanitize);
+    const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
       await error(sMsg, ...sArgs);
     } else {
@@ -61,7 +61,7 @@ export const logger = {
   },
   warn: async (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
-    const sArgs = args.map(sanitize);
+    const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
       await warn(sMsg, ...sArgs);
     } else {
@@ -70,7 +70,7 @@ export const logger = {
   },
   debug: async (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
-    const sArgs = args.map(sanitize);
+    const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
       await debug(sMsg, ...sArgs);
     } else {

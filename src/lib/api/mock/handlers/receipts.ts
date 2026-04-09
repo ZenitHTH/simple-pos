@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { ReceiptList, Receipt } from "../../types";
+import { ReceiptList, Receipt } from "../../../types";
 
 export const receiptHandlers = {
   create_invoice: ({ customerId }: { customerId?: number }) => {

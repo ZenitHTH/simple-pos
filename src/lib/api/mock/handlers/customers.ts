@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { Customer } from "../../types";
+import { Customer } from "../../../types";
 
 export const customerHandlers = {
   get_customers: () => state.customers,

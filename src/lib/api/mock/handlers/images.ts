@@ -1,5 +1,5 @@
 import { state } from "../state";
-import { Image } from "../../types";
+import { Image } from "../../../types";
 
 export const imageHandlers = {
   save_image: ({ filename }: { filename: string }) => {

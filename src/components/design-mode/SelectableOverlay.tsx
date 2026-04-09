@@ -22,7 +22,8 @@ export default function SelectableOverlay({
   if (!isMockupMode) return null;
 
   const isSelected = selectedElementId === id;
-  const currentScale = settings[id as keyof typeof settings] || 100;
+  const rawScale = settings[id as keyof typeof settings];
+  const currentScale = typeof rawScale === "number" ? rawScale : 100;
 
   const handleDrag = (_: any, info: any) => {
     // Map movement to scale change
