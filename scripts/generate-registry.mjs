@@ -21,23 +21,31 @@ async function extractMetadata(filePath, type) {
   const content = await fs.readFile(filePath, 'utf-8');
   const results = [];
 
-  // Match JSDoc and Exports
-  // This is a simplified regex-based approach for the "yellow pages"
-  const exportRegex = /(?:\/\*\*\s*([\s\S]*?)\s*\*\/)?\s*export\s+(?:async\s+)?(?:const|function|type|interface)\s+([a-zA-Z0-9_]+)/g;
+  // Regex for exports with optional JSDoc
+  const exportRegex = /(?:\/\*\*\s*([\s\S]*?)\s*\*\/)?\s*export\s+(?:async\s+)?(?:const|function)\s+([a-zA-Z0-9_]+)/g;
   
   let match;
   while ((match = exportRegex.exec(content)) !== null) {
     const [_, jsDoc, name] = match;
     
-    // Filter out internal helpers (starting with underscore or lowercase in components)
     if (name.startsWith('_')) continue;
     if (type === 'component' && /^[a-z]/.test(name)) continue;
+    if (type === 'hook' && !name.startsWith('use')) continue;
+
+    const description = jsDoc 
+      ? jsDoc.split('\n').map(line => line.replace(/^\s*\*\s?/, '').trim()).filter(Boolean).join(' ')
+      : 'No description provided.';
+
+    // Heuristic for Props (looks for interface or type with same name + Props)
+    const propsRegex = new RegExp(`(?:interface|type)\\s+(${name}Props)\\b`);
+    const propsMatch = content.match(propsRegex);
 
     results.push({
       name,
       type,
       path: filePath.replace(/\\/g, '/'),
-      description: jsDoc ? jsDoc.replace(/\n\s*\*\s?/g, ' ').trim() : 'No description provided.',
+      description,
+      props: propsMatch ? propsMatch[1] : null
     });
   }
 
