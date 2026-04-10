@@ -9,9 +9,6 @@ import {
   FaCog,
   FaTags,
   FaBars,
-  FaTimes,
-  FaChevronDown,
-  FaChevronRight,
   FaWarehouse,
   FaClipboardList,
   FaImages,
@@ -22,6 +19,7 @@ import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { cn } from "@/lib";
 import { SidebarItem } from "./sidebar/SidebarItem";
 import { SidebarGroup } from "./sidebar/SidebarGroup";
+import BaseSidebarLayout from "./BaseSidebarLayout";
 
 interface MenuItem {
   name: string;
@@ -109,10 +107,6 @@ export default function Sidebar() {
     {},
   );
 
-  // Calculate dynamic width (base 16rem = 256px)
-  const baseWidth = 256;
-  const dynamicWidth = `${baseWidth * ((settings?.sidebar_scale || 100) / 100)}px`;
-
   // Close sidebar when route changes (mobile)
   useEffect(() => {
     setIsOpen(false);
@@ -165,69 +159,48 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside
-        style={{ width: dynamicWidth }}
-        className={cn(
-          "fixed inset-y-0 left-0 z-50 lg:static",
-          "bg-card text-card-foreground border-border border-r shadow-2xl lg:shadow-none",
-          "transform transition-transform duration-300 ease-in-out",
-          "flex flex-col",
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
-        )}
+      <BaseSidebarLayout
+        title="POS System"
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        scale={settings?.sidebar_scale}
+        fontScale={settings?.sidebar_font_scale}
       >
-        <div
-          style={{
-            width: dynamicWidth,
-            fontSize: `${settings?.sidebar_font_scale || 100}%`,
-          }}
-          className="group relative flex h-full flex-col"
+        <nav
+          className="flex-1 space-y-2 overflow-y-auto px-4 py-4"
+          data-lenis-prevent
         >
-          <div className="flex items-center justify-between p-6 lg:block">
-            <h1 className="text-primary text-[1.5em] font-bold">POS System</h1>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-muted hover:text-foreground p-2 transition-colors lg:hidden"
-            >
-              <FaTimes size={24} />
-            </button>
-          </div>
+          {menuEntries.map((entry) =>
+            isGroup(entry) ? (
+              <SidebarGroup
+                key={entry.name}
+                name={entry.name}
+                icon={entry.icon}
+                children={entry.children}
+                isExpanded={expandedGroups[entry.name] ?? false}
+                onToggle={() => toggleGroup(entry.name)}
+                currentPath={pathname}
+              />
+            ) : (
+              <SidebarItem
+                key={entry.path}
+                name={entry.name}
+                path={entry.path}
+                icon={entry.icon}
+                isActive={pathname === entry.path}
+              />
+            ),
+          )}
+        </nav>
 
-          <nav
-            className="flex-1 space-y-2 overflow-y-auto px-4 py-4"
-            data-lenis-prevent
-          >
-            {menuEntries.map((entry) =>
-              isGroup(entry) ? (
-                <SidebarGroup
-                  key={entry.name}
-                  name={entry.name}
-                  icon={entry.icon}
-                  children={entry.children}
-                  isExpanded={expandedGroups[entry.name] ?? false}
-                  onToggle={() => toggleGroup(entry.name)}
-                  currentPath={pathname}
-                />
-              ) : (
-                <SidebarItem
-                  key={entry.path}
-                  name={entry.name}
-                  path={entry.path}
-                  icon={entry.icon}
-                  isActive={pathname === entry.path}
-                />
-              ),
-            )}
-          </nav>
-
-          <div className="border-border mt-auto border-t p-4">
-            <p className="text-muted text-center text-[0.75em]">
-              © 2026 Simple POS
-            </p>
-          </div>
-
-          <SelectableOverlay id="sidebar_scale" />
+        <div className="border-border mt-auto border-t p-4">
+          <p className="text-muted text-center text-[0.75em]">
+            © 2026 Simple POS
+          </p>
         </div>
-      </aside>
+
+        <SelectableOverlay id="sidebar_scale" />
+      </BaseSidebarLayout>
     </>
   );
 }
