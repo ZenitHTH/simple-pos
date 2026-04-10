@@ -43,6 +43,18 @@ export interface AppSettings {
 
   // ── Payment ──
   payment_numpad_height: number | null;
+  numpad_scale: number;
+  numpad_font_scale: number;
+  numpad_display_font_scale: number;
+  numpad_button_height: number | null;
+  numpad_gap: number | null;
+
+  // ── Product Grid Styling ──
+  grid_item_padding: number | null;
+  grid_item_radius: number | null;
+  grid_item_title_font_size: number | null;
+  grid_item_price_font_size: number | null;
+  grid_gap: number | null;
 
   // ── Typography ──
   typography_font_family: string | null;

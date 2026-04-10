@@ -5,6 +5,8 @@ import { SelectorTuner } from "@/components/design-tuner/SelectorTuner";
 import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
 import { CartItemTuner } from "@/components/design-tuner/CartItemTuner";
+import { HistoryTuner } from "@/components/design-tuner/HistoryTuner";
+import { NumpadTuner } from "@/components/design-tuner/NumpadTuner";
 import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
 import GridItemSize from "@/components/design-mode/GridItemSize";
 import { useSettings } from "@/context/settings/SettingsContext";
