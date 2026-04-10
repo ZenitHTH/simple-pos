@@ -1,8 +1,11 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPalette,
   FaFont,
   FaMousePointer,
+  FaHandPointer,
   FaShoppingCart,
   FaThLarge,
   FaSlidersH,
@@ -59,7 +62,7 @@ export function TunerSidebar({
           <NavButton
             active={activeTab === "button"}
             onClick={() => setActiveTab("button")}
-            icon={<FaMousePointer className="text-sm rotate-45" />}
+            icon={<FaHandPointer className="text-sm rotate-45" />}
             label="Buttons"
           />
           <NavButton

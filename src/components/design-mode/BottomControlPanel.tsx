@@ -4,7 +4,6 @@ import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "./NavigationMenu";
-import GlobalLayoutControls from "./GlobalLayoutControls";
 import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
 
@@ -49,19 +48,8 @@ export default function BottomControlPanel({
 
         <div className="bg-border h-8 w-px opacity-40"></div>
 
-        {/* Global Layout */}
+        {/* Global Layout & Custom Tuners */}
         <div className="flex items-center gap-6">
-          <GlobalLayoutControls
-            settings={settings}
-            updateSettings={updateSettings}
-            currentView={
-              isMockupMode && selectedElementId === "payment_modal_scale"
-                ? "payment"
-                : undefined
-            }
-            pathname={pathname}
-          />
-
           {/* Dual Column Tuner (Only on specific pages like Settings) */}
           {dualColumnProps && (
             <>
