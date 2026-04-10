@@ -5,6 +5,7 @@ import { IconType } from "react-icons";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
 import GlobalHeader from "@/components/ui/GlobalHeader";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 interface BaseSidebarLayoutProps {
   children: ReactNode;
@@ -72,6 +73,8 @@ export default function BaseSidebarLayout({
         <div className="flex-1 overflow-hidden">
           {children}
         </div>
+
+        <SelectableOverlay id="sidebar_scale" />
       </div>
     </aside>
   );
