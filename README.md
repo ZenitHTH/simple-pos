@@ -15,12 +15,14 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
   - **Touch-Optimized Cart**: Large touch targets for interactive cart elements.
   - **Smart Change Calculation**: Automated change display with validity checks.
   - **Receipt Generation**: Backend integration for secure transaction recording.
-- **Modern Design Tuner (New)**:
-  - **Apple-Inspired Dark Mode**: A sleek, flat interface with glassmorphism and modern aesthetics.
+- **Modern Hybrid Design Editor (New)**:
+  - **Centered Global Action Bar**: A sleek, floating island for high-level app control (Display Zoom, Page Width, and Navigation).
+  - **Draggable Contextual MiniTuner**: A smart, persistent tuning panel that follows your selection and allows real-time styling of components.
+  - **Specialized Component Tuners**: Dedicated interactive environments for fine-tuning the **Product Grid**, **Sidebar Layout**, **Virtual Numpad**, and **Order History**.
+  - **Smooth Scaling Engine**: Fluid, non-snapping item resizing powered by dynamic CSS Grid `auto-fill` and `minmax` logic.
+  - **Live Color Sampler**: Extract and apply brand colors directly from product images to your global theme.
+  - **Apple-Inspired Dark Mode**: A premium flat interface utilizing glassmorphism, `framer-motion` animations, and modern aesthetics.
   - **Layout Presets**: Quickly toggle between **Compact POS** (high density) and **Cozy Desktop** (spacious) modes.
-  - **Interactive Preview**: Real-time visualization of button styles, typography, and UI elements.
-  - **Fluid Animations**: Powered by `framer-motion` for a premium, responsive feel.
-  - **Global Display Scaling**: Adjust the entire interface size from 50% to 200% with real-time feedback.
 - **Data Export & Reporting**:
   - Export transaction data to CSV, XLSX, and ODS.
   - **Thai Accounting Integration**: Built-in support for Thai Sales Tax Reports (รายงานภาษีขาย).
