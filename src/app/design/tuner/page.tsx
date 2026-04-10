@@ -70,13 +70,10 @@ export default function DesignTunerPage() {
               />
             )}
             {activeTab === "grid" && (
-              <div className="bg-card/50 border-border/60 rounded-3xl border p-10 shadow-sm backdrop-blur-sm">
-                <h3 className="mb-8 text-xl font-bold">Product Grid Scale</h3>
-                <GridItemSize
-                  settings={settings}
-                  onUpdate={updateSettings}
-                />
-              </div>
+              <GridTuner settings={settings} updateSettings={updateSettings} />
+            )}
+            {activeTab === "sidebar" && (
+              <SidebarTuner settings={settings} updateSettings={updateSettings} />
             )}
             {activeTab === "numpad" && (
               <NumpadTuner settings={settings} updateSettings={updateSettings} />
@@ -107,6 +104,17 @@ export default function DesignTunerPage() {
             <button
               onClick={() => save()}
               className="bg-primary text-primary-foreground flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
+            >
+              <FaSave className="text-xs" />
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+w-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
             >
               <FaSave className="text-xs" />
               Save Changes

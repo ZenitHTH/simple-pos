@@ -11,6 +11,7 @@ import {
   FaSlidersH,
   FaCalculator,
   FaHistory,
+  FaColumns,
 } from "react-icons/fa";
 import { NavButton } from "./NavButton";
 import { GlobalStylesPanel } from "./GlobalStylesPanel";
@@ -178,6 +179,17 @@ export function TunerSidebar({
               <GlobalStylesPanel
                 settings={settings}
                 updateSettings={updateSettings}
+                previewZoom={previewZoom}
+                setPreviewZoom={setPreviewZoom}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </BaseSidebarLayout>
+  );
+}
+ettings}
                 previewZoom={previewZoom}
                 setPreviewZoom={setPreviewZoom}
               />
