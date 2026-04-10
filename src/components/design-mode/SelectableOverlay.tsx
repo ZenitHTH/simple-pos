@@ -35,8 +35,11 @@ export default function SelectableOverlay({
     // Map total movement to scale change
     // sensitivity: 0.5% per pixel
     const sensitivity = 0.5;
-    // Use total offset for smooth calculation relative to start
-    const delta = (info.offset.x + info.offset.y) * sensitivity;
+    // Use total offset relative to start. 
+    // Pulling bottom-right increases scale (y increases, x increases)
+    // We use y - (-x) equivalent logic or just pick the axis that feels more natural.
+    // Diagonal pull: y increases, x increases. 
+    const delta = (info.offset.y + info.offset.x) * sensitivity;
     const newScale = Math.min(Math.max(startScaleRef.current + delta, 50), 200);
     
     updateSettings({ [id]: newScale });
