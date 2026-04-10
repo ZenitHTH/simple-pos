@@ -233,22 +233,7 @@ export default function MiniTuner() {
                           settings={settings}
                           onUpdate={updateSettings}
                         />
-                      ) : selectedElementId === "layout_max_width" ? (
-                        <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                            <span>Page Width</span>
-                            <span>{settings.layout_max_width || DEFAULT_LAYOUT_WIDTH}px</span>
-                          </div>
-                          <NumberStepper
-                            min={400}
-                            max={2500}
-                            step={50}
-                            value={settings.layout_max_width || DEFAULT_LAYOUT_WIDTH}
-                            onChange={(val) => updateSettings({ layout_max_width: val })}
-                          />
-                        </div>
-                      ) : selectedElementId === "header_font_scale" ? (
-                        <div className="flex flex-col gap-2">
+                      ) : selectedElementId === "header_font_scale" ? (                        <div className="flex flex-col gap-2">
                           <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
                             <span>Header Font</span>
                             <span>{settings.header_font_scale || 100}%</span>

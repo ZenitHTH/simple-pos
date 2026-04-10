@@ -50,7 +50,33 @@ export default function BottomControlPanel({
         <div className="bg-border h-8 w-px opacity-40"></div>
 
         {/* Global Layout & Custom Tuners */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
+          {/* Global Scalers */}
+          <div className="flex items-center gap-6">
+            <div className="w-32">
+              <SidebarSlider
+                label="Display Zoom"
+                min={75}
+                max={125}
+                step={5}
+                value={settings.display_scale || 100}
+                onChange={(val) => updateSettings({ display_scale: val })}
+                unit="%"
+              />
+            </div>
+            <div className="w-40">
+              <SidebarSlider
+                label="Page Width"
+                min={400}
+                max={2500}
+                step={50}
+                value={settings.layout_max_width || 1280}
+                onChange={(val) => updateSettings({ layout_max_width: val })}
+                unit="px"
+              />
+            </div>
+          </div>
+
           {/* Dual Column Tuner (Only on specific pages like Settings) */}
           {dualColumnProps && (
             <>
