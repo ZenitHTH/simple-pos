@@ -83,7 +83,11 @@ graph TD
 
 ---
 
-## Development Conventions
+### AI Component Registry
+We maintain a "yellow pages" registry of reusable components, hooks, and API functions in `.agents/ai-components.json`. 
+Update it by running:
+`npm run registry`
+AI agents should check this file first when looking for existing functionality.
 
 ### Backend (Rust)
 - **API Compatibility**: Always verify that changes in the Rust backend align with the frontend API calls in `src/lib/api/`.

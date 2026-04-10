@@ -1,0 +1,485 @@
+[
+  {
+    "name": "ThemeProvider",
+    "type": "component",
+    "path": "src/components/theme-provider.tsx",
+    "description": "A wrapper for next-themes ThemeProvider. This component handles theme switching (light/dark/system) via CSS classes. It is compatible with our manual CSS variable injection in SettingsContext because next-themes does not modify the inline 'style' attribute of the document element by default.",
+    "props": null
+  },
+  {
+    "name": "CURRENCIES",
+    "type": "component",
+    "path": "src/components/settings/CurrencySettings.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "Toast",
+    "type": "component",
+    "path": "src/components/ui/Toast.tsx",
+    "description": "No description provided.",
+    "props": "ToastProps"
+  },
+  {
+    "name": "Separator",
+    "type": "component",
+    "path": "src/components/ui/Separator.tsx",
+    "description": "No description provided.",
+    "props": "SeparatorProps"
+  },
+  {
+    "name": "Select",
+    "type": "component",
+    "path": "src/components/ui/Select.tsx",
+    "description": "No description provided.",
+    "props": "SelectProps"
+  },
+  {
+    "name": "Option",
+    "type": "component",
+    "path": "src/components/ui/Select.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "PillGroup",
+    "type": "component",
+    "path": "src/components/ui/PillGroup.tsx",
+    "description": "No description provided.",
+    "props": "PillGroupProps"
+  },
+  {
+    "name": "Modal",
+    "type": "component",
+    "path": "src/components/ui/Modal.tsx",
+    "description": "No description provided.",
+    "props": "ModalProps"
+  },
+  {
+    "name": "Input",
+    "type": "component",
+    "path": "src/components/ui/Input.tsx",
+    "description": "No description provided.",
+    "props": "InputProps"
+  },
+  {
+    "name": "DualColumnBuilder",
+    "type": "component",
+    "path": "src/components/ui/DualColumnBuilder.tsx",
+    "description": "No description provided.",
+    "props": "DualColumnBuilderProps"
+  },
+  {
+    "name": "Drawer",
+    "type": "component",
+    "path": "src/components/ui/Drawer.tsx",
+    "description": "No description provided.",
+    "props": "DrawerProps"
+  },
+  {
+    "name": "TypographyTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/TypographyTuner.tsx",
+    "description": "No description provided.",
+    "props": "TypographyTunerProps"
+  },
+  {
+    "name": "TunerSidebar",
+    "type": "component",
+    "path": "src/components/design-tuner/TunerSidebar.tsx",
+    "description": "No description provided.",
+    "props": "TunerSidebarProps"
+  },
+  {
+    "name": "ThemePresetsPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/ThemePresetsPanel.tsx",
+    "description": "No description provided.",
+    "props": "ThemePresetsPanelProps"
+  },
+  {
+    "name": "SidebarSlider",
+    "type": "component",
+    "path": "src/components/design-tuner/SidebarSlider.tsx",
+    "description": "No description provided.",
+    "props": "SidebarSliderProps"
+  },
+  {
+    "name": "SelectorTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/SelectorTuner.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "NavButton",
+    "type": "component",
+    "path": "src/components/design-tuner/NavButton.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "GlobalStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/GlobalStylesPanel.tsx",
+    "description": "No description provided.",
+    "props": "GlobalStylesPanelProps"
+  },
+  {
+    "name": "CartItemTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/CartItemTuner.tsx",
+    "description": "No description provided.",
+    "props": "CartItemTunerProps"
+  },
+  {
+    "name": "CartItemStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/CartItemStylesPanel.tsx",
+    "description": "No description provided.",
+    "props": "CartItemStylesPanelProps"
+  },
+  {
+    "name": "ButtonTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/ButtonTuner.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "ButtonStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/ButtonStylesPanel.tsx",
+    "description": "No description provided.",
+    "props": "ButtonStylesPanelProps"
+  },
+  {
+    "name": "MaterialSourceItem",
+    "type": "component",
+    "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
+    "description": "No description provided.",
+    "props": "MaterialSourceItemProps"
+  },
+  {
+    "name": "ProductSelectionItem",
+    "type": "component",
+    "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
+    "description": "No description provided.",
+    "props": "ProductSelectionItemProps"
+  },
+  {
+    "name": "RecipeTargetItem",
+    "type": "component",
+    "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
+    "description": "No description provided.",
+    "props": "RecipeTargetItemProps"
+  },
+  {
+    "name": "SidebarItem",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "description": "No description provided.",
+    "props": "SidebarItemProps"
+  },
+  {
+    "name": "SidebarGroup",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
+    "description": "No description provided.",
+    "props": "SidebarGroupProps"
+  },
+  {
+    "name": "TypographySlider",
+    "type": "component",
+    "path": "src/components/design-tuner/typography/TypographySlider.tsx",
+    "description": "No description provided.",
+    "props": "TypographySliderProps"
+  },
+  {
+    "name": "TypographyPreview",
+    "type": "component",
+    "path": "src/components/design-tuner/typography/TypographyPreview.tsx",
+    "description": "No description provided.",
+    "props": "TypographyPreviewProps"
+  },
+  {
+    "name": "TypographyControls",
+    "type": "component",
+    "path": "src/components/design-tuner/typography/TypographyControls.tsx",
+    "description": "No description provided.",
+    "props": "TypographyControlsProps"
+  },
+  {
+    "name": "useTax",
+    "type": "hook",
+    "path": "src/hooks/useTax.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "usePOSLogic",
+    "type": "hook",
+    "path": "src/hooks/usePOSLogic.tsx",
+    "description": "Custom hook to manage Point of Sale (POS) logic. Handles product selection, cart management, and payment processing. @param initialProducts - List of products available for sale. @returns Object containing cart state, handlers, and current currency/tax settings.",
+    "props": null
+  },
+  {
+    "name": "useCurrency",
+    "type": "hook",
+    "path": "src/hooks/useCurrency.tsx",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "useColorSampler",
+    "type": "hook",
+    "path": "src/hooks/useColorSampler.ts",
+    "description": "useColorSampler extracts dominant colors from an HTMLImageElement using Canvas. It returns an array of hex colors.",
+    "props": null
+  },
+  {
+    "name": "stockApi",
+    "type": "api",
+    "path": "src/lib/api/stocks.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "settingsApi",
+    "type": "api",
+    "path": "src/lib/api/settings.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "recipeApi",
+    "type": "api",
+    "path": "src/lib/api/recipes.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "receiptApi",
+    "type": "api",
+    "path": "src/lib/api/receipts.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "productApi",
+    "type": "api",
+    "path": "src/lib/api/products.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "materialApi",
+    "type": "api",
+    "path": "src/lib/api/materials.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "invoke",
+    "type": "api",
+    "path": "src/lib/api/invoke.ts",
+    "description": "Redacts sensitive fields from arguments for secure logging. / function sanitizeArgs(args?: Record<string, any>): Record<string, any> | undefined { return args ? sanitize(args) : args; } /** A wrapper around Tauri's invoke that falls back to a mock implementation if the Tauri bridge is not available (e.g., when running in a standard browser).",
+    "props": null
+  },
+  {
+    "name": "convertFileSrc",
+    "type": "api",
+    "path": "src/lib/api/invoke.ts",
+    "description": "A wrapper around Tauri's convertFileSrc that returns the source as-is in a non-Tauri environment.",
+    "props": null
+  },
+  {
+    "name": "imageApi",
+    "type": "api",
+    "path": "src/lib/api/images.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "databaseApi",
+    "type": "api",
+    "path": "src/lib/api/database.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "customerApi",
+    "type": "api",
+    "path": "src/lib/api/customerApi.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "categoryApi",
+    "type": "api",
+    "path": "src/lib/api/categories.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "state",
+    "type": "api",
+    "path": "src/lib/api/mock/state.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockInvoke",
+    "type": "api",
+    "path": "src/lib/api/mock/index.ts",
+    "description": "Mock implementation of Tauri's invoke. Intercepts commands and routes them to the appropriate handler.",
+    "props": null
+  },
+  {
+    "name": "handlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockCategories",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockProducts",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockMaterials",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockRecipeLists",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockRecipeItems",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockCustomers",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockStocks",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockImages",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockProductImages",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockReceiptLists",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "mockReceipts",
+    "type": "api",
+    "path": "src/lib/api/mock/data.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "stockHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/stocks.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "settingHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/settings.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "recipeHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/recipes.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "receiptHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/receipts.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "productHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/products.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "materialHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/materials.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "imageHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/images.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "customerHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/customers.ts",
+    "description": "No description provided.",
+    "props": null
+  },
+  {
+    "name": "categoryHandlers",
+    "type": "api",
+    "path": "src/lib/api/mock/handlers/categories.ts",
+    "description": "No description provided.",
+    "props": null
+  }
+]
