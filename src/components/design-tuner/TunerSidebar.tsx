@@ -9,6 +9,8 @@ import {
   FaShoppingCart,
   FaThLarge,
   FaSlidersH,
+  FaCalculator,
+  FaHistory,
 } from "react-icons/fa";
 import { NavButton } from "./NavButton";
 import { GlobalStylesPanel } from "./GlobalStylesPanel";
@@ -19,7 +21,14 @@ import { AppSettings } from "@/lib";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import GridItemSize from "@/components/design-mode/GridItemSize";
 
-export type TunerTab = "selector" | "button" | "typography" | "cart" | "grid";
+export type TunerTab =
+  | "selector"
+  | "button"
+  | "typography"
+  | "cart"
+  | "grid"
+  | "history"
+  | "numpad";
 
 interface TunerSidebarProps {
   activeTab: TunerTab;
@@ -82,6 +91,18 @@ export function TunerSidebar({
             onClick={() => setActiveTab("grid")}
             icon={<FaThLarge className="text-sm" />}
             label="Product Grid"
+          />
+          <NavButton
+            active={activeTab === "numpad"}
+            onClick={() => setActiveTab("numpad")}
+            icon={<FaCalculator className="text-sm" />}
+            label="Numpad"
+          />
+          <NavButton
+            active={activeTab === "history"}
+            onClick={() => setActiveTab("history")}
+            icon={<FaHistory className="text-sm" />}
+            label="History"
           />
         </div>
       </div>

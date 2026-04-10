@@ -76,6 +76,10 @@ export default function DesignTunerPage() {
                 />
               </div>
             )}
+            {activeTab === "numpad" && <NumpadTuner settings={settings} />}
+            {activeTab === "history" && (
+              <HistoryTuner settings={settings} updateSettings={updateSettings} />
+            )}
           </div>
         </div>
 

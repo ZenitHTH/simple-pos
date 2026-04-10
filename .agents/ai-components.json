@@ -4,6 +4,38 @@
     "type": "component",
     "path": "src/components/theme-provider.tsx",
     "description": "A wrapper for next-themes ThemeProvider. This component handles theme switching (light/dark/system) via CSS classes. It is compatible with our manual CSS variable injection in SettingsContext because next-themes does not modify the inline 'style' attribute of the document element by default.",
+    "keywords": [
+      "theme",
+      "provider",
+      "themeprovider",
+      "theme-provider",
+      "wrapper",
+      "next",
+      "themes",
+      "this",
+      "component",
+      "handles",
+      "switching",
+      "light",
+      "dark",
+      "system",
+      "classes",
+      "compatible",
+      "with",
+      "manual",
+      "variable",
+      "injection",
+      "settingscontext",
+      "because",
+      "does",
+      "modify",
+      "inline",
+      "style",
+      "attribute",
+      "document",
+      "element",
+      "default"
+    ],
     "props": null
   },
   {
@@ -11,13 +43,43 @@
     "type": "component",
     "path": "src/components/ui/Toast.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "toast",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "ToastProps"
+  },
+  {
+    "name": "SettingsSection",
+    "type": "component",
+    "path": "src/components/ui/SettingsSection.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "settings",
+      "section",
+      "settingssection",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SettingsSectionProps"
   },
   {
     "name": "Separator",
     "type": "component",
     "path": "src/components/ui/Separator.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "separator",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "SeparatorProps"
   },
   {
@@ -25,6 +87,13 @@
     "type": "component",
     "path": "src/components/ui/Select.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "select",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "SelectProps"
   },
   {
@@ -32,20 +101,108 @@
     "type": "component",
     "path": "src/components/ui/Select.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "option",
+      "ui",
+      "select",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": null
+  },
+  {
+    "name": "ScrollableContainer",
+    "type": "component",
+    "path": "src/components/ui/ScrollableContainer.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "scrollable",
+      "container",
+      "scrollablecontainer",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ScrollableContainerProps"
+  },
+  {
+    "name": "RangeSlider",
+    "type": "component",
+    "path": "src/components/ui/RangeSlider.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "range",
+      "slider",
+      "rangeslider",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "RangeSliderProps"
   },
   {
     "name": "PillGroup",
     "type": "component",
     "path": "src/components/ui/PillGroup.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "pill",
+      "group",
+      "pillgroup",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "PillGroupProps"
+  },
+  {
+    "name": "NumberStepper",
+    "type": "component",
+    "path": "src/components/ui/NumberStepper.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "number",
+      "stepper",
+      "numberstepper",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "NumberStepperProps"
+  },
+  {
+    "name": "NumberSlider",
+    "type": "component",
+    "path": "src/components/ui/NumberSlider.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "number",
+      "slider",
+      "numberslider",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "NumberSliderProps"
   },
   {
     "name": "Modal",
     "type": "component",
     "path": "src/components/ui/Modal.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "modal",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "ModalProps"
   },
   {
@@ -53,13 +210,79 @@
     "type": "component",
     "path": "src/components/ui/Input.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "input",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "InputProps"
+  },
+  {
+    "name": "GoBackButton",
+    "type": "component",
+    "path": "src/components/ui/GoBackButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "go",
+      "back",
+      "button",
+      "gobackbutton",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "GlobalTable",
+    "type": "component",
+    "path": "src/components/ui/GlobalTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "table",
+      "globaltable",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalTableProps"
+  },
+  {
+    "name": "GlobalHeader",
+    "type": "component",
+    "path": "src/components/ui/GlobalHeader.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "header",
+      "globalheader",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalHeaderProps"
   },
   {
     "name": "DualColumnBuilder",
     "type": "component",
     "path": "src/components/ui/DualColumnBuilder.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "dual",
+      "column",
+      "builder",
+      "dualcolumnbuilder",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "DualColumnBuilderProps"
   },
   {
@@ -67,20 +290,529 @@
     "type": "component",
     "path": "src/components/ui/Drawer.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "drawer",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "DrawerProps"
+  },
+  {
+    "name": "UISetupMode",
+    "type": "component",
+    "path": "src/components/settings/UISetupMode.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "u",
+      "i",
+      "setup",
+      "mode",
+      "uisetupmode",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "UISetupModeProps"
+  },
+  {
+    "name": "ThemeSettings",
+    "type": "component",
+    "path": "src/components/settings/ThemeSettings.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "settings",
+      "themesettings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SettingsSetup",
+    "type": "component",
+    "path": "src/components/settings/SettingsSetup.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "settings",
+      "setup",
+      "settingssetup",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SettingsSetupProps"
+  },
+  {
+    "name": "ResetSettingsButton",
+    "type": "component",
+    "path": "src/components/settings/ResetSettingsButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "reset",
+      "settings",
+      "button",
+      "resetsettingsbutton",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ExportSection",
+    "type": "component",
+    "path": "src/components/settings/ExportSection.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "export",
+      "section",
+      "exportsection",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
   },
   {
     "name": "CURRENCIES",
     "type": "component",
     "path": "src/components/settings/CurrencySettings.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "c",
+      "u",
+      "r",
+      "e",
+      "n",
+      "i",
+      "s",
+      "currencies",
+      "settings",
+      "currencysettings",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": null
+  },
+  {
+    "name": "POSClient",
+    "type": "component",
+    "path": "src/components/pos/POSClient.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "p",
+      "o",
+      "s",
+      "client",
+      "posclient",
+      "pos",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "POSClientProps"
+  },
+  {
+    "name": "PaymentModal",
+    "type": "component",
+    "path": "src/components/payment/PaymentModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "payment",
+      "modal",
+      "paymentmodal",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "PaymentModalProps"
+  },
+  {
+    "name": "StockTable",
+    "type": "component",
+    "path": "src/components/manage/StockTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "stock",
+      "table",
+      "stocktable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "StockTableProps"
+  },
+  {
+    "name": "StockModal",
+    "type": "component",
+    "path": "src/components/manage/StockModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "stock",
+      "modal",
+      "stockmodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "StockModalProps"
+  },
+  {
+    "name": "ProductTable",
+    "type": "component",
+    "path": "src/components/manage/ProductTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "product",
+      "table",
+      "producttable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ProductTableProps"
+  },
+  {
+    "name": "ProductModal",
+    "type": "component",
+    "path": "src/components/manage/ProductModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "product",
+      "modal",
+      "productmodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ProductModalProps"
+  },
+  {
+    "name": "MaterialTable",
+    "type": "component",
+    "path": "src/components/manage/MaterialTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "material",
+      "table",
+      "materialtable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "MaterialTableProps"
+  },
+  {
+    "name": "MaterialModal",
+    "type": "component",
+    "path": "src/components/manage/MaterialModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "material",
+      "modal",
+      "materialmodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "MaterialModalProps"
+  },
+  {
+    "name": "LinkImageModal",
+    "type": "component",
+    "path": "src/components/manage/LinkImageModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "link",
+      "image",
+      "modal",
+      "linkimagemodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "LinkImageModalProps"
+  },
+  {
+    "name": "ImagePositionModal",
+    "type": "component",
+    "path": "src/components/manage/ImagePositionModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "image",
+      "position",
+      "modal",
+      "imagepositionmodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ImagePositionModalProps"
+  },
+  {
+    "name": "ImageGrid",
+    "type": "component",
+    "path": "src/components/manage/ImageGrid.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "image",
+      "grid",
+      "imagegrid",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ImageGridProps"
+  },
+  {
+    "name": "CustomerTable",
+    "type": "component",
+    "path": "src/components/manage/CustomerTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "customer",
+      "table",
+      "customertable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CustomerTableProps"
+  },
+  {
+    "name": "CustomerModal",
+    "type": "component",
+    "path": "src/components/manage/CustomerModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "customer",
+      "modal",
+      "customermodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CustomerModalProps"
+  },
+  {
+    "name": "CategoryTable",
+    "type": "component",
+    "path": "src/components/manage/CategoryTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "category",
+      "table",
+      "categorytable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CategoryTableProps"
+  },
+  {
+    "name": "CategoryModal",
+    "type": "component",
+    "path": "src/components/manage/CategoryModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "category",
+      "modal",
+      "categorymodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CategoryModalProps"
+  },
+  {
+    "name": "WelcomeScreen",
+    "type": "component",
+    "path": "src/components/layout/WelcomeScreen.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "welcome",
+      "screen",
+      "welcomescreen",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "WelcomeScreenProps"
+  },
+  {
+    "name": "Sidebar",
+    "type": "component",
+    "path": "src/components/layout/Sidebar.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ManagementPageLayout",
+    "type": "component",
+    "path": "src/components/layout/ManagementPageLayout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "management",
+      "page",
+      "layout",
+      "managementpagelayout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ManagementPageLayoutProps"
+  },
+  {
+    "name": "AppShell",
+    "type": "component",
+    "path": "src/components/layout/AppShell.tsx",
+    "description": "AppShell handles the core layout and scaling isolation. It wraps the main content and sidebar in a zoomed container while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.",
+    "keywords": [
+      "app",
+      "shell",
+      "appshell",
+      "layout",
+      "handles",
+      "core",
+      "scaling",
+      "isolation",
+      "wraps",
+      "main",
+      "content",
+      "sidebar",
+      "zoomed",
+      "container",
+      "while",
+      "keeping",
+      "bottomcontrolpanel",
+      "gobackbutton",
+      "scale",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ReceiptList",
+    "type": "component",
+    "path": "src/components/history/ReceiptList.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "list",
+      "receiptlist",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ReceiptListProps"
+  },
+  {
+    "name": "ReceiptDetailModal",
+    "type": "component",
+    "path": "src/components/history/ReceiptDetailModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "detail",
+      "modal",
+      "receiptdetailmodal",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ReceiptDetailModalProps"
+  },
+  {
+    "name": "IdSearch",
+    "type": "component",
+    "path": "src/components/history/IdSearch.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "id",
+      "search",
+      "idsearch",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "IdSearchProps"
+  },
+  {
+    "name": "HistoryHeader",
+    "type": "component",
+    "path": "src/components/history/HistoryHeader.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "header",
+      "historyheader",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "DateFilter",
+    "type": "component",
+    "path": "src/components/history/DateFilter.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "date",
+      "filter",
+      "datefilter",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "DateFilterProps"
   },
   {
     "name": "TypographyTuner",
     "type": "component",
     "path": "src/components/design-tuner/TypographyTuner.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "tuner",
+      "typographytuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "TypographyTunerProps"
   },
   {
@@ -88,6 +820,15 @@
     "type": "component",
     "path": "src/components/design-tuner/TunerSidebar.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "tuner",
+      "sidebar",
+      "tunersidebar",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "TunerSidebarProps"
   },
   {
@@ -95,6 +836,16 @@
     "type": "component",
     "path": "src/components/design-tuner/ThemePresetsPanel.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "presets",
+      "panel",
+      "themepresetspanel",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "ThemePresetsPanelProps"
   },
   {
@@ -102,6 +853,15 @@
     "type": "component",
     "path": "src/components/design-tuner/SidebarSlider.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "slider",
+      "sidebarslider",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "SidebarSliderProps"
   },
   {
@@ -109,6 +869,15 @@
     "type": "component",
     "path": "src/components/design-tuner/SelectorTuner.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "selector",
+      "tuner",
+      "selectortuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": null
   },
   {
@@ -116,6 +885,15 @@
     "type": "component",
     "path": "src/components/design-tuner/NavButton.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "nav",
+      "button",
+      "navbutton",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": null
   },
   {
@@ -123,6 +901,16 @@
     "type": "component",
     "path": "src/components/design-tuner/GlobalStylesPanel.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "global",
+      "styles",
+      "panel",
+      "globalstylespanel",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "GlobalStylesPanelProps"
   },
   {
@@ -130,6 +918,16 @@
     "type": "component",
     "path": "src/components/design-tuner/CartItemTuner.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "item",
+      "tuner",
+      "cartitemtuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "CartItemTunerProps"
   },
   {
@@ -137,6 +935,17 @@
     "type": "component",
     "path": "src/components/design-tuner/CartItemStylesPanel.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "item",
+      "styles",
+      "panel",
+      "cartitemstylespanel",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "CartItemStylesPanelProps"
   },
   {
@@ -144,6 +953,15 @@
     "type": "component",
     "path": "src/components/design-tuner/ButtonTuner.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "button",
+      "tuner",
+      "buttontuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": null
   },
   {
@@ -151,27 +969,393 @@
     "type": "component",
     "path": "src/components/design-tuner/ButtonStylesPanel.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "button",
+      "styles",
+      "panel",
+      "buttonstylespanel",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "ButtonStylesPanelProps"
   },
   {
-    "name": "SidebarItem",
+    "name": "SelectableOverlay",
     "type": "component",
-    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "path": "src/components/design-mode/SelectableOverlay.tsx",
     "description": "No description provided.",
-    "props": "SidebarItemProps"
+    "keywords": [
+      "selectable",
+      "overlay",
+      "selectableoverlay",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SelectableOverlayProps"
   },
   {
-    "name": "SidebarGroup",
+    "name": "ScalableContainer",
     "type": "component",
-    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
+    "path": "src/components/design-mode/ScalableContainer.tsx",
     "description": "No description provided.",
-    "props": "SidebarGroupProps"
+    "keywords": [
+      "scalable",
+      "container",
+      "scalablecontainer",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ScalableContainerProps"
+  },
+  {
+    "name": "NavigationMenu",
+    "type": "component",
+    "path": "src/components/design-mode/NavigationMenu.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "navigation",
+      "menu",
+      "navigationmenu",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "MiniTuner",
+    "type": "component",
+    "path": "src/components/design-mode/MiniTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "mini",
+      "tuner",
+      "minituner",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "GridItemSize",
+    "type": "component",
+    "path": "src/components/design-mode/GridItemSize.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "grid",
+      "item",
+      "size",
+      "griditemsize",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GridItemSizeProps"
+  },
+  {
+    "name": "GlobalScaleControls",
+    "type": "component",
+    "path": "src/components/design-mode/GlobalScaleControls.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "scale",
+      "controls",
+      "globalscalecontrols",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "GlobalLayoutControls",
+    "type": "component",
+    "path": "src/components/design-mode/GlobalLayoutControls.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "layout",
+      "controls",
+      "globallayoutcontrols",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalLayoutControlsProps"
+  },
+  {
+    "name": "DualColumnTuner",
+    "type": "component",
+    "path": "src/components/design-mode/DualColumnTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "dual",
+      "column",
+      "tuner",
+      "dualcolumntuner",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "DualColumnTunerProps"
+  },
+  {
+    "name": "DesignModeWrapper",
+    "type": "component",
+    "path": "src/components/design-mode/DesignModeWrapper.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "design",
+      "mode",
+      "wrapper",
+      "designmodewrapper",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "DesignModeWrapperProps"
+  },
+  {
+    "name": "ComponentScaleControls",
+    "type": "component",
+    "path": "src/components/design-mode/ComponentScaleControls.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "component",
+      "scale",
+      "controls",
+      "componentscalecontrols",
+      "design-mode",
+      "description",
+      "provided"
+    ],
+    "props": null
+  },
+  {
+    "name": "BottomControlPanel",
+    "type": "component",
+    "path": "src/components/design-mode/BottomControlPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "bottom",
+      "control",
+      "panel",
+      "bottomcontrolpanel",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "BottomControlPanelProps"
+  },
+  {
+    "name": "ActionButton",
+    "type": "component",
+    "path": "src/components/design-mode/ActionButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "action",
+      "button",
+      "actionbutton",
+      "design-mode",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SmoothScroll",
+    "type": "component",
+    "path": "src/components/common/SmoothScroll.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "smooth",
+      "scroll",
+      "smoothscroll",
+      "common",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SmoothScrollProps"
+  },
+  {
+    "name": "DatabaseGuard",
+    "type": "component",
+    "path": "src/components/common/DatabaseGuard.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "database",
+      "guard",
+      "databaseguard",
+      "common",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "CartEmpty",
+    "type": "component",
+    "path": "src/components/cart/CartEmpty.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "empty",
+      "cartempty",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "Cart",
+    "type": "component",
+    "path": "src/components/cart/Cart.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartProps"
+  },
+  {
+    "name": "PasswordSetupScreen",
+    "type": "component",
+    "path": "src/components/auth/PasswordSetupScreen.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "password",
+      "setup",
+      "screen",
+      "passwordsetupscreen",
+      "auth",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "PasswordSetupScreenProps"
+  },
+  {
+    "name": "LoginScreen",
+    "type": "component",
+    "path": "src/components/auth/LoginScreen.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "login",
+      "screen",
+      "loginscreen",
+      "auth",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "VolumeEdge",
+    "type": "component",
+    "path": "src/components/manage/recipe/VolumeEdge.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "volume",
+      "edge",
+      "volumeedge",
+      "manage",
+      "recipe",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SimpleRecipeBuilder",
+    "type": "component",
+    "path": "src/components/manage/recipe/SimpleRecipeBuilder.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "simple",
+      "recipe",
+      "builder",
+      "simplerecipebuilder",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "RecipeTable",
+    "type": "component",
+    "path": "src/components/manage/recipe/RecipeTable.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "table",
+      "recipetable",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "RecipeTableProps"
+  },
+  {
+    "name": "RecipeFlowBuilder",
+    "type": "component",
+    "path": "src/components/manage/recipe/RecipeFlowBuilder.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "flow",
+      "builder",
+      "recipeflowbuilder",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
   },
   {
     "name": "MaterialSourceItem",
     "type": "component",
     "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "material",
+      "source",
+      "item",
+      "materialsourceitem",
+      "manage",
+      "recipe",
+      "recipebuildercomponents",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "MaterialSourceItemProps"
   },
   {
@@ -179,6 +1363,18 @@
     "type": "component",
     "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "product",
+      "selection",
+      "item",
+      "productselectionitem",
+      "manage",
+      "recipe",
+      "recipebuildercomponents",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "ProductSelectionItemProps"
   },
   {
@@ -186,13 +1382,133 @@
     "type": "component",
     "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "target",
+      "item",
+      "recipetargetitem",
+      "manage",
+      "recipebuildercomponents",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "RecipeTargetItemProps"
+  },
+  {
+    "name": "ProductSidebar",
+    "type": "component",
+    "path": "src/components/manage/recipe/ProductSidebar.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "product",
+      "sidebar",
+      "productsidebar",
+      "manage",
+      "recipe",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ProductSidebarProps"
+  },
+  {
+    "name": "ProductNode",
+    "type": "component",
+    "path": "src/components/manage/recipe/ProductNode.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "product",
+      "node",
+      "productnode",
+      "manage",
+      "recipe",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "MaterialSidebar",
+    "type": "component",
+    "path": "src/components/manage/recipe/MaterialSidebar.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "material",
+      "sidebar",
+      "materialsidebar",
+      "manage",
+      "recipe",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "MaterialSidebarProps"
+  },
+  {
+    "name": "MaterialNode",
+    "type": "component",
+    "path": "src/components/manage/recipe/MaterialNode.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "material",
+      "node",
+      "materialnode",
+      "manage",
+      "recipe",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SidebarItem",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "item",
+      "sidebaritem",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarItemProps"
+  },
+  {
+    "name": "SidebarGroup",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "group",
+      "sidebargroup",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarGroupProps"
   },
   {
     "name": "TypographySlider",
     "type": "component",
     "path": "src/components/design-tuner/typography/TypographySlider.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "slider",
+      "typographyslider",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "TypographySliderProps"
   },
   {
@@ -200,6 +1516,15 @@
     "type": "component",
     "path": "src/components/design-tuner/typography/TypographyPreview.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "preview",
+      "typographypreview",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "TypographyPreviewProps"
   },
   {
@@ -207,6 +1532,15 @@
     "type": "component",
     "path": "src/components/design-tuner/typography/TypographyControls.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "controls",
+      "typographycontrols",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
     "props": "TypographyControlsProps"
   },
   {
@@ -214,6 +1548,14 @@
     "type": "hook",
     "path": "src/hooks/useTax.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "use",
+      "tax",
+      "usetax",
+      "description",
+      "provided",
+      "hook"
+    ],
     "props": null
   },
   {
@@ -221,6 +1563,39 @@
     "type": "hook",
     "path": "src/hooks/usePOSLogic.tsx",
     "description": "Custom hook to manage Point of Sale (POS) logic. Handles product selection, cart management, and payment processing. @param initialProducts - List of products available for sale. @returns Object containing cart state, handlers, and current currency/tax settings.",
+    "keywords": [
+      "use",
+      "p",
+      "o",
+      "s",
+      "logic",
+      "useposlogic",
+      "custom",
+      "hook",
+      "manage",
+      "point",
+      "sale",
+      "handles",
+      "product",
+      "selection",
+      "cart",
+      "management",
+      "payment",
+      "processing",
+      "param",
+      "initialproducts",
+      "list",
+      "products",
+      "available",
+      "returns",
+      "object",
+      "containing",
+      "state",
+      "handlers",
+      "current",
+      "currency",
+      "settings"
+    ],
     "props": null
   },
   {
@@ -228,6 +1603,14 @@
     "type": "hook",
     "path": "src/hooks/useCurrency.tsx",
     "description": "No description provided.",
+    "keywords": [
+      "use",
+      "currency",
+      "usecurrency",
+      "description",
+      "provided",
+      "hook"
+    ],
     "props": null
   },
   {
@@ -235,6 +1618,22 @@
     "type": "hook",
     "path": "src/hooks/useColorSampler.ts",
     "description": "useColorSampler extracts dominant colors from an HTMLImageElement using Canvas. It returns an array of hex colors.",
+    "keywords": [
+      "use",
+      "color",
+      "sampler",
+      "usecolorsampler",
+      "extracts",
+      "dominant",
+      "colors",
+      "from",
+      "htmlimageelement",
+      "using",
+      "canvas",
+      "returns",
+      "array",
+      "hook"
+    ],
     "props": null
   },
   {
@@ -242,6 +1641,14 @@
     "type": "api",
     "path": "src/lib/api/stocks.ts",
     "description": "No description provided.",
+    "keywords": [
+      "stock",
+      "api",
+      "stockapi",
+      "stocks",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -249,6 +1656,13 @@
     "type": "api",
     "path": "src/lib/api/settings.ts",
     "description": "No description provided.",
+    "keywords": [
+      "settings",
+      "api",
+      "settingsapi",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -256,6 +1670,14 @@
     "type": "api",
     "path": "src/lib/api/recipes.ts",
     "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "api",
+      "recipeapi",
+      "recipes",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -263,6 +1685,14 @@
     "type": "api",
     "path": "src/lib/api/receipts.ts",
     "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "api",
+      "receiptapi",
+      "receipts",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -270,6 +1700,14 @@
     "type": "api",
     "path": "src/lib/api/products.ts",
     "description": "No description provided.",
+    "keywords": [
+      "product",
+      "api",
+      "productapi",
+      "products",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -277,6 +1715,14 @@
     "type": "api",
     "path": "src/lib/api/materials.ts",
     "description": "No description provided.",
+    "keywords": [
+      "material",
+      "api",
+      "materialapi",
+      "materials",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -284,6 +1730,39 @@
     "type": "api",
     "path": "src/lib/api/invoke.ts",
     "description": "Redacts sensitive fields from arguments for secure logging. / function sanitizeArgs(args?: Record<string, any>): Record<string, any> | undefined { return args ? sanitize(args) : args; } /** A wrapper around Tauri's invoke that falls back to a mock implementation if the Tauri bridge is not available (e.g., when running in a standard browser).",
+    "keywords": [
+      "invoke",
+      "redacts",
+      "sensitive",
+      "fields",
+      "from",
+      "arguments",
+      "secure",
+      "logging",
+      "function",
+      "sanitizeargs",
+      "args",
+      "record",
+      "string",
+      "undefined",
+      "return",
+      "sanitize",
+      "wrapper",
+      "around",
+      "tauri",
+      "that",
+      "falls",
+      "back",
+      "mock",
+      "implementation",
+      "bridge",
+      "available",
+      "when",
+      "running",
+      "standard",
+      "browser",
+      "api"
+    ],
     "props": null
   },
   {
@@ -291,6 +1770,21 @@
     "type": "api",
     "path": "src/lib/api/invoke.ts",
     "description": "A wrapper around Tauri's convertFileSrc that returns the source as-is in a non-Tauri environment.",
+    "keywords": [
+      "convert",
+      "file",
+      "src",
+      "convertfilesrc",
+      "invoke",
+      "wrapper",
+      "around",
+      "tauri",
+      "that",
+      "returns",
+      "source",
+      "environment",
+      "api"
+    ],
     "props": null
   },
   {
@@ -298,6 +1792,14 @@
     "type": "api",
     "path": "src/lib/api/images.ts",
     "description": "No description provided.",
+    "keywords": [
+      "image",
+      "api",
+      "imageapi",
+      "images",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -305,6 +1807,13 @@
     "type": "api",
     "path": "src/lib/api/database.ts",
     "description": "No description provided.",
+    "keywords": [
+      "database",
+      "api",
+      "databaseapi",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -312,6 +1821,13 @@
     "type": "api",
     "path": "src/lib/api/customerApi.ts",
     "description": "No description provided.",
+    "keywords": [
+      "customer",
+      "api",
+      "customerapi",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -319,6 +1835,14 @@
     "type": "api",
     "path": "src/lib/api/categories.ts",
     "description": "No description provided.",
+    "keywords": [
+      "category",
+      "api",
+      "categoryapi",
+      "categories",
+      "description",
+      "provided"
+    ],
     "props": null
   },
   {
@@ -326,6 +1850,13 @@
     "type": "api",
     "path": "src/lib/api/mock/state.ts",
     "description": "No description provided.",
+    "keywords": [
+      "state",
+      "mock",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -333,6 +1864,21 @@
     "type": "api",
     "path": "src/lib/api/mock/index.ts",
     "description": "Mock implementation of Tauri's invoke. Intercepts commands and routes them to the appropriate handler.",
+    "keywords": [
+      "mock",
+      "invoke",
+      "mockinvoke",
+      "index",
+      "implementation",
+      "tauri",
+      "intercepts",
+      "commands",
+      "routes",
+      "them",
+      "appropriate",
+      "handler",
+      "api"
+    ],
     "props": null
   },
   {
@@ -340,6 +1886,13 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers.ts",
     "description": "No description provided.",
+    "keywords": [
+      "handlers",
+      "mock",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -347,6 +1900,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "categories",
+      "mockcategories",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -354,6 +1916,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "products",
+      "mockproducts",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -361,6 +1932,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "materials",
+      "mockmaterials",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -368,6 +1948,16 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "recipe",
+      "lists",
+      "mockrecipelists",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -375,6 +1965,16 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "recipe",
+      "items",
+      "mockrecipeitems",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -382,6 +1982,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "customers",
+      "mockcustomers",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -389,6 +1998,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "stocks",
+      "mockstocks",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -396,6 +2014,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "images",
+      "mockimages",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -403,6 +2030,16 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "product",
+      "images",
+      "mockproductimages",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -410,6 +2047,16 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "receipt",
+      "lists",
+      "mockreceiptlists",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -417,6 +2064,15 @@
     "type": "api",
     "path": "src/lib/api/mock/data.ts",
     "description": "No description provided.",
+    "keywords": [
+      "mock",
+      "receipts",
+      "mockreceipts",
+      "data",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -424,6 +2080,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/stocks.ts",
     "description": "No description provided.",
+    "keywords": [
+      "stock",
+      "handlers",
+      "stockhandlers",
+      "mock",
+      "stocks",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -431,6 +2097,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/settings.ts",
     "description": "No description provided.",
+    "keywords": [
+      "setting",
+      "handlers",
+      "settinghandlers",
+      "mock",
+      "settings",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -438,6 +2114,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/recipes.ts",
     "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "handlers",
+      "recipehandlers",
+      "mock",
+      "recipes",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -445,6 +2131,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/receipts.ts",
     "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "handlers",
+      "receipthandlers",
+      "mock",
+      "receipts",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -452,6 +2148,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/products.ts",
     "description": "No description provided.",
+    "keywords": [
+      "product",
+      "handlers",
+      "producthandlers",
+      "mock",
+      "products",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -459,6 +2165,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/materials.ts",
     "description": "No description provided.",
+    "keywords": [
+      "material",
+      "handlers",
+      "materialhandlers",
+      "mock",
+      "materials",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -466,6 +2182,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/images.ts",
     "description": "No description provided.",
+    "keywords": [
+      "image",
+      "handlers",
+      "imagehandlers",
+      "mock",
+      "images",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -473,6 +2199,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/customers.ts",
     "description": "No description provided.",
+    "keywords": [
+      "customer",
+      "handlers",
+      "customerhandlers",
+      "mock",
+      "customers",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   },
   {
@@ -480,6 +2216,16 @@
     "type": "api",
     "path": "src/lib/api/mock/handlers/categories.ts",
     "description": "No description provided.",
+    "keywords": [
+      "category",
+      "handlers",
+      "categoryhandlers",
+      "mock",
+      "categories",
+      "description",
+      "provided",
+      "api"
+    ],
     "props": null
   }
 ]

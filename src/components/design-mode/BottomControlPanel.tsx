@@ -27,6 +27,7 @@ export default function BottomControlPanel({
   const router = useRouter();
   const pathname = usePathname();
 
+  if (pathname === "/design/tuner") return null;
   if (!isMockupMode && !forceVisible) return null;
 
   const handleSave = async () => {

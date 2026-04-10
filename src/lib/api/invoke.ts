@@ -41,7 +41,8 @@ export function convertFileSrc(filePath: string, protocol?: string): string {
     // @ts-ignore
     const isTauri = typeof window !== "undefined" && window.__TAURI_INTERNALS__;
 
-    if (isTauri) {
+    // Prevent conversion for mock images or data that is part of the public directory
+    if (isTauri && !filePath.startsWith("/mock/")) {
         return tauriConvertFileSrc(filePath, protocol);
     }
 

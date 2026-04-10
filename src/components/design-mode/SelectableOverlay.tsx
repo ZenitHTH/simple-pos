@@ -4,7 +4,7 @@ import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface SelectableOverlayProps {
   id: string;
@@ -18,6 +18,7 @@ export default function SelectableOverlay({
   const { isMockupMode, selectedElementId, selectElement } = useMockup();
   const { settings, updateSettings } = useSettings();
   const [isDragging, setIsDragging] = useState(false);
+  const startScaleRef = useRef<number>(100);
 
   if (!isMockupMode) return null;
 
@@ -25,13 +26,18 @@ export default function SelectableOverlay({
   const rawScale = settings[id as keyof typeof settings];
   const currentScale = typeof rawScale === "number" ? rawScale : 100;
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+    startScaleRef.current = currentScale;
+  };
+
   const handleDrag = (_: any, info: any) => {
-    // Map movement to scale change
+    // Map total movement to scale change
     // sensitivity: 0.5% per pixel
     const sensitivity = 0.5;
-    // Use the maximum displacement to determine intended scaling direction
-    const delta = (Math.abs(info.delta.x) > Math.abs(info.delta.y) ? info.delta.x : info.delta.y) * sensitivity;
-    const newScale = Math.min(Math.max(currentScale + delta, 50), 200);
+    // Use total offset for smooth calculation relative to start
+    const delta = (info.offset.x + info.offset.y) * sensitivity;
+    const newScale = Math.min(Math.max(startScaleRef.current + delta, 50), 200);
     
     updateSettings({ [id]: newScale });
   };
@@ -75,7 +81,7 @@ export default function SelectableOverlay({
             drag
             dragMomentum={false}
             dragElastic={0}
-            onDragStart={() => setIsDragging(true)}
+            onDragStart={handleDragStart}
             onDrag={handleDrag}
             onDragEnd={() => setIsDragging(false)}
             whileHover={{ scale: 1.2 }}

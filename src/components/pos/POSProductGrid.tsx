@@ -41,24 +41,18 @@ const POSProductGrid = memo(function POSProductGrid({
     });
   }, [products, selectedCategory, searchQuery]);
 
-  // Calculate Grid Columns based on scale
+  // Calculate Grid Layout based on scale (Detailed adjustment)
   const gridScale = settings?.grid_scale || 100;
-  let gridColsClass =
-    "grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4"; // Default M (100)
+  
+  // Base item width at 100% scale (M)
+  // We use a responsive base that gets smaller on mobile
+  const baseWidth = typeof window !== 'undefined' && window.innerWidth < 768 ? 160 : 240;
+  const itemMinWidth = baseWidth * (gridScale / 100);
 
-  if (gridScale <= 50) {
-    gridColsClass =
-      "grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6";
-  } else if (gridScale <= 75) {
-    gridColsClass =
-      "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5";
-  } else if (gridScale >= 150) {
-    gridColsClass =
-      "grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2";
-  } else if (gridScale >= 125) {
-    gridColsClass =
-      "grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3";
-  }
+  const gridStyle = {
+    gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
+    fontSize: `${settings?.grid_font_scale || 100}%`
+  };
 
   return (
     <>
@@ -78,8 +72,8 @@ const POSProductGrid = memo(function POSProductGrid({
         data-lenis-prevent
       >
         <div
-          className={`grid ${gridColsClass} relative gap-5 pb-6`}
-          style={{ fontSize: `${settings?.grid_font_scale || 100}%` }}
+          className="grid relative gap-5 pb-6"
+          style={gridStyle}
         >
           <SelectableOverlay id="grid_scale" />
           {filteredProducts.map((product) => (
