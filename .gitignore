@@ -81,3 +81,5 @@ mermaid-diagram-*.svg
 .claude/
 skills-lock.json
 test_product.js
+
+.worktrees/
