@@ -11,7 +11,7 @@ export function useColorSampler() {
   const [isSampling, setIsSampling] = useState(false);
 
   const sampleImage = useCallback((imgElement: HTMLImageElement) => {
-    if (!imgElement) return;
+    if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
     
     setIsSampling(true);
     

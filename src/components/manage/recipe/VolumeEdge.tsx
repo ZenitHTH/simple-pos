@@ -27,7 +27,7 @@ export default function VolumeEdge({
   data,
   markerEnd,
 }: EdgeProps) {
-  const { setEdges } = useReactFlow();
+  const { setEdges, setCenter } = useReactFlow();
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -36,6 +36,10 @@ export default function VolumeEdge({
     targetY,
     targetPosition,
   });
+
+  const handleLabelClick = () => {
+    setCenter(labelX, labelY, { duration: 800, zoom: 1.2 });
+  };
 
   const onVolumeChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setEdges((eds) =>
@@ -88,6 +92,7 @@ export default function VolumeEdge({
             cursor: "pointer",
             pointerEvents: "all",
           }}
+          onPointerDown={handleLabelClick}
           className="nodrag nopan bg-card text-foreground border-border flex items-center gap-1.5 rounded-lg border px-2 py-1 text-xs shadow-md"
         >
           <span className="text-muted-foreground text-[10px] font-semibold uppercase">

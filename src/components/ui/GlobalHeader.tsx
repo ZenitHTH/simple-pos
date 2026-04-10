@@ -1,6 +1,7 @@
 "use client";
 
 import { useSettings } from "@/context/settings/SettingsContext";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 import { ComponentType } from "react";
 
@@ -23,9 +24,10 @@ export default function GlobalHeader({
 
   return (
     <header
-      className={`flex shrink-0 flex-wrap items-center justify-between gap-4 transition-all duration-300 ${className}`}
+      className={`relative flex shrink-0 flex-wrap items-center justify-between gap-4 transition-all duration-300 ${className}`}
       style={{ fontSize: `${settings.header_font_scale || 100}%` }}
     >
+      <SelectableOverlay id="header_font_scale" />
       <div className="flex-1">
         <h1
           className="text-foreground mb-1 flex items-center gap-2 text-2xl font-bold"

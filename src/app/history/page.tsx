@@ -8,6 +8,7 @@ import DateFilter from "@/components/history/DateFilter";
 import IdSearch from "@/components/history/IdSearch";
 import ReceiptList from "@/components/history/ReceiptList";
 import ReceiptDetailModal from "@/components/history/ReceiptDetailModal";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 import { useDatabase } from "@/context/DatabaseContext";
 import { useMockup } from "@/context/MockupContext";
@@ -114,12 +115,13 @@ export default function HistoryPage() {
   return (
     <div className="bg-background flex min-h-screen justify-center p-4 md:p-6 lg:p-8">
       <div
-        className="w-full transition-all duration-300"
+        className="relative w-full transition-all duration-300"
         style={{
           maxWidth: `${settings.layout_max_width || 1280}px`,
           fontSize: `${settings.history_font_scale || 100}%`,
         }}
       >
+        <SelectableOverlay id="history_font_scale" />
         <HistoryHeader />
 
         <DateFilter

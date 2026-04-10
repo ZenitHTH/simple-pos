@@ -34,17 +34,17 @@ export default function NumberStepper({
     <div className={cn("flex items-center gap-2", className)}>
       <button
         onClick={handleDecrement}
-        className="bg-secondary hover:bg-secondary/80 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-secondary hover:bg-secondary/80 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         disabled={value <= min}
       >
         −
       </button>
-      <div className="bg-muted/30 border-border flex h-10 min-w-16 flex-1 items-center justify-center rounded-xl border font-mono text-sm font-semibold">
+      <div className="bg-muted/30 border-border flex h-12 min-w-16 flex-1 items-center justify-center rounded-xl border font-mono text-base font-bold">
         {displayValue}
       </div>
       <button
         onClick={handleIncrement}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold shadow-sm transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold shadow-md transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         disabled={value >= max}
       >
         +

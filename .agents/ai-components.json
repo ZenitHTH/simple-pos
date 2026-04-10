@@ -154,6 +154,20 @@
     "props": "ButtonStylesPanelProps"
   },
   {
+    "name": "SidebarItem",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "description": "No description provided.",
+    "props": "SidebarItemProps"
+  },
+  {
+    "name": "SidebarGroup",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
+    "description": "No description provided.",
+    "props": "SidebarGroupProps"
+  },
+  {
     "name": "MaterialSourceItem",
     "type": "component",
     "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
@@ -173,20 +187,6 @@
     "path": "src/components/manage/recipe/RecipeBuilderComponents.tsx",
     "description": "No description provided.",
     "props": "RecipeTargetItemProps"
-  },
-  {
-    "name": "SidebarItem",
-    "type": "component",
-    "path": "src/components/layout/sidebar/SidebarItem.tsx",
-    "description": "No description provided.",
-    "props": "SidebarItemProps"
-  },
-  {
-    "name": "SidebarGroup",
-    "type": "component",
-    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
-    "description": "No description provided.",
-    "props": "SidebarGroupProps"
   },
   {
     "name": "TypographySlider",

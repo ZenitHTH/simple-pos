@@ -221,6 +221,48 @@ export default function MiniTuner() {
                       currentValue={currentScale}
                       onChange={(val) => updateSettings({ grid_scale: val })}
                     />
+                  ) : selectedElementId === "layout_max_width" ? (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                        <span>Page Width</span>
+                        <span>{settings.layout_max_width || 1280}px</span>
+                      </div>
+                      <NumberStepper
+                        min={400}
+                        max={2500}
+                        step={50}
+                        value={settings.layout_max_width || 1280}
+                        onChange={(val) => updateSettings({ layout_max_width: val })}
+                      />
+                    </div>
+                  ) : selectedElementId === "header_font_scale" ? (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                        <span>Header Font</span>
+                        <span>{settings.header_font_scale || 100}%</span>
+                      </div>
+                      <NumberStepper
+                        min={50}
+                        max={150}
+                        step={5}
+                        value={settings.header_font_scale || 100}
+                        onChange={(val) => updateSettings({ header_font_scale: val })}
+                      />
+                    </div>
+                  ) : selectedElementId === "history_font_scale" ? (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                        <span>History Font</span>
+                        <span>{settings.history_font_scale || 100}%</span>
+                      </div>
+                      <NumberStepper
+                        min={50}
+                        max={150}
+                        step={5}
+                        value={settings.history_font_scale || 100}
+                        onChange={(val) => updateSettings({ history_font_scale: val })}
+                      />
+                    </div>
                   ) : (
                     <div className="flex flex-col gap-2">
                       <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
@@ -240,22 +282,25 @@ export default function MiniTuner() {
                     </div>
                   )}
 
-                  <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                      <span>Padding</span>
-                      <span>{settings.cart_item_padding || 10}px</span>
+                  {/* Contextual Padding (only for cart for now) */}
+                  {selectedElementId === "cart_scale" && (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                        <span>Padding</span>
+                        <span>{settings.cart_item_padding || 10}px</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max="40"
+                        value={settings.cart_item_padding || 10}
+                        onChange={(e) =>
+                          updateSettings({ cart_item_padding: Number(e.target.value) })
+                        }
+                        className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
+                      />
                     </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="40"
-                      value={settings.cart_item_padding || 10}
-                      onChange={(e) =>
-                        updateSettings({ cart_item_padding: Number(e.target.value) })
-                      }
-                      className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
-                    />
-                  </div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div

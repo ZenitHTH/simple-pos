@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useMockup } from "@/context/MockupContext";
 import { FaHistory, FaCompass } from "react-icons/fa";
 import { AppSettings } from "@/lib";
-import NumberStepper from "@/components/ui/NumberStepper";
 import NumberSlider from "@/components/ui/NumberSlider";
 
 interface GlobalLayoutControlsProps {
@@ -67,50 +66,11 @@ export default function GlobalLayoutControls({
     );
   }
 
-  // Default for Settings, Manage, History (showing Header Size / Page Width)
   return (
-    <div className="flex items-center gap-4">
-      <div className="flex flex-col gap-1">
-        <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-          Header Size
-        </span>
-        <NumberStepper
-          min={50}
-          max={150}
-          step={5}
-          value={settings.header_font_scale || 100}
-          onChange={(val) => updateSettings({ header_font_scale: val })}
-          formatValue={(v) => `${v}%`}
-        />
-      </div>
-      {pathname === "/history" && (
-        <div className="flex flex-col gap-1">
-          <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-            Content Size
-          </span>
-          <NumberStepper
-            min={50}
-            max={150}
-            step={5}
-            value={settings.history_font_scale || 100}
-            onChange={(val) => updateSettings({ history_font_scale: val })}
-            formatValue={(v) => `${v}%`}
-          />
-        </div>
-      )}
-      <div className="flex flex-col gap-1">
-        <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-          Page Width
-        </span>
-        <NumberStepper
-          min={400}
-          max={2500}
-          step={50}
-          value={settings.layout_max_width || 1280}
-          onChange={(val) => updateSettings({ layout_max_width: val })}
-          formatValue={(v) => `${v}px`}
-        />
-      </div>
+    <div className="flex items-center gap-2">
+      <span className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-50 px-4">
+        Global Layout
+      </span>
     </div>
   );
 }

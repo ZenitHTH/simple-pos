@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import ScalableContainer from "@/components/design-mode/ScalableContainer";
 import ScrollableContainer from "@/components/ui/ScrollableContainer";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 import { AppSettings } from "@/lib";
 
@@ -46,9 +47,10 @@ export default function ManagementPageLayout({
   return (
     <ContentWrapper>
       <div
-        className={`mx-auto w-full p-8 transition-all duration-300 ${scrollable ? "pb-24" : ""}`}
+        className={`relative mx-auto w-full p-8 transition-all duration-300 ${scrollable ? "pb-24" : ""}`}
         style={{ maxWidth: `${layoutMaxWidth || 1280}px` }}
       >
+        <SelectableOverlay id="layout_max_width" />
         <GlobalHeader title={title} subtitle={subtitle}>
           {headerActions}
         </GlobalHeader>

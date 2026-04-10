@@ -4,6 +4,7 @@ import { AppSettings } from "@/lib";
 
 import NumberStepper from "@/components/ui/NumberStepper";
 import NumberSlider from "@/components/ui/NumberSlider";
+import GridItemSize from "./GridItemSize";
 
 export default function ComponentScaleControls({
   selectedId,
@@ -16,11 +17,9 @@ export default function ComponentScaleControls({
 }) {
   if (!selectedId) {
     return (
-      <div className="text-muted flex h-full flex-1 flex-col items-center justify-center">
-        <span className="font-medium">Select a component to resize</span>
-        <span className="text-xs opacity-70">
-          (Sidebar, Grid, Cart, or Tables)
-        </span>
+      <div className="text-muted flex h-full flex-1 flex-col items-center justify-center border-l border-border pl-8">
+        <span className="text-xs font-black uppercase tracking-widest opacity-50">Select Component</span>
+        <span className="text-[10px] opacity-40">Sidebar, Grid, Cart, or Tables</span>
       </div>
     );
   }
@@ -43,22 +42,14 @@ export default function ComponentScaleControls({
   ].includes(selectedId);
 
   return (
-    <div className="flex flex-1 gap-8">
+    <div className="flex flex-1 gap-8 items-center border-l border-border pl-8">
       {/* Layout Scale */}
-      <div className="flex-1 space-y-2">
+      <div className="flex-1">
         {selectedId === "grid_scale" ? (
-          <>
-            <div className="flex items-center justify-between">
-              <span className="text-foreground font-semibold">{label}</span>
-              <span className="text-primary font-mono">
-                {currentValue.toFixed(0)}%
-              </span>
-            </div>
-            <GridScaleButtons
-              currentValue={currentValue}
-              onChange={(val) => updateSettings({ grid_scale: val })}
-            />
-          </>
+          <GridItemSize
+            currentValue={currentValue}
+            onChange={(val) => updateSettings({ grid_scale: val })}
+          />
         ) : (
           <NumberSlider
             label={label}
@@ -74,8 +65,11 @@ export default function ComponentScaleControls({
       {/* Font Scale */}
       {hasFontControl && (
         <div className="border-border flex-1 space-y-2 border-l pl-8">
-          <div className="flex items-center justify-between">
-            <span className="text-foreground font-semibold">Font Size</span>
+          <div className="flex items-center justify-between px-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">FontSize</span>
+            <span className="text-primary font-mono text-xs font-bold">
+              {currentFontScale}%
+            </span>
           </div>
           <NumberStepper
             min={75}
@@ -86,40 +80,6 @@ export default function ComponentScaleControls({
           />
         </div>
       )}
-    </div>
-  );
-}
-
-function GridScaleButtons({
-  currentValue,
-  onChange,
-}: {
-  currentValue: number;
-  onChange: (val: number) => void;
-}) {
-  const levels = [
-    { val: 50, label: "XS" },
-    { val: 75, label: "S" },
-    { val: 100, label: "M" },
-    { val: 125, label: "L" },
-    { val: 150, label: "XL" },
-  ];
-
-  return (
-    <div className="flex gap-1">
-      {levels.map(({ val, label }) => (
-        <button
-          key={val}
-          onClick={() => onChange(val)}
-          className={`flex-1 rounded-lg px-1 py-1.5 text-xs font-bold transition-all ${
-            currentValue === val
-              ? "bg-primary text-primary-foreground shadow-md"
-              : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-          }`}
-        >
-          {label}
-        </button>
-      ))}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
 import { CartItemTuner } from "@/components/design-tuner/CartItemTuner";
 import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
+import GridItemSize from "@/components/design-mode/GridItemSize";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
@@ -66,29 +67,38 @@ export default function DesignTunerPage() {
                 margin={settings.cart_item_margin ?? 8}
               />
             )}
+            {activeTab === "grid" && (
+              <div className="bg-card/50 border-border/60 rounded-3xl border p-10 shadow-sm backdrop-blur-sm">
+                <h3 className="mb-8 text-xl font-bold">Product Grid Scale</h3>
+                <GridItemSize
+                  currentValue={settings.grid_scale || 100}
+                  onChange={(val) => updateSettings({ grid_scale: val })}
+                />
+              </div>
+            )}
           </div>
         </div>
 
         {/* Global Action Bar */}
-        <div className="border-white/10 bg-zinc-900/80 absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 rounded-2xl border px-6 py-3 shadow-2xl backdrop-blur-md transition-all hover:shadow-primary/10">
-          <div className="flex flex-col pr-4 border-r border-white/10">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+        <div className="border-white/10 bg-zinc-900/80 absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 rounded-3xl border px-8 py-5 shadow-2xl backdrop-blur-md transition-all hover:shadow-primary/20">
+          <div className="flex flex-col pr-6 border-r border-white/10">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
               Design Mode
             </span>
-            <span className="text-xs font-medium text-zinc-300">Changes apply live</span>
+            <span className="text-xs font-bold text-zinc-200">Changes apply live</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <button
               onClick={resetToCheckpoint}
-              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all hover:bg-zinc-800 text-zinc-400 hover:text-white"
+              className="flex items-center gap-3 rounded-2xl px-5 py-3 text-sm font-black transition-all hover:bg-zinc-800 text-zinc-400 hover:text-white active:scale-95"
             >
               <FaUndo className="text-xs" />
               Discard
             </button>
             <button
               onClick={() => save()}
-              className="bg-primary text-primary-foreground flex items-center gap-2 rounded-xl px-6 py-2 text-sm font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
+              className="bg-primary text-primary-foreground flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
             >
               <FaSave className="text-xs" />
               Save Changes
