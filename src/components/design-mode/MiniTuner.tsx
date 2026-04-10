@@ -3,20 +3,24 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaLayerGroup, FaMagic, FaCheckCircle } from "react-icons/fa";
+import { FaLayerGroup, FaMagic, FaCheckCircle, FaTextHeight } from "react-icons/fa";
 import { useColorSampler } from "@/hooks/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
+import GridItemSize from "./GridItemSize";
+import NumberStepper from "@/components/ui/NumberStepper";
 
 type Tab = "layout" | "style";
 
 export default function MiniTuner() {
+// ... existing imports ...
   const { selectedElementId, selectElement } = useMockup();
   const { settings, updateSettings } = useSettings();
   const [mounted, setMounted] = useState(false);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [position, setPosition] = useState({ top: 0, left: 0, flip: false });
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("layout");
   const menuRef = useRef<HTMLDivElement>(null);
   
@@ -81,20 +85,20 @@ export default function MiniTuner() {
       const rect = el.getBoundingClientRect();
       const menuRect = menuRef.current.getBoundingClientRect();
       
-      let top = rect.top - menuRect.height - 10;
-      let left = rect.right - menuRect.width;
+      // Calculate center position
+      let top = rect.top - menuRect.height - 20;
+      let left = rect.left + (rect.width / 2) - (menuRect.width / 2);
       let flip = false;
 
       // Check if top edge overflows screen
-      if (top < 10) {
-        top = rect.bottom + 10;
+      if (top < 20) {
+        top = rect.bottom + 20;
         flip = true;
       }
 
-      // Check if left edge overflows screen
-      if (left < 10) {
-        left = rect.left;
-      }
+      // Keep within horizontal screen bounds
+      const padding = 20;
+      left = Math.max(padding, Math.min(left, window.innerWidth - menuRect.width - padding));
 
       setPosition({ top, left, flip });
     };
@@ -144,14 +148,29 @@ export default function MiniTuner() {
       <AnimatePresence>
         <motion.div
           ref={menuRef}
+          drag
+          dragMomentum={false}
+          onDragEnd={(_, info) => setDragOffset({ x: info.point.x, y: info.point.y })}
+          dragConstraints={{
+            left: 20,
+            right: typeof window !== "undefined" ? window.innerWidth - 300 : 0,
+            top: 20,
+            bottom: typeof window !== "undefined" ? window.innerHeight - 400 : 0,
+          }}
           initial={{ opacity: 0, scale: 0.9, y: 5 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 5 }}
           transition={{ type: "spring", damping: 20, stiffness: 300 }}
           className="pointer-events-auto absolute flex w-72 flex-col rounded-xl border border-border bg-card/80 shadow-2xl backdrop-blur-md"
-          style={{ top: position.top, left: position.left }}
+          style={{
+            top: dragOffset ? dragOffset.y : position.top,
+            left: dragOffset ? dragOffset.x : position.left,
+          }}
           id="minituner-portal"
         >
+          {/* Add a visible drag handle at the top */}
+          <div className="h-1.5 w-12 bg-border/50 rounded-full mx-auto mt-2 cursor-grab active:cursor-grabbing" />
+          
           {/* Header & Tabs */}
           <div className="flex border-b border-border p-1">
             <button
@@ -197,22 +216,29 @@ export default function MiniTuner() {
                   exit={{ opacity: 0, x: 5 }}
                   className="space-y-4"
                 >
-                  <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                      <span>Scale</span>
-                      <span>{currentScale}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="50"
-                      max="200"
-                      value={currentScale}
-                      onChange={(e) =>
-                        updateSettings({ [selectedElementId]: Number(e.target.value) })
-                      }
-                      className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
+                  {selectedElementId === "grid_scale" ? (
+                    <GridItemSize
+                      currentValue={currentScale}
+                      onChange={(val) => updateSettings({ grid_scale: val })}
                     />
-                  </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                        <span>Scale</span>
+                        <span>{currentScale}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="50"
+                        max="200"
+                        value={currentScale}
+                        onChange={(e) =>
+                          updateSettings({ [selectedElementId]: Number(e.target.value) })
+                        }
+                        className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
+                      />
+                    </div>
+                  )}
 
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
@@ -239,23 +265,25 @@ export default function MiniTuner() {
                   exit={{ opacity: 0, x: -5 }}
                   className="space-y-4"
                 >
-                  <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                      <span>Font Size</span>
-                      <span>{currentFontScale}%</span>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between px-1">
+                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        <FaTextHeight size={10} />
+                        FontSize
+                      </div>
+                      <span className="text-primary font-mono text-xs font-bold">
+                        {currentFontScale}%
+                      </span>
                     </div>
-                    <input
-                      type="range"
-                      min="50"
-                      max="200"
-                      value={currentFontScale}
-                      onChange={(e) => {
-                        if (fontScaleId) {
-                          updateSettings({ [fontScaleId]: Number(e.target.value) });
-                        }
-                      }}
-                      className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
-                    />
+                    {fontScaleId && (
+                      <NumberStepper
+                        min={50}
+                        max={200}
+                        step={5}
+                        value={currentFontScale}
+                        onChange={(val) => updateSettings({ [fontScaleId]: val })}
+                      />
+                    )}
                   </div>
 
                   <div className="flex flex-col gap-3">
