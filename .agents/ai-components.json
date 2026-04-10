@@ -7,13 +7,6 @@
     "props": null
   },
   {
-    "name": "CURRENCIES",
-    "type": "component",
-    "path": "src/components/settings/CurrencySettings.tsx",
-    "description": "No description provided.",
-    "props": null
-  },
-  {
     "name": "Toast",
     "type": "component",
     "path": "src/components/ui/Toast.tsx",
@@ -75,6 +68,13 @@
     "path": "src/components/ui/Drawer.tsx",
     "description": "No description provided.",
     "props": "DrawerProps"
+  },
+  {
+    "name": "CURRENCIES",
+    "type": "component",
+    "path": "src/components/settings/CurrencySettings.tsx",
+    "description": "No description provided.",
+    "props": null
   },
   {
     "name": "TypographyTuner",
