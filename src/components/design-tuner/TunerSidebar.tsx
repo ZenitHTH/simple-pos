@@ -127,12 +127,11 @@ export function TunerSidebar({
               {activeTab === "grid" && (
                 <div className="bg-secondary/20 rounded-2xl border border-border/50 p-4 shadow-sm">
                   <GridItemSize
-                    currentValue={settings.grid_scale || 100}
-                    onChange={(val) => updateSettings({ grid_scale: val })}
+                    settings={settings}
+                    onUpdate={updateSettings}
                   />
                 </div>
               )}
-
               {activeTab === "cart" && (
                 <CartItemStylesPanel
                   settings={settings}

@@ -51,7 +51,8 @@ const POSProductGrid = memo(function POSProductGrid({
 
   const gridStyle = {
     gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
-    fontSize: `${settings?.grid_font_scale || 100}%`
+    fontSize: `${settings?.grid_font_scale || 100}%`,
+    gap: `${settings?.grid_gap ?? 20}px`
   };
 
   return (
@@ -72,7 +73,7 @@ const POSProductGrid = memo(function POSProductGrid({
         data-lenis-prevent
       >
         <div
-          className="grid relative gap-5 pb-6"
+          className="grid relative pb-6"
           style={gridStyle}
         >
           <SelectableOverlay id="grid_scale" />

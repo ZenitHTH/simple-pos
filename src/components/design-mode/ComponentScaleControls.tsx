@@ -47,8 +47,8 @@ export default function ComponentScaleControls({
       <div className="flex-1">
         {selectedId === "grid_scale" ? (
           <GridItemSize
-            currentValue={currentValue}
-            onChange={(val) => updateSettings({ grid_scale: val })}
+            settings={settings}
+            onUpdate={updateSettings}
           />
         ) : (
           <NumberSlider

@@ -73,12 +73,14 @@ export default function DesignTunerPage() {
               <div className="bg-card/50 border-border/60 rounded-3xl border p-10 shadow-sm backdrop-blur-sm">
                 <h3 className="mb-8 text-xl font-bold">Product Grid Scale</h3>
                 <GridItemSize
-                  currentValue={settings.grid_scale || 100}
-                  onChange={(val) => updateSettings({ grid_scale: val })}
+                  settings={settings}
+                  onUpdate={updateSettings}
                 />
               </div>
             )}
-            {activeTab === "numpad" && <NumpadTuner settings={settings} />}
+            {activeTab === "numpad" && (
+              <NumpadTuner settings={settings} updateSettings={updateSettings} />
+            )}
             {activeTab === "history" && (
               <HistoryTuner settings={settings} updateSettings={updateSettings} />
             )}

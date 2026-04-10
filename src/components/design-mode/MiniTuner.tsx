@@ -9,6 +9,7 @@ import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
 import GridItemSize from "./GridItemSize";
+import { SidebarSlider } from "../design-tuner/SidebarSlider";
 import NumberStepper from "@/components/ui/NumberStepper";
 
 type Tab = "layout" | "style";
@@ -234,8 +235,8 @@ export default function MiniTuner() {
                 >
                   {selectedElementId === "grid_scale" ? (
                     <GridItemSize
-                      currentValue={currentScale}
-                      onChange={(val) => updateSettings({ grid_scale: val })}
+                      settings={settings}
+                      onUpdate={updateSettings}
                     />
                   ) : selectedElementId === "layout_max_width" ? (
                     <div className="flex flex-col gap-2">
@@ -278,6 +279,60 @@ export default function MiniTuner() {
                         value={settings.history_font_scale || 100}
                         onChange={(val) => updateSettings({ history_font_scale: val })}
                       />
+                    </div>
+                  ) : selectedElementId === "numpad_scale" ? (
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                          <span>Numpad Scale</span>
+                          <span>{settings.numpad_scale ?? 100}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="50"
+                          max="150"
+                          value={settings.numpad_scale ?? 100}
+                          onChange={(e) =>
+                            updateSettings({ numpad_scale: Number(e.target.value) })
+                          }
+                          className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
+                        />
+                      </div>
+
+                      <div className="space-y-4 pt-4 border-t border-border/50">
+                        <SidebarSlider
+                          label="Button Font"
+                          value={settings.numpad_font_scale ?? 100}
+                          onChange={(v) => updateSettings({ numpad_font_scale: v })}
+                          min={50}
+                          max={200}
+                          unit="%"
+                        />
+                        <SidebarSlider
+                          label="Display Font"
+                          value={settings.numpad_display_font_scale ?? 100}
+                          onChange={(v) => updateSettings({ numpad_display_font_scale: v })}
+                          min={50}
+                          max={200}
+                          unit="%"
+                        />
+                        <SidebarSlider
+                          label="Button Height"
+                          value={settings.numpad_button_height ?? 80}
+                          onChange={(v) => updateSettings({ numpad_button_height: v })}
+                          min={40}
+                          max={120}
+                          unit="px"
+                        />
+                        <SidebarSlider
+                          label="Button Gap"
+                          value={settings.numpad_gap ?? 12}
+                          onChange={(v) => updateSettings({ numpad_gap: v })}
+                          min={0}
+                          max={32}
+                          unit="px"
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">

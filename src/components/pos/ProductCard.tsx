@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { Product, parseImageStyle } from "@/lib";
 import { convertFileSrc } from "@/lib/api/invoke";
 import { FaPlus } from "react-icons/fa";
+import { useSettings } from "@/context/settings/SettingsContext";
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +15,7 @@ const ProductCard = memo(function ProductCard({
   onAdd,
   currency,
 }: ProductCardProps) {
+  const { settings } = useSettings();
   const [imageError, setImageError] = useState(false);
 
   const imageSrc =
@@ -22,11 +24,15 @@ const ProductCard = memo(function ProductCard({
   return (
     <div
       onClick={() => onAdd(product)}
-      className="group bg-card text-card-foreground border-border hover:border-primary/50 relative cursor-pointer overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-92 active:brightness-95 active:shadow-inner touch-manipulation"
+      className="group bg-card text-card-foreground border-border hover:border-primary/50 relative cursor-pointer overflow-hidden border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-92 active:brightness-95 active:shadow-inner touch-manipulation"
+      style={{
+        padding: `${settings.grid_item_padding ?? 16}px`,
+        borderRadius: `${settings.grid_item_radius ?? 24}px`,
+      }}
     >
       {/* Image Container */}
       <div
-        className="bg-muted/20 relative aspect-square w-full overflow-hidden"
+        className="bg-muted/20 relative aspect-square w-full overflow-hidden rounded-[inherit]"
         style={{
           backgroundColor: !imageSrc ? product.color || "#e2e8f0" : undefined,
         }}
@@ -54,20 +60,26 @@ const ProductCard = memo(function ProductCard({
       </div>
 
       {/* Info Section */}
-      <div className="p-5">
+      <div className="pt-4 px-1 pb-1">
         <div className="mb-3">
           <span className="text-muted-foreground mb-1.5 block text-[0.8em] font-semibold tracking-wider uppercase opacity-80">
             {product.category}
           </span>
-          <h3 className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.25em] leading-tight font-extrabold tracking-tight">
+          <h3 
+            className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.25em] leading-tight font-extrabold tracking-tight"
+            style={{ fontSize: `${(settings.grid_item_title_font_size ?? 100) * 0.0125}em` }}
+          >
             {product.name}
           </h3>
         </div>
 
-        <div className="mt-4 flex items-center justify-between border-t border-dashed border-border/60 pt-4">
+          <div className="mt-4 flex items-center justify-between border-t border-dashed border-border/60 pt-4">
           <div className="flex flex-col">
             <span className="text-muted-foreground text-[0.75em] font-medium">Price</span>
-            <span className="text-primary text-[1.6em] leading-none font-black tracking-tight">
+            <span 
+              className="text-primary text-[1.6em] leading-none font-black tracking-tight"
+              style={{ fontSize: `${(settings.grid_item_price_font_size ?? 100) * 0.016}em` }}
+            >
               {currency}
               {product.price.toFixed(2)}
             </span>

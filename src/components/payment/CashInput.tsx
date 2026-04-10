@@ -1,9 +1,11 @@
 import { memo } from "react";
 import { formatCurrency } from "./utils";
 import VirtualNumpad from "./VirtualNumpad";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib";
+import { useSettings } from "@/context/settings/SettingsContext";
 
 interface CashInputProps {
   value: string;
@@ -21,6 +23,7 @@ const CashInput = memo(
     currency,
     numpadHeight,
   }: CashInputProps) => {
+    const { settings } = useSettings();
     const handleKeyPress = (key: string) => {
       // Prevent multiple dots
       if (key === "." && value.includes(".")) return;
@@ -68,8 +71,12 @@ const CashInput = memo(
             readOnly
             value={value}
             className={cn(
-              "bg-muted/5 border-border focus:border-primary focus:ring-primary/10 h-auto w-full cursor-default rounded-xl border-2 py-3 pr-4 pl-8 text-right text-2xl font-bold transition-all outline-none focus:ring-4 lg:text-3xl",
+              "bg-muted/5 border-border focus:border-primary focus:ring-primary/10 h-auto w-full cursor-default rounded-xl border-2 py-3 pr-4 pl-8 text-right font-bold transition-all outline-none focus:ring-4",
             )}
+            style={{
+              fontSize: `${(settings.numpad_display_font_scale ?? 100) * 0.015}rem`,
+              lineHeight: "1.2",
+            }}
             placeholder="0.00"
           />
         </div>
@@ -89,12 +96,15 @@ const CashInput = memo(
         </div>
 
         {/* Virtual Numpad */}
-        <VirtualNumpad
-          onPress={handleKeyPress}
-          onBackspace={handleBackspace}
-          onClear={handleClear}
-          height={numpadHeight}
-        />
+        <div className="relative">
+          <SelectableOverlay id="numpad_scale" />
+          <VirtualNumpad
+            onPress={handleKeyPress}
+            onBackspace={handleBackspace}
+            onClear={handleClear}
+            height={numpadHeight}
+          />
+        </div>
       </div>
     );
   },
