@@ -5,10 +5,11 @@ import { SelectorTuner } from "@/components/design-tuner/SelectorTuner";
 import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
 import { CartItemTuner } from "@/components/design-tuner/CartItemTuner";
+import { GridTuner } from "@/components/design-tuner/GridTuner";
+import { SidebarTuner } from "@/components/design-tuner/SidebarTuner";
 import { HistoryTuner } from "@/components/design-tuner/HistoryTuner";
 import { NumpadTuner } from "@/components/design-tuner/NumpadTuner";
 import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
-import GridItemSize from "@/components/design-mode/GridItemSize";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
@@ -104,17 +105,6 @@ export default function DesignTunerPage() {
             <button
               onClick={() => save()}
               className="bg-primary text-primary-foreground flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
-            >
-              <FaSave className="text-xs" />
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-w-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
             >
               <FaSave className="text-xs" />
               Save Changes

@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "./NavigationMenu";
 import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
+import { SidebarSlider } from "../design-tuner/SidebarSlider";
 
 interface BottomControlPanelProps {
   hideSaveButton?: boolean;

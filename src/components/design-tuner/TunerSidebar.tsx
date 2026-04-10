@@ -19,7 +19,6 @@ import { ThemePresetsPanel } from "./ThemePresetsPanel";
 import { CartItemStylesPanel } from "./CartItemStylesPanel";
 import { ButtonStylesPanel } from "./ButtonStylesPanel";
 import { AppSettings } from "@/lib";
-import GridItemSize from "@/components/design-mode/GridItemSize";
 import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
 
 export type TunerTab =
@@ -28,6 +27,7 @@ export type TunerTab =
   | "typography"
   | "cart"
   | "grid"
+  | "sidebar"
   | "history"
   | "numpad";
 
@@ -95,6 +95,12 @@ export function TunerSidebar({
               label="Product Grid"
             />
             <NavButton
+              active={activeTab === "sidebar"}
+              onClick={() => setActiveTab("sidebar")}
+              icon={<FaColumns className="text-sm" />}
+              label="Sidebar Layout"
+            />
+            <NavButton
               active={activeTab === "numpad"}
               onClick={() => setActiveTab("numpad")}
               icon={<FaCalculator className="text-sm" />}
@@ -125,12 +131,12 @@ export function TunerSidebar({
               exit={{ opacity: 0, x: 10 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              {activeTab === "grid" && (
-                <div className="bg-secondary/20 rounded-2xl border border-border/50 p-4 shadow-sm">
-                  <GridItemSize
-                    settings={settings}
-                    onUpdate={updateSettings}
-                  />
+              {(activeTab === "selector" || activeTab === "typography" || activeTab === "sidebar") && (
+                <div className="px-3 py-6 text-center">
+                  <FaSlidersH className="mx-auto mb-3 text-muted-foreground/30 text-2xl" />
+                  <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest leading-relaxed">
+                    Interactive tuning<br/>on the right canvas
+                  </p>
                 </div>
               )}
               {activeTab === "cart" && (
@@ -145,15 +151,6 @@ export function TunerSidebar({
                   settings={settings}
                   updateSettings={updateSettings}
                 />
-              )}
-              
-              {(activeTab === "selector" || activeTab === "typography") && (
-                <div className="px-3 py-6 text-center">
-                  <FaSlidersH className="mx-auto mb-3 text-muted-foreground/30 text-2xl" />
-                  <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest leading-relaxed">
-                    Interactive tuning<br/>on the right canvas
-                  </p>
-                </div>
               )}
             </motion.div>
           </AnimatePresence>
@@ -179,17 +176,6 @@ export function TunerSidebar({
               <GlobalStylesPanel
                 settings={settings}
                 updateSettings={updateSettings}
-                previewZoom={previewZoom}
-                setPreviewZoom={setPreviewZoom}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </BaseSidebarLayout>
-  );
-}
-ettings}
                 previewZoom={previewZoom}
                 setPreviewZoom={setPreviewZoom}
               />

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SidebarSlider } from "./SidebarSlider";
 import { AppSettings } from "@/lib/types";
 import GridItemSize from "@/components/design-mode/GridItemSize";
 import ProductCard from "@/components/pos/ProductCard";
@@ -81,7 +80,7 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
       <motion.div variants={item}>
         <h2 className="mb-2 text-3xl font-bold tracking-tight">Product Grid</h2>
         <p className="text-muted-foreground text-lg">
-          Adjust the size and spacing of items in the main product catalog.
+          Adjust the size, spacing, and styling of items in the main product catalog.
         </p>
       </motion.div>
 
@@ -92,32 +91,12 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
           className="border-border/60 bg-card/50 h-fit space-y-8 rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
         >
           <h3 className="text-xl font-bold">Grid Tuning</h3>
-          <div className="space-y-6">
-            <GridItemSize
-              currentValue={settings.grid_scale || 100}
-              onChange={(val) => updateSettings({ grid_scale: val })}
-            />
-            
-            <SidebarSlider
-              label="Item Spacing"
-              value={settings.grid_gap ?? 20}
-              onChange={(v) => updateSettings({ grid_gap: v })}
-              min={0}
-              max={40}
-              unit="px"
-            />
-
-            <SidebarSlider
-              label="Font Size"
-              value={settings.grid_font_scale ?? 100}
-              onChange={(v) => updateSettings({ grid_font_scale: v })}
-              min={50}
-              max={150}
-              unit="%"
-            />
-          </div>
+          <GridItemSize
+            settings={settings}
+            onUpdate={updateSettings}
+          />
           <div className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> Dragging the <em>Grid Item Size</em> profiles (XS-XL) provides quick jumps, while the detail tuning happens automatically in real-time.
+            <strong>Tip:</strong> Use the profiles (XS-XL) for quick layout changes, or use the sliders for detailed styling adjustments.
           </div>
         </motion.div>
 
