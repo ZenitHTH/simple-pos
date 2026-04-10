@@ -76,7 +76,6 @@ const POSProductGrid = memo(function POSProductGrid({
           className="grid relative pb-6"
           style={gridStyle}
         >
-          <SelectableOverlay id="grid_scale" />
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

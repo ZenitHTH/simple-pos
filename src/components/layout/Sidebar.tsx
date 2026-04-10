@@ -198,8 +198,6 @@ export default function Sidebar() {
             © 2026 Simple POS
           </p>
         </div>
-
-        <SelectableOverlay id="sidebar_scale" />
       </BaseSidebarLayout>
     </>
   );
