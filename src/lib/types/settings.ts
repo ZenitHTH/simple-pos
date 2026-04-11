@@ -116,6 +116,14 @@ export interface StylingSettings {
   button: ButtonStyling;
 }
 
+export interface CustomPreset {
+  id: string;
+  name: string;
+  theme: ThemeSettings;
+  styling: StylingSettings;
+  scaling: ScalingSettings;
+}
+
 export interface AppSettings {
   general: GeneralSettings;
   theme: ThemeSettings;
@@ -123,4 +131,5 @@ export interface AppSettings {
   typography: TypographySettings;
   scaling: ScalingSettings;
   styling: StylingSettings;
+  custom_presets: CustomPreset[];
 }

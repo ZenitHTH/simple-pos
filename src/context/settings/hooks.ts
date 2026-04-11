@@ -35,12 +35,29 @@ export function useApplySettings(settings: AppSettings) {
     );
 
     // Apply primary theme color
-    const primaryColor = safeColor(settings.theme_primary_color);
+    const primaryColor = safeColor(settings.theme.theme_primary_color);
     if (primaryColor) {
       root.style.setProperty("--theme-primary", primaryColor);
     } else {
       root.style.removeProperty("--theme-primary");
     }
+
+    // Apply manual color overrides
+    const backgroundColor = safeColor(settings.theme.theme_background_color);
+    if (backgroundColor) root.style.setProperty("--theme-background", backgroundColor);
+    else root.style.removeProperty("--theme-background");
+
+    const cardColor = safeColor(settings.theme.theme_card_color);
+    if (cardColor) root.style.setProperty("--theme-card", cardColor);
+    else root.style.removeProperty("--theme-card");
+
+    const textColor = safeColor(settings.theme.theme_text_color);
+    if (textColor) root.style.setProperty("--theme-text", textColor);
+    else root.style.removeProperty("--theme-text");
+
+    const borderColor = safeColor(settings.theme.theme_border_color);
+    if (borderColor) root.style.setProperty("--theme-border", borderColor);
+    else root.style.removeProperty("--theme-border");
 
     // Apply radius
     if (settings.theme.theme_radius !== null) {

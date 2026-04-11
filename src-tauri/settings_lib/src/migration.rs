@@ -101,6 +101,10 @@ pub fn migrate_flat_to_nested(flat: serde_json::Value) -> AppSettings {
 
         // Theme
         if let Some(v) = obj.get("theme_primary_color") { nested.theme.theme_primary_color = v.as_str().map(|s| s.to_string()); }
+        if let Some(v) = obj.get("theme_background_color") { nested.theme.theme_background_color = v.as_str().map(|s| s.to_string()); }
+        if let Some(v) = obj.get("theme_card_color") { nested.theme.theme_card_color = v.as_str().map(|s| s.to_string()); }
+        if let Some(v) = obj.get("theme_text_color") { nested.theme.theme_text_color = v.as_str().map(|s| s.to_string()); }
+        if let Some(v) = obj.get("theme_border_color") { nested.theme.theme_border_color = v.as_str().map(|s| s.to_string()); }
         if let Some(v) = obj.get("theme_radius") { nested.theme.theme_radius = v.as_f64(); }
         if let Some(v) = obj.get("theme_preset") { nested.theme.theme_preset = v.as_str().map(|s| s.to_string()); }
     }

@@ -135,4 +135,5 @@ export const DEFAULT_SETTINGS: AppSettings = {
       transition_speed: 200,
     },
   },
+  custom_presets: [],
 };

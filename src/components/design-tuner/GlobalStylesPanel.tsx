@@ -53,21 +53,94 @@ export function GlobalStylesPanel({
           <div className="flex gap-2">
             <input
               type="color"
-              value={settings.theme_primary_color ?? "#3b82f6"}
+              value={settings.theme.theme_primary_color ?? "#3b82f6"}
               onChange={(e) =>
-                updateSettings({ theme_primary_color: e.target.value })
+                updateSettings({ theme: { theme_primary_color: e.target.value } })
               }
               className="h-8 w-8 cursor-pointer rounded-lg border-0 p-0 overflow-hidden shadow-sm"
             />
             <input
               type="text"
-              value={settings.theme_primary_color ?? "#3b82f6"}
+              value={settings.theme.theme_primary_color ?? "#3b82f6"}
               onChange={(e) =>
-                updateSettings({ theme_primary_color: e.target.value })
+                updateSettings({ theme: { theme_primary_color: e.target.value } })
               }
               className="border-input bg-background flex-1 rounded-lg border px-3 py-1 text-xs font-mono shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
               placeholder="#3b82f6"
             />
+          </div>
+        </div>
+
+        {/* Manual Overrides */}
+        <div className="border-t border-border/50 pt-4 mt-4 space-y-4">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+            Manual Overrides
+          </h3>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Background</label>
+              <div className="flex gap-1.5">
+                <input
+                  type="color"
+                  value={settings.theme.theme_background_color ?? "#ffffff"}
+                  onChange={(e) => updateSettings({ theme: { theme_background_color: e.target.value } })}
+                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                />
+                <button 
+                  onClick={() => updateSettings({ theme: { theme_background_color: null } })}
+                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
+                >Reset</button>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Card</label>
+              <div className="flex gap-1.5">
+                <input
+                  type="color"
+                  value={settings.theme.theme_card_color ?? "#ffffff"}
+                  onChange={(e) => updateSettings({ theme: { theme_card_color: e.target.value } })}
+                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                />
+                <button 
+                  onClick={() => updateSettings({ theme: { theme_card_color: null } })}
+                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
+                >Reset</button>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Text</label>
+              <div className="flex gap-1.5">
+                <input
+                  type="color"
+                  value={settings.theme.theme_text_color ?? "#0f172a"}
+                  onChange={(e) => updateSettings({ theme: { theme_text_color: e.target.value } })}
+                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                />
+                <button 
+                  onClick={() => updateSettings({ theme: { theme_text_color: null } })}
+                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
+                >Reset</button>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Border</label>
+              <div className="flex gap-1.5">
+                <input
+                  type="color"
+                  value={settings.theme.theme_border_color ?? "#e2e8f0"}
+                  onChange={(e) => updateSettings({ theme: { theme_border_color: e.target.value } })}
+                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                />
+                <button 
+                  onClick={() => updateSettings({ theme: { theme_border_color: null } })}
+                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
+                >Reset</button>
+              </div>
+            </div>
           </div>
         </div>
 

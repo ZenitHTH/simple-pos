@@ -225,9 +225,14 @@ impl AppSettings {
             },
             theme: ThemeSettings {
                 theme_primary_color: None,
+                theme_background_color: None,
+                theme_card_color: None,
+                theme_text_color: None,
+                theme_border_color: None,
                 theme_radius: Some(0.5),
                 theme_preset: Some("cozy".to_string()),
             },
+            custom_presets: Vec::new(),
             ..Default::default()
         }
     }
