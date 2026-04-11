@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe POS - Manual & Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: 18,
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+            sequence: { useMaxWidth: false, showSequenceNumbers: true },
+        });
+
+        async function initDiagrams() {
+            await mermaid.run();
+            const svgs = document.querySelectorAll('.mermaid svg');
+            svgs.forEach((svg, index) => {
+                svg.id = 'mermaid-svg-' + index;
+                svg.style.width = '100%';
+                svg.style.height = '100%';
+                svg.style.maxWidth = 'none';
+                
+                const panZoom = svgPanZoom(svg, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.01,
+                    maxZoom: 20,
+                    refreshRate: 'auto'
+                });
+
+                setTimeout(() => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                }, 100);
+
+                const container = svg.closest('.mermaid-container');
+                container.querySelector('.zoom-in').onclick = () => panZoom.zoomIn();
+                container.querySelector('.zoom-out').onclick = () => panZoom.zoomOut();
+                container.querySelector('.reset').onclick = () => {
+                    panZoom.resetZoom();
+                    panZoom.fit();
+                    panZoom.center();
+                };
+
+                window.addEventListener('resize', () => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initDiagrams);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --background: #0c0c0e;
+            --card: #161618;
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #a855f7;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: #e4e4e7;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            letter-spacing: -0.04em;
+            color: #ffffff;
+        }
+
+        .animate-section {
+            animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .mermaid-container {
+            position: relative;
+            background: #09090b;
+            border-radius: 1.5rem;
+            border: 1px solid var(--border);
+            margin: 3rem 0;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .mermaid-container:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.1);
+        }
+
+        .mermaid {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mermaid:active { cursor: grabbing; }
+
+        /* --- STRICT MERMAID OVERRIDES --- */
+        .mermaid svg { background: transparent !important; }
+
+        /* Global Node container & shape fix (Flowchart v2 / v10+) */
+        .mermaid .node .label-container,
+        .mermaid .node rect, 
+        .mermaid .node circle, 
+        .mermaid .node polygon, 
+        .mermaid .node path,
+        .mermaid .node.cylinder .label-container,
+        .mermaid .node.cylinder path { 
+            fill: #1c1c1f !important; 
+            stroke: var(--primary) !important; 
+            stroke-width: 2px !important; 
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        /* Lines and Paths - High Contrast White */
+        .mermaid .edgePath .path, 
+        .mermaid .messageLine0, 
+        .mermaid .messageLine1,
+        .mermaid .flowchart-link { 
+            stroke: #ffffff !important; 
+            stroke-width: 2.5px !important; 
+            opacity: 1 !important;
+        }
+
+        /* Arrows and Markers - High Contrast White */
+        .mermaid .marker, 
+        .mermaid [id^=arrowhead], 
+        .mermaid marker path,
+        .mermaid #arrowhead path { 
+            fill: #ffffff !important; 
+            stroke: none !important; 
+        }
+
+        /* Vertical Lifelines (Sequence Diagram) - Sky Blue Contrast */
+        .mermaid .actor-line { 
+            stroke: #60a5fa !important; 
+            stroke-width: 2px !important; 
+            stroke-dasharray: 6, 6 !important; 
+        }
+
+        .mermaid .label text, .mermaid .label span, .mermaid tspan { 
+            fill: #ffffff !important; 
+            color: #ffffff !important; 
+            font-weight: 600 !important;
+            font-size: 14px !important;
+        }
+        .mermaid .cluster rect {
+            fill: rgba(39, 39, 42, 0.3) !important;
+            stroke: var(--primary) !important;
+            stroke-dasharray: 4,4 !important;
+        }
+
+        /* Sequence Diagram specific fixes */
+        .mermaid .actor { stroke: #3b82f6 !important; fill: #1c1c1f !important; }
+        .mermaid text.actor > tspan { fill: #ffffff !important; stroke: none !important; }
+        .mermaid .messageText { fill: #f8fafc !important; color: #f8fafc !important; stroke: none !important; font-weight: 600 !important; }
+        .mermaid .loopText { fill: #ffffff !important; }
+
+        /* Connector Dots, Markers and Sequence diagram fix */
+        .mermaid circle.dot, 
+        .mermaid .dot,
+        .mermaid .messageDot,
+        .mermaid marker circle,
+        .mermaid [id^="mermaid-marker-dot"] circle { 
+            fill: #3b82f6 !important; 
+            stroke: #ffffff !important; 
+            stroke-width: 1.5px !important; 
+        }
+
+        .diagram-controls {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .btn-ctrl {
+            background: rgba(39, 39, 42, 0.6);
+            border: 1px solid var(--border);
+            color: #e4e4e7;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            font-size: 1.25rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-ctrl:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .glass-sidebar {
+            background: rgba(12, 12, 14, 0.8);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid var(--border);
+            z-index: 50;
+        }
+
+        .glass-card {
+            background: rgba(22, 22, 24, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(22, 22, 24, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            color: #a1a1aa;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a855f7, #ec4899, #60a5fa);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 6s linear infinite;
+        }
+
+        pre {
+            background: #09090b !important;
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        code { font-family: 'JetBrains Mono', monospace; }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+        }
+
+        th {
+            text-align: left;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: #71717a;
+            font-weight: 800;
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(255, 255, 255, 0.01); }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--background); }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        .prose code {
+            background: rgba(255, 255, 255, 0.05);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.4rem;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary/30">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav class="fixed hidden h-screen w-72 glass-sidebar p-10 lg:block">
+            <div class="mb-12 flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <span class="text-2xl font-black tracking-tighter uppercase text-white">Vibe <span class="text-blue-500">POS</span></span>
+            </div>
+            
+            <div class="space-y-8">
+                <div>
+                    <h5 class="mb-6 px-4 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Navigation</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#intro" class="nav-link">Introduction</a></li>
+                        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                        <li><a href="#design-system" class="nav-link">UI & Design System</a></li>
+                        <li><a href="#pos-engine" class="nav-link">POS Engine</a></li>
+                        <li><a href="#database" class="nav-link">Database Security</a></li>
+                        <li><a href="#ai-registry" class="nav-link">AI Registry</a></li>
+                        <li><a href="#commands" class="nav-link">Quick Reference</a></li>
+                    </ul>
+                </div>
+                
+                <div class="pt-8 border-t border-white/5">
+                    <div class="glass-card p-5">
+                        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Version</p>
+                        <p class="text-white font-black">v0.2.1 Stable</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 px-6 py-20 lg:ml-72 lg:px-32">
+            <div class="mx-auto max-w-4xl">
+                
+                <!-- Introduction -->
+                <header id="intro" class="mb-32 animate-section">
+                    <div class="mb-8 inline-flex">
+                        <span class="tag">Next.js 16 + Tauri 2</span>
+                    </div>
+                    <h1 class="mb-8 text-7xl font-black tracking-tighter leading-[0.9] lg:text-9xl">
+                        Vibe <span class="gradient-text">Manual</span>
+                    </h1>
+                    <p class="max-w-2xl text-2xl leading-relaxed text-zinc-400 font-light">
+                        The definitive guide to the modern POS ecosystem. Encrypted, extensible, and engineered for speed.
+                    </p>
+                </header>
+
+                <!-- 1. Architecture -->
+                <section id="architecture" class="mb-40 scroll-mt-32 animate-section" style="animation-delay: 0.1s">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 01</span>
+                        <h2 class="text-5xl font-black italic">Core Architecture</h2>
+                    </div>
+                    
+                    <div class="prose prose-invert max-w-none">
+                        <div class="glass-card p-4 mb-8 text-center text-sm text-zinc-500 italic flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+                            Interative View: Scroll to Zoom • Drag to Pan
+                        </div>
+                        
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph LR
+                                    subgraph Frontend [Frontend: Next.js + React 19]
+                                        UI[User Interface]
+                                        State[React Context]
+                                        Hooks[Custom Hooks]
+                                        API[API Wrappers]
+                                    end
+
+                                    subgraph Bridge [Tauri RPC Bridge]
+                                        IPC((Inter-Process Communication))
+                                    end
+
+                                    subgraph Backend [Backend: Rust + Tauri]
+                                        Commands[Tauri Commands]
+                                        DB[(Encrypted SQLite)]
+                                        Crates[Export / Image]
+                                    end
+
+                                    UI <--> State
+                                    State <--> Hooks
+                                    Hooks <--> API
+                                    API <--> IPC
+                                    IPC <--> Commands
+                                    Commands <--> DB
+                                    Commands <--> Crates
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 grid gap-8 md:grid-cols-2">
+                            <div class="glass-card p-8">
+                                <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 text-blue-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">The Frontend</h4>
+                                <p class="text-zinc-500 leading-relaxed">Built with Next.js 16 and React 19. Leveraging the latest App Router patterns for seamless state management and rich interaction logic.</p>
+                            </div>
+                            <div class="glass-card p-8">
+                                <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mb-6 border border-purple-500/20 text-purple-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">The Backend</h4>
+                                <p class="text-zinc-500 leading-relaxed">Rust-powered core handling encrypted SQLite data, heavy-duty processing, and low-level system integrations via Tauri.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Design System -->
+                <section id="design-system" class="mb-40 scroll-mt-32 animate-section" style="animation-delay: 0.2s">
+                    <div class="mb-12">
+                        <span class="text-purple-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 02</span>
+                        <h2 class="text-5xl font-black italic">UI Design Engine</h2>
+                    </div>
+                    
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                    DB[(SQLite Database)] -->|Loads on Startup| SC[SettingsContext]
+                                    SC -->|Injects CSS Variables| Root[:root HTML Element]
+                                    SC -->|Passes props| Components[React Components]
+                                    
+                                    subgraph Design Mode
+                                        MT[MiniTuner] -->|User drags slider| SC
+                                        TS[TunerSidebar] -->|User changes preset| SC
+                                    end
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 glass-card p-10">
+                            <h3 class="mb-6 text-2xl font-bold">Dynamic Component Tuning</h3>
+                            <p class="mb-8 text-zinc-400 text-lg leading-relaxed">Our advanced tuner allows real-time manipulation of component scales and theme properties using CSS variables globally managed by the <code>SettingsContext</code>.</p>
+                            <pre><code>// Example of a tunable component
+&lt;div style={{ transform: `scale(${settings.grid_scale / 100})` }}&gt;
+  &lt;SelectableOverlay id="grid_scale" /&gt;
+  &lt;MyActualComponent /&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. POS Engine -->
+                <section id="pos-engine" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-pink-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 03</span>
+                        <h2 class="text-5xl font-black italic">POS Transaction Flow</h2>
+                    </div>
+                    
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                sequenceDiagram
+                                    participant User
+                                    participant POS[usePOSLogic Hook]
+                                    participant Cart[Cart Component]
+                                    participant Pay[Payment Modal]
+                                    participant Rust[Tauri Backend]
+
+                                    User->>POS: Clicks Product
+                                    POS->>Cart: Adds Item (Updates State)
+                                    User->>Pay: Clicks Checkout
+                                    Pay->>POS: handleConfirmPayment()
+                                    POS->>Rust: invoke("create_receipt", payload)
+                                    Rust-->>POS: Returns Success
+                                    POS->>Cart: Clears Cart
+                                    POS-->>User: Shows Success Toast
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Database -->
+                <section id="database" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 04</span>
+                        <h2 class="text-5xl font-black italic">Security & Encryption</h2>
+                    </div>
+                    
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                    File[app_data.db] -->|Encrypted AES-256| SQLCipher
+                                    App[Rust App starts] -->|Prompts User| Key[Decryption Key]
+                                    Key --> SQLCipher
+                                    SQLCipher -->|Decrypted Connection Pool| Diesel[Diesel ORM]
+                                    Diesel --> Commands[Tauri Commands]
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. AI Registry -->
+                <section id="ai-registry" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="glass-card p-12 border-l-8 border-blue-500 overflow-hidden relative">
+                        <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                        <h2 class="text-4xl font-black italic mb-6">AI Knowledge Engine</h2>
+                        <p class="text-xl text-zinc-400 mb-8 leading-relaxed">
+                            Vibe POS maintains an <code>ai-components.json</code> registry, serving as a neural map for AI assistants. This enables instant context retrieval for components, hooks, and API services.
+                        </p>
+                        <div class="flex gap-4">
+                            <span class="tag">npm run registry</span>
+                            <span class="tag">Auto-updating</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Commands -->
+                <section id="commands" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12 text-center">
+                        <h2 class="text-5xl font-black italic">Quick Reference</h2>
+                    </div>
+                    
+                    <div class="glass-card overflow-hidden">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CLI Command</th>
+                                    <th>Description / Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run tauri dev</td>
+                                    <td class="text-zinc-400">Launch live development environment</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run tauri build</td>
+                                    <td class="text-zinc-400">Generate production release artifacts</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run lint</td>
+                                    <td class="text-zinc-400">Static code analysis & type checking</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run test:e2e</td>
+                                    <td class="text-zinc-400">Execute automated browser flow tests</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run registry</td>
+                                    <td class="text-zinc-400">Sync local AI knowledge components</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <footer class="mt-48 pb-20 text-center animate-section">
+                    <div class="inline-block h-px w-24 bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-12"></div>
+                    <p class="text-xs uppercase tracking-[0.4em] font-black text-zinc-600 mb-4">Vibe POS Documentation Engine</p>
+                    <p class="text-[10px] text-zinc-700 font-bold">&copy; 2026 Interactive Design System • Built with Chrome & Gemini</p>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple active link tracker
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, header').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
+body>
+</html>
