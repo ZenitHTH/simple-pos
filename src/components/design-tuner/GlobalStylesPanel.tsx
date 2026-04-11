@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { ThemeExplorerModal } from "./ThemeExplorerModal";
+import { FaCompass } from "react-icons/fa";
 import { AppSettings } from "@/lib/types";
 import { SidebarSlider } from "./SidebarSlider";
 
@@ -17,11 +20,32 @@ export function GlobalStylesPanel({
   previewZoom,
   setPreviewZoom,
 }: GlobalStylesPanelProps) {
+  const [showExplorer, setShowExplorer] = useState(false);
+
   return (
     <div className="border-border mt-8 border-t px-2 pt-4">
       <h2 className="text-foreground/80 mb-4 text-sm font-semibold">
         Global Styles
       </h2>
+
+      {/* Theme Explorer Trigger */}
+      <div className="px-2 mb-6">
+        <button
+          onClick={() => setShowExplorer(true)}
+          className="group relative w-full overflow-hidden rounded-2xl bg-primary p-4 text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
+        >
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-primary-foreground">Theme Library</h3>
+              <p className="text-[10px] font-bold text-primary-foreground/70 uppercase">Browse & Generate Palettes</p>
+            </div>
+            <FaCompass className="text-primary-foreground/40 text-xl group-hover:rotate-45 transition-transform duration-500" />
+          </div>
+          {/* Subtle background decoration */}
+          <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
+        </button>
+      </div>
+
       <div className="space-y-4">
         {/* Radius Slider */}
         <SidebarSlider
@@ -202,6 +226,14 @@ export function GlobalStylesPanel({
           </button>
         </div>
       </div>
+
+      {/* Render Modal */}
+      <ThemeExplorerModal 
+        isOpen={showExplorer} 
+        onClose={() => setShowExplorer(false)} 
+        settings={settings}
+        updateSettings={updateSettings}
+      />
     </div>
   );
 }
