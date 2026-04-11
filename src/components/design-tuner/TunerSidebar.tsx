@@ -14,14 +14,11 @@ import {
   FaColumns,
 } from "react-icons/fa";
 import { NavButton } from "./NavButton";
-import { GlobalStylesPanel } from "./GlobalStylesPanel";
-import { ThemePresetsPanel } from "./ThemePresetsPanel";
-import { CartItemStylesPanel } from "./CartItemStylesPanel";
-import { ButtonStylesPanel } from "./ButtonStylesPanel";
 import { AppSettings } from "@/lib";
 import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
 
 export type TunerTab =
+  | "global"
   | "selector"
   | "button"
   | "typography"
@@ -64,6 +61,12 @@ export function TunerSidebar({
             Tune Component
           </h3>
           <div className="space-y-1.5">
+            <NavButton
+              active={activeTab === "global"}
+              onClick={() => setActiveTab("global")}
+              icon={<FaPalette className="text-sm" />}
+              label="Global & Theme"
+            />
             <NavButton
               active={activeTab === "selector"}
               onClick={() => setActiveTab("selector")}
@@ -131,7 +134,7 @@ export function TunerSidebar({
               exit={{ opacity: 0, x: 10 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              {(activeTab === "selector" || activeTab === "typography" || activeTab === "sidebar") && (
+              {activeTab !== "global" && (
                 <div className="px-3 py-6 text-center">
                   <FaSlidersH className="mx-auto mb-3 text-muted-foreground/30 text-2xl" />
                   <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest leading-relaxed">
@@ -139,48 +142,8 @@ export function TunerSidebar({
                   </p>
                 </div>
               )}
-              {activeTab === "cart" && (
-                <CartItemStylesPanel
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-
-              {activeTab === "button" && (
-                <ButtonStylesPanel
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
             </motion.div>
           </AnimatePresence>
-
-          {/* Global Controls Always Visible but Grouped */}
-          <div className="space-y-8 pt-4">
-            <div className="bg-border/30 h-px w-full" />
-            
-            <div className="space-y-1">
-              <h3 className="px-3 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
-                Theme Presets
-              </h3>
-              <ThemePresetsPanel
-                settings={settings}
-                updateSettings={updateSettings}
-              />
-            </div>
-
-            <div className="space-y-1">
-              <h3 className="px-3 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
-                Global Appearance
-              </h3>
-              <GlobalStylesPanel
-                settings={settings}
-                updateSettings={updateSettings}
-                previewZoom={previewZoom}
-                setPreviewZoom={setPreviewZoom}
-              />
-            </div>
-          </div>
         </div>
       </div>
     </BaseSidebarLayout>

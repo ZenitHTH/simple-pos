@@ -8,7 +8,7 @@ describe('MiniTuner Phase 1: Foundation (Portal & Floating Logic)', () => {
 
     it('should show MiniTuner at 1:1 scale when an element is selected in design mode', async () => {
         // Toggle mockup mode. Mockup mode is enabled on /mockup route automatically, but we might need to be sure.
-        await browser.url('http://localhost:3000/mockup');
+        await browser.url('http://127.0.0.1:3000/mockup');
         await browser.pause(2000);
 
         // Find a selectable element (e.g., total-section)

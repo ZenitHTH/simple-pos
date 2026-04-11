@@ -33,14 +33,18 @@ export function SidebarGroup({
     <div className="w-full">
       <button
         onClick={onToggle}
+        style={{
+          padding: `calc(0.75rem * var(--sidebar-button-scale, 1)) calc(1rem * var(--sidebar-button-scale, 1))`
+        }}
         className={cn(
-          "group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200",
+          "group flex w-full items-center gap-3 rounded-xl transition-all duration-200",
           hasActiveChild
             ? "text-primary bg-primary/10"
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
       >
         <span
+          style={{ transform: `scale(var(--sidebar-button-scale, 1))` }}
           className={cn(
             hasActiveChild
               ? "text-primary"

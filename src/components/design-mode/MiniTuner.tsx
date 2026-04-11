@@ -229,57 +229,19 @@ export default function MiniTuner() {
                       className="space-y-4"
                     >
                       {selectedElementId === "grid_scale" ? (
-                        <GridItemSize
-                          settings={settings}
-                          onUpdate={updateSettings}
-                        />
-                      ) : selectedElementId === "header_font_scale" ? (                        <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                            <span>Header Font</span>
-                            <span>{settings.header_font_scale || 100}%</span>
-                          </div>
-                          <NumberStepper
-                            min={50}
-                            max={150}
-                            step={5}
-                            value={settings.header_font_scale || 100}
-                            onChange={(val) => updateSettings({ header_font_scale: val })}
-                          />
-                        </div>
-                      ) : selectedElementId === "history_font_scale" ? (
-                        <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                            <span>History Font</span>
-                            <span>{settings.history_font_scale || 100}%</span>
-                          </div>
-                          <NumberStepper
-                            min={50}
-                            max={150}
-                            step={5}
-                            value={settings.history_font_scale || 100}
-                            onChange={(val) => updateSettings({ history_font_scale: val })}
-                          />
-                        </div>
+                        <GridItemSize settings={settings} onUpdate={updateSettings} />
                       ) : selectedElementId === "numpad_scale" ? (
                         <div className="flex flex-col gap-4">
-                          <div className="flex flex-col gap-2">
-                            <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                              <span>Numpad Scale</span>
-                              <span>{settings.numpad_scale ?? 100}%</span>
-                            </div>
-                            <input
-                              type="range"
-                              min="50"
-                              max="150"
-                              value={settings.numpad_scale ?? 100}
-                              onChange={(e) =>
-                                updateSettings({ numpad_scale: Number(e.target.value) })
-                              }
-                              className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
-                            />
-                          </div>
+                          <SidebarSlider
+                            label="Numpad Scale"
+                            value={settings.numpad_scale ?? 100}
+                            onChange={(v) => updateSettings({ numpad_scale: v })}
+                            min={50}
+                            max={150}
+                            unit="%"
+                          />
 
-                          <div className="space-y-4 pt-4 border-t border-border/50">
+                          <div className="space-y-4 border-t border-border/50 pt-4">
                             <SidebarSlider
                               label="Button Font"
                               value={settings.numpad_font_scale ?? 100}
@@ -314,6 +276,127 @@ export default function MiniTuner() {
                             />
                           </div>
                         </div>
+                      ) : selectedElementId === "cart_scale" ? (
+                        <div className="flex flex-col gap-4">
+                          <SidebarSlider
+                            label="Cart Width"
+                            value={settings.cart_scale ?? 100}
+                            onChange={(v) => updateSettings({ cart_scale: v })}
+                            min={50}
+                            max={200}
+                            unit="%"
+                          />
+                          <div className="space-y-4 border-t border-border/50 pt-4">
+                            <SidebarSlider
+                              label="Font Size"
+                              value={settings.cart_item_font_size ?? 100}
+                              onChange={(v) => updateSettings({ cart_item_font_size: v })}
+                              min={50}
+                              max={200}
+                              unit="%"
+                            />
+                            <SidebarSlider
+                              label="Header Font"
+                              value={settings.cart_item_header_font_size ?? 100}
+                              onChange={(v) => updateSettings({ cart_item_header_font_size: v })}
+                              min={50}
+                              max={200}
+                              unit="%"
+                            />
+                            <SidebarSlider
+                              label="Price Font"
+                              value={settings.cart_item_price_font_size ?? 100}
+                              onChange={(v) => updateSettings({ cart_item_price_font_size: v })}
+                              min={50}
+                              max={200}
+                              unit="%"
+                            />
+                            <SidebarSlider
+                              label="Padding"
+                              value={settings.cart_item_padding ?? 10}
+                              onChange={(v) => updateSettings({ cart_item_padding: v })}
+                              min={0}
+                              max={32}
+                              unit="px"
+                            />
+                            <SidebarSlider
+                              label="Margin"
+                              value={settings.cart_item_margin ?? 8}
+                              onChange={(v) => updateSettings({ cart_item_margin: v })}
+                              min={0}
+                              max={24}
+                              unit="px"
+                            />
+                          </div>
+                        </div>
+                      ) : selectedElementId === "button_scale" ? (
+                        <div className="flex flex-col gap-4">
+                          <SidebarSlider
+                            label="Button Scale"
+                            value={settings.button_scale ?? 100}
+                            onChange={(v) => updateSettings({ button_scale: v })}
+                            min={50}
+                            max={200}
+                            unit="%"
+                          />
+                          <SidebarSlider
+                            label="Font Scale"
+                            value={settings.button_font_scale ?? 100}
+                            onChange={(v) => updateSettings({ button_font_scale: v })}
+                            min={50}
+                            max={200}
+                            unit="%"
+                          />
+                        </div>
+                      ) : selectedElementId === "sidebar_scale" ? (
+                        <div className="flex flex-col gap-4">
+                          <SidebarSlider
+                            label="Sidebar Width"
+                            value={settings.sidebar_scale ?? 100}
+                            onChange={(v) => updateSettings({ sidebar_scale: v })}
+                            min={50}
+                            max={150}
+                            unit="%"
+                          />
+                          <div className="space-y-4 border-t border-border/50 pt-4">
+                            <SidebarSlider
+                              label="Font Size"
+                              value={settings.sidebar_font_scale ?? 100}
+                              onChange={(v) => updateSettings({ sidebar_font_scale: v })}
+                              min={50}
+                              max={150}
+                              unit="%"
+                            />
+                          </div>
+                        </div>
+                      ) : selectedElementId === "header_font_scale" ? (
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                            <span>Header Font</span>
+                            <span>{settings.header_font_scale || 100}%</span>
+                          </div>
+                          <NumberStepper
+                            min={50}
+                            max={150}
+                            step={5}
+                            value={settings.header_font_scale || 100}
+                            onChange={(val) => updateSettings({ header_font_scale: val })}
+                          />
+                        </div>
+                      ) : selectedElementId === "history_font_scale" ? (
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                            <span>History Font</span>
+                            <span>{settings.history_font_scale || 100}%</span>
+                          </div>
+                          <NumberStepper
+                            min={50}
+                            max={150}
+                            step={5}
+                            value={settings.history_font_scale || 100}
+                            onChange={(val) => updateSettings({ history_font_scale: val })}
+                          />
+                        </div>
                       ) : (
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
@@ -327,26 +410,6 @@ export default function MiniTuner() {
                             value={currentScale}
                             onChange={(e) =>
                               updateSettings({ [selectedElementId]: Number(e.target.value) })
-                            }
-                            className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
-                          />
-                        </div>
-                      )}
-
-                      {/* Contextual Padding (only for cart for now) */}
-                      {selectedElementId === "cart_scale" && (
-                        <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                            <span>Padding</span>
-                            <span>{settings.cart_item_padding || 10}px</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="40"
-                            value={settings.cart_item_padding || 10}
-                            onChange={(e) =>
-                              updateSettings({ cart_item_padding: Number(e.target.value) })
                             }
                             className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
                           />

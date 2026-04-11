@@ -7,6 +7,8 @@ import { cn } from "@/lib";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
+import { useSettings } from "@/context/settings/SettingsContext";
+
 interface BaseSidebarLayoutProps {
   children: ReactNode;
   title: string;
@@ -32,13 +34,19 @@ export default function BaseSidebarLayout({
   side = "left",
   showMobileClose = true,
 }: BaseSidebarLayoutProps) {
+  const { settings } = useSettings();
+  
   // Calculate dynamic width (base 16rem = 256px)
   const baseWidth = 256;
   const dynamicWidth = `${baseWidth * (scale / 100)}px`;
+  const buttonScale = (settings?.sidebar_button_scale ?? 100) / 100;
 
   return (
     <aside
-      style={{ width: dynamicWidth }}
+      style={{ 
+        width: dynamicWidth,
+        "--sidebar-button-scale": buttonScale
+      } as any}
       className={cn(
         "fixed inset-y-0 z-50 lg:static flex flex-col transition-all duration-300 ease-in-out",
         "bg-card text-card-foreground border-border border-r shadow-2xl lg:shadow-none",

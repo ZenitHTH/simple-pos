@@ -21,17 +21,23 @@ export function SidebarItem({
   return (
     <Link
       href={path}
+      style={{
+        padding: isSubItem 
+          ? `calc(0.625rem * var(--sidebar-button-scale, 1)) calc(0.75rem * var(--sidebar-button-scale, 1))` 
+          : `calc(0.75rem * var(--sidebar-button-scale, 1)) calc(1rem * var(--sidebar-button-scale, 1))`
+      }}
       className={cn(
         "group flex items-center gap-3 transition-all duration-200",
         isSubItem
-          ? "rounded-lg px-3 py-2.5 text-[0.9em]"
-          : "rounded-xl px-4 py-3",
+          ? "rounded-lg text-[0.9em]"
+          : "rounded-xl",
         isActive
           ? "bg-primary text-primary-foreground shadow-primary/20 shadow-md"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
       )}
     >
       <span
+        style={{ transform: `scale(var(--sidebar-button-scale, 1))` }}
         className={cn(
           isActive
             ? "text-primary-foreground"

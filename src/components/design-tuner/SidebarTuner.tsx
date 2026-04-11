@@ -48,11 +48,11 @@ export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
           <h3 className="text-xl font-bold">Layout Tuning</h3>
           <div className="space-y-6">
             <SidebarSlider
-              label="Sidebar Width"
-              value={settings.sidebar_scale ?? 100}
-              onChange={(v) => updateSettings({ sidebar_scale: v })}
+              label="Button Scale"
+              value={settings.sidebar_button_scale ?? 100}
+              onChange={(v) => updateSettings({ sidebar_button_scale: v })}
               min={50}
-              max={150}
+              max={200}
               unit="%"
             />
             <SidebarSlider
@@ -65,7 +65,7 @@ export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
             />
           </div>
           <div className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> The sidebar width affects how much horizontal space is left for the main content area.
+            <strong>Tip:</strong> The Sidebar Width is now exclusively tuned on the main display using Design Mode (on-canvas MiniTuner).
           </div>
         </motion.div>
 
@@ -77,7 +77,10 @@ export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
           <div className="border-border/60 bg-card/30 rounded-3xl border shadow-xl backdrop-blur-sm relative overflow-hidden h-[500px] flex">
              
              {/* Mock Sidebar */}
-             <div className="h-full border-r border-border bg-card">
+             <div 
+                className="h-full border-r border-border bg-card"
+                style={{ "--sidebar-button-scale": (settings.sidebar_button_scale ?? 100) / 100 } as any}
+             >
                 <BaseSidebarLayout
                     title="POS System"
                     isOpen={true}

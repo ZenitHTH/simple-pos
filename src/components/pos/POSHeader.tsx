@@ -3,6 +3,7 @@ import { memo } from "react";
 import { FaReceipt, FaShoppingCart, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import GlobalHeader from "@/components/ui/GlobalHeader";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 interface POSHeaderProps {
   cartCount: number;
@@ -53,12 +54,15 @@ const POSHeader = memo(function POSHeader({
           )}
         </button>
 
-        <button
-          onClick={() => router.push("/history")}
-          className="bg-card text-card-foreground border-border hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-colors"
-        >
-          <FaReceipt /> History
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => router.push("/history")}
+            className="bg-card text-card-foreground border-border hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-colors"
+          >
+            <FaReceipt /> History
+          </button>
+          <SelectableOverlay id="button_scale" />
+        </div>
       </div>
     </GlobalHeader>
   );

@@ -9,12 +9,13 @@ import { GridTuner } from "@/components/design-tuner/GridTuner";
 import { SidebarTuner } from "@/components/design-tuner/SidebarTuner";
 import { HistoryTuner } from "@/components/design-tuner/HistoryTuner";
 import { NumpadTuner } from "@/components/design-tuner/NumpadTuner";
+import { GlobalTuner } from "@/components/design-tuner/GlobalTuner";
 import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
 export default function DesignTunerPage() {
-  const [activeTab, setActiveTab] = useState<TunerTab>("selector");
+  const [activeTab, setActiveTab] = useState<TunerTab>("global");
   const { settings, updateSettings, save, resetToCheckpoint, setAutoSave } =
     useSettings();
 
@@ -53,8 +54,18 @@ export default function DesignTunerPage() {
           }}
         >
           <div className="mx-auto max-w-4xl pb-24">
+            {activeTab === "global" && (
+              <GlobalTuner
+                settings={settings}
+                updateSettings={updateSettings}
+                previewZoom={previewZoom}
+                setPreviewZoom={setPreviewZoom}
+              />
+            )}
             {activeTab === "selector" && <SelectorTuner />}
-            {activeTab === "button" && <ButtonTuner />}
+            {activeTab === "button" && (
+              <ButtonTuner settings={settings} updateSettings={updateSettings} />
+            )}
             {activeTab === "typography" && (
               <TypographyTuner
                 settings={settings}
@@ -62,13 +73,7 @@ export default function DesignTunerPage() {
               />
             )}
             {activeTab === "cart" && (
-              <CartItemTuner
-                itemFontSize={settings.cart_item_font_size ?? 100}
-                headerFontSize={settings.cart_item_header_font_size ?? 100}
-                priceFontSize={settings.cart_item_price_font_size ?? 100}
-                padding={settings.cart_item_padding ?? 10}
-                margin={settings.cart_item_margin ?? 8}
-              />
+              <CartItemTuner settings={settings} updateSettings={updateSettings} />
             )}
             {activeTab === "grid" && (
               <GridTuner settings={settings} updateSettings={updateSettings} />
