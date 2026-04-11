@@ -138,6 +138,15 @@ pub struct StorageInfo {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
+pub struct CustomPreset {
+    pub id: String,
+    pub name: String,
+    pub theme: ThemeSettings,
+    pub styling: StylingSettings,
+    pub scaling: ScalingSettings,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct AppSettings {
     pub general: GeneralSettings,
     pub theme: ThemeSettings,
@@ -145,7 +154,7 @@ pub struct AppSettings {
     pub typography: TypographySettings,
     pub scaling: ScalingSettings,
     pub styling: StylingSettings,
-    pub custom_presets: Vec<serde_json::Value>, // Temporary placeholder for custom presets
+    pub custom_presets: Vec<CustomPreset>,
 }
 
 impl AppSettings {
