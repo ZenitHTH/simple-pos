@@ -1,0 +1,5 @@
+- [ ] Task 1: Initialize Dev Branch & Define Curated Base Colors
+- [ ] Task 2: Create ThemeCard Preview Component
+- [ ] Task 3: Build ThemeExplorerModal Component
+- [ ] Task 4: Integrate Trigger into GlobalStylesPanel
+- [ ] Task 5: Verify Persistence & Reset Logic

@@ -36,6 +36,21 @@ const SAMPLE_ITEMS = [
     },
 ];
 
+const container = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const itemVar = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
+};
+
 interface CartItemTunerProps {
     settings: AppSettings;
     updateSettings: (updates: Partial<AppSettings>) => void;
@@ -66,33 +81,39 @@ export function CartItemTuner({
     const margin = settings.styling.cart.margin ?? 8;
 
     return (
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <motion.div 
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 gap-10 lg:grid-cols-3"
+        >
             {/* Left Column: Styles Panel */}
             <div className="lg:col-span-1">
                 <div className="sticky top-10 space-y-6">
-                    <div>
-                        <h2 className="mb-2 text-3xl font-bold">Cart Item</h2>
-                        <p className="text-muted-foreground">
-                            Adjust cart item styling with the dedicated sliders.
+                    <motion.div variants={itemVar}>
+                        <h2 className="mb-2 text-3xl font-bold tracking-tight">Cart Item</h2>
+                        <p className="text-muted-foreground text-lg">
+                            Fine-tune the individual item cards in the checkout list.
                         </p>
-                    </div>
+                    </motion.div>
+                    
                     <CartItemStylesPanel settings={settings} updateSettings={updateSettings} />
                     
-                    {/* Info card */}
-                    <div className="bg-muted/30 rounded-lg p-4 text-sm text-muted-foreground mt-6">
+                    <motion.div variants={itemVar} className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
                         <p>
-                            <strong>Tip:</strong> Style variables are applied globally. 
-                            The preview below uses the same CSS variables as the real POS cart.
+                            <strong>Tip:</strong> These styles affect item density and readability. 
+                            Glass opacity works best when the background has content behind it.
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
             {/* Right Column: Live Preview */}
-            <div className="lg:col-span-2 space-y-8">
-                <div className="border-border bg-card rounded-xl border p-6 shadow-sm">
-                    <h3 className="mb-6 text-lg font-semibold">Live Preview</h3>
+            <motion.div variants={itemVar} className="lg:col-span-2 space-y-8">
+                <div className="border-border/60 bg-card/30 rounded-3xl border p-10 shadow-xl backdrop-blur-sm min-h-[500px]">
+                    <h3 className="mb-8 text-xl font-bold">Checkout Preview</h3>
                     <div
+                        className="transition-all duration-300"
                         style={{
                             display: "flex",
                             flexDirection: "column",
@@ -110,7 +131,7 @@ export function CartItemTuner({
                         ))}
                     </div>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }

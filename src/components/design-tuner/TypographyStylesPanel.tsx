@@ -21,7 +21,7 @@ interface TypographyControlsProps {
   letterSpacing: number;
 }
 
-export function TypographyControls({
+export function TypographyStylesPanel({
   settings,
   updateSettings,
   fontFamily,

@@ -29,7 +29,7 @@ const CartItem = memo(function CartItem({
 
   return (
     <div
-      className="bg-background border-border tuner-cart-item group hover:border-primary-glow flex flex-col overflow-hidden border"
+      className="border-border tuner-cart-item group hover:border-primary-glow flex flex-col overflow-hidden border"
     >
       {/* Top row: image + info + delete */}
       <div className="flex items-center gap-4 p-[calc(var(--cart-item-padding)*1px)]">

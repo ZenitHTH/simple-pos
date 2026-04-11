@@ -2,8 +2,8 @@
 
 import { AppSettings } from "@/lib/types";
 import { TYPOGRAPHY_DEFAULTS } from "@/lib/constants/typography";
-import { TypographyControls } from "./typography/TypographyControls";
-import { TypographyPreview } from "./typography/TypographyPreview";
+import { TypographyStylesPanel } from "./TypographyStylesPanel";
+import { TypographyPreview } from "./TypographyPreview";
 
 interface TypographyTunerProps {
   settings: AppSettings;
@@ -41,7 +41,7 @@ export function TypographyTuner({
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Controls Panel */}
-        <TypographyControls
+        <TypographyStylesPanel
           settings={settings}
           updateSettings={updateSettings}
           fontFamily={fontFamily}

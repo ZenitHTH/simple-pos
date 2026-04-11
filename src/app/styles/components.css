@@ -35,7 +35,7 @@
   .tuner-cart-item {
     gap: var(--cart-item-gap);
     border-style: var(--cart-item-border-style);
-    background-color: color-mix(in srgb, var(--primary), transparent calc(100% - var(--cart-item-bg-opacity) * 100%));
+    background-color: color-mix(in srgb, var(--card), transparent calc(100% - var(--cart-item-bg-opacity) * 100%));
     transition: all var(--button-transition-speed) ease-out;
   }
 

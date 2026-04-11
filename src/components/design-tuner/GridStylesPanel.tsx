@@ -2,10 +2,10 @@
 
 import React from "react";
 import { cn } from "@/lib";
-import { SidebarSlider } from "../design-tuner/SidebarSlider";
+import { SidebarSlider } from "./SidebarSlider";
 import { AppSettings } from "@/lib";
 
-interface GridItemSizeProps {
+interface GridStylesPanelProps {
   settings: AppSettings;
   onUpdate: (updates: Partial<AppSettings>) => void;
   className?: string;
@@ -19,11 +19,11 @@ const levels = [
   { val: 150, label: "XL" },
 ];
 
-export default function GridItemSize({
+export function GridStylesPanel({
   settings,
   onUpdate,
   className,
-}: GridItemSizeProps) {
+}: GridStylesPanelProps) {
   const currentValue = settings.scaling.components.grid || 100;
   const currentIndex = levels.findIndex((l) => l.val === currentValue);
   const safeIndex = currentIndex === -1 ? 2 : currentIndex;
@@ -151,6 +151,37 @@ export default function GridItemSize({
           max={100}
           unit="%"
         />
+
+        <div className="pt-2">
+          <button
+            onClick={() => onUpdate({
+              styling: {
+                grid: {
+                  item_padding: 16,
+                  item_radius: 24,
+                  item_title_font_size: 100,
+                  item_price_font_size: 100,
+                  gap: 20,
+                  item_shadow: 10,
+                  item_border_width: 1,
+                  item_hover_scale: 102,
+                  item_bg_opacity: 100,
+                }
+              },
+              scaling: {
+                components: {
+                  grid: 100
+                },
+                fonts: {
+                  grid: 100
+                }
+              }
+            })}
+            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold uppercase tracking-wider transition-colors"
+          >
+            Reset Grid Styles
+          </button>
+        </div>
       </div>
     </div>
   );

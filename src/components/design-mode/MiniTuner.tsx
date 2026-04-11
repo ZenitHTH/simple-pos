@@ -9,7 +9,7 @@ import { useColorSampler } from "@/hooks/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
-import GridItemSize from "./GridItemSize";
+import { GridStylesPanel } from "../design-tuner/GridStylesPanel";
 import { SidebarSlider } from "../design-tuner/SidebarSlider";
 import NumberStepper from "@/components/ui/NumberStepper";
 
@@ -269,7 +269,7 @@ export default function MiniTuner() {
                       className="space-y-4"
                     >
                       {selectedElementId === "grid_scale" ? (
-                        <GridItemSize settings={settings} onUpdate={updateSettings} />
+                        <GridStylesPanel settings={settings} onUpdate={updateSettings} />
                       ) : selectedElementId === "numpad_scale" ? (
                         <div className="flex flex-col gap-4">
                           <SidebarSlider

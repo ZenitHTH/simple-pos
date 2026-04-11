@@ -4,7 +4,7 @@ import { AppSettings } from "@/lib";
 
 import NumberStepper from "@/components/ui/NumberStepper";
 import NumberSlider from "@/components/ui/NumberSlider";
-import GridItemSize from "./GridItemSize";
+import { GridStylesPanel } from "../design-tuner/GridStylesPanel";
 
 export default function ComponentScaleControls({
   selectedId,
@@ -115,7 +115,7 @@ export default function ComponentScaleControls({
       {/* Layout Scale */}
       <div className="flex-1">
         {selectedId === "grid_scale" ? (
-          <GridItemSize
+          <GridStylesPanel
             settings={settings}
             onUpdate={updateSettings}
           />

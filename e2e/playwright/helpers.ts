@@ -112,7 +112,8 @@ export async function performLogin(page: Page) {
   }
 
   // Final wait for the main POS screen (Product Grid)
-  // We can look for the "Product Grid" or simply wait for a bit
+  // Ensure any login/setup overlays are gone
+  await page.waitForSelector('div.bg-black\\/60.backdrop-blur-sm', { state: 'hidden', timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(1000);
 }
 

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { AppSettings } from "@/lib/types";
-import GridItemSize from "@/components/design-mode/GridItemSize";
+import { GridStylesPanel } from "./GridStylesPanel";
 import ProductCard from "@/components/pos/ProductCard";
 
 const container = {
@@ -91,7 +91,7 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
           className="border-border/60 bg-card/50 h-fit space-y-8 rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
         >
           <h3 className="text-xl font-bold">Grid Tuning</h3>
-          <GridItemSize
+          <GridStylesPanel
             settings={settings}
             onUpdate={updateSettings}
           />

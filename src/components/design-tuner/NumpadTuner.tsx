@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { NumpadStylesPanel } from "./NumpadStylesPanel";
 import VirtualNumpad from "@/components/payment/VirtualNumpad";
 import { AppSettings } from "@/lib/types";
-import { SidebarSlider } from "./SidebarSlider";
 
 const container = {
   hidden: { opacity: 0 },
@@ -44,96 +43,31 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-12"
+      className="grid grid-cols-1 gap-10 lg:grid-cols-2"
     >
-      <motion.div variants={item}>
-        <h2 className="mb-2 text-3xl font-bold tracking-tight">Virtual Numpad</h2>
-        <p className="text-muted-foreground text-lg">
-          Fine-tune the Virtual Numpad appearance. Adjust button height, gaps,
-          and font scales for the perfect touch experience.
-        </p>
-      </motion.div>
+      {/* Left Column: Controls */}
+      <div className="lg:col-span-1">
+        <div className="sticky top-10 space-y-6">
+          <motion.div variants={item}>
+            <h2 className="mb-2 text-3xl font-bold tracking-tight">Numpad</h2>
+            <p className="text-muted-foreground text-lg">
+              Fine-tune the virtual numpad for the best touch checkout experience.
+            </p>
+          </motion.div>
+          <NumpadStylesPanel settings={settings} updateSettings={updateSettings} />
+          
+          <motion.div variants={item} className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
+            <strong>Tip:</strong> Button height and gap are critical for usability. Test the interactive preview on your target device.
+          </motion.div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-start">
-        {/* Controls Panel */}
-        <motion.div
-          variants={item}
-          className="border-border/60 bg-card/50 rounded-3xl border p-8 shadow-sm backdrop-blur-sm space-y-6"
-        >
-          <h3 className="text-xl font-bold mb-4">Styling Controls</h3>
-
-          <div className="space-y-4">
-            <SidebarSlider
-              label="Overall Scale"
-              value={settings.styling.payment.numpad_scale ?? 100}
-              onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
-              min={50}
-              max={150}
-              unit="%"
-            />
-
-            <SidebarSlider
-              label="Button Font Scale"
-              value={settings.styling.payment.numpad_font_scale ?? 100}
-              onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
-              min={50}
-              max={200}
-              unit="%"
-            />
-
-            <SidebarSlider
-              label="Display Font Scale"
-              value={settings.styling.payment.numpad_display_font_scale ?? 100}
-              onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
-              min={50}
-              max={200}
-              unit="%"
-            />
-
-            <SidebarSlider
-              label="Button Height"
-              value={settings.styling.payment.numpad_button_height ?? 80}
-              onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
-              min={40}
-              max={120}
-              unit="px"
-            />
-
-            <SidebarSlider
-              label="Button Gap"
-              value={settings.styling.payment.numpad_gap ?? 12}
-              onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}
-              min={0}
-              max={32}
-              unit="px"
-            />
-          </div>
-
-          <button
-            onClick={() => {
-              updateSettings({
-                styling: {
-                  payment: {
-                    numpad_scale: 100,
-                    numpad_font_scale: 100,
-                    numpad_display_font_scale: 100,
-                    numpad_button_height: 80,
-                    numpad_gap: 12,
-                  }
-                }
-              });
-            }}
-            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] transition-colors uppercase tracking-wider font-semibold"
-          >
-            Reset Numpad Styles
-          </button>
-        </motion.div>
-
-        {/* Interactive Preview */}
-        <motion.div
-          variants={item}
-          className="border-border/60 bg-card/50 rounded-3xl border p-10 shadow-sm backdrop-blur-sm"
-        >
+      {/* Right Column: Live Preview */}
+      <motion.div
+        variants={item}
+        className="space-y-6"
+      >
+        <div className="border-border/60 bg-card/50 rounded-3xl border p-10 shadow-sm backdrop-blur-sm">
           <div className="mb-8 flex flex-col items-center gap-4">
             <div
               className="bg-background border-border flex h-24 w-full items-center justify-end rounded-2xl border px-6 font-black tracking-widest shadow-inner overflow-hidden"
@@ -160,8 +94,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
               onClear={handleClear}
             />
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

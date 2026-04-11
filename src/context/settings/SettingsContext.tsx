@@ -8,7 +8,7 @@ import {
   useRef,
   ReactNode,
 } from "react";
-import { AppSettings, settingsApi, deepMerge } from "@/lib";
+import { AppSettings, settingsApi, deepMerge, DeepPartial } from "@/lib";
 import { logger } from "@/lib/logger";
 import { DEFAULT_SETTINGS, THEME_PRESETS } from "./constants";
 import { useApplySettings } from "./hooks";
@@ -16,7 +16,7 @@ import { useApplySettings } from "./hooks";
 interface SettingsContextType {
   settings: AppSettings;
   loading: boolean;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   save: () => Promise<void>;
   resetToCheckpoint: () => void;
   resetToDefault: () => void;
@@ -54,7 +54,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const updateSettings = (updates: Partial<AppSettings>) => {
+  const updateSettings = (updates: DeepPartial<AppSettings>) => {
     setSettings((prev) => {
       let next = deepMerge<AppSettings>(prev, updates);
 
