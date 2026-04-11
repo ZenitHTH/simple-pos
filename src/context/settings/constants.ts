@@ -4,6 +4,7 @@ export const THEME_PRESETS = {
   compact: {
     theme_preset: "compact" as const,
     sidebar_scale: 85,
+    sidebar_button_scale: 85,
     cart_scale: 90,
     grid_scale: 90,
     button_scale: 85,
@@ -13,6 +14,7 @@ export const THEME_PRESETS = {
   cozy: {
     theme_preset: "cozy" as const,
     sidebar_scale: 100,
+    sidebar_button_scale: 100,
     cart_scale: 100,
     grid_scale: 100,
     button_scale: 100,
@@ -27,6 +29,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   tax_rate: 7.0,
   display_scale: 100.0,
   sidebar_scale: 100.0,
+  sidebar_button_scale: 100.0,
   cart_scale: 100.0,
   grid_scale: 100.0,
   manage_table_scale: 100.0,

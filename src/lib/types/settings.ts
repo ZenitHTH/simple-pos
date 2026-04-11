@@ -10,6 +10,7 @@ export interface AppSettings {
 
   // ── Component Scales ──
   sidebar_scale: number;
+  sidebar_button_scale: number;
   cart_scale: number;
   grid_scale: number;
   manage_table_scale: number;
