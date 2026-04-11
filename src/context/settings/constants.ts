@@ -50,7 +50,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     theme_border_color: null,
     theme_radius: 0.5,
     theme_preset: "cozy",
-    };
+  },
   storage: {
     image_storage_path: null,
     db_storage_path: null,
