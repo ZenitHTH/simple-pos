@@ -1,12 +1,12 @@
 "use client";
 
 import { SidebarSlider } from "./SidebarSlider";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 import { Select } from "@/components/ui/Select";
 
 interface CartItemStylesPanelProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function CartItemStylesPanel({

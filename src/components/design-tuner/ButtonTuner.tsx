@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { FaPalette, FaPlus, FaTrash, FaCheck, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { AppSettings } from "@/lib/types/settings";
+import { AppSettings, DeepPartial } from "@/lib/types/settings";
 import { ButtonStylesPanel } from "./ButtonStylesPanel";
 
 const container = {
@@ -23,7 +23,7 @@ const item = {
 
 interface ButtonTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function ButtonTuner({ settings, updateSettings }: ButtonTunerProps) {

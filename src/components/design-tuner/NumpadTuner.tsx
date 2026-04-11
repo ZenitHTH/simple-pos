@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { NumpadStylesPanel } from "./NumpadStylesPanel";
 import VirtualNumpad from "@/components/payment/VirtualNumpad";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 
 const container = {
   hidden: { opacity: 0 },
@@ -20,7 +20,7 @@ const item = {
 
 interface NumpadTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {

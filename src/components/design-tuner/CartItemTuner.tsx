@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import CartItem from "@/components/cart/CartItem";
-import { AppSettings } from "@/lib/types/settings";
+import { AppSettings, DeepPartial } from "@/lib/types/settings";
 import { CartItemStylesPanel } from "./CartItemStylesPanel";
 import { motion } from "framer-motion";
 
@@ -53,7 +53,7 @@ const itemVar = {
 
 interface CartItemTunerProps {
     settings: AppSettings;
-    updateSettings: (updates: Partial<AppSettings>) => void;
+    updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function CartItemTuner({

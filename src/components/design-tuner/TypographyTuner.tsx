@@ -1,13 +1,13 @@
 "use client";
 
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { TYPOGRAPHY_DEFAULTS } from "@/lib/constants/typography";
 import { TypographyStylesPanel } from "./TypographyStylesPanel";
 import { TypographyPreview } from "./TypographyPreview";
 
 interface TypographyTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function TypographyTuner({

@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarStylesPanel } from "./SidebarStylesPanel";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { FaHome, FaCog, FaBoxOpen, FaTags } from "react-icons/fa";
 import { SidebarItem } from "../layout/sidebar/SidebarItem";
 import { SidebarGroup } from "../layout/sidebar/SidebarGroup";
@@ -21,7 +21,7 @@ const item = {
 
 interface SidebarTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {

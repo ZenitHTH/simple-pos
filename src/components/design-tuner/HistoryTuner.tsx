@@ -5,7 +5,7 @@ import HistoryHeader from "@/components/history/HistoryHeader";
 import DateFilter from "@/components/history/DateFilter";
 import IdSearch from "@/components/history/IdSearch";
 import ReceiptList from "@/components/history/ReceiptList";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 
 const container = {
   hidden: { opacity: 0 },
@@ -22,7 +22,7 @@ const item = {
 
 interface HistoryTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function HistoryTuner({ settings, updateSettings }: HistoryTunerProps) {

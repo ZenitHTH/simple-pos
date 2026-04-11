@@ -1,11 +1,11 @@
 "use client";
 
 import { SidebarSlider } from "./SidebarSlider";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 
 interface NumpadStylesPanelProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function NumpadStylesPanel({

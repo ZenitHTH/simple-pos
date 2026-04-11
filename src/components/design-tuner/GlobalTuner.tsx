@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { ThemePresetsPanel } from "./ThemePresetsPanel";
 import { GlobalStylesPanel } from "./GlobalStylesPanel";
 
@@ -22,7 +22,7 @@ const item = {
 
 interface GlobalTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   previewZoom: number;
   setPreviewZoom: (v: number) => void;
 }

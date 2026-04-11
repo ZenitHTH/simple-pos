@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { AppSettings, CustomPreset } from "@/lib/types";
+import { AppSettings, CustomPreset, DeepPartial } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
 import { FaLayerGroup, FaCoffee, FaSave, FaTrash, FaPlus, FaPalette } from "react-icons/fa";
 import { THEME_PRESETS } from "@/context/settings/constants";
 
 interface ThemePresetsPanelProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function ThemePresetsPanel({

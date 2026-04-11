@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { GridStylesPanel } from "./GridStylesPanel";
 import ProductCard from "@/components/pos/ProductCard";
 
@@ -55,7 +55,7 @@ const MOCK_PRODUCTS = [
 
 interface GridTunerProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 export function GridTuner({ settings, updateSettings }: GridTunerProps) {

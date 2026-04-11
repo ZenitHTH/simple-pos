@@ -14,7 +14,7 @@ import {
   FaColumns,
 } from "react-icons/fa";
 import { NavButton } from "./NavButton";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
 
 export type TunerTab =
@@ -32,7 +32,7 @@ interface TunerSidebarProps {
   activeTab: TunerTab;
   setActiveTab: (tab: TunerTab) => void;
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   // Local state for tuner's own preview zoom
   previewZoom: number;
   setPreviewZoom: (v: number) => void;

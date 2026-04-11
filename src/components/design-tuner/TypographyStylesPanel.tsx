@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { Select } from "@/components/ui/Select";
 import { PillGroup } from "@/components/ui/PillGroup";
 import { TypographySlider } from "./TypographySlider";
@@ -12,7 +12,7 @@ import {
 
 interface TypographyControlsProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   fontFamily: string;
   baseSize: number;
   headingWeight: number;
