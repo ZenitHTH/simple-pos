@@ -45,18 +45,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const load = async () => {
     try {
       const data = await settingsApi.getSettings();
-      setSettings({ ...DEFAULT_SETTINGS, ...data });
-      setTimeout(() => setIsInitialized(true), 100);
-    } catch (error) {
-      logger.error("Failed to load settings:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateSettings = (updates: Partial<AppSettings>) => {
-    setSettings((prev) => {
-      // Helper for deep merging partial updates
+      
       const deepMerge = (target: any, source: any) => {
         const result = { ...target };
         for (const key in source) {
@@ -74,13 +63,24 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         return result;
       };
 
-      let next = deepMerge(prev, updates) as AppSettings;
+      setSettings(deepMerge(DEFAULT_SETTINGS, data) as AppSettings);
+      setTimeout(() => setIsInitialized(true), 100);
+    } catch (error) {
+      logger.error("Failed to load settings:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateSettings = (updates: Partial<AppSettings>) => {
+    setSettings((prev) => {
+      let next = deepMerge<AppSettings>(prev, updates);
 
       if (updates.theme?.theme_preset && updates.theme.theme_preset !== "custom") {
         const preset =
           THEME_PRESETS[updates.theme.theme_preset as keyof typeof THEME_PRESETS];
         if (preset) {
-          next = deepMerge(next, preset) as AppSettings;
+          next = deepMerge<AppSettings>(next, preset);
         }
       }
 
@@ -130,6 +130,33 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
+    <SettingsContext.Provider
+      value={{
+        settings,
+        loading,
+        updateSettings,
+        save,
+        resetToCheckpoint,
+        resetToDefault,
+        setAutoSave: setAutoSaveEnabled,
+      }}
+    >
+      {children}
+    </SettingsContext.Provider>
+  );
+}
+
+export function useSettings() {
+  const context = useContext(SettingsContext);
+  if (context === undefined) {
+    throw new Error("useSettings must be used within a SettingsProvider");
+  }
+  return context;
+}
+ingsProvider");
+  }
+  return context;
+}
     <SettingsContext.Provider
       value={{
         settings,

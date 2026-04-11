@@ -28,7 +28,16 @@ export function sanitize(input: any, seen = new WeakSet()): any {
       if (
         key.toLowerCase().includes("tax") ||
         key.toLowerCase().includes("address") ||
-        key.toLowerCase().includes("key")
+        key.toLowerCase().includes("key") ||
+        key.toLowerCase().includes("name") ||
+        key.toLowerCase().includes("email") ||
+        key.toLowerCase().includes("phone") ||
+        key.toLowerCase().includes("customer") ||
+        key.toLowerCase().includes("dob") ||
+        key.toLowerCase().includes("national_id") ||
+        key.toLowerCase().includes("id_card") ||
+        key.toLowerCase().includes("secret") ||
+        key.toLowerCase().includes("password")
       ) {
         sanitized[key] = "[REDACTED]";
       } else {

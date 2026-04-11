@@ -44,8 +44,8 @@ fn read_custom_db_storage_path(data_dir: &Path) -> Option<PathBuf> {
 
 /// Establishes a connection to the encrypted (or soon-to-be encrypted) database.
 pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
-    if key.len() < 4 {
-        return Err("Encryption key must be at least 4 characters long".to_string());
+    if key.len() < 8 {
+        return Err("Encryption key must be at least 8 characters long".to_string());
     }
 
     let database_url = get_database_url()?;
