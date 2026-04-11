@@ -8,7 +8,7 @@ import {
   useRef,
   ReactNode,
 } from "react";
-import { AppSettings, settingsApi } from "@/lib";
+import { AppSettings, settingsApi, deepMerge } from "@/lib";
 import { logger } from "@/lib/logger";
 import { DEFAULT_SETTINGS, THEME_PRESETS } from "./constants";
 import { useApplySettings } from "./hooks";
@@ -45,25 +45,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const load = async () => {
     try {
       const data = await settingsApi.getSettings();
-      
-      const deepMerge = (target: any, source: any) => {
-        const result = { ...target };
-        for (const key in source) {
-          if (
-            source[key] &&
-            typeof source[key] === "object" &&
-            !Array.isArray(source[key]) &&
-            target[key]
-          ) {
-            result[key] = deepMerge(target[key], source[key]);
-          } else {
-            result[key] = source[key];
-          }
-        }
-        return result;
-      };
-
-      setSettings(deepMerge(DEFAULT_SETTINGS, data) as AppSettings);
+      setSettings(deepMerge<AppSettings>(DEFAULT_SETTINGS, data));
       setTimeout(() => setIsInitialized(true), 100);
     } catch (error) {
       logger.error("Failed to load settings:", error);
@@ -130,33 +112,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <SettingsContext.Provider
-      value={{
-        settings,
-        loading,
-        updateSettings,
-        save,
-        resetToCheckpoint,
-        resetToDefault,
-        setAutoSave: setAutoSaveEnabled,
-      }}
-    >
-      {children}
-    </SettingsContext.Provider>
-  );
-}
-
-export function useSettings() {
-  const context = useContext(SettingsContext);
-  if (context === undefined) {
-    throw new Error("useSettings must be used within a SettingsProvider");
-  }
-  return context;
-}
-ingsProvider");
-  }
-  return context;
-}
     <SettingsContext.Provider
       value={{
         settings,
