@@ -17,14 +17,14 @@
 ### 🎨 UX & Aesthetics (Refined Design)
 - [x] **On-Canvas Hybrid Editor**: Combine direct manipulation with precision controls.
     - **Spec**: [2026-04-09-on-canvas-hybrid-editor-design.md](./docs/superpowers/specs/2026-04-09-on-canvas-hybrid-editor-design.md)
-    - **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
-    - **Tabbed Mini-Tuner**: Implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
-        - **Follow & Update**: Menu follows the element during drag.
-        - **Smart Flipping**: Ensures visibility near screen edges.
-    - **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
+    - [x] **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
+    - [x] **Tabbed Mini-Tuner**: Implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
+        - [x] **Follow & Update**: Menu follows the element during drag.
+        - [x] **Smart Flipping**: Ensures visibility near screen edges.
+    - [x] **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
 - [x] **Color Sampler**: Add a tool to pick colors directly from product images.
-    - **Extraction**: Canvas-based extraction of top 3 dominant colors.
-    - **Explicit Apply**: Clicking a swatch shows a preview; requires clicking "Apply" to confirm.
-- [ ] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
+    - [x] **Extraction**: Canvas-based extraction of top 3 dominant colors.
+    - [x] **Explicit Apply**: Clicking a swatch shows a preview; requires clicking "Apply" to confirm.
+- [x] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
 - [ ] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
 - [ ] **Undo/Redo History**: Add a state stack to allow users to revert design changes step-by-step.

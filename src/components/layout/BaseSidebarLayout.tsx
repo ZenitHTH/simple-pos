@@ -81,8 +81,6 @@ export default function BaseSidebarLayout({
         <div className="flex-1 overflow-hidden">
           {children}
         </div>
-
-        <SelectableOverlay id="sidebar_scale" />
       </div>
     </aside>
   );

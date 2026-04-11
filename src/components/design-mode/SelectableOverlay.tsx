@@ -3,12 +3,12 @@
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
-import { motion } from "framer-motion";
+import { motion, PanInfo } from "framer-motion";
 import { useState, useRef } from "react";
 
 interface SelectableOverlayProps {
   id: string;
-  className?: string; // Additional classes if needed
+  className?: string;
 }
 
 export default function SelectableOverlay({
@@ -31,18 +31,57 @@ export default function SelectableOverlay({
     startScaleRef.current = currentScale;
   };
 
-  const handleDrag = (_: any, info: any) => {
-    // Map total movement to scale change
-    // sensitivity: 0.5% per pixel
+  const handleDrag = (_: any, info: PanInfo, direction: "nw" | "ne" | "sw" | "se") => {
     const sensitivity = 0.5;
-    // Use total offset relative to start. 
-    // Pulling bottom-right increases scale (y increases, x increases)
-    // We use y - (-x) equivalent logic or just pick the axis that feels more natural.
-    // Diagonal pull: y increases, x increases. 
-    const delta = (info.offset.y + info.offset.x) * sensitivity;
+    let delta = 0;
+
+    // Logic: 
+    // Pulling away from center increases scale.
+    // Pushing towards center decreases scale.
+    switch (direction) {
+      case "se": // Bottom-right: +x, +y increases scale
+        delta = (info.offset.x + info.offset.y) * sensitivity;
+        break;
+      case "nw": // Top-left: -x, -y increases scale
+        delta = (-info.offset.x - info.offset.y) * sensitivity;
+        break;
+      case "ne": // Top-right: +x, -y increases scale
+        delta = (info.offset.x - info.offset.y) * sensitivity;
+        break;
+      case "sw": // Bottom-left: -x, +y increases scale
+        delta = (-info.offset.x + info.offset.y) * sensitivity;
+        break;
+    }
+
     const newScale = Math.min(Math.max(startScaleRef.current + delta, 50), 200);
-    
     updateSettings({ [id]: newScale });
+  };
+
+  const renderHandle = (direction: "nw" | "ne" | "sw" | "se") => {
+    const positionClasses = {
+      nw: "-top-3 -left-3 cursor-nw-resize",
+      ne: "-top-3 -right-3 cursor-ne-resize",
+      sw: "-bottom-3 -left-3 cursor-sw-resize",
+      se: "-bottom-3 -right-3 cursor-se-resize",
+    };
+
+    return (
+      <motion.div
+        drag
+        dragMomentum={false}
+        dragElastic={0}
+        onDragStart={handleDragStart}
+        onDrag={(e, info) => handleDrag(e, info, direction)}
+        onDragEnd={() => setIsDragging(false)}
+        whileHover={{ scale: 1.2, backgroundColor: "var(--primary)" }}
+        whileTap={{ scale: 0.9 }}
+        className={cn(
+          "absolute h-6 w-6 rounded-full bg-primary border-4 border-background shadow-xl z-50 flex items-center justify-center transition-all",
+          positionClasses[direction]
+        )}
+        style={{ x: 0, y: 0 }}
+      />
+    );
   };
 
   return (
@@ -57,12 +96,11 @@ export default function SelectableOverlay({
         className,
       )}
       onClick={(e) => {
-        // Prevent click from triggering underlying elements
         e.preventDefault();
         e.stopPropagation();
         selectElement(isSelected ? null : id);
       }}
-      title={id} // Show ID on hover tooltip
+      title={id}
     >
       {isSelected && (
         <>
@@ -79,20 +117,11 @@ export default function SelectableOverlay({
             }} 
           />
 
-          {/* Bottom-Right Drag Handle */}
-          <motion.div
-            drag
-            dragMomentum={false}
-            dragElastic={0}
-            onDragStart={handleDragStart}
-            onDrag={handleDrag}
-            onDragEnd={() => setIsDragging(false)}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            className="absolute -bottom-3 -right-3 h-6 w-6 rounded-full bg-primary border-4 border-background shadow-xl cursor-nwse-resize z-50 flex items-center justify-center transition-shadow hover:shadow-primary/50"
-            // Reset position after drag to keep it anchored relative to the growing/shrinking parent
-            style={{ x: 0, y: 0 }}
-          />
+          {/* Four Corner Drag Handles */}
+          {renderHandle("nw")}
+          {renderHandle("ne")}
+          {renderHandle("sw")}
+          {renderHandle("se")}
         </>
       )}
     </div>

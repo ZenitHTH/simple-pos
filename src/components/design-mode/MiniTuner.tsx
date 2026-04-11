@@ -15,8 +15,6 @@ import NumberStepper from "@/components/ui/NumberStepper";
 
 type Tab = "layout" | "style";
 
-const DEFAULT_LAYOUT_WIDTH = 1280;
-
 export default function MiniTuner() {
   const { selectedElementId } = useMockup();
   const { settings, updateSettings } = useSettings();
