@@ -43,7 +43,7 @@ export function ThemePresetsPanel({
             onClick={() => updateSettings(preset.values)}
             className={cn(
               "flex items-center gap-3 rounded-xl border p-3 text-left transition-all",
-              settings.theme_preset === preset.id
+              settings.theme.theme_preset === preset.id
                 ? "border-primary bg-primary/10 shadow-sm"
                 : "border-border bg-card/50 hover:bg-secondary/50"
             )}
@@ -51,7 +51,7 @@ export function ThemePresetsPanel({
             <div
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-lg",
-                settings.theme_preset === preset.id
+                settings.theme.theme_preset === preset.id
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary text-muted-foreground"
               )}

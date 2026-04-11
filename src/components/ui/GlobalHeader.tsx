@@ -25,7 +25,7 @@ export default function GlobalHeader({
   return (
     <header
       className={`relative flex shrink-0 flex-wrap items-center justify-between gap-4 transition-all duration-300 ${className}`}
-      style={{ fontSize: `${settings.header_font_scale || 100}%` }}
+      style={{ fontSize: `${settings.scaling.fonts.header || 100}%` }}
     >
       <SelectableOverlay id="header_font_scale" />
       <div className="flex-1">

@@ -45,6 +45,7 @@
     "baseline-browser-mapping": "^2.10.17",
     "eslint": "^10.2.0",
     "eslint-config-next": "^16.2.3",
+    "glob": "^13.0.6",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",

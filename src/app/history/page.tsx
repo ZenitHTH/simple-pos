@@ -117,8 +117,7 @@ export default function HistoryPage() {
       <div
         className="relative w-full transition-all duration-300"
         style={{
-          maxWidth: `${settings.layout_max_width || 1280}px`,
-          fontSize: `${settings.history_font_scale || 100}%`,
+          fontSize: `${settings.scaling.fonts.history || 100}%`,
         }}
       >
         <SelectableOverlay id="history_font_scale" />

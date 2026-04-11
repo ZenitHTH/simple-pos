@@ -162,8 +162,8 @@ export default function Sidebar() {
         title="POS System"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        scale={settings?.sidebar_scale}
-        fontScale={settings?.sidebar_font_scale}
+        scale={settings?.scaling.components.sidebar}
+        fontScale={settings?.scaling.fonts.sidebar}
       >
         <nav
           className="flex-1 space-y-2 overflow-y-auto px-4 py-4"

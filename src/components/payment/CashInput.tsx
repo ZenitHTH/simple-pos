@@ -74,7 +74,7 @@ const CashInput = memo(
               "bg-muted/5 border-border focus:border-primary focus:ring-primary/10 h-auto w-full cursor-default rounded-xl border-2 py-3 pr-4 pl-8 text-right font-bold transition-all outline-none focus:ring-4",
             )}
             style={{
-              fontSize: `${(settings.numpad_display_font_scale ?? 100) * 0.015}rem`,
+              fontSize: `${(settings.styling.payment.numpad_display_font_scale ?? 100) * 0.015}rem`,
               lineHeight: "1.2",
             }}
             placeholder="0.00"

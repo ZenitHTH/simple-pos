@@ -29,12 +29,11 @@ export default function GeneralSettingPage() {
       headerActions={<ResetSettingsButton />}
       scaleKey="setting_page_scale"
       scrollable={true}
-      layoutMaxWidth={settings.layout_max_width}
     >
       <div className="space-y-6">
         <GeneralSettings
-          imageStoragePath={settings.image_storage_path ?? undefined}
-          dbStoragePath={settings.db_storage_path ?? undefined}
+          imageStoragePath={settings.storage.image_storage_path ?? undefined}
+          dbStoragePath={settings.storage.db_storage_path ?? undefined}
           onUpdateSettings={handleUpdateSettings}
         />
         <ThemeSettings />

@@ -11,7 +11,7 @@ export default function CurrencySettingPage() {
 
   const handleUpdateCurrency = useCallback(
     (symbol: string) => {
-      updateSettings({ currency_symbol: symbol });
+      updateSettings({ general: { currency_symbol: symbol } });
     },
     [updateSettings],
   );
@@ -23,10 +23,9 @@ export default function CurrencySettingPage() {
       headerActions={<ResetSettingsButton />}
       scaleKey="setting_page_scale"
       scrollable={true}
-      layoutMaxWidth={settings.layout_max_width}
     >
       <CurrencySettings
-        currency={settings.currency_symbol}
+        currency={settings.general.currency_symbol}
         onUpdateCurrency={handleUpdateCurrency}
       />
     </ManagementPageLayout>

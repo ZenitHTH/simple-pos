@@ -15,7 +15,6 @@ export default function ExportSettingPage() {
       headerActions={<ResetSettingsButton />}
       scaleKey="setting_page_scale"
       scrollable={true}
-      layoutMaxWidth={settings.layout_max_width}
     >
       <ExportSection />
     </ManagementPageLayout>

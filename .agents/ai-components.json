@@ -420,21 +420,6 @@
     "props": "POSClientProps"
   },
   {
-    "name": "PaymentModal",
-    "type": "component",
-    "path": "src/components/payment/PaymentModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "payment",
-      "modal",
-      "paymentmodal",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "PaymentModalProps"
-  },
-  {
     "name": "StockTable",
     "type": "component",
     "path": "src/components/manage/StockTable.tsx",
@@ -691,6 +676,22 @@
     "props": "ManagementPageLayoutProps"
   },
   {
+    "name": "BaseSidebarLayout",
+    "type": "component",
+    "path": "src/components/layout/BaseSidebarLayout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "base",
+      "sidebar",
+      "layout",
+      "basesidebarlayout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "BaseSidebarLayoutProps"
+  },
+  {
     "name": "AppShell",
     "type": "component",
     "path": "src/components/layout/AppShell.tsx",
@@ -718,6 +719,21 @@
       "component"
     ],
     "props": null
+  },
+  {
+    "name": "PaymentModal",
+    "type": "component",
+    "path": "src/components/payment/PaymentModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "payment",
+      "modal",
+      "paymentmodal",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "PaymentModalProps"
   },
   {
     "name": "ReceiptList",
@@ -849,6 +865,22 @@
     "props": "ThemePresetsPanelProps"
   },
   {
+    "name": "SidebarTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/SidebarTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "tuner",
+      "sidebartuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarTunerProps"
+  },
+  {
     "name": "SidebarSlider",
     "type": "component",
     "path": "src/components/design-tuner/SidebarSlider.tsx",
@@ -881,6 +913,22 @@
     "props": null
   },
   {
+    "name": "NumpadTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/NumpadTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "numpad",
+      "tuner",
+      "numpadtuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "NumpadTunerProps"
+  },
+  {
     "name": "NavButton",
     "type": "component",
     "path": "src/components/design-tuner/NavButton.tsx",
@@ -895,6 +943,54 @@
       "component"
     ],
     "props": null
+  },
+  {
+    "name": "HistoryTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/HistoryTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "tuner",
+      "historytuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "HistoryTunerProps"
+  },
+  {
+    "name": "GridTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/GridTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "grid",
+      "tuner",
+      "gridtuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GridTunerProps"
+  },
+  {
+    "name": "GlobalTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/GlobalTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "tuner",
+      "globaltuner",
+      "design-tuner",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalTunerProps"
   },
   {
     "name": "GlobalStylesPanel",
@@ -962,7 +1058,7 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": "ButtonTunerProps"
   },
   {
     "name": "ButtonStylesPanel",
@@ -1180,6 +1276,34 @@
     "props": null
   },
   {
+    "name": "CartEmpty",
+    "type": "component",
+    "path": "src/components/cart/CartEmpty.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "empty",
+      "cartempty",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "Cart",
+    "type": "component",
+    "path": "src/components/cart/Cart.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartProps"
+  },
+  {
     "name": "SmoothScroll",
     "type": "component",
     "path": "src/components/common/SmoothScroll.tsx",
@@ -1210,34 +1334,6 @@
       "component"
     ],
     "props": null
-  },
-  {
-    "name": "CartEmpty",
-    "type": "component",
-    "path": "src/components/cart/CartEmpty.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "empty",
-      "cartempty",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "Cart",
-    "type": "component",
-    "path": "src/components/cart/Cart.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartProps"
   },
   {
     "name": "PasswordSetupScreen",

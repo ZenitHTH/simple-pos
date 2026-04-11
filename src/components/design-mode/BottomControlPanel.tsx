@@ -60,20 +60,9 @@ export default function BottomControlPanel({
                 min={75}
                 max={125}
                 step={5}
-                value={settings.display_scale || 100}
-                onChange={(val) => updateSettings({ display_scale: val })}
+                value={settings.scaling.display_scale || 100}
+                onChange={(val) => updateSettings({ scaling: { display_scale: val } })}
                 unit="%"
-              />
-            </div>
-            <div className="w-40">
-              <SidebarSlider
-                label="Page Width"
-                min={400}
-                max={2500}
-                step={50}
-                value={settings.layout_max_width || 1280}
-                onChange={(val) => updateSettings({ layout_max_width: val })}
-                unit="px"
               />
             </div>
           </div>

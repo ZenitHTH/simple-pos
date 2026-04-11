@@ -2,6 +2,7 @@
 
 import { SidebarSlider } from "./SidebarSlider";
 import { AppSettings } from "@/lib";
+import { Select } from "@/components/ui/Select";
 
 interface CartItemStylesPanelProps {
   settings: AppSettings;
@@ -14,11 +15,19 @@ export function CartItemStylesPanel({
 }: CartItemStylesPanelProps) {
   const handleReset = () => {
     updateSettings({
-      cart_item_font_size: 100,
-      cart_item_header_font_size: 100,
-      cart_item_price_font_size: 100,
-      cart_item_padding: 10,
-      cart_item_margin: 8,
+      styling: {
+        cart: {
+          font_size: 100,
+          header_font_size: 100,
+          price_font_size: 100,
+          padding: 10,
+          margin: 8,
+          image_size: 48,
+          gap: 12,
+          border_style: "solid",
+          bg_opacity: 0,
+        }
+      }
     });
   };
 
@@ -27,46 +36,82 @@ export function CartItemStylesPanel({
       <h2 className="text-foreground/80 mb-4 text-sm font-semibold">
         Cart Item Styles
       </h2>
-      <div className="space-y-3">
+      <div className="space-y-4">
         <SidebarSlider
           label="Font Size"
-          value={settings.cart_item_font_size ?? 100}
-          onChange={(v) => updateSettings({ cart_item_font_size: v })}
+          value={settings.styling.cart.font_size ?? 100}
+          onChange={(v) => updateSettings({ styling: { cart: { font_size: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Header Font"
-          value={settings.cart_item_header_font_size ?? 100}
-          onChange={(v) => updateSettings({ cart_item_header_font_size: v })}
+          value={settings.styling.cart.header_font_size ?? 100}
+          onChange={(v) => updateSettings({ styling: { cart: { header_font_size: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Price Font"
-          value={settings.cart_item_price_font_size ?? 100}
-          onChange={(v) => updateSettings({ cart_item_price_font_size: v })}
+          value={settings.styling.cart.price_font_size ?? 100}
+          onChange={(v) => updateSettings({ styling: { cart: { price_font_size: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Padding"
-          value={settings.cart_item_padding ?? 10}
-          onChange={(v) => updateSettings({ cart_item_padding: v })}
+          value={settings.styling.cart.padding ?? 10}
+          onChange={(update) => updateSettings({ styling: { cart: { padding: update } } })}
           min={0}
           max={32}
           unit="px"
         />
         <SidebarSlider
           label="Margin"
-          value={settings.cart_item_margin ?? 8}
-          onChange={(v) => updateSettings({ cart_item_margin: v })}
+          value={settings.styling.cart.margin ?? 8}
+          onChange={(v) => updateSettings({ styling: { cart: { margin: v } } })}
           min={0}
           max={24}
           unit="px"
+        />
+        <SidebarSlider
+          label="Image Size"
+          value={settings.styling.cart.image_size ?? 48}
+          onChange={(v) => updateSettings({ styling: { cart: { image_size: v } } })}
+          min={32}
+          max={96}
+          unit="px"
+        />
+        <SidebarSlider
+          label="Inner Gap"
+          value={settings.styling.cart.gap ?? 12}
+          onChange={(v) => updateSettings({ styling: { cart: { gap: v } } })}
+          min={0}
+          max={24}
+          unit="px"
+        />
+
+        <Select
+          label="Border Style"
+          value={settings.styling.cart.border_style ?? "solid"}
+          onChange={(v) => updateSettings({ styling: { cart: { border_style: v as any } } })}
+          options={[
+            { value: "solid", label: "Solid" },
+            { value: "dashed", label: "Dashed" },
+            { value: "none", label: "None" },
+          ]}
+        />
+
+        <SidebarSlider
+          label="Glass Opacity"
+          value={settings.styling.cart.bg_opacity ?? 0}
+          onChange={(v) => updateSettings({ styling: { cart: { bg_opacity: v } } })}
+          min={0}
+          max={100}
+          unit="%"
         />
 
         <div className="pt-2">

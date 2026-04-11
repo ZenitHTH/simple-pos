@@ -65,8 +65,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
           <div className="space-y-4">
             <SidebarSlider
               label="Overall Scale"
-              value={settings.numpad_scale ?? 100}
-              onChange={(v) => updateSettings({ numpad_scale: v })}
+              value={settings.styling.payment.numpad_scale ?? 100}
+              onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
               min={50}
               max={150}
               unit="%"
@@ -74,8 +74,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
 
             <SidebarSlider
               label="Button Font Scale"
-              value={settings.numpad_font_scale ?? 100}
-              onChange={(v) => updateSettings({ numpad_font_scale: v })}
+              value={settings.styling.payment.numpad_font_scale ?? 100}
+              onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
               min={50}
               max={200}
               unit="%"
@@ -83,8 +83,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
 
             <SidebarSlider
               label="Display Font Scale"
-              value={settings.numpad_display_font_scale ?? 100}
-              onChange={(v) => updateSettings({ numpad_display_font_scale: v })}
+              value={settings.styling.payment.numpad_display_font_scale ?? 100}
+              onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
               min={50}
               max={200}
               unit="%"
@@ -92,8 +92,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
 
             <SidebarSlider
               label="Button Height"
-              value={settings.numpad_button_height ?? 80}
-              onChange={(v) => updateSettings({ numpad_button_height: v })}
+              value={settings.styling.payment.numpad_button_height ?? 80}
+              onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
               min={40}
               max={120}
               unit="px"
@@ -101,8 +101,8 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
 
             <SidebarSlider
               label="Button Gap"
-              value={settings.numpad_gap ?? 12}
-              onChange={(v) => updateSettings({ numpad_gap: v })}
+              value={settings.styling.payment.numpad_gap ?? 12}
+              onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}
               min={0}
               max={32}
               unit="px"
@@ -112,11 +112,15 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
           <button
             onClick={() => {
               updateSettings({
-                numpad_scale: 100,
-                numpad_font_scale: 100,
-                numpad_display_font_scale: 100,
-                numpad_button_height: 80,
-                numpad_gap: 12,
+                styling: {
+                  payment: {
+                    numpad_scale: 100,
+                    numpad_font_scale: 100,
+                    numpad_display_font_scale: 100,
+                    numpad_button_height: 80,
+                    numpad_gap: 12,
+                  }
+                }
               });
             }}
             className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] transition-colors uppercase tracking-wider font-semibold"
@@ -134,7 +138,7 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
             <div
               className="bg-background border-border flex h-24 w-full items-center justify-end rounded-2xl border px-6 font-black tracking-widest shadow-inner overflow-hidden"
               style={{
-                fontSize: `${(settings.numpad_display_font_scale ?? 100) * 0.36}px`, // 36px is approx 4xl
+                fontSize: `${(settings.styling.payment.numpad_display_font_scale ?? 100) * 0.36}px`, // 36px is approx 4xl
               }}
             >
               {displayValue || "0"}
@@ -147,7 +151,7 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
           <div
             className="rounded-3xl bg-muted/20 p-6 shadow-sm border border-border/50 transition-all origin-top"
             style={{
-              transform: `scale(${(settings.numpad_scale ?? 100) / 100})`,
+              transform: `scale(${(settings.styling.payment.numpad_scale ?? 100) / 100})`,
             }}
           >
             <VirtualNumpad

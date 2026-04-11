@@ -24,11 +24,7 @@ const ProductCard = memo(function ProductCard({
   return (
     <div
       onClick={() => onAdd(product)}
-      className="group bg-card text-card-foreground border-border hover:border-primary/50 relative cursor-pointer overflow-hidden border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-92 active:brightness-95 active:shadow-inner touch-manipulation"
-      style={{
-        padding: `${settings.grid_item_padding ?? 16}px`,
-        borderRadius: `${settings.grid_item_radius ?? 24}px`,
-      }}
+      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation"
     >
       {/* Image Container */}
       <div
@@ -52,7 +48,7 @@ const ProductCard = memo(function ProductCard({
         )}
 
         {/* Hover/Tap Overlay with Icon */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-primary/10 group-active:bg-primary/20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-primary-muted group-active:bg-primary-glow">
           <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110">
             <FaPlus size={24} />
           </div>
@@ -67,7 +63,7 @@ const ProductCard = memo(function ProductCard({
           </span>
           <h3 
             className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.25em] leading-tight font-extrabold tracking-tight"
-            style={{ fontSize: `${(settings.grid_item_title_font_size ?? 100) * 0.0125}em` }}
+            style={{ fontSize: "calc(var(--grid-item-title-font-size) * 0.0125em)" }}
           >
             {product.name}
           </h3>
@@ -78,13 +74,13 @@ const ProductCard = memo(function ProductCard({
             <span className="text-muted-foreground text-[0.75em] font-medium">Price</span>
             <span 
               className="text-primary text-[1.6em] leading-none font-black tracking-tight"
-              style={{ fontSize: `${(settings.grid_item_price_font_size ?? 100) * 0.016}em` }}
+              style={{ fontSize: "calc(var(--grid-item-price-font-size) * 0.016em)" }}
             >
               {currency}
               {product.price.toFixed(2)}
             </span>
           </div>
-          <div className="bg-primary/10 text-primary rounded-xl px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary group-hover:text-primary-foreground transition-all shadow-sm group-active:scale-110 active:shadow-md">
+          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-all shadow-sm group-active:scale-110 active:shadow-md">
             ADD
           </div>
         </div>

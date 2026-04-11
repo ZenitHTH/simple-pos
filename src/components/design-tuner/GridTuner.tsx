@@ -60,14 +60,14 @@ interface GridTunerProps {
 
 export function GridTuner({ settings, updateSettings }: GridTunerProps) {
   // Calculate Grid Layout based on scale (same logic as real grid)
-  const gridScale = settings.grid_scale || 100;
+  const gridScale = settings.scaling.components.grid || 100;
   const baseWidth = 180; // Smaller base for preview
   const itemMinWidth = baseWidth * (gridScale / 100);
 
   const gridStyle = {
     gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
-    fontSize: `${settings.grid_font_scale || 100}%`,
-    gap: `${settings.grid_gap ?? 20}px`,
+    fontSize: `${settings.scaling.fonts.grid || 100}%`,
+    gap: `${settings.styling.grid.gap ?? 20}px`,
   };
 
   return (

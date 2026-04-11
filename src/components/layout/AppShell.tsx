@@ -14,7 +14,7 @@ import MiniTuner from "@/components/design-mode/MiniTuner";
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { settings } = useSettings();
-  const scale = (settings.display_scale || 100) / 100;
+  const scale = (settings.scaling.display_scale || 100) / 100;
 
   return (
     <div className="bg-background text-foreground relative flex h-screen w-full flex-col overflow-hidden antialiased">

@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import { SidebarSlider } from "./SidebarSlider";
 import { AppSettings } from "@/lib/types";
-import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
-import { FaHome, FaCog } from "react-icons/fa";
+import { FaHome, FaCog, FaBoxOpen, FaTags } from "react-icons/fa";
+import { SidebarItem } from "../layout/sidebar/SidebarItem";
+import { SidebarGroup } from "../layout/sidebar/SidebarGroup";
 
 const container = {
   hidden: { opacity: 0 },
@@ -45,27 +46,51 @@ export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
           variants={item}
           className="border-border/60 bg-card/50 h-fit space-y-8 rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
         >
-          <h3 className="text-xl font-bold">Layout Tuning</h3>
+          <h3 className="text-xl font-bold">Layout & Style</h3>
           <div className="space-y-6">
             <SidebarSlider
-              label="Button Scale"
-              value={settings.sidebar_button_scale ?? 100}
-              onChange={(v) => updateSettings({ sidebar_button_scale: v })}
-              min={50}
-              max={200}
+              label="Icon Size"
+              value={settings.styling.sidebar.icon_size ?? 20}
+              onChange={(v) => updateSettings({ styling: { sidebar: { icon_size: v } } })}
+              min={12}
+              max={32}
+              unit="px"
+            />
+            <SidebarSlider
+              label="Item Spacing"
+              value={settings.styling.sidebar.item_spacing ?? 8}
+              onChange={(v) => updateSettings({ styling: { sidebar: { item_spacing: v } } })}
+              min={0}
+              max={24}
+              unit="px"
+            />
+            <SidebarSlider
+              label="Corner Radius"
+              value={settings.styling.sidebar.item_radius ?? 12}
+              onChange={(v) => updateSettings({ styling: { sidebar: { item_radius: v } } })}
+              min={0}
+              max={24}
+              unit="px"
+            />
+            <SidebarSlider
+              label="Active Opacity"
+              value={settings.styling.sidebar.active_bg_opacity ?? 10}
+              onChange={(v) => updateSettings({ styling: { sidebar: { active_bg_opacity: v } } })}
+              min={0}
+              max={100}
               unit="%"
             />
             <SidebarSlider
               label="Font Size"
-              value={settings.sidebar_font_scale ?? 100}
-              onChange={(v) => updateSettings({ sidebar_font_scale: v })}
+              value={settings.scaling.fonts.sidebar ?? 100}
+              onChange={(v) => updateSettings({ scaling: { fonts: { sidebar: v } } })}
               min={50}
               max={150}
               unit="%"
             />
           </div>
           <div className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> The Sidebar Width is now exclusively tuned on the main display using Design Mode (on-canvas MiniTuner).
+            <strong>Tip:</strong> Sidebar Width can be tuned in the <strong>Layout</strong> tab.
           </div>
         </motion.div>
 
@@ -76,30 +101,42 @@ export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
         >
           <div className="border-border/60 bg-card/30 rounded-3xl border shadow-xl backdrop-blur-sm relative overflow-hidden h-[500px] flex">
              
-             {/* Mock Sidebar */}
+             {/* Mock Sidebar Container */}
              <div 
-                className="h-full border-r border-border bg-card"
-                style={{ "--sidebar-button-scale": (settings.sidebar_button_scale ?? 100) / 100 } as any}
+                className="h-full border-r border-border bg-card flex flex-col"
+                style={{ 
+                  width: `${256 * ((settings.scaling.components.sidebar || 100) / 100)}px`,
+                  fontSize: `${settings.scaling.fonts.sidebar || 100}%`
+                }}
              >
-                <BaseSidebarLayout
-                    title="POS System"
-                    isOpen={true}
-                    scale={settings.sidebar_scale || 100}
-                    fontScale={settings.sidebar_font_scale || 100}
-                    className="relative lg:static translate-x-0"
-                    showMobileClose={false}
-                >
-                    <nav className="flex-1 space-y-2 p-4">
-                        <div className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 bg-primary text-primary-foreground font-bold">
-                            <FaHome size={20} />
-                            <span>Main Page</span>
-                        </div>
-                        <div className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-muted-foreground font-medium">
-                            <FaCog size={20} />
-                            <span>Settings</span>
-                        </div>
-                    </nav>
-                </BaseSidebarLayout>
+                <div className="p-6">
+                  <div className="h-8 w-24 bg-primary/20 rounded-lg animate-pulse" />
+                </div>
+                <nav className="flex-1 space-y-1 p-4">
+                  <SidebarItem 
+                    name="Dashboard" 
+                    path="#" 
+                    icon={<FaHome />} 
+                    isActive={true} 
+                  />
+                  <SidebarGroup 
+                    name="Management" 
+                    icon={<FaBoxOpen />} 
+                    isExpanded={true} 
+                    onToggle={() => {}} 
+                    currentPath="/manage" 
+                    children={[
+                      { name: "Products", path: "/manage", icon: <FaBoxOpen /> },
+                      { name: "Categories", path: "/categories", icon: <FaTags /> },
+                    ]}
+                  />
+                  <SidebarItem 
+                    name="Settings" 
+                    path="/settings" 
+                    icon={<FaCog />} 
+                    isActive={false} 
+                  />
+                </nav>
              </div>
 
              {/* Mock Main Content */}

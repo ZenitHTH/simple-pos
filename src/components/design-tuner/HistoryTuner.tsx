@@ -70,16 +70,16 @@ export function HistoryTuner({ settings, updateSettings }: HistoryTunerProps) {
           <div className="space-y-6">
             <SidebarSlider
               label="Header Size"
-              value={settings.header_font_scale ?? 100}
-              onChange={(v) => updateSettings({ header_font_scale: v })}
+              value={settings.scaling.fonts.header ?? 100}
+              onChange={(v) => updateSettings({ scaling: { fonts: { header: v } } })}
               min={50}
               max={150}
               unit="%"
             />
             <SidebarSlider
               label="Content Size"
-              value={settings.history_font_scale ?? 100}
-              onChange={(v) => updateSettings({ history_font_scale: v })}
+              value={settings.scaling.fonts.history ?? 100}
+              onChange={(v) => updateSettings({ scaling: { fonts: { history: v } } })}
               min={50}
               max={150}
               unit="%"
@@ -99,7 +99,7 @@ export function HistoryTuner({ settings, updateSettings }: HistoryTunerProps) {
         >
           <div className="border-border/60 bg-card/30 rounded-3xl border p-8 shadow-xl backdrop-blur-sm relative overflow-hidden">
              {/* Preview Zoom Layer */}
-             <div style={{ fontSize: `${settings.history_font_scale || 100}%` }}>
+             <div style={{ fontSize: `${settings.scaling.fonts.history || 100}%` }}>
                 <HistoryHeader />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     <div className="scale-90 origin-top-left -mb-10">

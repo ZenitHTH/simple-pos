@@ -3,6 +3,7 @@
 import { useMemo, memo } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "@/components/filters/ProductFilter";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Product } from "@/lib";
 import { AppSettings } from "@/lib";
 
@@ -41,7 +42,7 @@ const POSProductGrid = memo(function POSProductGrid({
   }, [products, selectedCategory, searchQuery]);
 
   // Calculate Grid Layout based on scale (Detailed adjustment)
-  const gridScale = settings?.grid_scale || 100;
+  const gridScale = settings?.scaling.components.grid || 100;
   
   // Base item width at 100% scale (M)
   // We use a responsive base that gets smaller on mobile
@@ -50,8 +51,8 @@ const POSProductGrid = memo(function POSProductGrid({
 
   const gridStyle = {
     gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
-    fontSize: `${settings?.grid_font_scale || 100}%`,
-    gap: `${settings?.grid_gap ?? 20}px`
+    fontSize: `${settings?.scaling.fonts.grid || 100}%`,
+    gap: `${settings?.styling.grid.gap ?? 20}px`
   };
 
   return (
@@ -83,6 +84,7 @@ const POSProductGrid = memo(function POSProductGrid({
               currency={currency}
             />
           ))}
+          <SelectableOverlay id="grid_scale" />
         </div>
       </div>
     </>

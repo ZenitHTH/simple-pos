@@ -10,12 +10,12 @@ export default function TaxSettingPage() {
   const { settings, updateSettings } = useSettings();
 
   const handleToggleTax = useCallback(() => {
-    updateSettings({ tax_enabled: !settings.tax_enabled });
-  }, [updateSettings, settings.tax_enabled]);
+    updateSettings({ general: { tax_enabled: !settings.general.tax_enabled } });
+  }, [updateSettings, settings.general.tax_enabled]);
 
   const handleUpdateTaxRate = useCallback(
     (rate: number) => {
-      updateSettings({ tax_rate: rate });
+      updateSettings({ general: { tax_rate: rate } });
     },
     [updateSettings],
   );
@@ -27,11 +27,10 @@ export default function TaxSettingPage() {
       headerActions={<ResetSettingsButton />}
       scaleKey="setting_page_scale"
       scrollable={true}
-      layoutMaxWidth={settings.layout_max_width}
     >
       <TaxSettings
-        isTaxEnabled={settings.tax_enabled}
-        taxPercentage={settings.tax_rate}
+        isTaxEnabled={settings.general.tax_enabled}
+        taxPercentage={settings.general.tax_rate}
         onToggleTax={handleToggleTax}
         onUpdateTaxRate={handleUpdateTaxRate}
       />

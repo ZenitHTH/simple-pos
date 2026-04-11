@@ -6,68 +6,92 @@ export function useApplySettings(settings: AppSettings) {
     const root = document.documentElement;
 
     // Basic sanitization for CSS variables
-    const safeFont = (f: string | null) => (f?.includes(";") ? "Inter" : f);
-    const safeColor = (c: string | null) => (c?.includes(";") ? "#3b82f6" : c);
+    const safeFont = (f: string | null | undefined) => (f?.includes(";") ? "Inter" : f);
+    const safeColor = (c: string | null | undefined) => (c?.includes(";") ? "#3b82f6" : c);
 
     root.style.setProperty(
       "--typography-font-family",
-      safeFont(settings.typography_font_family) ?? "Inter, sans-serif",
+      safeFont(settings.typography.font_family) ?? "Inter, sans-serif",
     );
     root.style.setProperty(
       "--typography-base-size",
-      `${settings.typography_base_size ?? 16}px`,
+      `${settings.typography.base_size ?? 16}px`,
     );
     root.style.setProperty(
       "--typography-heading-weight",
-      String(settings.typography_heading_weight ?? 700),
+      String(settings.typography.heading_weight ?? 700),
     );
     root.style.setProperty(
       "--typography-body-weight",
-      String(settings.typography_body_weight ?? 400),
+      String(settings.typography.body_weight ?? 400),
     );
     root.style.setProperty(
       "--typography-line-height",
-      String(settings.typography_line_height ?? 1.6),
+      String(settings.typography.line_height ?? 1.6),
     );
     root.style.setProperty(
       "--typography-letter-spacing",
-      `${settings.typography_letter_spacing ?? 0}em`,
+      `${settings.typography.letter_spacing ?? 0}em`,
     );
 
     // Apply primary theme color
     const primaryColor = safeColor(settings.theme_primary_color);
     if (primaryColor) {
-      root.style.setProperty("--primary", primaryColor);
+      root.style.setProperty("--theme-primary", primaryColor);
     } else {
-      root.style.removeProperty("--primary");
+      root.style.removeProperty("--theme-primary");
     }
 
     // Apply radius
-    if (settings.theme_radius !== null) {
-      root.style.setProperty("--radius", `${settings.theme_radius}rem`);
+    if (settings.theme.theme_radius !== null) {
+      root.style.setProperty("--radius", `${settings.theme.theme_radius}rem`);
     } else {
       root.style.removeProperty("--radius");
     }
 
-    // Apply button scales
+    // ── Product Grid Styling ──
+    const grid = settings.styling.grid;
+    root.style.setProperty("--grid-item-padding", `${grid.item_padding ?? 16}px`);
+    root.style.setProperty("--grid-item-radius", `${grid.item_radius ?? 24}px`);
+    root.style.setProperty("--grid-item-title-font-size", `${grid.item_title_font_size ?? 100}%`);
+    root.style.setProperty("--grid-item-price-font-size", `${grid.item_price_font_size ?? 100}%`);
+    root.style.setProperty("--grid-gap", `${grid.gap ?? 20}px`);
+    root.style.setProperty("--grid-item-shadow-opacity", `${(grid.item_shadow ?? 10) / 100}`);
+    root.style.setProperty("--grid-item-border-width", `${grid.item_border_width ?? 1}px`);
+    root.style.setProperty("--grid-item-hover-scale", `${(grid.item_hover_scale ?? 102) / 100}`);
+    root.style.setProperty("--grid-item-bg-opacity", `${(grid.item_bg_opacity ?? 100) / 100}`);
+
+    // ── Sidebar Styling ──
+    const sidebar = settings.styling.sidebar;
+    root.style.setProperty("--sidebar-icon-size", `${sidebar.icon_size ?? 20}px`);
+    root.style.setProperty("--sidebar-item-spacing", `${sidebar.item_spacing ?? 8}px`);
+    root.style.setProperty("--sidebar-item-radius", `${sidebar.item_radius ?? 12}px`);
+    root.style.setProperty("--sidebar-active-bg-opacity", `${(sidebar.active_bg_opacity ?? 10) / 100}`);
+
+    // ── Button Styling ──
+    const button = settings.styling.button;
+    root.style.setProperty("--button-radius", `${button.radius ?? 12}px`);
+    root.style.setProperty("--button-shadow-intensity", `${(button.shadow_intensity ?? 10) / 100}`);
+    root.style.setProperty("--button-transition-speed", `${button.transition_speed ?? 200}ms`);
+
+    // ── Cart Item Styling ──
+    const cart = settings.styling.cart;
+    root.style.setProperty("--cart-item-image-size", `${cart.image_size ?? 48}px`);
+    root.style.setProperty("--cart-item-gap", `${cart.gap ?? 12}px`);
+    root.style.setProperty("--cart-item-border-style", cart.border_style ?? "solid");
+    root.style.setProperty("--cart-item-bg-opacity", `${(cart.bg_opacity ?? 0) / 100}`);
+
+    // Apply global scales
     root.style.setProperty(
-      "--button-scale",
-      `${(settings.button_scale ?? 100) / 100}`,
+        "--display-scale",
+        `${(settings.scaling.display_scale ?? 100) / 100}`,
     );
+
+    // Apply font scales that are used as CSS variables
     root.style.setProperty(
-      "--button-font-scale",
-      `${(settings.button_font_scale ?? 100) / 100}`,
+        "--header-font-scale",
+        `${(settings.scaling.fonts.header ?? 100) / 100}`,
     );
-  }, [
-    settings.typography_font_family,
-    settings.typography_base_size,
-    settings.typography_heading_weight,
-    settings.typography_body_weight,
-    settings.typography_line_height,
-    settings.typography_letter_spacing,
-    settings.theme_primary_color,
-    settings.theme_radius,
-    settings.button_scale,
-    settings.button_font_scale,
-  ]);
+
+  }, [settings]);
 }

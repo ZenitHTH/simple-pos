@@ -50,8 +50,8 @@ export function TunerSidebar({
     <BaseSidebarLayout
       title="Design Tuner"
       headerIcon={FaPalette}
-      scale={settings.sidebar_scale}
-      fontScale={settings.sidebar_font_scale}
+      scale={settings.scaling.components.sidebar}
+      fontScale={settings.scaling.fonts.sidebar}
       className="backdrop-blur-xl bg-card/60"
     >
       <div className="px-6 pb-6">

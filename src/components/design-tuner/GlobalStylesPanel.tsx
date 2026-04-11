@@ -26,8 +26,8 @@ export function GlobalStylesPanel({
         {/* Radius Slider */}
         <SidebarSlider
           label="Radius"
-          value={settings.theme_radius ?? 0.5}
-          onChange={(v) => updateSettings({ theme_radius: v })}
+          value={settings.theme.theme_radius ?? 0.5}
+          onChange={(v) => updateSettings({ theme: { theme_radius: v } })}
           min={0}
           max={2}
           step={0.1}
@@ -48,7 +48,7 @@ export function GlobalStylesPanel({
         {/* Primary Color Picker */}
         <div className="space-y-2">
           <label className="text-muted-foreground block text-xs font-medium">
-            Primary Color
+            Primary Color (Auto-generates palette)
           </label>
           <div className="flex gap-2">
             <input
@@ -71,14 +71,55 @@ export function GlobalStylesPanel({
           </div>
         </div>
 
+        {/* Button Styling */}
+        <div className="border-t border-border/50 pt-4 mt-4 space-y-4">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+            Global Buttons
+          </h3>
+          <SidebarSlider
+            label="Button Radius"
+            value={settings.styling.button.radius ?? 12}
+            onChange={(v) => updateSettings({ styling: { button: { radius: v } } })}
+            min={0}
+            max={32}
+            unit="px"
+          />
+          <SidebarSlider
+            label="Shadow Intensity"
+            value={settings.styling.button.shadow_intensity ?? 10}
+            onChange={(v) => updateSettings({ styling: { button: { shadow_intensity: v } } })}
+            min={0}
+            max={100}
+            unit="%"
+          />
+          <SidebarSlider
+            label="Anim Speed"
+            value={settings.styling.button.transition_speed ?? 200}
+            onChange={(v) => updateSettings({ styling: { button: { transition_speed: v } } })}
+            min={100}
+            max={500}
+            step={50}
+            unit="ms"
+          />
+        </div>
+
         {/* Reset Buttons */}
         <div className="pt-2">
           <button
             onClick={() => {
               updateSettings({
-                theme_primary_color: "#3b82f6",
-                theme_radius: 0.5,
-                theme_preset: null,
+                theme: {
+                  theme_primary_color: "#3b82f6",
+                  theme_radius: 0.5,
+                  theme_preset: null,
+                },
+                styling: {
+                  button: {
+                    radius: 12,
+                    shadow_intensity: 10,
+                    transition_speed: 200,
+                  }
+                }
               });
               setPreviewZoom(16);
             }}

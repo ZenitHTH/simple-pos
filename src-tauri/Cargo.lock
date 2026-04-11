@@ -99,6 +99,7 @@ dependencies = [
  "log",
  "serde",
  "serde_json",
+ "settings_lib",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
@@ -4205,6 +4206,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "170fb83ab34de17dc69aa7c67482b22218ddb85da56546f9bd6b929e32a05930"
 dependencies = [
  "stable_deref_trait",
+]
+
+[[package]]
+name = "settings_lib"
+version = "0.1.0"
+dependencies = [
+ "directories 6.0.0",
+ "log",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

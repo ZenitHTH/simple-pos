@@ -63,7 +63,7 @@ export default function Cart({
         <div
           className="flex flex-col"
           style={{
-            gap: `${settings.cart_item_margin ?? 10}px`,
+            gap: `${settings.styling.cart.margin ?? 10}px`,
           }}
         >
           {items.map((item) => (
@@ -73,10 +73,10 @@ export default function Cart({
                 currency={currency}
                 onUpdateQuantity={onUpdateQuantity}
                 onRemove={onRemove}
-                itemFontSize={settings.cart_item_font_size ?? undefined}
-                headerFontSize={settings.cart_item_header_font_size ?? undefined}
-                priceFontSize={settings.cart_item_price_font_size ?? undefined}
-                itemPadding={settings.cart_item_padding ?? undefined}
+                itemFontSize={settings.styling.cart.font_size ?? undefined}
+                headerFontSize={settings.styling.cart.header_font_size ?? undefined}
+                priceFontSize={settings.styling.cart.price_font_size ?? undefined}
+                itemPadding={settings.styling.cart.padding ?? undefined}
               />
             </div>
           ))}

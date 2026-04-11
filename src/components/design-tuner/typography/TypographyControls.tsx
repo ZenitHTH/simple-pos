@@ -33,12 +33,14 @@ export function TypographyControls({
 }: TypographyControlsProps) {
   const handleReset = () => {
     updateSettings({
-      typography_font_family: TYPOGRAPHY_DEFAULTS.fontFamily,
-      typography_base_size: TYPOGRAPHY_DEFAULTS.baseSize,
-      typography_heading_weight: TYPOGRAPHY_DEFAULTS.headingWeight,
-      typography_body_weight: TYPOGRAPHY_DEFAULTS.bodyWeight,
-      typography_line_height: TYPOGRAPHY_DEFAULTS.lineHeight,
-      typography_letter_spacing: TYPOGRAPHY_DEFAULTS.letterSpacing,
+      typography: {
+        font_family: TYPOGRAPHY_DEFAULTS.fontFamily,
+        base_size: TYPOGRAPHY_DEFAULTS.baseSize,
+        heading_weight: TYPOGRAPHY_DEFAULTS.headingWeight,
+        body_weight: TYPOGRAPHY_DEFAULTS.bodyWeight,
+        line_height: TYPOGRAPHY_DEFAULTS.lineHeight,
+        letter_spacing: TYPOGRAPHY_DEFAULTS.letterSpacing,
+      }
     });
   };
 
@@ -54,7 +56,7 @@ export function TypographyControls({
         <Select
           value={fontFamily}
           onChange={(v) =>
-            updateSettings({ typography_font_family: v as string })
+            updateSettings({ typography: { font_family: v as string } })
           }
           options={FONT_FAMILIES}
           className="max-w-xs"
@@ -70,7 +72,7 @@ export function TypographyControls({
         max={24}
         step={1}
         unit="px"
-        onChange={(v) => updateSettings({ typography_base_size: v })}
+        onChange={(v) => updateSettings({ typography: { base_size: v } })}
       />
 
       {/* Heading Weight */}
@@ -80,7 +82,7 @@ export function TypographyControls({
         </label>
         <PillGroup
           value={headingWeight}
-          onChange={(v) => updateSettings({ typography_heading_weight: v })}
+          onChange={(v) => updateSettings({ typography: { heading_weight: v } })}
           options={WEIGHT_OPTIONS.filter((o) => o.value >= 500)}
           styleInActive={(opt) => ({ fontWeight: opt.value })}
         />
@@ -93,7 +95,7 @@ export function TypographyControls({
         </label>
         <PillGroup
           value={bodyWeight}
-          onChange={(v) => updateSettings({ typography_body_weight: v })}
+          onChange={(v) => updateSettings({ typography: { body_weight: v } })}
           options={WEIGHT_OPTIONS.filter((o) => o.value <= 600)}
           styleInActive={(opt) => ({ fontWeight: opt.value })}
         />
@@ -106,7 +108,7 @@ export function TypographyControls({
         min={1.0}
         max={2.5}
         step={0.05}
-        onChange={(v) => updateSettings({ typography_line_height: v })}
+        onChange={(v) => updateSettings({ typography: { line_height: v } })}
         formatDisplay={(v) => v.toFixed(2)}
       />
 
@@ -120,7 +122,7 @@ export function TypographyControls({
         unit="em"
         onChange={(v) =>
           updateSettings({
-            typography_letter_spacing: parseFloat(v.toFixed(3)),
+            typography: { letter_spacing: parseFloat(v.toFixed(3)) },
           })
         }
         formatDisplay={(v) =>

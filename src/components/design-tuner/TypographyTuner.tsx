@@ -16,17 +16,17 @@ export function TypographyTuner({
 }: TypographyTunerProps) {
   // Derive current values from settings with fallbacks
   const fontFamily =
-    settings.typography_font_family ?? TYPOGRAPHY_DEFAULTS.fontFamily;
+    settings.typography.font_family ?? TYPOGRAPHY_DEFAULTS.fontFamily;
   const baseSize =
-    settings.typography_base_size ?? TYPOGRAPHY_DEFAULTS.baseSize;
+    settings.typography.base_size ?? TYPOGRAPHY_DEFAULTS.baseSize;
   const headingWeight =
-    settings.typography_heading_weight ?? TYPOGRAPHY_DEFAULTS.headingWeight;
+    settings.typography.heading_weight ?? TYPOGRAPHY_DEFAULTS.headingWeight;
   const bodyWeight =
-    settings.typography_body_weight ?? TYPOGRAPHY_DEFAULTS.bodyWeight;
+    settings.typography.body_weight ?? TYPOGRAPHY_DEFAULTS.bodyWeight;
   const lineHeight =
-    settings.typography_line_height ?? TYPOGRAPHY_DEFAULTS.lineHeight;
+    settings.typography.line_height ?? TYPOGRAPHY_DEFAULTS.lineHeight;
   const letterSpacing =
-    settings.typography_letter_spacing ?? TYPOGRAPHY_DEFAULTS.letterSpacing;
+    settings.typography.letter_spacing ?? TYPOGRAPHY_DEFAULTS.letterSpacing;
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 space-y-8 duration-500">

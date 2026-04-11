@@ -14,8 +14,10 @@ export function ButtonStylesPanel({
 }: ButtonStylesPanelProps) {
   const handleReset = () => {
     updateSettings({
-      button_scale: 100,
-      button_font_scale: 100,
+      scaling: {
+        components: { button: 100 },
+        fonts: { button: 100 },
+      }
     });
   };
 
@@ -27,16 +29,16 @@ export function ButtonStylesPanel({
       <div className="space-y-3">
         <SidebarSlider
           label="Button Scale"
-          value={settings.button_scale ?? 100}
-          onChange={(v) => updateSettings({ button_scale: v })}
+          value={settings.scaling.components.button ?? 100}
+          onChange={(v) => updateSettings({ scaling: { components: { button: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Button Font Scale"
-          value={settings.button_font_scale ?? 100}
-          onChange={(v) => updateSettings({ button_font_scale: v })}
+          value={settings.scaling.fonts.button ?? 100}
+          onChange={(v) => updateSettings({ scaling: { fonts: { button: v } } })}
           min={50}
           max={200}
           unit="%"

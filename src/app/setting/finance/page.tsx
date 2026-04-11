@@ -13,18 +13,18 @@ export default function FinanceSettingPage() {
 
     const handleUpdateCurrency = useCallback(
         (symbol: string) => {
-            updateSettings({ currency_symbol: symbol });
+            updateSettings({ general: { currency_symbol: symbol } });
         },
         [updateSettings],
     );
 
     const handleToggleTax = useCallback(() => {
-        updateSettings({ tax_enabled: !settings.tax_enabled });
-    }, [updateSettings, settings.tax_enabled]);
+        updateSettings({ general: { tax_enabled: !settings.general.tax_enabled } });
+    }, [updateSettings, settings.general.tax_enabled]);
 
     const handleUpdateTaxRate = useCallback(
         (rate: number) => {
-            updateSettings({ tax_rate: rate });
+            updateSettings({ general: { tax_rate: rate } });
         },
         [updateSettings],
     );
@@ -36,12 +36,11 @@ export default function FinanceSettingPage() {
             headerActions={<ResetSettingsButton />}
             scaleKey="setting_page_scale"
             scrollable={true}
-            layoutMaxWidth={settings.layout_max_width}
         >
             <div className="space-y-8">
                 <section>
                     <CurrencySettings
-                        currency={settings.currency_symbol}
+                        currency={settings.general.currency_symbol}
                         onUpdateCurrency={handleUpdateCurrency}
                     />
                 </section>
@@ -50,8 +49,8 @@ export default function FinanceSettingPage() {
 
                 <section>
                     <TaxSettings
-                        isTaxEnabled={settings.tax_enabled}
-                        taxPercentage={settings.tax_rate}
+                        isTaxEnabled={settings.general.tax_enabled}
+                        taxPercentage={settings.general.tax_rate}
                         onToggleTax={handleToggleTax}
                         onUpdateTaxRate={handleUpdateTaxRate}
                     />

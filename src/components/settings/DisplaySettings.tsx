@@ -36,8 +36,8 @@ const DisplaySettings = memo(() => {
             min={75}
             max={125}
             step={5}
-            value={settings.display_scale || 100}
-            onChange={(val) => updateSettings({ display_scale: val })}
+            value={settings.scaling.display_scale || 100}
+            onChange={(val) => updateSettings({ scaling: { display_scale: val } })}
             unit="%"
           />
         </div>

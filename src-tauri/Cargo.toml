@@ -32,4 +32,5 @@ chrono = { version = "^0.4", features = ["serde"] } # For date handling
 diesel = { version = "^2.3.6", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
 directories = "6.0.0"
 image_lib = { path = "image_lib" }
+settings_lib = { path = "settings_lib" }
 tauri-plugin-fs = "2.4.5"

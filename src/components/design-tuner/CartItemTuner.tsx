@@ -63,11 +63,7 @@ export function CartItemTuner({
         setTimeout(() => setItems(SAMPLE_ITEMS), 1500);
     };
 
-    const margin = settings.cart_item_margin ?? 8;
-    const padding = settings.cart_item_padding ?? 10;
-    const itemFontSize = settings.cart_item_font_size ?? 100;
-    const headerFontSize = settings.cart_item_header_font_size ?? 100;
-    const priceFontSize = settings.cart_item_price_font_size ?? 100;
+    const margin = settings.styling.cart.margin ?? 8;
 
     return (
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -85,9 +81,8 @@ export function CartItemTuner({
                     {/* Info card */}
                     <div className="bg-muted/30 rounded-lg p-4 text-sm text-muted-foreground mt-6">
                         <p>
-                            <strong>Tip:</strong> Use the sliders above to adjust font sizes,
-                            padding, and margins. Click <strong>Save Changes</strong> in the bottom bar
-                            to apply these settings to the real POS cart.
+                            <strong>Tip:</strong> Style variables are applied globally. 
+                            The preview below uses the same CSS variables as the real POS cart.
                         </p>
                     </div>
                 </div>
@@ -111,10 +106,6 @@ export function CartItemTuner({
                                 currency="฿"
                                 onUpdateQuantity={handleUpdateQuantity}
                                 onRemove={handleRemove}
-                                itemFontSize={itemFontSize}
-                                headerFontSize={headerFontSize}
-                                priceFontSize={priceFontSize}
-                                itemPadding={padding}
                             />
                         ))}
                     </div>

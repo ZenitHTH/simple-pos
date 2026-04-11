@@ -5,12 +5,13 @@ use database::product_image::{
     unlink_product_image as db_unlink_image,
 };
 use image_lib::save_image as lib_save_image;
+use settings_lib::get_settings;
 use tauri::command;
 
 #[command]
 pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
-    let settings = super::settings::get_settings().map_err(|e| e.to_string())?;
-    let target_dir = settings.image_storage_path.map(std::path::PathBuf::from);
+    let settings = get_settings().map_err(|e| e.to_string())?;
+    let target_dir = settings.storage.image_storage_path.map(std::path::PathBuf::from);
     lib_save_image(&data, &filename, target_dir.as_deref(), &key).map_err(|e| e.to_string())
 }
 

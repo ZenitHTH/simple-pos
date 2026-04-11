@@ -21,24 +21,20 @@ export function SidebarItem({
   return (
     <Link
       href={path}
-      style={{
-        padding: isSubItem 
-          ? `calc(0.625rem * var(--sidebar-button-scale, 1)) calc(0.75rem * var(--sidebar-button-scale, 1))` 
-          : `calc(0.75rem * var(--sidebar-button-scale, 1)) calc(1rem * var(--sidebar-button-scale, 1))`
-      }}
       className={cn(
-        "group flex items-center gap-3 transition-all duration-200",
-        isSubItem
-          ? "rounded-lg text-[0.9em]"
-          : "rounded-xl",
+        "group tuner-sidebar-item flex items-center gap-3 transition-all duration-200",
+        isSubItem ? "px-3 py-2 text-[0.9em]" : "px-4 py-3",
         isActive
-          ? "bg-primary text-primary-foreground shadow-primary/20 shadow-md"
+          ? "bg-primary text-primary-foreground shadow-primary-glow shadow-md"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
       )}
+      style={{
+        backgroundColor: isActive ? undefined : undefined, // Handled by classes, but keeping for color-mix if needed
+      } as any}
     >
       <span
-        style={{ transform: `scale(var(--sidebar-button-scale, 1))` }}
         className={cn(
+          "tuner-sidebar-icon flex items-center justify-center shrink-0",
           isActive
             ? "text-primary-foreground"
             : "text-muted-foreground group-hover:text-foreground",

@@ -21,6 +21,7 @@ export default function ProductTable({
   onEdit,
   onDelete,
   onToggleStockMode,
+  settings,
 }: ProductTableProps) {
   const router = useRouter();
 
@@ -72,7 +73,7 @@ export default function ProductTable({
         {
           header: "Price",
           className: "font-mono tabular-nums",
-          render: (product) => `฿${(product.satang / 100).toFixed(2)}`,
+          render: (product) => `${settings.general.currency_symbol}${(product.satang / 100).toFixed(2)}`,
         },
         {
           header: "Actions",

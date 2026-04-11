@@ -21,7 +21,6 @@ interface ManagementPageLayoutProps {
   modal?: React.ReactNode;
   floatingActions?: React.ReactNode;
   scrollable?: boolean;
-  layoutMaxWidth?: number;
 }
 
 export default function ManagementPageLayout({
@@ -37,7 +36,6 @@ export default function ManagementPageLayout({
   modal,
   floatingActions,
   scrollable = false,
-  layoutMaxWidth,
 }: ManagementPageLayoutProps) {
   // useSettings() removed for better performance (prop drilling)
   const ContentWrapper = scrollable
@@ -48,9 +46,7 @@ export default function ManagementPageLayout({
     <ContentWrapper>
       <div
         className={`relative mx-auto w-full p-8 transition-all duration-300 ${scrollable ? "pb-24" : ""}`}
-        style={{ maxWidth: `${layoutMaxWidth || 1280}px` }}
       >
-        <SelectableOverlay id="layout_max_width" />
         <GlobalHeader title={title} subtitle={subtitle}>
           {headerActions}
         </GlobalHeader>

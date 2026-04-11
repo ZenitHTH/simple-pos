@@ -14,9 +14,10 @@ const VirtualNumpad = memo(
     const { settings } = useSettings();
     const keys = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "00", "0", "."];
 
-    const gap = settings.numpad_gap ?? 12;
-    const buttonHeight = settings.numpad_button_height ?? 80;
-    const fontScale = settings.numpad_font_scale ?? 100;
+    const { styling } = settings;
+    const gap = styling.payment.numpad_gap ?? 12;
+    const buttonHeight = styling.payment.numpad_button_height ?? 80;
+    const fontScale = styling.payment.numpad_font_scale ?? 100;
 
     return (
       <div

@@ -56,13 +56,31 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const updateSettings = (updates: Partial<AppSettings>) => {
     setSettings((prev) => {
-      let next = { ...prev, ...updates };
+      // Helper for deep merging partial updates
+      const deepMerge = (target: any, source: any) => {
+        const result = { ...target };
+        for (const key in source) {
+          if (
+            source[key] &&
+            typeof source[key] === "object" &&
+            !Array.isArray(source[key]) &&
+            target[key]
+          ) {
+            result[key] = deepMerge(target[key], source[key]);
+          } else {
+            result[key] = source[key];
+          }
+        }
+        return result;
+      };
 
-      if (updates.theme_preset && updates.theme_preset !== "custom") {
+      let next = deepMerge(prev, updates) as AppSettings;
+
+      if (updates.theme?.theme_preset && updates.theme.theme_preset !== "custom") {
         const preset =
-          THEME_PRESETS[updates.theme_preset as keyof typeof THEME_PRESETS];
+          THEME_PRESETS[updates.theme.theme_preset as keyof typeof THEME_PRESETS];
         if (preset) {
-          next = { ...next, ...preset };
+          next = deepMerge(next, preset) as AppSettings;
         }
       }
 

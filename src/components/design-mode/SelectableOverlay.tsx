@@ -22,9 +22,41 @@ export default function SelectableOverlay({
 
   if (!isMockupMode) return null;
 
+  const getScaleValue = (id: string): number => {
+    switch (id) {
+      case "grid_scale": return settings.scaling.components.grid;
+      case "numpad_scale": return settings.styling.payment.numpad_scale ?? 100;
+      case "cart_scale": return settings.scaling.components.cart;
+      case "sidebar_scale": return settings.scaling.components.sidebar;
+      case "button_scale": return settings.scaling.components.button;
+      case "manage_table_scale": return settings.scaling.components.manage_table;
+      case "stock_table_scale": return settings.scaling.components.stock_table;
+      case "material_table_scale": return settings.scaling.components.material_table;
+      case "category_table_scale": return settings.scaling.components.category_table;
+      case "setting_page_scale": return settings.scaling.components.setting_page;
+      case "payment_modal_scale": return settings.scaling.components.payment_modal;
+      default: return 100;
+    }
+  };
+
+  const updateScaleValue = (id: string, val: number) => {
+    switch (id) {
+      case "grid_scale": updateSettings({ scaling: { components: { grid: val } } }); break;
+      case "numpad_scale": updateSettings({ styling: { payment: { numpad_scale: val } } }); break;
+      case "cart_scale": updateSettings({ scaling: { components: { cart: val } } }); break;
+      case "sidebar_scale": updateSettings({ scaling: { components: { sidebar: val } } }); break;
+      case "button_scale": updateSettings({ scaling: { components: { button: val } } }); break;
+      case "manage_table_scale": updateSettings({ scaling: { components: { manage_table: val } } }); break;
+      case "stock_table_scale": updateSettings({ scaling: { components: { stock_table: val } } }); break;
+      case "material_table_scale": updateSettings({ scaling: { components: { material_table: val } } }); break;
+      case "category_table_scale": updateSettings({ scaling: { components: { category_table: val } } }); break;
+      case "setting_page_scale": updateSettings({ scaling: { components: { setting_page: val } } }); break;
+      case "payment_modal_scale": updateSettings({ scaling: { components: { payment_modal: val } } }); break;
+    }
+  };
+
   const isSelected = selectedElementId === id;
-  const rawScale = settings[id as keyof typeof settings];
-  const currentScale = typeof rawScale === "number" ? rawScale : 100;
+  const currentScale = getScaleValue(id);
 
   const handleDragStart = () => {
     setIsDragging(true);
@@ -54,7 +86,7 @@ export default function SelectableOverlay({
     }
 
     const newScale = Math.min(Math.max(startScaleRef.current + delta, 50), 200);
-    updateSettings({ [id]: newScale });
+    updateScaleValue(id, newScale);
   };
 
   const renderHandle = (direction: "nw" | "ne" | "sw" | "se") => {

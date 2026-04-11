@@ -3,14 +3,14 @@ import { useSettings } from "@/context/settings/SettingsContext";
 export function useCurrency() {
   const { settings, updateSettings, resetToDefault } = useSettings();
 
-  const currency = settings.currency_symbol;
+  const currency = settings.general.currency_symbol;
 
   const updateCurrency = (newCurrency: string) => {
-    updateSettings({ currency_symbol: newCurrency });
+    updateSettings({ general: { currency_symbol: newCurrency } });
   };
 
   const clearCurrency = () => {
-    updateSettings({ currency_symbol: "$" });
+    updateSettings({ general: { currency_symbol: "$" } });
   };
 
   const clearAllCookies = () => {

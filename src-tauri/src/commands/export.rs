@@ -3,7 +3,7 @@ use database::customer;
 use database::establish_connection;
 use database::receipt::model::ReceiptList;
 
-use crate::commands::settings::get_settings;
+use settings_lib::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
 use std::path::PathBuf;
 use tauri::command;
@@ -23,7 +23,7 @@ pub fn export_receipts(
     let customers = customer::get_all_customers(&mut conn).unwrap_or_default();
     let settings = get_settings().map_err(|e| e.to_string())?;
 
-    let report_rows = convert_to_tax_report_rows(all_data, customers, settings.tax_rate);
+    let report_rows = convert_to_tax_report_rows(all_data, customers, settings.general.tax_rate);
     let export_table = build_thai_sales_tax_report(report_rows);
 
     match format.as_str() {

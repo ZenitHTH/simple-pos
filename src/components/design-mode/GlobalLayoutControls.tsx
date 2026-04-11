@@ -26,15 +26,16 @@ export default function GlobalLayoutControls({
     return (
       <div className="flex items-center gap-2">
         <div className="flex-1">
-          <NumberSlider
+          <SidebarSlider
             label="Numpad Height"
             min={200}
             max={600}
             step={10}
-            value={settings.payment_numpad_height || 320}
-            onChange={(val) => updateSettings({ payment_numpad_height: val })}
+            value={settings.styling.payment.numpad_height || 320}
+            onChange={(val) => updateSettings({ styling: { payment: { numpad_height: val } } })}
             unit="px"
           />
+
         </div>
       </div>
     );

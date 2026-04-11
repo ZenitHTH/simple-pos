@@ -46,7 +46,7 @@ const GeneralSettings = memo(function GeneralSettings({
 
       if (selected && typeof selected === "string") {
         if (!dbKey) {
-          onUpdateSettings({ image_storage_path: selected });
+          onUpdateSettings({ storage: { image_storage_path: selected } });
           return;
         }
 
@@ -54,7 +54,7 @@ const GeneralSettings = memo(function GeneralSettings({
         showToast("Migrating images to new location...", "info");
         try {
           await settingsApi.migrateImageDirectory(dbKey, selected);
-          onUpdateSettings({ image_storage_path: selected });
+          onUpdateSettings({ storage: { image_storage_path: selected } });
           showToast("Image migration successful", "success");
         } catch (error: any) {
           logger.error("Failed to migrate images:", error);
@@ -79,7 +79,7 @@ const GeneralSettings = memo(function GeneralSettings({
       setIsMigrating(true);
       showToast("Resetting images to default location...", "info");
       await settingsApi.migrateImageDirectory(dbKey, defaultPath);
-      onUpdateSettings({ image_storage_path: undefined });
+      onUpdateSettings({ storage: { image_storage_path: undefined } });
       showToast("Images reset to default location", "success");
     } catch (error: any) {
       logger.error("Failed to reset images:", error);
@@ -155,7 +155,7 @@ const GeneralSettings = memo(function GeneralSettings({
                     });
 
                     if (selected && typeof selected === "string") {
-                      onUpdateSettings({ db_storage_path: selected });
+                      onUpdateSettings({ storage: { db_storage_path: selected } });
                     }
                   } catch (error) {
                     logger.error("Failed to select directory:", error);
@@ -170,7 +170,7 @@ const GeneralSettings = memo(function GeneralSettings({
                 <Button
                   variant="secondary"
                   onClick={() =>
-                    onUpdateSettings({ db_storage_path: undefined })
+                    onUpdateSettings({ storage: { db_storage_path: undefined } })
                   }
                 >
                   Reset

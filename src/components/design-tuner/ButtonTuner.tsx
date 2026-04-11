@@ -51,8 +51,8 @@ export function ButtonTuner({ settings, updateSettings }: ButtonTunerProps) {
       <div 
         className="lg:col-span-2 space-y-12"
         style={{
-          "--button-scale": (settings.button_scale ?? 100) / 100,
-          "--button-font-scale": (settings.button_font_scale ?? 100) / 100,
+          "--button-scale": (settings.scaling.components.button ?? 100) / 100,
+          "--button-font-scale": (settings.scaling.fonts.button ?? 100) / 100,
         } as React.CSSProperties}
       >
         <div className="grid gap-8">

@@ -24,17 +24,17 @@ export default function GridItemSize({
   onUpdate,
   className,
 }: GridItemSizeProps) {
-  const currentValue = settings.grid_scale || 100;
+  const currentValue = settings.scaling.components.grid || 100;
   const currentIndex = levels.findIndex((l) => l.val === currentValue);
   const safeIndex = currentIndex === -1 ? 2 : currentIndex;
   const currentLabel = levels[safeIndex].label;
 
   const handlePrev = () => {
-    if (safeIndex > 0) onUpdate({ grid_scale: levels[safeIndex - 1].val });
+    if (safeIndex > 0) onUpdate({ scaling: { components: { grid: levels[safeIndex - 1].val } } });
   };
 
   const handleNext = () => {
-    if (safeIndex < levels.length - 1) onUpdate({ grid_scale: levels[safeIndex + 1].val });
+    if (safeIndex < levels.length - 1) onUpdate({ scaling: { components: { grid: levels[safeIndex + 1].val } } });
   };
 
   return (
@@ -80,43 +80,76 @@ export default function GridItemSize({
       <div className="space-y-4 pt-4 border-t border-border/50">
         <SidebarSlider
           label="Padding"
-          value={settings.grid_item_padding ?? 16}
-          onChange={(v) => onUpdate({ grid_item_padding: v })}
+          value={settings.styling.grid.item_padding ?? 16}
+          onChange={(v) => onUpdate({ styling: { grid: { item_padding: v } } })}
           min={0}
           max={40}
           unit="px"
         />
         <SidebarSlider
           label="Corner Radius"
-          value={settings.grid_item_radius ?? 24}
-          onChange={(v) => onUpdate({ grid_item_radius: v })}
+          value={settings.styling.grid.item_radius ?? 24}
+          onChange={(v) => onUpdate({ styling: { grid: { item_radius: v } } })}
           min={0}
           max={60}
           unit="px"
         />
         <SidebarSlider
           label="Name Size"
-          value={settings.grid_item_title_font_size ?? 100}
-          onChange={(v) => onUpdate({ grid_item_title_font_size: v })}
+          value={settings.styling.grid.item_title_font_size ?? 100}
+          onChange={(v) => onUpdate({ styling: { grid: { item_title_font_size: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Price Size"
-          value={settings.grid_item_price_font_size ?? 100}
-          onChange={(v) => onUpdate({ grid_item_price_font_size: v })}
+          value={settings.styling.grid.item_price_font_size ?? 100}
+          onChange={(v) => onUpdate({ styling: { grid: { item_price_font_size: v } } })}
           min={50}
           max={200}
           unit="%"
         />
         <SidebarSlider
           label="Grid Spacing"
-          value={settings.grid_gap ?? 20}
-          onChange={(v) => onUpdate({ grid_gap: v })}
+          value={settings.styling.grid.gap ?? 20}
+          onChange={(v) => onUpdate({ styling: { grid: { gap: v } } })}
           min={0}
           max={60}
           unit="px"
+        />
+        <SidebarSlider
+          label="Shadow Depth"
+          value={settings.styling.grid.item_shadow ?? 10}
+          onChange={(v) => onUpdate({ styling: { grid: { item_shadow: v } } })}
+          min={0}
+          max={100}
+          unit="%"
+        />
+        <SidebarSlider
+          label="Border Width"
+          value={settings.styling.grid.item_border_width ?? 1}
+          onChange={(v) => onUpdate({ styling: { grid: { item_border_width: v } } })}
+          min={0}
+          max={8}
+          unit="px"
+        />
+        <SidebarSlider
+          label="Hover Pop"
+          value={settings.styling.grid.item_hover_scale ?? 102}
+          onChange={(v) => onUpdate({ styling: { grid: { item_hover_scale: v } } })}
+          min={100}
+          max={115}
+          step={0.5}
+          unit="%"
+        />
+        <SidebarSlider
+          label="Glass Opacity"
+          value={settings.styling.grid.item_bg_opacity ?? 100}
+          onChange={(v) => onUpdate({ styling: { grid: { item_bg_opacity: v } } })}
+          min={0}
+          max={100}
+          unit="%"
         />
       </div>
     </div>

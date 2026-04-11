@@ -14,7 +14,7 @@ export default function CustomerTable({
     onEdit,
     settings,
 }: CustomerTableProps) {
-    const fontScale = (settings.manage_table_font_scale || 100) / 100;
+    const fontScale = (settings.scaling.fonts.manage_table || 100) / 100;
 
     const columns: Column<Customer>[] = [
         {

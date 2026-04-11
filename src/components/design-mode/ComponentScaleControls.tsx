@@ -24,11 +24,80 @@ export default function ComponentScaleControls({
     );
   }
 
-  const currentValue =
-    (settings[selectedId as keyof AppSettings] as number) || 100;
-  const fontScaleKey =
-    `${selectedId.replace("_scale", "")}_font_scale` as keyof AppSettings;
-  const currentFontScale = (settings[fontScaleKey] as number) || 100;
+  const getScaleValues = (id: string) => {
+    switch (id) {
+      case "sidebar_scale":
+        return {
+          scale: settings.scaling.components.sidebar,
+          fontScale: settings.scaling.fonts.sidebar,
+          fontKey: "sidebar_font_scale",
+        };
+      case "cart_scale":
+        return {
+          scale: settings.scaling.components.cart,
+          fontScale: settings.styling.cart.font_size ?? 100,
+          fontKey: "cart_font_scale",
+        };
+      case "grid_scale":
+        return {
+          scale: settings.scaling.components.grid,
+          fontScale: settings.scaling.fonts.grid,
+          fontKey: "grid_font_scale",
+        };
+      case "manage_table_scale":
+        return {
+          scale: settings.scaling.components.manage_table,
+          fontScale: settings.scaling.fonts.manage_table,
+          fontKey: "manage_table_font_scale",
+        };
+      case "category_table_scale":
+        return {
+          scale: settings.scaling.components.category_table,
+          fontScale: settings.scaling.fonts.category_table,
+          fontKey: "category_table_font_scale",
+        };
+      case "setting_page_scale":
+        return {
+          scale: settings.scaling.components.setting_page,
+          fontScale: settings.scaling.fonts.setting_page,
+          fontKey: "setting_page_font_scale",
+        };
+      case "payment_modal_scale":
+        return {
+          scale: settings.scaling.components.payment_modal,
+          fontScale: settings.scaling.fonts.payment_modal,
+          fontKey: "payment_modal_font_scale",
+        };
+      default:
+        return { scale: 100, fontScale: 100, fontKey: null };
+    }
+  };
+
+  const updateNestedScale = (id: string, val: number) => {
+    switch (id) {
+      case "sidebar_scale": updateSettings({ scaling: { components: { sidebar: val } } }); break;
+      case "cart_scale": updateSettings({ scaling: { components: { cart: val } } }); break;
+      case "grid_scale": updateSettings({ scaling: { components: { grid: val } } }); break;
+      case "manage_table_scale": updateSettings({ scaling: { components: { manage_table: val } } }); break;
+      case "category_table_scale": updateSettings({ scaling: { components: { category_table: val } } }); break;
+      case "setting_page_scale": updateSettings({ scaling: { components: { setting_page: val } } }); break;
+      case "payment_modal_scale": updateSettings({ scaling: { components: { payment_modal: val } } }); break;
+    }
+  };
+
+  const updateNestedFontScale = (id: string, val: number) => {
+    switch (id) {
+      case "sidebar_scale": updateSettings({ scaling: { fonts: { sidebar: val } } }); break;
+      case "cart_scale": updateSettings({ styling: { cart: { font_size: val } } }); break;
+      case "grid_scale": updateSettings({ scaling: { fonts: { grid: val } } }); break;
+      case "manage_table_scale": updateSettings({ scaling: { fonts: { manage_table: val } } }); break;
+      case "category_table_scale": updateSettings({ scaling: { fonts: { category_table: val } } }); break;
+      case "setting_page_scale": updateSettings({ scaling: { fonts: { setting_page: val } } }); break;
+      case "payment_modal_scale": updateSettings({ scaling: { fonts: { payment_modal: val } } }); break;
+    }
+  };
+
+  const { scale: currentValue, fontScale: currentFontScale } = getScaleValues(selectedId);
 
   const label = getLabel(selectedId);
   const hasFontControl = [
@@ -57,7 +126,7 @@ export default function ComponentScaleControls({
             max={150}
             step={1}
             value={currentValue}
-            onChange={(val) => updateSettings({ [selectedId]: val })}
+            onChange={(val) => updateNestedScale(selectedId, val)}
           />
         )}
       </div>
@@ -76,7 +145,7 @@ export default function ComponentScaleControls({
             max={150}
             step={5}
             value={currentFontScale}
-            onChange={(val) => updateSettings({ [fontScaleKey]: val })}
+            onChange={(val) => updateNestedFontScale(selectedId, val)}
           />
         </div>
       )}
