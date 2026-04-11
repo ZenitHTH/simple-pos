@@ -13,7 +13,7 @@ export interface ThemeSettings {
   theme_border_color: string | null;
   theme_radius: number | null;
   theme_preset: "compact" | "cozy" | "custom" | null;
-  }
+}
 export interface StorageSettings {
   image_storage_path: string | null;
   db_storage_path: string | null;

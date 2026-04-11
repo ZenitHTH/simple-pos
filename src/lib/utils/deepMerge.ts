@@ -4,7 +4,8 @@
  */
 export function deepMerge<T>(target: any, source: any): T {
   const result = { ...target };
-  for (const key in source) {
+  for (const key of Object.keys(source)) {
+    if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
     if (
       source[key] &&
       typeof source[key] === "object" &&

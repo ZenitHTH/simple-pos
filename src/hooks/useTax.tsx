@@ -7,11 +7,11 @@ export function useTax() {
   const taxPercentage = settings.general.tax_rate;
 
   const toggleTax = () => {
-    updateSettings({ general: { tax_enabled: !isTaxEnabled } });
+    updateSettings({ general: { ...settings.general, tax_enabled: !isTaxEnabled } });
   };
 
   const updateTaxRate = (rate: number) => {
-    updateSettings({ general: { tax_rate: rate } });
+    updateSettings({ general: { ...settings.general, tax_rate: rate } });
   };
 
   return {

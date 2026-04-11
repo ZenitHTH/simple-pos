@@ -70,8 +70,8 @@ export function useApplySettings(settings: AppSettings) {
     const grid = settings.styling.grid;
     root.style.setProperty("--grid-item-padding", `${grid.item_padding ?? 16}px`);
     root.style.setProperty("--grid-item-radius", `${grid.item_radius ?? 24}px`);
-    root.style.setProperty("--grid-item-title-font-size", `${grid.item_title_font_size ?? 100}%`);
-    root.style.setProperty("--grid-item-price-font-size", `${grid.item_price_font_size ?? 100}%`);
+    root.style.setProperty("--grid-item-title-font-size", String(grid.item_title_font_size ?? 100));
+    root.style.setProperty("--grid-item-price-font-size", String(grid.item_price_font_size ?? 100));
     root.style.setProperty("--grid-gap", `${grid.gap ?? 20}px`);
     root.style.setProperty("--grid-item-shadow-opacity", `${(grid.item_shadow ?? 10) / 100}`);
     root.style.setProperty("--grid-item-border-width", `${grid.item_border_width ?? 1}px`);
@@ -93,6 +93,11 @@ export function useApplySettings(settings: AppSettings) {
 
     // ── Cart Item Styling ──
     const cart = settings.styling.cart;
+    root.style.setProperty("--cart-item-font-size", String(cart.font_size ?? 100));
+    root.style.setProperty("--cart-item-header-font-size", String(cart.header_font_size ?? 100));
+    root.style.setProperty("--cart-item-price-font-size", String(cart.price_font_size ?? 100));
+    root.style.setProperty("--cart-item-padding", `${cart.padding ?? 10}`);
+    root.style.setProperty("--cart-item-margin", `${cart.margin ?? 8}`);
     root.style.setProperty("--cart-item-image-size", `${cart.image_size ?? 48}px`);
     root.style.setProperty("--cart-item-gap", `${cart.gap ?? 12}px`);
     root.style.setProperty("--cart-item-border-style", cart.border_style ?? "solid");

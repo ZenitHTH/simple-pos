@@ -6,11 +6,11 @@ export function useCurrency() {
   const currency = settings.general.currency_symbol;
 
   const updateCurrency = (newCurrency: string) => {
-    updateSettings({ general: { currency_symbol: newCurrency } });
+    updateSettings({ general: { ...settings.general, currency_symbol: newCurrency } });
   };
 
   const clearCurrency = () => {
-    updateSettings({ general: { currency_symbol: "$" } });
+    updateSettings({ general: { ...settings.general, currency_symbol: "$" } });
   };
 
   const clearAllCookies = () => {
