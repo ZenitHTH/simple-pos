@@ -6,7 +6,7 @@ import SelectableOverlay from "./SelectableOverlay";
 import { ReactNode } from "react";
 
 interface ScalableContainerProps {
-  settingKey: keyof AppSettings;
+  settingKey: string;
   children: ReactNode;
   className?: string;
 }

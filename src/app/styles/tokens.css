@@ -23,13 +23,15 @@
     --primary-muted: color-mix(in oklch, var(--primary-base), transparent 90%);
     --primary-glow: color-mix(in oklch, var(--primary-base), transparent 50%);
     
+    /* Dynamic Primary Foreground (Accessibility) */
+    /* If primary is light, use dark text; if dark, use white text */
+    --primary-foreground: oklch(from var(--primary-base) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0);
+
     /* Manual Overrides with Auto-generated fallbacks */
     --background: var(--theme-background, #ffffff);
     --foreground: var(--theme-text, #0f172a);
     --card: var(--theme-card, #ffffff);
     --border: var(--theme-border, #e2e8f0);
-    
-    --primary-foreground: #ffffff;
 
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;

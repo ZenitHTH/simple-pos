@@ -255,19 +255,19 @@ export function GlobalStylesPanel({
             onClick={() => {
               updateSettings({
                 theme: {
-                  theme_primary_color: "#3b82f6",
-                  theme_radius: 0.5,
-                  theme_preset: "cozy",
-                  theme_background_color: null,
-                  theme_card_color: null,
-                  theme_text_color: null,
-                  theme_border_color: null,
+                  theme_primary_color: DEFAULT_SETTINGS.theme.theme_primary_color,
+                  theme_radius: DEFAULT_SETTINGS.theme.theme_radius,
+                  theme_preset: DEFAULT_SETTINGS.theme.theme_preset,
+                  theme_background_color: DEFAULT_SETTINGS.theme.theme_background_color,
+                  theme_card_color: DEFAULT_SETTINGS.theme.theme_card_color,
+                  theme_text_color: DEFAULT_SETTINGS.theme.theme_text_color,
+                  theme_border_color: DEFAULT_SETTINGS.theme.theme_border_color,
                 },
                 styling: {
                   button: {
-                    radius: 12,
-                    shadow_intensity: 10,
-                    transition_speed: 200,
+                    radius: DEFAULT_SETTINGS.styling.button.radius,
+                    shadow_intensity: DEFAULT_SETTINGS.styling.button.shadow_intensity,
+                    transition_speed: DEFAULT_SETTINGS.styling.button.transition_speed,
                   },
                 },
               });

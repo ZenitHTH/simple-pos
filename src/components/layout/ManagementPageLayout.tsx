@@ -16,7 +16,7 @@ interface ManagementPageLayoutProps {
   error?: string | null;
   searchQuery?: string;
   setSearchQuery?: (query: string) => void;
-  scaleKey: keyof AppSettings;
+  scaleKey: string;
   children: React.ReactNode;
   modal?: React.ReactNode;
   floatingActions?: React.ReactNode;
