@@ -1,9 +1,10 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaPalette } from "react-icons/fa";
+import { FaTimes, FaPalette, FaMoon, FaSun } from "react-icons/fa";
 import { ThemeCard } from "./ThemeCard";
 import { CURATED_THEMES } from "@/context/settings/constants";
 import { AppSettings, DeepPartial } from "@/lib/types";
+import { useTheme } from "next-themes";
 
 interface ThemeExplorerModalProps {
   isOpen: boolean;
@@ -19,6 +20,12 @@ export function ThemeExplorerModal({
   updateSettings,
 }: ThemeExplorerModalProps) {
   const currentPrimary = settings.theme.theme_primary_color;
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSelectTheme = useCallback(
     (color: string) => {
@@ -56,7 +63,7 @@ export function ThemeExplorerModal({
           >
             {/* Header */}
             <header className="flex items-center justify-between border-b border-border/50 px-6 py-6 md:px-10 md:py-8">
-              <div>
+              <div className="flex-1">
                 <h2 className="flex items-center gap-3 text-2xl font-black tracking-tight md:text-3xl">
                   <FaPalette className="text-primary" />
                   Theme Library
@@ -65,12 +72,43 @@ export function ThemeExplorerModal({
                   Choose a curated palette or create your own.
                 </p>
               </div>
-              <button
-                onClick={onClose}
-                className="bg-secondary/50 hover:bg-secondary text-muted-foreground flex h-10 w-12 items-center justify-center rounded-full transition-colors md:h-12"
-              >
-                <FaTimes size={20} />
-              </button>
+
+              <div className="flex items-center gap-4">
+                {/* Theme Toggle */}
+                {mounted && (
+                  <div className="bg-secondary/30 flex items-center gap-1 rounded-full p-1 border border-border/50">
+                    <button
+                      onClick={() => setTheme("light")}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-all ${
+                        theme === "light"
+                          ? "bg-background text-primary shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                      title="Light Mode"
+                    >
+                      <FaSun size={14} />
+                    </button>
+                    <button
+                      onClick={() => setTheme("dark")}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-all ${
+                        theme === "dark"
+                          ? "bg-background text-primary shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                      title="Dark Mode"
+                    >
+                      <FaMoon size={14} />
+                    </button>
+                  </div>
+                )}
+
+                <button
+                  onClick={onClose}
+                  className="bg-secondary/50 hover:bg-secondary text-muted-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors md:h-12 md:w-12"
+                >
+                  <FaTimes size={20} />
+                </button>
+              </div>
             </header>
 
             {/* Content */}

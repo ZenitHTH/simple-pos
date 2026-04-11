@@ -32,7 +32,7 @@ export const THEME_PRESETS = {
   cozy: {
     theme: {
       theme_preset: "cozy" as const,
-      theme_radius: 0.8,
+      theme_radius: 0.5,
     },
     scaling: {
       display_scale: 100,
