@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { ThemeExplorerModal } from "./ThemeExplorerModal";
 import { FaCompass } from "react-icons/fa";
-import { AppSettings } from "@/lib/types";
+import { AppSettings, DeepPartial } from "@/lib/types";
 import { SidebarSlider } from "./SidebarSlider";
 
 interface GlobalStylesPanelProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   // Local state for tuner's own preview zoom
   previewZoom: number;
   setPreviewZoom: (v: number) => void;
@@ -29,17 +29,22 @@ export function GlobalStylesPanel({
       </h2>
 
       {/* Theme Explorer Trigger */}
-      <div className="px-2 mb-6">
+      <div className="mb-6 px-2">
         <button
           onClick={() => setShowExplorer(true)}
-          className="group relative w-full overflow-hidden rounded-2xl bg-primary p-4 text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
+          style={{ borderRadius: `calc(${settings.theme.theme_radius ?? 0.5}rem * 4)` }}
+          className="group relative w-full overflow-hidden bg-primary p-4 text-left shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-black uppercase tracking-widest text-primary-foreground">Theme Library</h3>
-              <p className="text-[10px] font-bold text-primary-foreground/70 uppercase">Browse & Generate Palettes</p>
+              <h3 className="text-primary-foreground text-sm font-black uppercase tracking-widest">
+                Theme Library
+              </h3>
+              <p className="text-primary-foreground/70 text-[10px] font-bold uppercase">
+                Browse & Generate Palettes
+              </p>
             </div>
-            <FaCompass className="text-primary-foreground/40 text-xl group-hover:rotate-45 transition-transform duration-500" />
+            <FaCompass className="text-primary-foreground/40 duration-500 transition-transform text-xl group-hover:rotate-45" />
           </div>
           {/* Subtle background decoration */}
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
@@ -81,7 +86,7 @@ export function GlobalStylesPanel({
               onChange={(e) =>
                 updateSettings({ theme: { theme_primary_color: e.target.value } })
               }
-              className="h-8 w-8 cursor-pointer rounded-lg border-0 p-0 overflow-hidden shadow-sm"
+              className="h-8 w-8 cursor-pointer overflow-hidden rounded-lg border-0 p-0 shadow-sm"
             />
             <input
               type="text"
@@ -89,94 +94,134 @@ export function GlobalStylesPanel({
               onChange={(e) =>
                 updateSettings({ theme: { theme_primary_color: e.target.value } })
               }
-              className="border-input bg-background flex-1 rounded-lg border px-3 py-1 text-xs font-mono shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
+              className="border-input bg-background flex-1 rounded-lg border px-3 py-1 font-mono text-xs shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
               placeholder="#3b82f6"
             />
           </div>
         </div>
 
         {/* Manual Overrides */}
-        <div className="border-t border-border/50 pt-4 mt-4 space-y-4">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+        <div className="border-border/50 mt-4 space-y-4 border-t pt-4">
+          <h3 className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">
             Manual Overrides
           </h3>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Background</label>
+              <label className="text-muted-foreground px-1 text-[10px] font-medium uppercase">
+                Background
+              </label>
               <div className="flex gap-1.5">
                 <input
                   type="color"
                   value={settings.theme.theme_background_color ?? "#ffffff"}
-                  onChange={(e) => updateSettings({ theme: { theme_background_color: e.target.value } })}
-                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                  onChange={(e) =>
+                    updateSettings({
+                      theme: { theme_background_color: e.target.value },
+                    })
+                  }
+                  className="h-7 w-7 cursor-pointer overflow-hidden rounded-md border-0 p-0 shadow-sm"
                 />
-                <button 
-                  onClick={() => updateSettings({ theme: { theme_background_color: null } })}
-                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
-                >Reset</button>
+                <button
+                  onClick={() =>
+                    updateSettings({ theme: { theme_background_color: null } })
+                  }
+                  className="text-muted-foreground hover:text-foreground text-[9px] transition-colors"
+                >
+                  Reset
+                </button>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Card</label>
+              <label className="text-muted-foreground px-1 text-[10px] font-medium uppercase">
+                Card
+              </label>
               <div className="flex gap-1.5">
                 <input
                   type="color"
                   value={settings.theme.theme_card_color ?? "#ffffff"}
-                  onChange={(e) => updateSettings({ theme: { theme_card_color: e.target.value } })}
-                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                  onChange={(e) =>
+                    updateSettings({
+                      theme: { theme_card_color: e.target.value },
+                    })
+                  }
+                  className="h-7 w-7 cursor-pointer overflow-hidden rounded-md border-0 p-0 shadow-sm"
                 />
-                <button 
-                  onClick={() => updateSettings({ theme: { theme_card_color: null } })}
-                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
-                >Reset</button>
+                <button
+                  onClick={() =>
+                    updateSettings({ theme: { theme_card_color: null } })
+                  }
+                  className="text-muted-foreground hover:text-foreground text-[9px] transition-colors"
+                >
+                  Reset
+                </button>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Text</label>
+              <label className="text-muted-foreground px-1 text-[10px] font-medium uppercase">
+                Text
+              </label>
               <div className="flex gap-1.5">
                 <input
                   type="color"
                   value={settings.theme.theme_text_color ?? "#0f172a"}
-                  onChange={(e) => updateSettings({ theme: { theme_text_color: e.target.value } })}
-                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                  onChange={(e) =>
+                    updateSettings({ theme: { theme_text_color: e.target.value } })
+                  }
+                  className="h-7 w-7 cursor-pointer overflow-hidden rounded-md border-0 p-0 shadow-sm"
                 />
-                <button 
-                  onClick={() => updateSettings({ theme: { theme_text_color: null } })}
-                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
-                >Reset</button>
+                <button
+                  onClick={() =>
+                    updateSettings({ theme: { theme_text_color: null } })
+                  }
+                  className="text-muted-foreground hover:text-foreground text-[9px] transition-colors"
+                >
+                  Reset
+                </button>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-muted-foreground font-medium uppercase px-1">Border</label>
+              <label className="text-muted-foreground px-1 text-[10px] font-medium uppercase">
+                Border
+              </label>
               <div className="flex gap-1.5">
                 <input
                   type="color"
                   value={settings.theme.theme_border_color ?? "#e2e8f0"}
-                  onChange={(e) => updateSettings({ theme: { theme_border_color: e.target.value } })}
-                  className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 overflow-hidden shadow-sm"
+                  onChange={(e) =>
+                    updateSettings({
+                      theme: { theme_border_color: e.target.value },
+                    })
+                  }
+                  className="h-7 w-7 cursor-pointer overflow-hidden rounded-md border-0 p-0 shadow-sm"
                 />
-                <button 
-                  onClick={() => updateSettings({ theme: { theme_border_color: null } })}
-                  className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
-                >Reset</button>
+                <button
+                  onClick={() =>
+                    updateSettings({ theme: { theme_border_color: null } })
+                  }
+                  className="text-muted-foreground hover:text-foreground text-[9px] transition-colors"
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         {/* Button Styling */}
-        <div className="border-t border-border/50 pt-4 mt-4 space-y-4">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+        <div className="border-border/50 mt-4 space-y-4 border-t pt-4">
+          <h3 className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">
             Global Buttons
           </h3>
           <SidebarSlider
             label="Button Radius"
             value={settings.styling.button.radius ?? 12}
-            onChange={(v) => updateSettings({ styling: { button: { radius: v } } })}
+            onChange={(v) =>
+              updateSettings({ styling: { button: { radius: v } } })
+            }
             min={0}
             max={32}
             unit="px"
@@ -184,7 +229,9 @@ export function GlobalStylesPanel({
           <SidebarSlider
             label="Shadow Intensity"
             value={settings.styling.button.shadow_intensity ?? 10}
-            onChange={(v) => updateSettings({ styling: { button: { shadow_intensity: v } } })}
+            onChange={(v) =>
+              updateSettings({ styling: { button: { shadow_intensity: v } } })
+            }
             min={0}
             max={100}
             unit="%"
@@ -192,7 +239,9 @@ export function GlobalStylesPanel({
           <SidebarSlider
             label="Anim Speed"
             value={settings.styling.button.transition_speed ?? 200}
-            onChange={(v) => updateSettings({ styling: { button: { transition_speed: v } } })}
+            onChange={(v) =>
+              updateSettings({ styling: { button: { transition_speed: v } } })
+            }
             min={100}
             max={500}
             step={50}
@@ -208,19 +257,23 @@ export function GlobalStylesPanel({
                 theme: {
                   theme_primary_color: "#3b82f6",
                   theme_radius: 0.5,
-                  theme_preset: null,
+                  theme_preset: "cozy",
+                  theme_background_color: null,
+                  theme_card_color: null,
+                  theme_text_color: null,
+                  theme_border_color: null,
                 },
                 styling: {
                   button: {
                     radius: 12,
                     shadow_intensity: 10,
                     transition_speed: 200,
-                  }
-                }
+                  },
+                },
               });
               setPreviewZoom(16);
             }}
-            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] transition-colors uppercase tracking-wider font-semibold"
+            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold uppercase tracking-wider transition-colors"
           >
             Reset Globals
           </button>
@@ -228,9 +281,9 @@ export function GlobalStylesPanel({
       </div>
 
       {/* Render Modal */}
-      <ThemeExplorerModal 
-        isOpen={showExplorer} 
-        onClose={() => setShowExplorer(false)} 
+      <ThemeExplorerModal
+        isOpen={showExplorer}
+        onClose={() => setShowExplorer(false)}
         settings={settings}
         updateSettings={updateSettings}
       />
