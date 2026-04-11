@@ -1,6 +1,6 @@
-import { AppSettings } from "@/lib";
+import { AppSettings, CuratedTheme } from "@/lib";
 
-export const CURATED_THEMES = [
+export const CURATED_THEMES: CuratedTheme[] = [
   { id: "ocean", name: "Ocean Deep", color: "#0ea5e9", description: "Professional and calm" },
   { id: "matcha", name: "Matcha Cafe", color: "#4ade80", description: "Fresh and organic" },
   { id: "sunset", name: "Sunset Glow", color: "#f59e0b", description: "Warm and inviting" },

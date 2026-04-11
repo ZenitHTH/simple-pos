@@ -141,3 +141,10 @@ export type DeepPartial<T> = {
     ? DeepPartial<T[P]>
     : T[P];
 };
+
+export interface CuratedTheme {
+  id: string;
+  name: string;
+  color: string;
+  description: string;
+}
