@@ -10,6 +10,10 @@ pub struct GeneralSettings {
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct ThemeSettings {
     pub theme_primary_color: Option<String>,
+    pub theme_background_color: Option<String>,
+    pub theme_card_color: Option<String>,
+    pub theme_text_color: Option<String>,
+    pub theme_border_color: Option<String>,
     pub theme_radius: Option<f64>,
     pub theme_preset: Option<String>,
 }
@@ -141,6 +145,7 @@ pub struct AppSettings {
     pub typography: TypographySettings,
     pub scaling: ScalingSettings,
     pub styling: StylingSettings,
+    pub custom_presets: Vec<serde_json::Value>, // Temporary placeholder for custom presets
 }
 
 impl AppSettings {
