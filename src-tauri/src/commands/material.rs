@@ -16,6 +16,7 @@ pub fn create_material(
     r#type: String,
     volume: f64,
     quantity: i32,
+    tags: Vec<String>,
 ) -> Result<Material, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
@@ -29,12 +30,19 @@ pub fn create_material(
 
     let (val, prec) = float_to_scaled(volume);
 
+    let tags_json = if tags.is_empty() {
+        None
+    } else {
+        Some(serde_json::to_string(&tags).map_err(|e| e.to_string())?)
+    };
+
     let new_mat = NewMaterial {
         name: trimmed_name,
         type_: &r#type,
         volume: val,
         quantity,
         precision: prec,
+        tags: tags_json.as_deref(),
     };
     material::insert_material(&mut conn, &new_mat).map_err(|e| e.to_string())
 }
@@ -47,6 +55,7 @@ pub fn update_material(
     r#type: String,
     volume: f64,
     quantity: i32,
+    tags: Vec<String>,
 ) -> Result<Material, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
 
@@ -60,6 +69,12 @@ pub fn update_material(
 
     let (val, prec) = float_to_scaled(volume);
 
+    let tags_json = if tags.is_empty() {
+        None
+    } else {
+        Some(serde_json::to_string(&tags).map_err(|e| e.to_string())?)
+    };
+
     let mat = Material {
         id,
         name: trimmed_name.to_string(),
@@ -67,6 +82,7 @@ pub fn update_material(
         volume: val,
         quantity,
         precision: prec,
+        tags: tags_json,
     };
     material::update_material(&mut conn, mat).map_err(|e| e.to_string())
 }
