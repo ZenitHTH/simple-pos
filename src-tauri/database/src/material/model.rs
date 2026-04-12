@@ -11,6 +11,7 @@ pub struct Material {
     pub volume: i32,
     pub quantity: i32,
     pub precision: i32,
+    pub tags: Option<String>,
 }
 
 #[derive(Insertable)]
@@ -21,4 +22,5 @@ pub struct NewMaterial<'a> {
     pub volume: i32,
     pub quantity: i32,
     pub precision: i32,
+    pub tags: Option<&'a str>,
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Material, scaledToFloat, UNIT_OPTIONS } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
@@ -11,6 +11,7 @@ interface MaterialFormData {
   type_: string;
   volume: number;
   quantity: number;
+  tags: string[];
 }
 
 interface MaterialModalProps {
@@ -28,13 +29,22 @@ export default function MaterialModal({
   initialData,
   isSubmitting,
 }: MaterialModalProps) {
+  const [tagInput, setTagInput] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     control,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<MaterialFormData>();
+  } = useForm<MaterialFormData>({
+    defaultValues: {
+      tags: [],
+    },
+  });
+
+  const tags = watch("tags") || [];
 
   useEffect(() => {
     if (isOpen) {
@@ -44,6 +54,7 @@ export default function MaterialModal({
           type_: initialData.type_,
           volume: scaledToFloat(initialData.volume, initialData.precision),
           quantity: initialData.quantity,
+          tags: initialData.tags || [],
         });
       } else {
         reset({
@@ -51,10 +62,27 @@ export default function MaterialModal({
           type_: "Pieces",
           volume: 1,
           quantity: 0,
+          tags: [],
         });
       }
+      setTagInput("");
     }
   }, [isOpen, initialData, reset]);
+
+  const addTag = () => {
+    const trimmed = tagInput.trim();
+    if (trimmed && !tags.includes(trimmed)) {
+      setValue("tags", [...tags, trimmed]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setValue(
+      "tags",
+      tags.filter((t) => t !== tagToRemove),
+    );
+  };
 
   return (
     <Modal
@@ -111,6 +139,61 @@ export default function MaterialModal({
               />
             )}
           />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Tags</label>
+          <div className="flex gap-2">
+            <Input
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag();
+                }
+              }}
+              placeholder="Add a tag..."
+              className="flex-1"
+            />
+            <button
+              type="button"
+              onClick={addTag}
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-xl px-4 py-2 font-medium transition-colors"
+            >
+              Add
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => removeTag(tag)}
+                  className="hover:text-destructive transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="border-border mt-6 flex justify-end gap-3 border-t pt-4">

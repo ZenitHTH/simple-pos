@@ -11,6 +11,7 @@ export function useMaterialManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<Material | undefined>(
     undefined,
@@ -61,7 +62,7 @@ export function useMaterialManagement() {
       await fetchMaterials();
     } catch (err: unknown) {
       alert(
-        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`,
+        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`, 
       );
     }
   };
@@ -79,6 +80,7 @@ export function useMaterialManagement() {
           data.type_,
           parseFloat(data.volume),
           parseInt(data.quantity, 10),
+          data.tags,
         );
       } else {
         await materialApi.create(
@@ -87,6 +89,7 @@ export function useMaterialManagement() {
           data.type_,
           parseFloat(data.volume),
           parseInt(data.quantity, 10),
+          data.tags,
         );
       }
 
@@ -94,7 +97,7 @@ export function useMaterialManagement() {
       setIsModalOpen(false);
     } catch (err: unknown) {
       alert(
-        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,
+        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,   
       );
     } finally {
       setIsSubmitting(false);
@@ -102,17 +105,40 @@ export function useMaterialManagement() {
   };
 
   const filteredMaterials = useMemo(() => {
-    return materials.filter((m) =>
-      m.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    return materials.filter((m) => {
+      const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesTags = selectedTags.length === 0 || 
+        selectedTags.every(tag => m.tags?.includes(tag));
+      return matchesSearch && matchesTags;
+    });
+  }, [materials, searchQuery, selectedTags]);
+
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    materials.forEach(m => {
+      m.tags?.forEach(tag => tags.add(tag));
+    });
+    return Array.from(tags).sort();
+  }, [materials]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
     );
-  }, [materials, searchQuery]);
+  };
 
   return {
     materials: filteredMaterials,
+    allTags,
     loading,
     error,
     searchQuery,
     setSearchQuery,
+    selectedTags,
+    setSelectedTags,
+    toggleTag,
     isModalOpen,
     setIsModalOpen,
     editingMaterial,
@@ -122,5 +148,4 @@ export function useMaterialManagement() {
     handleDelete,
     handleModalSubmit,
     refresh: fetchMaterials,
-  };
-}
+  };}

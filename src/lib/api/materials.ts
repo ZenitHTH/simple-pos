@@ -12,6 +12,7 @@ export const materialApi = {
     type_: string,
     volume: number,
     quantity: number,
+    tags: string[],
   ): Promise<Material> => {
     return await invoke("create_material", {
       key,
@@ -19,6 +20,7 @@ export const materialApi = {
       type: type_,
       volume: Number(volume),
       quantity: Number(quantity),
+      tags,
     });
   },
 
@@ -29,6 +31,7 @@ export const materialApi = {
     type_: string,
     volume: number,
     quantity: number,
+    tags: string[],
   ): Promise<Material> => {
     return await invoke("update_material", {
       key,
@@ -37,6 +40,7 @@ export const materialApi = {
       type: type_,
       volume: Number(volume),
       quantity: Number(quantity),
+      tags,
     });
   },
 
