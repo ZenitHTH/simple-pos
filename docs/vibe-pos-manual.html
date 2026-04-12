@@ -448,6 +448,7 @@
                         <li><a href="#themes" class="nav-link">Theme & Palette</a></li>
                         <li><a href="#pos-engine" class="nav-link">POS Engine</a></li>
                         <li><a href="#database" class="nav-link">Database Security</a></li>
+                        <li><a href="#schema" class="nav-link">Database Schema</a></li>
                         <li><a href="#ai-registry" class="nav-link">AI Registry</a></li>
                         <li><a href="#backend-crates" class="nav-link">Backend Crates</a></li>
                         <li><a href="#commands" class="nav-link">Quick Reference</a></li>
@@ -729,10 +730,87 @@
                     </div>
                 </section>
 
-                <!-- 6. AI Registry -->
+                <!-- 6. Database Schema -->
+                <section id="schema" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 06</span>
+                        <h2 class="text-5xl font-black italic">Database Schema</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS uses a normalized relational schema optimized for offline-first performance and data integrity.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                erDiagram
+                                    CATEGORY ||--o{ PRODUCT : "contains"
+                                    PRODUCT ||--o{ STOCK : "has"
+                                    PRODUCT ||--o{ RECIPE_LIST : "defined by"
+                                    RECIPE_LIST ||--o{ RECIPE_ITEM : "contains"
+                                    MATERIAL ||--o{ RECIPE_ITEM : "used in"
+                                    
+                                    CUSTOMER ||--o{ RECEIPT_LIST : "places"
+                                    RECEIPT_LIST ||--o{ RECEIPT_ITEM : "contains"
+                                    PRODUCT ||--o{ RECEIPT_ITEM : "sold as"
+                                    
+                                    RECEIPT_ITEM ||--o{ RECEIPT_ITEM_MATERIAL : "consumes"
+                                    MATERIAL ||--o{ RECEIPT_ITEM_MATERIAL : "documented in"
+                                    
+                                    PRODUCT }o--o{ IMAGES : "uses (product_images)"
+
+                                    CATEGORY {
+                                        int id PK
+                                        string name
+                                    }
+                                    PRODUCT {
+                                        int product_id PK
+                                        string title
+                                        int category_id FK
+                                        int satang
+                                        bool use_recipe_stock
+                                    }
+                                    CUSTOMER {
+                                        int id PK
+                                        string name
+                                        string tax_id
+                                        string address
+                                        string branch
+                                    }
+                                    MATERIAL {
+                                        int id PK
+                                        string name
+                                        string type
+                                        int volume
+                                        int quantity
+                                        int precision
+                                    }
+                                    RECEIPT_LIST {
+                                        int receipt_id PK
+                                        bigint datetime_unix
+                                        int customer_id FK
+                                    }
+                                    IMAGES {
+                                        int id PK
+                                        string file_name
+                                        string file_hash
+                                        string file_path
+                                    }
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. AI Registry -->
                 <section id="ai-registry" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12 text-center">
-                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 06</span>
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 07</span>
                         <h2 class="text-5xl font-black italic">AI Knowledge Engine</h2>
                     </div>
                     <div class="glass-card p-12 border-l-8 border-blue-500 overflow-hidden relative">
@@ -749,10 +827,10 @@
                     </div>
                 </section>
 
-                <!-- 7. Backend Architecture -->
+                <!-- 8. Backend Architecture -->
                 <section id="backend-crates" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12">
-                        <span class="text-purple-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 07</span>
+                        <span class="text-purple-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 08</span>
                         <h2 class="text-5xl font-black italic">Backend Crate Architecture</h2>
                     </div>
 
@@ -875,10 +953,10 @@
                     </div>
                 </section>
 
-                <!-- 8. Commands -->
+                <!-- 9. Commands -->
                 <section id="commands" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12 text-center">
-                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 08</span>
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 09</span>
                         <h2 class="text-5xl font-black italic">Quick Reference</h2>
                     </div>
 
