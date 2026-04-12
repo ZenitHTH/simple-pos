@@ -53,7 +53,7 @@ export function GlobalStylesPanel({
 
       <div className="space-y-4">
         {/* Radius Slider */}
-        <SidebarSlider
+        <TunerSlider
           label="Radius"
           value={settings.theme.theme_radius ?? 0.5}
           onChange={(v) => updateSettings({ theme: { theme_radius: v } })}
@@ -64,7 +64,7 @@ export function GlobalStylesPanel({
         />
 
         {/* Preview Zoom Slider - This only affects the tuner preview div */}
-        <SidebarSlider
+        <TunerSlider
           label="Preview Zoom"
           value={previewZoom}
           onChange={setPreviewZoom}
@@ -216,7 +216,7 @@ export function GlobalStylesPanel({
           <h3 className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">
             Global Buttons
           </h3>
-          <SidebarSlider
+          <TunerSlider
             label="Button Radius"
             value={settings.styling.button.radius ?? 12}
             onChange={(v) =>
@@ -226,7 +226,7 @@ export function GlobalStylesPanel({
             max={32}
             unit="px"
           />
-          <SidebarSlider
+          <TunerSlider
             label="Shadow Intensity"
             value={settings.styling.button.shadow_intensity ?? 10}
             onChange={(v) =>
@@ -236,7 +236,7 @@ export function GlobalStylesPanel({
             max={100}
             unit="%"
           />
-          <SidebarSlider
+          <TunerSlider
             label="Anim Speed"
             value={settings.styling.button.transition_speed ?? 200}
             onChange={(v) =>

@@ -1,0 +1,5 @@
+- [x] Task 1: Create TunerSlider Component
+- [x] Task 2: Reorganize Directory Structure
+- [ ] Task 3: Update Imports in Panels
+- [ ] Task 4: Update Imports in Tuners and Core
+- [ ] Task 5: Update External Consumers
