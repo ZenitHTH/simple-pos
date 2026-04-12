@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings, DeepPartial } from "@/lib";
 
 interface SidebarStylesPanelProps {
@@ -36,7 +36,7 @@ export function SidebarStylesPanel({
         Sidebar Layout & Style
       </h2>
       <div className="space-y-6">
-        <SidebarSlider
+        <TunerSlider
           label="Icon Size"
           value={settings.styling.sidebar.icon_size ?? 20}
           onChange={(v) => updateSettings({ styling: { sidebar: { icon_size: v } } })}
@@ -44,7 +44,7 @@ export function SidebarStylesPanel({
           max={32}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Item Spacing"
           value={settings.styling.sidebar.item_spacing ?? 8}
           onChange={(v) => updateSettings({ styling: { sidebar: { item_spacing: v } } })}
@@ -52,7 +52,7 @@ export function SidebarStylesPanel({
           max={24}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Corner Radius"
           value={settings.styling.sidebar.item_radius ?? 12}
           onChange={(v) => updateSettings({ styling: { sidebar: { item_radius: v } } })}
@@ -60,7 +60,7 @@ export function SidebarStylesPanel({
           max={24}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Active Opacity"
           value={settings.styling.sidebar.active_bg_opacity ?? 10}
           onChange={(v) => updateSettings({ styling: { sidebar: { active_bg_opacity: v } } })}
@@ -68,7 +68,7 @@ export function SidebarStylesPanel({
           max={100}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Font Size"
           value={settings.scaling.fonts.sidebar ?? 100}
           onChange={(v) => updateSettings({ scaling: { fonts: { sidebar: v } } })}

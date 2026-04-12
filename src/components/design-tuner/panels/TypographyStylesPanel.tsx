@@ -3,7 +3,7 @@
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { Select } from "@/components/ui/Select";
 import { PillGroup } from "@/components/ui/PillGroup";
-import { TypographySlider } from "./TypographySlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import {
   FONT_FAMILIES,
   WEIGHT_OPTIONS,
@@ -65,7 +65,7 @@ export function TypographyStylesPanel({
       </div>
 
       {/* Base Size */}
-      <TypographySlider
+      <TunerSlider
         label="Base Size"
         value={baseSize}
         min={12}
@@ -102,7 +102,7 @@ export function TypographyStylesPanel({
       </div>
 
       {/* Line Height */}
-      <TypographySlider
+      <TunerSlider
         label="Line Height"
         value={lineHeight}
         min={1.0}
@@ -113,7 +113,7 @@ export function TypographyStylesPanel({
       />
 
       {/* Letter Spacing */}
-      <TypographySlider
+      <TunerSlider
         label="Letter Spacing"
         value={letterSpacing}
         min={-0.05}

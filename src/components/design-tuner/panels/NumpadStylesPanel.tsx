@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings, DeepPartial } from "@/lib";
 
 interface NumpadStylesPanelProps {
@@ -32,7 +32,7 @@ export function NumpadStylesPanel({
         Numpad Styling
       </h2>
       <div className="space-y-4">
-        <SidebarSlider
+        <TunerSlider
           label="Overall Scale"
           value={settings.styling.payment.numpad_scale ?? 100}
           onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
@@ -41,7 +41,7 @@ export function NumpadStylesPanel({
           unit="%"
         />
 
-        <SidebarSlider
+        <TunerSlider
           label="Button Font Scale"
           value={settings.styling.payment.numpad_font_scale ?? 100}
           onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
@@ -50,7 +50,7 @@ export function NumpadStylesPanel({
           unit="%"
         />
 
-        <SidebarSlider
+        <TunerSlider
           label="Display Font Scale"
           value={settings.styling.payment.numpad_display_font_scale ?? 100}
           onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
@@ -59,7 +59,7 @@ export function NumpadStylesPanel({
           unit="%"
         />
 
-        <SidebarSlider
+        <TunerSlider
           label="Button Height"
           value={settings.styling.payment.numpad_button_height ?? 80}
           onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
@@ -68,7 +68,7 @@ export function NumpadStylesPanel({
           unit="px"
         />
 
-        <SidebarSlider
+        <TunerSlider
           label="Button Gap"
           value={settings.styling.payment.numpad_gap ?? 12}
           onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}

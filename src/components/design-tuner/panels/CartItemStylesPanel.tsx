@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings, DeepPartial } from "@/lib";
 import { Select } from "@/components/ui/Select";
 
@@ -37,7 +37,7 @@ export function CartItemStylesPanel({
         Cart Item Styles
       </h2>
       <div className="space-y-4">
-        <SidebarSlider
+        <TunerSlider
           label="Font Size"
           value={settings.styling.cart.font_size ?? 100}
           onChange={(v) => updateSettings({ styling: { cart: { font_size: v } } })}
@@ -45,7 +45,7 @@ export function CartItemStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Header Font"
           value={settings.styling.cart.header_font_size ?? 100}
           onChange={(v) => updateSettings({ styling: { cart: { header_font_size: v } } })}
@@ -53,7 +53,7 @@ export function CartItemStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Price Font"
           value={settings.styling.cart.price_font_size ?? 100}
           onChange={(v) => updateSettings({ styling: { cart: { price_font_size: v } } })}
@@ -61,7 +61,7 @@ export function CartItemStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Padding"
           value={settings.styling.cart.padding ?? 10}
           onChange={(update) => updateSettings({ styling: { cart: { padding: update } } })}
@@ -69,7 +69,7 @@ export function CartItemStylesPanel({
           max={32}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Margin"
           value={settings.styling.cart.margin ?? 8}
           onChange={(v) => updateSettings({ styling: { cart: { margin: v } } })}
@@ -77,7 +77,7 @@ export function CartItemStylesPanel({
           max={24}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Image Size"
           value={settings.styling.cart.image_size ?? 48}
           onChange={(v) => updateSettings({ styling: { cart: { image_size: v } } })}
@@ -85,7 +85,7 @@ export function CartItemStylesPanel({
           max={96}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Inner Gap"
           value={settings.styling.cart.gap ?? 12}
           onChange={(v) => updateSettings({ styling: { cart: { gap: v } } })}
@@ -105,7 +105,7 @@ export function CartItemStylesPanel({
           ]}
         />
 
-        <SidebarSlider
+        <TunerSlider
           label="Glass Opacity"
           value={settings.styling.cart.bg_opacity ?? 0}
           onChange={(v) => updateSettings({ styling: { cart: { bg_opacity: v } } })}

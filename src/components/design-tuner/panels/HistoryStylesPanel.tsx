@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings, DeepPartial } from "@/lib";
 
 interface HistoryStylesPanelProps {
@@ -29,7 +29,7 @@ export function HistoryStylesPanel({
         Typography Tuning
       </h2>
       <div className="space-y-6">
-        <SidebarSlider
+        <TunerSlider
           label="Header Size"
           value={settings.scaling.fonts.header ?? 100}
           onChange={(v) => updateSettings({ scaling: { fonts: { header: v } } })}
@@ -37,7 +37,7 @@ export function HistoryStylesPanel({
           max={150}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Content Size"
           value={settings.scaling.fonts.history ?? 100}
           onChange={(v) => updateSettings({ scaling: { fonts: { history: v } } })}

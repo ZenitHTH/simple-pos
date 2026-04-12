@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib";
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings } from "@/lib";
 
 interface GridStylesPanelProps {
@@ -78,7 +78,7 @@ export function GridStylesPanel({
       </div>
 
       <div className="space-y-4 pt-4 border-t border-border/50">
-        <SidebarSlider
+        <TunerSlider
           label="Padding"
           value={settings.styling.grid.item_padding ?? 16}
           onChange={(v) => onUpdate({ styling: { grid: { item_padding: v } } })}
@@ -86,7 +86,7 @@ export function GridStylesPanel({
           max={40}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Corner Radius"
           value={settings.styling.grid.item_radius ?? 24}
           onChange={(v) => onUpdate({ styling: { grid: { item_radius: v } } })}
@@ -94,7 +94,7 @@ export function GridStylesPanel({
           max={60}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Name Size"
           value={settings.styling.grid.item_title_font_size ?? 100}
           onChange={(v) => onUpdate({ styling: { grid: { item_title_font_size: v } } })}
@@ -102,7 +102,7 @@ export function GridStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Price Size"
           value={settings.styling.grid.item_price_font_size ?? 100}
           onChange={(v) => onUpdate({ styling: { grid: { item_price_font_size: v } } })}
@@ -110,7 +110,7 @@ export function GridStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Grid Spacing"
           value={settings.styling.grid.gap ?? 20}
           onChange={(v) => onUpdate({ styling: { grid: { gap: v } } })}
@@ -118,7 +118,7 @@ export function GridStylesPanel({
           max={60}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Shadow Depth"
           value={settings.styling.grid.item_shadow ?? 10}
           onChange={(v) => onUpdate({ styling: { grid: { item_shadow: v } } })}
@@ -126,7 +126,7 @@ export function GridStylesPanel({
           max={100}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Border Width"
           value={settings.styling.grid.item_border_width ?? 1}
           onChange={(v) => onUpdate({ styling: { grid: { item_border_width: v } } })}
@@ -134,7 +134,7 @@ export function GridStylesPanel({
           max={8}
           unit="px"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Hover Pop"
           value={settings.styling.grid.item_hover_scale ?? 102}
           onChange={(v) => onUpdate({ styling: { grid: { item_hover_scale: v } } })}
@@ -143,7 +143,7 @@ export function GridStylesPanel({
           step={0.5}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Glass Opacity"
           value={settings.styling.grid.item_bg_opacity ?? 100}
           onChange={(v) => onUpdate({ styling: { grid: { item_bg_opacity: v } } })}

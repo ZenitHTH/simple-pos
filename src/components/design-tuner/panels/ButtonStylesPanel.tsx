@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 import { AppSettings, DeepPartial } from "@/lib";
 
 interface ButtonStylesPanelProps {
@@ -27,7 +27,7 @@ export function ButtonStylesPanel({
         Button Styles
       </h2>
       <div className="space-y-3">
-        <SidebarSlider
+        <TunerSlider
           label="Button Scale"
           value={settings.scaling.components.button ?? 100}
           onChange={(v) => updateSettings({ scaling: { components: { button: v } } })}
@@ -35,7 +35,7 @@ export function ButtonStylesPanel({
           max={200}
           unit="%"
         />
-        <SidebarSlider
+        <TunerSlider
           label="Button Font Scale"
           value={settings.scaling.fonts.button ?? 100}
           onChange={(v) => updateSettings({ scaling: { fonts: { button: v } } })}

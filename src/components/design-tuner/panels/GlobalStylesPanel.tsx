@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ThemeExplorerModal } from "./ThemeExplorerModal";
+import { ThemeExplorerModal } from "../core/ThemeExplorerModal";
 import { FaCompass } from "react-icons/fa";
 import { AppSettings, DeepPartial } from "@/lib/types";
-import { SidebarSlider } from "./SidebarSlider";
+import { TunerSlider } from "../ui/TunerSlider";
 
 interface GlobalStylesPanelProps {
   settings: AppSettings;
