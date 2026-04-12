@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { AppSettings, CustomPreset, DeepPartial } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
-import { FaLayerGroup, FaCoffee, FaSave, FaTrash, FaPlus, FaPalette } from "react-icons/fa";
+import { FaLayerGroup, FaCoffee, FaSave, FaTrash, FaPlus, FaPalette, FaExpand } from "react-icons/fa";
 import { THEME_PRESETS } from "@/context/settings/constants";
 
 interface ThemePresetsPanelProps {
   settings: AppSettings;
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
+  onOpenLibrary?: () => void;
 }
 
 export function ThemePresetsPanel({
   settings,
   updateSettings,
+  onOpenLibrary,
 }: ThemePresetsPanelProps) {
   const [newPresetName, setNewPresetName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -66,10 +68,21 @@ export function ThemePresetsPanel({
     <div className="px-2 pt-4 space-y-6">
       {/* Built-in Presets */}
       <div>
-        <h2 className="text-foreground/80 mb-4 text-sm font-semibold">
-          Built-in Presets
-        </h2>
-        <div className="grid grid-cols-1 gap-2">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-foreground/80 text-sm font-semibold">
+            Built-in Presets
+          </h2>
+          {onOpenLibrary && (
+            <button
+              onClick={onOpenLibrary}
+              className="text-muted-foreground hover:text-primary transition-colors"
+              title="Open full library"
+            >
+              <FaExpand size={14} />
+            </button>
+          )}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {presets.map((preset) => (
             <button
               key={preset.id}

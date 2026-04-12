@@ -1,0 +1,75 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { AppSettings, DeepPartial } from "@/lib/types";
+import { ThemePresetsPanel } from "./ThemePresetsPanel";
+import { GlobalStylesPanel } from "./GlobalStylesPanel";
+import ThemeLibraryModal from "../manage/settings/ThemeLibraryModal";
+
+// ... (container/item variants) ...
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  show: { y: 0, opacity: 1 },
+};
+
+export function GlobalTuner({
+  settings,
+  updateSettings,
+  previewZoom,
+  setPreviewZoom,
+}: GlobalTunerProps) {
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
+
+  return (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="space-y-12"
+    >
+      {/* ... (Header) ... */}
+
+      {/* Panels Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* Presets Column */}
+        <motion.div
+          variants={item}
+          className="border-border/60 bg-card/50 h-fit rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xl font-bold">Theme Presets</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-6">
+            Quickly switch between predefined layout styles.
+          </p>
+          <ThemePresetsPanel 
+            settings={settings} 
+            updateSettings={updateSettings} 
+            onOpenLibrary={() => setIsLibraryOpen(true)}
+          />
+        </motion.div>
+
+        {/* ... (GlobalStylesPanel) ... */}
+      </div>
+
+      <ThemeLibraryModal
+        isOpen={isLibraryOpen}
+        onClose={() => setIsLibraryOpen(false)}
+        settings={settings}
+        updateSettings={updateSettings}
+      />
+    </motion.div>
+  );
+}
