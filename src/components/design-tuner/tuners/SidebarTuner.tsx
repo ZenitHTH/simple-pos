@@ -3,8 +3,8 @@
 import { SidebarStylesPanel } from "../panels/SidebarStylesPanel";
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { FaHome, FaCog, FaBoxOpen, FaTags } from "react-icons/fa";
-import { SidebarItem } from "../layout/sidebar/SidebarItem";
-import { SidebarGroup } from "../layout/sidebar/SidebarGroup";
+import { SidebarItem } from "@/components/layout/sidebar/SidebarItem";
+import { SidebarGroup } from "@/components/layout/sidebar/SidebarGroup";
 
 const container = {
   hidden: { opacity: 0 },
