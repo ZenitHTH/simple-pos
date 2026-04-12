@@ -9,8 +9,8 @@ import { useColorSampler } from "@/hooks/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";
-import { GridStylesPanel } from "../design-tuner/GridStylesPanel";
-import { SidebarSlider } from "../design-tuner/SidebarSlider";
+import { GridStylesPanel } from "../design-tuner/panels/GridStylesPanel";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 import NumberStepper from "@/components/ui/NumberStepper";
 
 type Tab = "layout" | "style";
@@ -272,7 +272,7 @@ export default function MiniTuner() {
                         <GridStylesPanel settings={settings} onUpdate={updateSettings} />
                       ) : selectedElementId === "numpad_scale" ? (
                         <div className="flex flex-col gap-4">
-                          <SidebarSlider
+                          <TunerSlider
                             label="Numpad Scale"
                             value={settings.styling.payment.numpad_scale ?? 100}
                             onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
@@ -282,7 +282,7 @@ export default function MiniTuner() {
                           />
 
                           <div className="space-y-4 border-t border-border/50 pt-4">
-                            <SidebarSlider
+                            <TunerSlider
                               label="Button Font"
                               value={settings.styling.payment.numpad_font_scale ?? 100}
                               onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
@@ -290,7 +290,7 @@ export default function MiniTuner() {
                               max={200}
                               unit="%"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Display Font"
                               value={settings.styling.payment.numpad_display_font_scale ?? 100}
                               onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
@@ -298,7 +298,7 @@ export default function MiniTuner() {
                               max={200}
                               unit="%"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Button Height"
                               value={settings.styling.payment.numpad_button_height ?? 80}
                               onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
@@ -306,7 +306,7 @@ export default function MiniTuner() {
                               max={120}
                               unit="px"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Button Gap"
                               value={settings.styling.payment.numpad_gap ?? 12}
                               onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}
@@ -318,7 +318,7 @@ export default function MiniTuner() {
                         </div>
                       ) : selectedElementId === "cart_scale" ? (
                         <div className="flex flex-col gap-4">
-                          <SidebarSlider
+                          <TunerSlider
                             label="Cart Width"
                             value={settings.scaling.components.cart ?? 100}
                             onChange={(v) => updateSettings({ scaling: { components: { cart: v } } })}
@@ -327,7 +327,7 @@ export default function MiniTuner() {
                             unit="%"
                           />
                           <div className="space-y-4 border-t border-border/50 pt-4">
-                            <SidebarSlider
+                            <TunerSlider
                               label="Font Size"
                               value={settings.styling.cart.font_size ?? 100}
                               onChange={(v) => updateSettings({ styling: { cart: { font_size: v } } })}
@@ -335,7 +335,7 @@ export default function MiniTuner() {
                               max={200}
                               unit="%"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Header Font"
                               value={settings.styling.cart.header_font_size ?? 100}
                               onChange={(v) => updateSettings({ styling: { cart: { header_font_size: v } } })}
@@ -343,7 +343,7 @@ export default function MiniTuner() {
                               max={200}
                               unit="%"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Price Font"
                               value={settings.styling.cart.price_font_size ?? 100}
                               onChange={(v) => updateSettings({ styling: { cart: { price_font_size: v } } })}
@@ -351,7 +351,7 @@ export default function MiniTuner() {
                               max={200}
                               unit="%"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Padding"
                               value={settings.styling.cart.padding ?? 10}
                               onChange={(v) => updateSettings({ styling: { cart: { padding: v } } })}
@@ -359,7 +359,7 @@ export default function MiniTuner() {
                               max={32}
                               unit="px"
                             />
-                            <SidebarSlider
+                            <TunerSlider
                               label="Margin"
                               value={settings.styling.cart.margin ?? 8}
                               onChange={(v) => updateSettings({ styling: { cart: { margin: v } } })}
@@ -371,7 +371,7 @@ export default function MiniTuner() {
                         </div>
                       ) : selectedElementId === "button_scale" ? (
                         <div className="flex flex-col gap-4">
-                          <SidebarSlider
+                          <TunerSlider
                             label="Button Scale"
                             value={settings.scaling.components.button ?? 100}
                             onChange={(v) => updateSettings({ scaling: { components: { button: v } } })}
@@ -379,7 +379,7 @@ export default function MiniTuner() {
                             max={200}
                             unit="%"
                           />
-                          <SidebarSlider
+                          <TunerSlider
                             label="Font Scale"
                             value={settings.scaling.fonts.button ?? 100}
                             onChange={(v) => updateSettings({ scaling: { fonts: { button: v } } })}
@@ -390,7 +390,7 @@ export default function MiniTuner() {
                         </div>
                       ) : selectedElementId === "sidebar_scale" ? (
                         <div className="flex flex-col gap-4">
-                          <SidebarSlider
+                          <TunerSlider
                             label="Sidebar Width"
                             value={settings.scaling.components.sidebar ?? 100}
                             onChange={(v) => updateSettings({ scaling: { components: { sidebar: v } } })}
@@ -399,7 +399,7 @@ export default function MiniTuner() {
                             unit="%"
                           />
                           <div className="space-y-4 border-t border-border/50 pt-4">
-                            <SidebarSlider
+                            <TunerSlider
                               label="Font Size"
                               value={settings.scaling.fonts.sidebar ?? 100}
                               onChange={(v) => updateSettings({ scaling: { fonts: { sidebar: v } } })}

@@ -4,7 +4,7 @@ import { AppSettings } from "@/lib";
 
 import NumberStepper from "@/components/ui/NumberStepper";
 import NumberSlider from "@/components/ui/NumberSlider";
-import { GridStylesPanel } from "../design-tuner/GridStylesPanel";
+import { GridStylesPanel } from "../design-tuner/panels/GridStylesPanel";
 
 export default function ComponentScaleControls({
   selectedId,
