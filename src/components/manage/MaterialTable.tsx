@@ -29,6 +29,7 @@ export default function MaterialTable({
               <th className="px-6 py-4">ID</th>
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Type</th>
+              <th className="px-6 py-4">Tags</th>
               <th className="px-6 py-4">Volume</th>
               <th className="px-6 py-4">Quantity</th>
               <th className="px-6 py-4 text-right">Actions</th>
@@ -45,6 +46,24 @@ export default function MaterialTable({
                   <span className="bg-secondary text-secondary-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
                     {m.type_}
                   </span>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {m.tags && m.tags.length > 0 ? (
+                      m.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-primary/5 text-primary border-primary/10 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider"
+                        >
+                          {tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground/50 text-[10px] italic">
+                        No tags
+                      </span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-6 py-4">{m.volume}</td>
                 <td className="px-6 py-4 font-semibold">{m.quantity}</td>
