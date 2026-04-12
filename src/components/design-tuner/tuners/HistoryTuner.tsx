@@ -1,6 +1,6 @@
 "use client";
 
-import { HistoryStylesPanel } from "./HistoryStylesPanel";
+import { HistoryStylesPanel } from "../panels/HistoryStylesPanel";
 import HistoryHeader from "@/components/history/HistoryHeader";
 import DateFilter from "@/components/history/DateFilter";
 import IdSearch from "@/components/history/IdSearch";

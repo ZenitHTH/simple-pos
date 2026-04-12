@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { FaPalette, FaPlus, FaTrash, FaCheck, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { AppSettings, DeepPartial } from "@/lib/types/settings";
-import { ButtonStylesPanel } from "./ButtonStylesPanel";
+import { ButtonStylesPanel } from "../panels/ButtonStylesPanel";
 
 const container = {
   hidden: { opacity: 0 },

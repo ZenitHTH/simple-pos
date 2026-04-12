@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPalette, FaMoon, FaSun } from "react-icons/fa";
-import { ThemeCard } from "./ThemeCard";
+import { ThemeCard } from "../previews/ThemeCard";
 import { CURATED_THEMES } from "@/context/settings/constants";
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { useTheme } from "next-themes";

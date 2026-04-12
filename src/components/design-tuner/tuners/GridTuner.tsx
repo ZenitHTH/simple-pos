@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { AppSettings, DeepPartial } from "@/lib/types";
-import { GridStylesPanel } from "./GridStylesPanel";
+import { GridStylesPanel } from "../panels/GridStylesPanel";
 import ProductCard from "@/components/pos/ProductCard";
 
 const container = {

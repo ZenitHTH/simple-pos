@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarStylesPanel } from "./SidebarStylesPanel";
+import { SidebarStylesPanel } from "../panels/SidebarStylesPanel";
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { FaHome, FaCog, FaBoxOpen, FaTags } from "react-icons/fa";
 import { SidebarItem } from "../layout/sidebar/SidebarItem";

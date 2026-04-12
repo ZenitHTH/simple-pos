@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CartItem from "@/components/cart/CartItem";
 import { AppSettings, DeepPartial } from "@/lib/types/settings";
-import { CartItemStylesPanel } from "./CartItemStylesPanel";
+import { CartItemStylesPanel } from "../panels/CartItemStylesPanel";
 import { motion } from "framer-motion";
 
 const SAMPLE_ITEMS = [

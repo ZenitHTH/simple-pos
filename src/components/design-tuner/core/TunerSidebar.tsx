@@ -13,7 +13,7 @@ import {
   FaHistory,
   FaColumns,
 } from "react-icons/fa";
-import { NavButton } from "./NavButton";
+import { NavButton } from "../ui/NavButton";
 import { AppSettings, DeepPartial } from "@/lib";
 import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
 

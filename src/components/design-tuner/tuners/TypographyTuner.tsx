@@ -2,8 +2,8 @@
 
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { TYPOGRAPHY_DEFAULTS } from "@/lib/constants/typography";
-import { TypographyStylesPanel } from "./TypographyStylesPanel";
-import { TypographyPreview } from "./TypographyPreview";
+import { TypographyStylesPanel } from "../panels/TypographyStylesPanel";
+import { TypographyPreview } from "../previews/TypographyPreview";
 
 interface TypographyTunerProps {
   settings: AppSettings;

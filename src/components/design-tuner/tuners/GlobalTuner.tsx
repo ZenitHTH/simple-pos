@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { AppSettings, DeepPartial } from "@/lib/types";
-import { ThemePresetsPanel } from "./ThemePresetsPanel";
-import { GlobalStylesPanel } from "./GlobalStylesPanel";
-import ThemeLibraryModal from "../manage/settings/ThemeLibraryModal";
+import { ThemePresetsPanel } from "../panels/ThemePresetsPanel";
+import { GlobalStylesPanel } from "../panels/GlobalStylesPanel";
+import { ThemeExplorerModal } from "../core/ThemeExplorerModal";
 
 // ... (container/item variants) ...
 
@@ -64,7 +64,7 @@ export function GlobalTuner({
         {/* ... (GlobalStylesPanel) ... */}
       </div>
 
-      <ThemeLibraryModal
+      <ThemeExplorerModal
         isOpen={isLibraryOpen}
         onClose={() => setIsLibraryOpen(false)}
         settings={settings}
