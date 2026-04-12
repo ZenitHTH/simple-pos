@@ -20,6 +20,58 @@
             sequence: { useMaxWidth: false, showSequenceNumbers: true },
         });
 
+        // Post-process ER diagram elements to override mermaid's dark theme inline styles
+        function styleErDiagram(svg) {
+            // Entity header boxes
+            svg.querySelectorAll('rect.er.entityBox').forEach(el => {
+                el.style.setProperty('fill', '#1e3a5f', 'important');
+                el.style.setProperty('stroke', '#3b82f6', 'important');
+                el.style.setProperty('stroke-width', '2px', 'important');
+            });
+            // Odd attribute rows
+            svg.querySelectorAll('rect.er.attributeBoxOdd').forEach(el => {
+                el.style.setProperty('fill', '#161b2e', 'important');
+                el.style.setProperty('stroke', 'rgba(59,130,246,0.35)', 'important');
+            });
+            // Even attribute rows
+            svg.querySelectorAll('rect.er.attributeBoxEven').forEach(el => {
+                el.style.setProperty('fill', '#12172a', 'important');
+                el.style.setProperty('stroke', 'rgba(59,130,246,0.35)', 'important');
+            });
+            // Relationship label boxes
+            svg.querySelectorAll('rect.er.relationshipLabelBox').forEach(el => {
+                el.style.setProperty('fill', '#0c0c14', 'important');
+                el.style.setProperty('opacity', '0.9', 'important');
+            });
+            // Relationship lines
+            svg.querySelectorAll('.er.relationshipLine').forEach(el => {
+                el.style.setProperty('stroke', '#3b82f6', 'important');
+                el.style.setProperty('stroke-width', '2px', 'important');
+            });
+            // Entity label text
+            svg.querySelectorAll('text.er.entityLabel').forEach(el => {
+                el.style.setProperty('fill', '#ffffff', 'important');
+                el.style.setProperty('font-weight', '700', 'important');
+            });
+            // Attribute type text (int, string, etc.)
+            svg.querySelectorAll('text.er.attributeType').forEach(el => {
+                el.style.setProperty('fill', '#60a5fa', 'important');
+            });
+            // Attribute name text
+            svg.querySelectorAll('text.er.attributeName').forEach(el => {
+                el.style.setProperty('fill', '#e4e4e7', 'important');
+            });
+            // PK/FK key labels
+            svg.querySelectorAll('text.er.attributeKey').forEach(el => {
+                el.style.setProperty('fill', '#a855f7', 'important');
+                el.style.setProperty('font-weight', '700', 'important');
+            });
+            // Relationship label text
+            svg.querySelectorAll('text.er.relationshipLabel').forEach(el => {
+                el.style.setProperty('fill', '#94a3b8', 'important');
+            });
+        }
+
         async function initDiagrams() {
             await mermaid.run();
             const svgs = document.querySelectorAll('.mermaid svg');
@@ -28,6 +80,9 @@
                 svg.style.width = '100%';
                 svg.style.height = '100%';
                 svg.style.maxWidth = 'none';
+
+                // Apply ER diagram overrides via JS (CSS alone can't beat mermaid's specificity)
+                styleErDiagram(svg);
 
                 const panZoom = svgPanZoom(svg, {
                     zoomEnabled: true,
@@ -416,6 +471,45 @@
             color: #93c5fd;
             padding: 0.2rem 0.4rem;
             border-radius: 0.4rem;
+        }
+
+        /* --- ER DIAGRAM OVERRIDES (mermaid v10) --- */
+        /* These selectors target elements with both 'er' and specific class names */
+        .mermaid rect.er.entityBox {
+            fill: #1e3a5f !important;
+            stroke: #3b82f6 !important;
+            stroke-width: 2px !important;
+        }
+        .mermaid rect.er.attributeBoxOdd {
+            fill: #161b2e !important;
+            stroke: rgba(59, 130, 246, 0.35) !important;
+        }
+        .mermaid rect.er.attributeBoxEven {
+            fill: #12172a !important;
+            stroke: rgba(59, 130, 246, 0.35) !important;
+        }
+        .mermaid text.er.entityLabel {
+            fill: #ffffff !important;
+        }
+        .mermaid text.er.attributeType {
+            fill: #60a5fa !important;
+        }
+        .mermaid text.er.attributeName {
+            fill: #e4e4e7 !important;
+        }
+        .mermaid text.er.attributeKey {
+            fill: #a855f7 !important;
+            font-weight: 700 !important;
+        }
+        .mermaid .er.relationshipLine {
+            stroke: #60a5fa !important;
+            stroke-width: 2px !important;
+        }
+        .mermaid rect.er.relationshipLabelBox {
+            fill: #0c0c0e !important;
+        }
+        .mermaid text.er.relationshipLabel {
+            fill: #a1a1aa !important;
         }
     </style>
 </head>
