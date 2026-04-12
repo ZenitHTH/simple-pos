@@ -33,10 +33,24 @@ export function TunerSlider({
   return (
     <div className={cn("space-y-1.5", variant === "compact" && "py-1")}>
       <div className="flex items-center justify-between px-1">
-        <label className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.1em]">
+        <label
+          className={cn(
+            "text-muted-foreground uppercase",
+            variant === "compact"
+              ? "text-[10px] font-black tracking-[0.1em]"
+              : "text-xs font-semibold tracking-wider"
+          )}
+        >
           {label}
         </label>
-        <span className="text-primary bg-primary/10 rounded px-2 py-1 text-[10px] font-mono font-black border border-primary/20">
+        <span
+          className={cn(
+            "text-primary font-mono",
+            variant === "compact"
+              ? "bg-primary/10 rounded px-2 py-1 text-[10px] font-black border border-primary/20"
+              : "text-xs font-bold"
+          )}
+        >
           {display}
         </span>
       </div>
