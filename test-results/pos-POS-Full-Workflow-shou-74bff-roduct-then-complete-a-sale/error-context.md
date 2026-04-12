@@ -12,38 +12,18 @@
 # Error details
 
 ```
-Error: locator.click: Target page, context or browser has been closed
+Error: locator.waitFor: Target page, context or browser has been closed
 Call log:
-  - waiting for getByRole('button').filter({ hasText: 'Management' })
-    - locator resolved to <button class="group flex w-full items-center gap-3 rounded-xl transition-all duration-200 text-primary bg-primary/10">…</button>
-  - attempting click action
-    2 × waiting for element to be visible, enabled and stable
-      - element is visible, enabled and stable
-      - scrolling into view if needed
-      - done scrolling
-      - <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-100">…</div> intercepts pointer events
-    - retrying click action
-    - waiting 20ms
-    2 × waiting for element to be visible, enabled and stable
-      - element is visible, enabled and stable
-      - scrolling into view if needed
-      - done scrolling
-      - <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-100">…</div> intercepts pointer events
-    - retrying click action
-      - waiting 100ms
-    74 × waiting for element to be visible, enabled and stable
-       - element is visible, enabled and stable
-       - scrolling into view if needed
-       - done scrolling
-       - <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-100">…</div> intercepts pointer events
-     - retrying click action
-       - waiting 500ms
+  - waiting for getByRole('button').filter({ hasText: 'Management' }) to be visible
 
 ```
 
 # Test source
 
 ```ts
+  33  |   const contexts = browser.contexts();
+  34  |   console.log(`Found ${contexts.length} contexts`);
+  35  |   
   36  |   for (const context of contexts) {
   37  |     const pages = context.pages();
   38  |     console.log(`Context has ${pages.length} pages`);
@@ -123,36 +103,37 @@ Call log:
   112 |   }
   113 | 
   114 |   // Final wait for the main POS screen (Product Grid)
-  115 |   // We can look for the "Product Grid" or simply wait for a bit
-  116 |   await page.waitForTimeout(1000);
-  117 | }
-  118 | 
-  119 | /**
-  120 |  * Navigates to a specific section using the sidebar.
-  121 |  */
-  122 | export async function navigateTo(page: Page, groupName: string | null, linkName: string) {
-  123 |   // Check for mobile hamburger
-  124 |   const hamburger = page.locator('button.text-muted.-ml-2');
-  125 |   if (await hamburger.isVisible()) {
-  126 |     await hamburger.click();
-  127 |     await page.waitForTimeout(500);
-  128 |   }
-  129 | 
-  130 |   if (groupName) {
-  131 |     const group = page.getByRole('button').filter({ hasText: groupName });
-  132 |     await group.waitFor({ state: 'visible' });
-  133 |     
-  134 |     // Check if expanded (this depends on your implementation, usually aria-expanded)
-  135 |     // If we can't detect it easily, just click and wait
-> 136 |     await group.click();
-      |                 ^ Error: locator.click: Target page, context or browser has been closed
-  137 |     await page.waitForTimeout(500);
-  138 |   }
-  139 | 
-  140 |   const link = page.locator('a').filter({ hasText: linkName });
-  141 |   await link.waitFor({ state: 'visible' });
-  142 |   await link.click();
-  143 |   await page.waitForTimeout(500);
-  144 | }
-  145 | 
+  115 |   // Ensure any login/setup overlays are gone
+  116 |   await page.waitForSelector('div.bg-black\\/60.backdrop-blur-sm', { state: 'hidden', timeout: 15000 }).catch(() => {});
+  117 |   await page.waitForTimeout(1000);
+  118 | }
+  119 | 
+  120 | /**
+  121 |  * Navigates to a specific section using the sidebar.
+  122 |  */
+  123 | export async function navigateTo(page: Page, groupName: string | null, linkName: string) {
+  124 |   // Check for mobile hamburger
+  125 |   const hamburger = page.locator('button.text-muted.-ml-2');
+  126 |   if (await hamburger.isVisible()) {
+  127 |     await hamburger.click();
+  128 |     await page.waitForTimeout(500);
+  129 |   }
+  130 | 
+  131 |   if (groupName) {
+  132 |     const group = page.getByRole('button').filter({ hasText: groupName });
+> 133 |     await group.waitFor({ state: 'visible' });
+      |                 ^ Error: locator.waitFor: Target page, context or browser has been closed
+  134 |     
+  135 |     // Check if expanded (this depends on your implementation, usually aria-expanded)
+  136 |     // If we can't detect it easily, just click and wait
+  137 |     await group.click();
+  138 |     await page.waitForTimeout(500);
+  139 |   }
+  140 | 
+  141 |   const link = page.locator('a').filter({ hasText: linkName });
+  142 |   await link.waitFor({ state: 'visible' });
+  143 |   await link.click();
+  144 |   await page.waitForTimeout(500);
+  145 | }
+  146 | 
 ```
