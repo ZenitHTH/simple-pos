@@ -445,6 +445,7 @@
                         <li><a href="#intro" class="nav-link">Introduction</a></li>
                         <li><a href="#architecture" class="nav-link">Architecture</a></li>
                         <li><a href="#design-system" class="nav-link">UI & Design System</a></li>
+                        <li><a href="#themes" class="nav-link">Theme & Palette</a></li>
                         <li><a href="#pos-engine" class="nav-link">POS Engine</a></li>
                         <li><a href="#database" class="nav-link">Database Security</a></li>
                         <li><a href="#ai-registry" class="nav-link">AI Registry</a></li>
@@ -583,6 +584,7 @@
                                 subgraph Design Mode
                                 MT[MiniTuner] -->|User drags slider| SC
                                 TS[TunerSidebar] -->|User changes preset| SC
+                                TE[Theme Explorer] -->|User picks palette| SC
                                 end
                             </div>
                             <div class="diagram-controls">
@@ -606,11 +608,68 @@
                     </div>
                 </section>
 
-                <!-- 3. POS Engine -->
-                <section id="pos-engine" class="mb-40 scroll-mt-32 animate-section">
+                <!-- 3. Theme System -->
+                <section id="themes" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12">
                         <span class="text-pink-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
                             03</span>
+                        <h2 class="text-5xl font-black italic">Theme & Palette System</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS features a sophisticated theming engine that leverages native CSS <code>oklch</code> color spaces for perceptual accuracy. The <strong>Theme Explorer</strong> provides an immersive full-screen experience for browsing curated palettes and generating custom ones.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                User((User)) -->|Selects Base Color| Generator[Advanced Palette Generator]
+                                Generator -->|Updates --theme-primary| CSS[Global CSS Engine]
+                                
+                                subgraph CSS Processing
+                                CSS -->|color-mix| Hover[--primary-hover]
+                                CSS -->|color-mix| Active[--primary-active]
+                                CSS -->|oklch Lightness Check| FG[--primary-foreground]
+                                end
+                                
+                                FG -->|Auto-Contrast| UI[Accessible UI Components]
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-8 md:grid-cols-2 mt-12">
+                            <div class="glass-card p-8 border-t-4 border-blue-500">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4 text-blue-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">Curated Library</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed">6+ professionally designed themes including Ocean, Matcha, and Sunset. Each theme includes custom background, card, and text overrides tuned for optimal POS readability.</p>
+                            </div>
+                            <div class="glass-card p-8 border-t-4 border-purple-500">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 text-purple-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">Smart Auto-Contrast</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed">Real-time contrast detection ensures that text on primary buttons automatically switches between dark and light based on the background luminance of the primary color.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. POS Engine -->
+                <section id="pos-engine" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-pink-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            04</span>
                         <h2 class="text-5xl font-black italic">POS Transaction Flow</h2>
                     </div>
 
@@ -642,11 +701,11 @@
                     </div>
                 </section>
 
-                <!-- 4. Database -->
+                <!-- 5. Database -->
                 <section id="database" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12">
                         <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
-                            04</span>
+                            05</span>
                         <h2 class="text-5xl font-black italic">Security & Encryption</h2>
                     </div>
 
@@ -669,7 +728,7 @@
                     </div>
                 </section>
 
-                <!-- 5. AI Registry -->
+                <!-- 6. AI Registry -->
                 <section id="ai-registry" class="mb-40 scroll-mt-32 animate-section">
                     <div class="glass-card p-12 border-l-8 border-blue-500 overflow-hidden relative">
                         <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -686,7 +745,7 @@
                     </div>
                 </section>
 
-                <!-- 6. Commands -->
+                <!-- 7. Commands -->
                 <section id="commands" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12 text-center">
                         <h2 class="text-5xl font-black italic">Quick Reference</h2>
@@ -767,8 +826,5 @@
     </script>
 
 </body>
-
-</html>
-body>
 
 </html>
