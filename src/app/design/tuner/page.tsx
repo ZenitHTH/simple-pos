@@ -1,16 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SelectorTuner } from "@/components/design-tuner/SelectorTuner";
-import { ButtonTuner } from "@/components/design-tuner/ButtonTuner";
-import { TypographyTuner } from "@/components/design-tuner/TypographyTuner";
-import { CartItemTuner } from "@/components/design-tuner/CartItemTuner";
-import { GridTuner } from "@/components/design-tuner/GridTuner";
-import { SidebarTuner } from "@/components/design-tuner/SidebarTuner";
-import { HistoryTuner } from "@/components/design-tuner/HistoryTuner";
-import { NumpadTuner } from "@/components/design-tuner/NumpadTuner";
-import { GlobalTuner } from "@/components/design-tuner/GlobalTuner";
-import { TunerSidebar, TunerTab } from "@/components/design-tuner/TunerSidebar";
+import { SelectorTuner } from "@/components/design-tuner/tuners/SelectorTuner";
+import { ButtonTuner } from "@/components/design-tuner/tuners/ButtonTuner";
+import { TypographyTuner } from "@/components/design-tuner/tuners/TypographyTuner";
+import { CartItemTuner } from "@/components/design-tuner/tuners/CartItemTuner";
+import { GridTuner } from "@/components/design-tuner/tuners/GridTuner";
+import { SidebarTuner } from "@/components/design-tuner/tuners/SidebarTuner";
+import { HistoryTuner } from "@/components/design-tuner/tuners/HistoryTuner";
+import { NumpadTuner } from "@/components/design-tuner/tuners/NumpadTuner";
+import { GlobalTuner } from "@/components/design-tuner/tuners/GlobalTuner";
+import { TunerSidebar, TunerTab } from "@/components/design-tuner/core/TunerSidebar";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
