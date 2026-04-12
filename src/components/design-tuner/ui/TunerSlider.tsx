@@ -1,0 +1,54 @@
+"use client";
+
+import RangeSlider from "@/components/ui/RangeSlider";
+import { cn } from "@/lib";
+
+interface TunerSliderProps {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step?: number;
+  unit?: string;
+  onChange: (v: number) => void;
+  formatDisplay?: (v: number) => string;
+  variant?: "default" | "compact"; // To handle slight visual differences if needed, default covers both
+}
+
+export function TunerSlider({
+  label,
+  value,
+  min,
+  max,
+  step = 1,
+  unit = "",
+  onChange,
+  formatDisplay,
+  variant = "default",
+}: TunerSliderProps) {
+  const display = formatDisplay
+    ? formatDisplay(value)
+    : `${value}${unit}`;
+
+  return (
+    <div className={cn("space-y-1.5", variant === "compact" && "py-1")}>
+      <div className="flex items-center justify-between px-1">
+        <label className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.1em]">
+          {label}
+        </label>
+        <span className="text-primary bg-primary/10 rounded px-2 py-1 text-[10px] font-mono font-black border border-primary/20">
+          {display}
+        </span>
+      </div>
+      <div className="flex items-center h-8">
+        <RangeSlider
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={onChange}
+        />
+      </div>
+    </div>
+  );
+}
