@@ -1,11 +1,18 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { HistoryStylesPanel } from "../panels/HistoryStylesPanel";
 import HistoryHeader from "@/components/history/HistoryHeader";
 import DateFilter from "@/components/history/DateFilter";
 import IdSearch from "@/components/history/IdSearch";
 import ReceiptList from "@/components/history/ReceiptList";
 import { AppSettings, DeepPartial } from "@/lib/types";
+
+const SAMPLE_RECEIPTS = [
+  { receipt_id: 1001, datetime_unix: 1735689600 },
+  { receipt_id: 1002, datetime_unix: 1735776000 },
+  { receipt_id: 1003, datetime_unix: 1735862400 },
+];
 
 const container = {
   hidden: { opacity: 0 },

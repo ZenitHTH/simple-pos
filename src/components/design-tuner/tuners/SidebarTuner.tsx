@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { SidebarStylesPanel } from "../panels/SidebarStylesPanel";
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { FaHome, FaCog, FaBoxOpen, FaTags } from "react-icons/fa";

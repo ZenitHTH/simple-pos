@@ -39,7 +39,7 @@ export default function BaseSidebarLayout({
   // Calculate dynamic width (base 16rem = 256px)
   const baseWidth = 256;
   const dynamicWidth = `${baseWidth * (scale / 100)}px`;
-  const buttonScale = (settings?.sidebar_button_scale ?? 100) / 100;
+  const buttonScale = (settings.scaling.components.button ?? 100) / 100;
 
   return (
     <aside

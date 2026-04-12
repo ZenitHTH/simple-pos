@@ -21,13 +21,9 @@ export const THEME_PRESETS = {
         sidebar: 85,
         cart: 90,
         grid: 90,
+        button: 85,
       },
     },
-    styling: {
-      button: {
-        scale: 85, // Note: This field was previously flat, check if we need to add 'scale' to ButtonStyling
-      }
-    }
   },
   cozy: {
     theme: {
@@ -40,6 +36,7 @@ export const THEME_PRESETS = {
         sidebar: 100,
         cart: 100,
         grid: 100,
+        button: 100,
       },
     },
   },

@@ -24,6 +24,13 @@ const item = {
   show: { y: 0, opacity: 1 },
 };
 
+interface GlobalTunerProps {
+  settings: AppSettings;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
+  previewZoom: number;
+  setPreviewZoom: (v: number) => void;
+}
+
 export function GlobalTuner({
   settings,
   updateSettings,

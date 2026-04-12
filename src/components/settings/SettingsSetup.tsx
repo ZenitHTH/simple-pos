@@ -135,7 +135,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
               </h3>
               
               <div className="space-y-8">
-                <SidebarSlider
+                <TunerSlider
                   label="Interface Zoom"
                   min={75}
                   max={125}

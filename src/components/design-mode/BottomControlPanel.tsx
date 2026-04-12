@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "./NavigationMenu";
 import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
-import { SidebarSlider } from "../design-tuner/SidebarSlider";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface BottomControlPanelProps {
   hideSaveButton?: boolean;
@@ -55,7 +55,7 @@ export default function BottomControlPanel({
           {/* Global Scalers */}
           <div className="flex items-center gap-6">
             <div className="w-32">
-              <SidebarSlider
+              <TunerSlider
                 label="Display Zoom"
                 min={75}
                 max={125}
@@ -91,3 +91,4 @@ export default function BottomControlPanel({
     </div>
   );
 }
+

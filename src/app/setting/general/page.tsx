@@ -2,6 +2,7 @@
 
 import { useSettings } from "@/context/settings/SettingsContext";
 import { useCallback } from "react";
+import { DeepPartial } from "@/lib";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import GeneralSettings from "@/components/settings/GeneralSettings";
 import ThemeSettings from "@/components/settings/ThemeSettings";
@@ -12,7 +13,7 @@ export default function GeneralSettingPage() {
   const { settings, updateSettings } = useSettings();
 
   const handleUpdateSettings = useCallback(
-    (updates: Partial<typeof settings>) => {
+    (updates: DeepPartial<typeof settings>) => {
       updateSettings(updates);
     },
     [updateSettings],

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ThemeExplorerModal } from "../core/ThemeExplorerModal";
 import { FaCompass } from "react-icons/fa";
 import { AppSettings, DeepPartial } from "@/lib/types";
+import { DEFAULT_SETTINGS } from "@/context/settings/constants";
 import { TunerSlider } from "../ui/TunerSlider";
 
 interface GlobalStylesPanelProps {

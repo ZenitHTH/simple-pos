@@ -3,12 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useMockup } from "@/context/MockupContext";
 import { FaHistory, FaCompass } from "react-icons/fa";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 import NumberSlider from "@/components/ui/NumberSlider";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface GlobalLayoutControlsProps {
   settings: AppSettings;
-  updateSettings: (updates: Partial<AppSettings>) => void;
+  updateSettings: (updates: DeepPartial<AppSettings>) => void;
   currentView?: string;
   pathname: string;
 }
@@ -26,7 +27,7 @@ export default function GlobalLayoutControls({
     return (
       <div className="flex items-center gap-2">
         <div className="flex-1">
-          <SidebarSlider
+          <TunerSlider
             label="Numpad Height"
             min={200}
             max={600}

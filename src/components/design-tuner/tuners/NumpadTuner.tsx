@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { NumpadStylesPanel } from "../panels/NumpadStylesPanel";
 import VirtualNumpad from "@/components/payment/VirtualNumpad";
 import { AppSettings, DeepPartial } from "@/lib/types";

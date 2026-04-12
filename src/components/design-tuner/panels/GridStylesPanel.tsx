@@ -3,11 +3,11 @@
 import React from "react";
 import { cn } from "@/lib";
 import { TunerSlider } from "../ui/TunerSlider";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 
 interface GridStylesPanelProps {
   settings: AppSettings;
-  onUpdate: (updates: Partial<AppSettings>) => void;
+  onUpdate: (updates: DeepPartial<AppSettings>) => void;
   className?: string;
 }
 

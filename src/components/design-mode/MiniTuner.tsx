@@ -145,7 +145,7 @@ export default function MiniTuner() {
       case "sidebar_scale": return settings.scaling.components.sidebar;
       case "button_scale": return settings.scaling.components.button;
       case "header_font_scale": return settings.scaling.fonts.header;
-      case "history_font_scale": return settings.scaling.fonts.history;
+      case "history_font_scale": return settings.scaling.fonts.history || 100;
       case "sidebar_font_scale": return settings.scaling.fonts.sidebar;
       default: return 100;
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 
 import NumberStepper from "@/components/ui/NumberStepper";
 import NumberSlider from "@/components/ui/NumberSlider";
@@ -13,7 +13,7 @@ export default function ComponentScaleControls({
 }: {
   selectedId: string | null;
   settings: AppSettings;
-  updateSettings: (s: Partial<AppSettings>) => void;
+  updateSettings: (s: DeepPartial<AppSettings>) => void;
 }) {
   if (!selectedId) {
     return (

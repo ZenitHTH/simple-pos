@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { AppSettings } from "@/lib";
+import { AppSettings, DeepPartial } from "@/lib";
 import { open } from "@tauri-apps/plugin-dialog";
 import { settingsApi } from "@/lib";
 import { StorageInfo } from "@/lib";
@@ -14,7 +14,7 @@ import { logger } from "@/lib/logger";
 interface GeneralSettingsProps {
   imageStoragePath?: string;
   dbStoragePath?: string;
-  onUpdateSettings: (updates: Partial<AppSettings>) => void;
+  onUpdateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
 const GeneralSettings = memo(function GeneralSettings({
