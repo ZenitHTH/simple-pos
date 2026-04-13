@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useSettings } from "@/context/settings/SettingsContext";
 import Sidebar from "./Sidebar";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
@@ -13,7 +13,21 @@ import MiniTuner from "@/components/design-mode/MiniTuner";
  * while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const { settings } = useSettings();
+  const { settings, undo, redo } = useSettings();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+        if (e.shiftKey) redo();
+        else undo();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === "y") {
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo]);
+
   const scale = (settings.scaling.display_scale || 100) / 100;
 
   return (
