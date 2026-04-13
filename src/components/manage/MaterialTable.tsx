@@ -1,5 +1,6 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Material, formatVolume } from "@/lib";
+import { Badge } from "@/components/ui/Badge";
 
 interface MaterialTableProps {
   materials: Material[];
@@ -43,20 +44,21 @@ export default function MaterialTable({
                 </td>
                 <td className="px-6 py-4 font-medium">{m.name}</td>
                 <td className="px-6 py-4">
-                  <span className="bg-secondary text-secondary-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
+                  <Badge variant="secondary" className="rounded-full">
                     {m.type_}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-wrap gap-1">
                     {m.tags && m.tags.length > 0 ? (
                       m.tags.map((tag) => (
-                        <span
+                        <Badge
                           key={tag}
-                          className="bg-primary/5 text-primary border-primary/10 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider"
+                          variant="primary-subtle"
+                          className="rounded-full text-[10px] uppercase tracking-wider"
                         >
                           {tag}
-                        </span>
+                        </Badge>
                       ))
                     ) : (
                       <span className="text-muted-foreground/50 text-[10px] italic">

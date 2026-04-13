@@ -4,6 +4,7 @@ import { BackendProduct, Category, cn } from "@/lib";
 import { FaEdit, FaTrash, FaImage, FaUtensils, FaBoxes } from "react-icons/fa";
 import GlobalTable from "@/components/ui/GlobalTable";
 import { Switch } from "@/components/ui/Switch";
+import { Badge } from "@/components/ui/Badge";
 import { AppSettings } from "@/lib";
 
 interface ProductTableProps {
@@ -64,9 +65,9 @@ export default function ProductTable({
           render: (product) => {
             const cat = categories.find((c) => c.id === product.category_id);
             return (
-              <span className="bg-primary/10 text-primary rounded-md px-2 py-1 text-sm font-medium">
+              <Badge variant="primary-subtle">
                 {cat ? cat.name : "Unknown"}
-              </span>
+              </Badge>
             );
           },
         },
