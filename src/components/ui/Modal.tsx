@@ -3,16 +3,33 @@ import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
 
+/**
+ * Props for the Modal component.
+ * @interface ModalProps
+ */
 interface ModalProps {
+  /** Whether the modal is currently open. */
   isOpen: boolean;
+  /** Callback triggered when the modal should close (e.g., clicking overlay or close button). */
   onClose: () => void;
+  /** Title text or element displayed in the modal header. */
   title: React.ReactNode;
+  /** Content to be rendered inside the modal body. */
   children: React.ReactNode;
+  /** Optional CSS class for the modal container. */
   className?: string;
+  /** Optional inline styles for the modal container. */
   style?: React.CSSProperties;
+  /** Optional CSS class for the modal content area. */
   contentClassName?: string;
 }
 
+/**
+ * A centered modal dialog component that renders into a portal at the end of the document body.
+ * Supports a title, close button, and backdrop blur.
+ *
+ * @param {ModalProps} props - The component props.
+ */
 export function Modal({
   isOpen,
   onClose,

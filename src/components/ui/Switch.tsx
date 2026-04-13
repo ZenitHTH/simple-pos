@@ -1,6 +1,15 @@
 import * as React from "react";
 import { cn } from "@/lib";
 
+/**
+ * A custom-styled toggle switch component.
+ * Built using a button element with ARIA switch roles for accessibility.
+ * Supports checked state, custom styling, and smooth transitions.
+ * 
+ * @param props - Button props including checked state and className.
+ * @param ref - React ref for the button element.
+ * @returns A toggle switch element.
+ */
 const Switch = React.forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<"button"> & { checked?: boolean }

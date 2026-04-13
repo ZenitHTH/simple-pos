@@ -2,20 +2,41 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown, FaCheck } from "react-icons/fa6";
 import { cn } from "@/lib";
 
+/**
+ * Represents an option in the Select component.
+ */
 interface Option {
+  /** The value of the option. */
   value: string | number;
+  /** The human-readable label for the option. */
   label: string;
 }
 
+/**
+ * Props for the Select component.
+ */
 interface SelectProps {
+  /** Optional label to display above the select box. */
   label?: string;
+  /** The current selected value. */
   value?: string | number;
+  /** Callback function triggered when an option is selected. */
   onChange: (value: string | number) => void;
+  /** Array of options to display in the dropdown. */
   options: Option[];
+  /** Optional placeholder text shown when no value is selected. Defaults to "Select...". */
   placeholder?: string;
+  /** Optional additional CSS classes for the container. */
   className?: string;
 }
 
+/**
+ * A custom-styled dropdown select component.
+ * Features a searchable-like feel, custom popover, and smooth transitions.
+ * 
+ * @param props - The select component props.
+ * @returns A custom dropdown select element.
+ */
 export function Select({
   label,
   value,

@@ -9,16 +9,32 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
+/** Supported types of toast notifications. */
 export type ToastType = "success" | "error" | "info";
 
+/**
+ * Props for the Toast component.
+ */
 export interface ToastProps {
+  /** Unique identifier for the toast. */
   id: string;
+  /** The message to display. */
   message: string;
+  /** The type of notification. Defaults to "info". */
   type?: ToastType;
+  /** Auto-close duration in milliseconds. Defaults to 3000. */
   duration?: number;
+  /** Callback triggered when the toast is closed. */
   onClose: (id: string) => void;
 }
 
+/**
+ * A notification component that slides in and auto-closes.
+ * Features different themes for success, error, and informational messages.
+ * 
+ * @param props - The toast props.
+ * @returns A notification element.
+ */
 export const Toast = ({
   id,
   message,

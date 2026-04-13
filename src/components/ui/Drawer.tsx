@@ -2,6 +2,16 @@ import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
 
+/**
+ * Props for the Drawer component.
+ * @interface DrawerProps
+ * @property {boolean} isOpen - Whether the drawer is currently visible.
+ * @property {() => void} onClose - Callback function to close the drawer.
+ * @property {React.ReactNode} title - The title displayed in the drawer header.
+ * @property {React.ReactNode} children - The content to be rendered inside the drawer.
+ * @property {string} [className] - Optional CSS class for the drawer container.
+ * @property {React.CSSProperties} [style] - Optional inline styles for the drawer container.
+ */
 interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -11,6 +21,13 @@ interface DrawerProps {
   style?: React.CSSProperties;
 }
 
+/**
+ * Drawer component that slides in from the right side of the screen.
+ * Used for supplementary content, filters, or detail views.
+ *
+ * @param {DrawerProps} props - The component props.
+ * @returns {JSX.Element | null} The rendered drawer or null if not visible.
+ */
 export function Drawer({
   isOpen,
   onClose,

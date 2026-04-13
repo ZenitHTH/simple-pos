@@ -1,10 +1,23 @@
 import * as React from "react";
 import { cn } from "@/lib";
 
+/**
+ * Props for the Badge component.
+ */
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  /**
+   * The visual style variant of the badge.
+   */
   variant?: "default" | "secondary" | "destructive" | "outline" | "primary-subtle";
 }
 
+/**
+ * A small status indicator or tag.
+ * 
+ * @param className - Additional CSS classes.
+ * @param variant - Visual variant (default, secondary, destructive, etc.).
+ * @param props - Other standard span attributes.
+ */
 export function Badge({ className, variant = "default", ...props }: BadgeProps) {
   return (
     <span

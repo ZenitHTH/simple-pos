@@ -3,16 +3,33 @@
 import { useMemo } from "react";
 import { cn } from "@/lib";
 
+/**
+ * Props for the NumberStepper component.
+ * @interface NumberStepperProps
+ */
 interface NumberStepperProps {
+  /** The current numeric value. */
   value: number;
+  /** Callback triggered when the value changes. */
   onChange: (value: number) => void;
+  /** Minimum allowable value (default: 0). */
   min?: number;
+  /** Maximum allowable value (default: 100). */
   max?: number;
+  /** Amount to increment or decrement by (default: 1). */
   step?: number;
+  /** Optional function to format the displayed value (e.g., adding a currency symbol). */
   formatValue?: (value: number) => string;
+  /** Optional CSS class for the container. */
   className?: string;
 }
 
+/**
+ * A numeric input component with plus and minus buttons for stepping.
+ * Useful for quantities or precise adjustments where a slider might be too coarse.
+ *
+ * @param {NumberStepperProps} props - The component props.
+ */
 export default function NumberStepper({
   value,
   onChange,

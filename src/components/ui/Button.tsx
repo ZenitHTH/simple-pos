@@ -1,7 +1,13 @@
 import * as React from "react";
 import { cn } from "@/lib";
 
+/**
+ * Props for the Button component.
+ */
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * Visual style variant.
+   */
   variant?:
     | "default"
     | "destructive"
@@ -9,9 +15,15 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     | "secondary"
     | "ghost"
     | "link";
+  /**
+   * Predefined sizes.
+   */
   size?: "default" | "sm" | "lg" | "icon";
 }
 
+/**
+ * A reusable button component that supports multiple variants and sizes.
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
     return (

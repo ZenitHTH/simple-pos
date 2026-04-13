@@ -4,6 +4,9 @@ import { ReactNode } from "react";
 import { cn } from "@/lib";
 import { EmptyState } from "@/components/ui/EmptyState";
 
+/**
+ * Definition for a table column in GlobalTable.
+ */
 export interface Column<T> {
   header: string;
   accessor?: keyof T;
@@ -20,6 +23,15 @@ interface GlobalTableProps<T> {
   className?: string;
 }
 
+/**
+ * A highly reusable and configurable table component for displaying data.
+ * 
+ * @param columns - Array of column definitions.
+ * @param data - The data array to display.
+ * @param keyField - The field name that serves as a unique key for each row.
+ * @param emptyMessage - Message to display when there is no data.
+ * @param className - Additional CSS classes.
+ */
 export default function GlobalTable<T>({
   columns,
   data,

@@ -9,16 +9,30 @@ import React, {
 } from "react";
 import { cn } from "@/lib";
 
+/**
+ * Props for the individual panes within the DualColumnBuilder.
+ * @interface PaneProps
+ */
 interface PaneProps {
+  /** Header content for the pane. */
   header: ReactNode;
+  /** Main content for the pane. */
   children: ReactNode;
+  /** Optional CSS class for the pane container. */
   className?: string;
+  /** Optional drop event handler for drag-and-drop. */
   onDrop?: (e: React.DragEvent) => void;
+  /** Optional drag over event handler for drag-and-drop. */
   onDragOver?: (e: React.DragEvent) => void;
+  /** Whether the pane is currently active or highlighted. */
   isActive?: boolean;
+  /** Explicit width for the pane. */
   width?: string;
 }
 
+/**
+ * Internal Pane component used by DualColumnBuilder.
+ */
 function Pane({
   header,
   children,
@@ -51,27 +65,44 @@ function Pane({
   );
 }
 
-interface DualColumnBuilderProps {
-  leftPane: {
-    header: ReactNode;
-    content: ReactNode;
-    className?: string;
-  };
-  rightPane: {
-    header: ReactNode;
-    content: ReactNode;
-    className?: string;
-    onDrop?: (e: React.DragEvent) => void;
-    onDragOver?: (e: React.DragEvent) => void;
-    isActive?: boolean;
-  };
+/**
+ * Configuration for a pane in the DualColumnBuilder.
+ */
+interface PaneConfig {
+  header: ReactNode;
+  content: ReactNode;
   className?: string;
-  height?: string;
-  defaultSplit?: number; // 0–100, default 50
-  split?: number; // controlled override from DualColumnTuner
-  onSplitChange?: (v: number) => void; // controlled callback
+  onDrop?: (e: React.DragEvent) => void;
+  onDragOver?: (e: React.DragEvent) => void;
+  isActive?: boolean;
 }
 
+/**
+ * Props for the DualColumnBuilder component.
+ */
+interface DualColumnBuilderProps {
+  /** Configuration for the left pane. */
+  leftPane: PaneConfig;
+  /** Configuration for the right pane. */
+  rightPane: PaneConfig;
+  /** Optional CSS class for the container. */
+  className?: string;
+  /** Height of the component (default: "800px"). */
+  height?: string;
+  /** Initial split percentage (0-100, default: 50). */
+  defaultSplit?: number;
+  /** Controlled split percentage. */
+  split?: number;
+  /** Callback triggered when the split percentage changes. */
+  onSplitChange?: (v: number) => void;
+}
+
+/**
+ * A resizable two-column layout component.
+ * Allows users to drag a handle to adjust the width of the left and right panes.
+ *
+ * @param {DualColumnBuilderProps} props - The component props.
+ */
 export function DualColumnBuilder({
   leftPane,
   rightPane,

@@ -13,6 +13,15 @@ interface GlobalHeaderProps {
   className?: string;
 }
 
+/**
+ * A shared header component used across different pages of the application.
+ * 
+ * @param title - The main title of the page.
+ * @param subtitle - Optional subtitle text below the main title.
+ * @param icon - Optional React component (icon) to display next to the title.
+ * @param children - Optional elements to display on the right side of the header.
+ * @param className - Additional CSS classes.
+ */
 export default function GlobalHeader({
   title,
   subtitle,

@@ -2,13 +2,28 @@ import { memo } from "react";
 import { FaBackspace } from "react-icons/fa";
 import { useSettings } from "@/context/settings/SettingsContext";
 
+/**
+ * Props for the VirtualNumpad component.
+ */
 interface VirtualNumpadProps {
+  /** Callback triggered when a key is pressed. */
   onPress: (key: string) => void;
+  /** Callback triggered when the 'CLEAR' button is pressed. */
   onClear: () => void;
+  /** Callback triggered when the backspace button is pressed. */
   onBackspace: () => void;
+  /** Optional explicit height for the numpad in pixels. */
   height?: number;
 }
 
+/**
+ * A virtual numeric keypad component for touch-friendly data entry.
+ * Features customizable gaps, button heights, and font scaling via settings.
+ * Includes numbers 0-9, 00, decimal point, backspace, and clear all buttons.
+ * 
+ * @param props - The virtual numpad props.
+ * @returns A touch-optimized numeric keypad.
+ */
 const VirtualNumpad = memo(
   ({ onPress, onClear, onBackspace, height }: VirtualNumpadProps) => {
     const { settings } = useSettings();

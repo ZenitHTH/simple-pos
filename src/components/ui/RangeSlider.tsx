@@ -1,14 +1,30 @@
 "use client";
 
+/**
+ * Props for the RangeSlider component.
+ */
 interface RangeSliderProps {
+  /** The current value of the slider. */
   value: number;
+  /** Callback function triggered when the slider value changes. */
   onChange: (value: number) => void;
+  /** Optional callback function triggered when the user releases the slider thumb. */
   onPointerUp?: () => void;
+  /** The minimum value of the slider. Defaults to 0. */
   min?: number;
+  /** The maximum value of the slider. Defaults to 100. */
   max?: number;
+  /** The step increment of the slider. Defaults to 1. */
   step?: number;
 }
 
+/**
+ * A custom-styled range slider input component.
+ * Features a touch-friendly thumb and uses primary/secondary theme colors.
+ * 
+ * @param props - The range slider props.
+ * @returns A styled range input element.
+ */
 export default function RangeSlider({
   value,
   onChange,
