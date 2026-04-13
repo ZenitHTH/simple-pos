@@ -2,6 +2,7 @@
 
 import RangeSlider from "@/components/ui/RangeSlider";
 import { cn } from "@/lib";
+import { useSettings } from "@/context/settings/SettingsContext";
 
 interface TunerSliderProps {
   label: string;
@@ -26,6 +27,7 @@ export function TunerSlider({
   formatDisplay,
   variant = "default",
 }: TunerSliderProps) {
+  const { commitHistory } = useSettings();
   const display = formatDisplay
     ? formatDisplay(value)
     : `${value}${unit}`;
@@ -61,6 +63,7 @@ export function TunerSlider({
           max={max}
           step={step}
           onChange={onChange}
+          onPointerUp={() => commitHistory()}
         />
       </div>
     </div>
