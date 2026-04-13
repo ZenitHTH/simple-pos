@@ -30,8 +30,15 @@ pub struct MaterialAccumulation {
 }
 
 /// Creates a new invoice (receipt header) for an optional customer.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `customer_id` - The ID of the customer associated with the invoice, if any.
+///
+/// # Returns
+/// The newly created invoice header metadata.
 #[tauri::command]
-pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptList, String> {
+pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<RecipeList, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     // Create a new header with "Now" timestamp (None)
     receipt::create_receipt_header(&mut conn, None, customer_id).map_err(|e| e.to_string())
@@ -39,6 +46,14 @@ pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptLi
 
 /// Adds items to an existing invoice and updates stock levels accordingly.
 /// Supports both direct product stock and recipe-based material stock.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `receipt_id` - The ID of the invoice header.
+/// * `items` - A list of product IDs and their respective quantities.
+///
+/// # Returns
+/// An empty result on success.
 #[tauri::command]
 pub fn add_invoice_items(
     key: String,
@@ -83,6 +98,13 @@ pub fn add_invoice_items(
 }
 
 /// Retrieves the header and all items for a specific invoice.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `receipt_id` - The ID of the invoice.
+///
+/// # Returns
+/// A tuple containing the invoice header and a list of items in the invoice.
 #[tauri::command]
 pub fn get_invoice_detail(
     key: String,
@@ -93,6 +115,14 @@ pub fn get_invoice_detail(
 }
 
 /// Retrieves all invoices created within a specific Unix timestamp range.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `start_unix` - The start of the date range in Unix seconds.
+/// * `end_unix` - The end of the date range in Unix seconds.
+///
+/// # Returns
+/// A list of invoice headers within the specified date range.
 #[tauri::command]
 pub fn get_invoices_by_date(
     key: String,
@@ -104,6 +134,14 @@ pub fn get_invoices_by_date(
 }
 
 /// Generates an accumulated report of products and materials sold within a date range.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `start_unix` - The start of the date range in Unix seconds.
+/// * `end_unix` - The end of the date range in Unix seconds.
+///
+/// # Returns
+/// An accumulated report containing summarized product sales and material usage.
 #[tauri::command]
 pub fn get_accumulated_report(
     key: String,

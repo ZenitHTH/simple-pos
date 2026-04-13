@@ -10,6 +10,14 @@ use tauri::command;
 
 /// Saves an image from raw byte data to the configured image storage path.
 /// Returns the saved Image database record.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `data` - The raw image data as a byte vector.
+/// * `filename` - The original filename of the image.
+///
+/// # Returns
+/// The newly created image record in the database.
 #[command]
 pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
     let settings = get_settings().map_err(|e| e.to_string())?;
@@ -18,6 +26,14 @@ pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<databa
 }
 
 /// Links an existing image to a product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+/// * `image_id` - The ID of the image to link.
+///
+/// # Returns
+/// The newly created product-image association record.
 #[command]
 pub fn link_product_image(
     key: String,
@@ -36,6 +52,14 @@ pub fn link_product_image(
 }
 
 /// Unlinks an image from a product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+/// * `image_id` - The ID of the image to unlink.
+///
+/// # Returns
+/// The number of deleted records.
 #[command]
 pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -50,6 +74,13 @@ pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Resu
 }
 
 /// Removes all image links from a product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+///
+/// # Returns
+/// The number of deleted records.
 #[command]
 pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -62,6 +93,13 @@ pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, Strin
 }
 
 /// Retrieves all images linked to a specific product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+///
+/// # Returns
+/// A list of images linked to the specified product.
 #[command]
 pub fn get_product_images(
     key: String,
@@ -72,6 +110,12 @@ pub fn get_product_images(
 }
 
 /// Retrieves all images stored in the database.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+///
+/// # Returns
+/// A list of all image records.
 #[command]
 pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -79,6 +123,13 @@ pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>,
 }
 
 /// Deletes an image record from the database and removes the associated file from disk.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `image_id` - The ID of the image to delete.
+///
+/// # Returns
+/// An empty result on success.
 #[command]
 pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
     // 1. Get image info to find the file path
@@ -103,6 +154,12 @@ pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
 }
 
 /// Retrieves all product-to-image associations.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+///
+/// # Returns
+/// A list of all product-image association records.
 #[command]
 pub fn get_all_image_links(
     key: String,
@@ -112,6 +169,14 @@ pub fn get_all_image_links(
 }
 
 /// Updates the metadata position of an image.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `image_id` - The ID of the image.
+/// * `position` - The new position metadata (e.g., "center", "top").
+///
+/// # Returns
+/// The number of updated records.
 #[command]
 pub fn update_image_position(
     key: String,

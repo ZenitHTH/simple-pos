@@ -4,6 +4,13 @@ use database::recipe;
 use database::{NewRecipeItem, RecipeItem, RecipeList};
 
 /// Creates a new recipe list for a specific product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product for which the recipe is being created.
+///
+/// # Returns
+/// The newly created recipe list metadata.
 #[tauri::command]
 pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, String> {
     let mut conn = conn!(key);
@@ -11,6 +18,13 @@ pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, St
 }
 
 /// Retrieves the recipe list associated with a specific product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+///
+/// # Returns
+/// An optional recipe list if one exists for the product.
 #[tauri::command]
 pub fn get_recipe_list_by_product(
     key: String,
@@ -21,6 +35,13 @@ pub fn get_recipe_list_by_product(
 }
 
 /// Deletes a recipe list by its ID.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `list_id` - The ID of the recipe list to delete.
+///
+/// # Returns
+/// The number of deleted records.
 #[tauri::command]
 pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
     let mut conn = conn!(key);
@@ -29,6 +50,16 @@ pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
 
 /// Adds a new item (material) to a recipe list.
 /// Scales the volume use based on the provided precision.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `recipe_list_id` - The ID of the recipe list.
+/// * `material_id` - The ID of the material product being added.
+/// * `volume_use` - The amount of material used.
+/// * `unit` - The unit of measurement for the material.
+///
+/// # Returns
+/// The newly added recipe item.
 #[tauri::command]
 pub fn add_recipe_item(
     key: String,
@@ -52,6 +83,13 @@ pub fn add_recipe_item(
 }
 
 /// Retrieves all items belonging to a specific recipe list.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `recipe_list_id` - The ID of the recipe list.
+///
+/// # Returns
+/// A list of all items in the specified recipe.
 #[tauri::command]
 pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeItem>, String> {
     let mut conn = conn!(key);
@@ -59,6 +97,15 @@ pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeIt
 }
 
 /// Updates an existing recipe item's volume use and unit.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `item_id` - The ID of the recipe item to update.
+/// * `volume_use` - The new amount of material used.
+/// * `unit` - The new unit of measurement.
+///
+/// # Returns
+/// The updated recipe item.
 #[tauri::command]
 pub fn update_recipe_item(
     key: String,
@@ -74,6 +121,13 @@ pub fn update_recipe_item(
 }
 
 /// Deletes a recipe item by its ID.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `item_id` - The ID of the recipe item to delete.
+///
+/// # Returns
+/// The number of deleted records.
 #[tauri::command]
 pub fn delete_recipe_item(key: String, item_id: i32) -> Result<usize, String> {
     let mut conn = conn!(key);

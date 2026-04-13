@@ -7,18 +7,30 @@ use std::path::PathBuf;
 use tauri::{command, Manager};
 
 /// Retrieves the current application settings.
+///
+/// # Returns
+/// The current application settings object.
 #[command]
 pub fn get_settings() -> Result<AppSettings, String> {
     lib_get_settings()
 }
 
 /// Saves the provided application settings to disk.
+///
+/// # Arguments
+/// * `settings` - The application settings to save.
+///
+/// # Returns
+/// An empty result on success.
 #[command]
 pub fn save_settings(settings: AppSettings) -> Result<(), String> {
     lib_save_settings(settings)
 }
 
 /// Retrieves information about the current application storage and data paths.
+///
+/// # Returns
+/// Storage info including paths for database and images.
 #[command]
 pub fn get_storage_info() -> Result<StorageInfo, String> {
     lib_get_storage_info()
@@ -27,6 +39,14 @@ pub fn get_storage_info() -> Result<StorageInfo, String> {
 /// Migrates the image storage directory to a new path.
 /// Moves all existing image files to the new location and updates their database paths.
 /// Restricted to subdirectories of the application's local data directory for security.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+/// * `key` - The database encryption key.
+/// * `new_path` - The target directory for image storage.
+///
+/// # Returns
+/// An empty result on success.
 #[command]
 pub fn migrate_image_directory(
     app: tauri::AppHandle,

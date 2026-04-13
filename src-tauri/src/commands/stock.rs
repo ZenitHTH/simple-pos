@@ -8,6 +8,13 @@ use diesel::Connection;
 use tauri::Emitter;
 
 /// Retrieves the stock record for a specific product.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+///
+/// # Returns
+/// The stock record for the product.
 #[tauri::command]
 pub fn get_stock(key: String, product_id: i32) -> Result<Stock, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -15,6 +22,12 @@ pub fn get_stock(key: String, product_id: i32) -> Result<Stock, String> {
 }
 
 /// Retrieves all stock records from the database.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+///
+/// # Returns
+/// A list of all stock records.
 #[tauri::command]
 pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -23,6 +36,14 @@ pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String> {
 
 /// Inserts a new stock record for a product.
 /// Validates the quantity range and ensures the product exists.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+/// * `quantity` - The initial stock quantity.
+///
+/// # Returns
+/// The newly created stock record.
 #[tauri::command]
 pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
@@ -43,6 +64,14 @@ pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock
 }
 
 /// Updates the quantity of an existing stock record.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `product_id` - The ID of the product.
+/// * `quantity` - The new stock quantity.
+///
+/// # Returns
+/// The updated stock record.
 #[tauri::command]
 pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
@@ -55,6 +84,13 @@ pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock
 }
 
 /// Removes a stock record by its ID.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `stock_id` - The ID of the stock record to remove.
+///
+/// # Returns
+/// The number of deleted records.
 #[tauri::command]
 pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -62,6 +98,14 @@ pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
 }
 
 /// Exports all stock data to a file (CSV, XLSX, or ODS).
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `path` - The destination file path.
+/// * `format` - The export format (csv, xlsx, or ods).
+///
+/// # Returns
+/// An empty result on success.
 #[tauri::command]
 pub fn export_stock_data(
     key: String,
@@ -106,6 +150,15 @@ pub fn export_stock_data(
 /// Imports stock data from a file (CSV, XLSX, or ODS).
 /// Updates existing stock records or inserts new ones.
 /// Emits progress events to the frontend during the import.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle for emitting events.
+/// * `key` - The database encryption key.
+/// * `path` - The source file path.
+/// * `format` - The import format (csv, xlsx, or ods).
+///
+/// # Returns
+/// The number of imported records.
 #[tauri::command]
 pub fn import_stock_data(
     app: tauri::AppHandle,
