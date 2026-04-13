@@ -57,7 +57,6 @@ pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
 
 #[tauri::command]
 pub fn export_stock_data(
-    _app: tauri::AppHandle,
     key: String,
     path: String,
     format: String

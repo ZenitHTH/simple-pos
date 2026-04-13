@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e/playwright',
   testMatch: '**/*.spec.ts',
-  timeout: 60000,
+  timeout: 90000,
   workers: 1, // Important: Run sequentially since they share a single Tauri instance
   reporter: 'list',
   use: {

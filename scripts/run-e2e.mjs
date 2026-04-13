@@ -16,6 +16,12 @@ const skipBuild = process.argv.includes('--skip-build');
 const isWindows = os.platform() === 'win32';
 const isMac = os.platform() === 'darwin';
 
+const appDataPath = isWindows 
+  ? path.join(process.env.APPDATA, 'simple-pos')
+  : isMac
+    ? path.join(os.homedir(), 'Library', 'Application Support', 'com.simple-pos.app')
+    : path.join(os.homedir(), '.local', 'share', 'simple-pos');
+
 let executablePath;
 if (isWindows) {
   executablePath = 'src-tauri\\target\\debug\\app.exe';
@@ -25,26 +31,29 @@ if (isWindows) {
   executablePath = 'src-tauri/target/debug/app';
 }
 
-// 0. Clear App Data for a fresh test run
-const appDataPath = isWindows 
-  ? path.join(process.env.APPDATA, 'simple-pos')
-  : isMac
-    ? path.join(os.homedir(), 'Library', 'Application Support', 'com.simple-pos.app')
-    : path.join(os.homedir(), '.local', 'share', 'simple-pos');
+// 0. Clear Database for a fresh test run
+const dbPath = path.join(appDataPath, 'simple-pos.db');
 
-console.log(`Cleaning app data at: ${appDataPath}`);
+console.log(`Cleaning database at: ${dbPath}`);
 try {
-  if (fs.existsSync(appDataPath)) {
-    fs.rmSync(appDataPath, { recursive: true, force: true });
-    console.log('App data cleared successfully.');
+  if (fs.existsSync(dbPath)) {
+    fs.unlinkSync(dbPath);
+    console.log('Database cleared successfully.');
   }
 } catch (err) {
-  console.warn(`Warning: Could not clear app data: ${err.message}`);
+  console.warn(`Warning: Could not clear database: ${err.message}`);
 }
 
 // 1. Build the Tauri app in debug mode FIRST
 // This ensures that any changes to the Rust core are captured.
 if (!skipBuild) {
+  console.log('Building Frontend...');
+  const frontendBuildResult = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
+  if (frontendBuildResult.status !== 0) {
+    console.error('Failed to build Frontend.');
+    process.exit(1);
+  }
+
   console.log('Building Tauri app in debug mode...');
   const buildResult = spawnSync('npm', ['run', 'tauri', 'build', '--', '--debug', '--no-bundle'], { stdio: 'inherit', shell: true });
 
@@ -100,7 +109,9 @@ if (!isDevServerReady) {
   console.error('Timeout waiting for Next.js dev server to be ready (200 OK).');
   process.exit(1);
 }
-console.log('Dev server is ready!\n');
+console.log('Dev server is ready! Waiting 5s for stability...');
+await new Promise(r => setTimeout(r, 5000));
+console.log('Proceeding to start Tauri app.\n');
 
 console.log(`Starting Tauri app from: ${executablePath}`);
 
