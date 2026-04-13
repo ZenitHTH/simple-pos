@@ -10,12 +10,13 @@
 
 ---
 
-### Task 1: Implement `SearchInput` Component
+### Task 1: Implement `SearchInput` Component [DONE]
 
 **Files:**
 - Create: `src/components/ui/SearchInput.tsx`
 - Modify: `src/components/layout/ManagementPageLayout.tsx`
-- Modify: `src/components/pos/POSProductGrid.tsx`
+- Modify: `src/components/manage/recipe/MaterialSidebar.tsx`
+- Modify: `src/components/manage/recipe/ProductSidebar.tsx`
 
 - [ ] **Step 1: Create the SearchInput Component**
 
@@ -193,14 +194,14 @@ git add src/components/ui/Badge.tsx src/components/manage/ProductTable.tsx src/c
 git commit -m "refactor: extract Badge component and update tables"
 ```
 
-### Task 3: Implement `EmptyState` Component
+### Task 3: Implement `EmptyState` Component [DONE]
 
 **Files:**
 - Create: `src/components/ui/EmptyState.tsx`
 - Modify: `src/components/ui/GlobalTable.tsx`
 - Modify: `src/components/manage/MaterialTable.tsx`
 
-- [ ] **Step 1: Create the EmptyState Component**
+- [x] **Step 1: Create the EmptyState Component**
 
 ```tsx
 // src/components/ui/EmptyState.tsx
@@ -228,7 +229,7 @@ export function EmptyState({ message, icon, className }: EmptyStateProps) {
 }
 ```
 
-- [ ] **Step 2: Refactor GlobalTable to use EmptyState**
+- [x] **Step 2: Refactor GlobalTable to use EmptyState**
 
 Modify `src/components/ui/GlobalTable.tsx`:
 Add import: `import { EmptyState } from "@/components/ui/EmptyState";`
@@ -244,7 +245,7 @@ Replace empty message logic:
           ) : (
 ```
 
-- [ ] **Step 3: Refactor MaterialTable to use EmptyState**
+- [x] **Step 3: Refactor MaterialTable to use EmptyState**
 
 Modify `src/components/manage/MaterialTable.tsx`:
 Add import: `import { EmptyState } from "@/components/ui/EmptyState";`
@@ -253,14 +254,15 @@ Update early return:
 ```tsx
   if (materials.length === 0) {
     return (
-      <div className="border-border bg-card rounded-xl border border-dashed h-64 flex items-center justify-center">
-         <EmptyState message="No materials found. Add some materials to get started." />
-      </div>
+      <EmptyState
+        message="No materials found. Add some materials to get started."
+        className="h-64 border border-dashed rounded-xl"
+      />
     );
   }
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/ui/EmptyState.tsx src/components/ui/GlobalTable.tsx src/components/manage/MaterialTable.tsx

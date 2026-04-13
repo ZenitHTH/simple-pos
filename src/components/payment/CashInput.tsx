@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { formatCurrency } from "./utils";
-import VirtualNumpad from "./VirtualNumpad";
+import VirtualNumpad from "@/components/ui/VirtualNumpad";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";

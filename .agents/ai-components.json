@@ -53,6 +53,23 @@
     "props": "ToastProps"
   },
   {
+    "name": "TableActionButton",
+    "type": "component",
+    "path": "src/components/ui/TableActionButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "table",
+      "action",
+      "button",
+      "tableactionbutton",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "TableActionButtonProps"
+  },
+  {
     "name": "SettingsSection",
     "type": "component",
     "path": "src/components/ui/SettingsSection.tsx",
@@ -110,6 +127,22 @@
       "component"
     ],
     "props": null
+  },
+  {
+    "name": "SearchInput",
+    "type": "component",
+    "path": "src/components/ui/SearchInput.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "search",
+      "input",
+      "searchinput",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SearchInputProps"
   },
   {
     "name": "ScrollableContainer",
@@ -269,6 +302,22 @@
     "props": "GlobalHeaderProps"
   },
   {
+    "name": "EmptyState",
+    "type": "component",
+    "path": "src/components/ui/EmptyState.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "empty",
+      "state",
+      "emptystate",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "EmptyStateProps"
+  },
+  {
     "name": "DualColumnBuilder",
     "type": "component",
     "path": "src/components/ui/DualColumnBuilder.tsx",
@@ -300,106 +349,18 @@
     "props": "DrawerProps"
   },
   {
-    "name": "UISetupMode",
+    "name": "Badge",
     "type": "component",
-    "path": "src/components/settings/UISetupMode.tsx",
+    "path": "src/components/ui/Badge.tsx",
     "description": "No description provided.",
     "keywords": [
-      "u",
-      "i",
-      "setup",
-      "mode",
-      "uisetupmode",
-      "settings",
+      "badge",
+      "ui",
       "description",
       "provided",
       "component"
     ],
-    "props": "UISetupModeProps"
-  },
-  {
-    "name": "ThemeSettings",
-    "type": "component",
-    "path": "src/components/settings/ThemeSettings.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "theme",
-      "settings",
-      "themesettings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "SettingsSetup",
-    "type": "component",
-    "path": "src/components/settings/SettingsSetup.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "settings",
-      "setup",
-      "settingssetup",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "SettingsSetupProps"
-  },
-  {
-    "name": "ResetSettingsButton",
-    "type": "component",
-    "path": "src/components/settings/ResetSettingsButton.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "reset",
-      "settings",
-      "button",
-      "resetsettingsbutton",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "ExportSection",
-    "type": "component",
-    "path": "src/components/settings/ExportSection.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "export",
-      "section",
-      "exportsection",
-      "settings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "CURRENCIES",
-    "type": "component",
-    "path": "src/components/settings/CurrencySettings.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "c",
-      "u",
-      "r",
-      "e",
-      "n",
-      "i",
-      "s",
-      "currencies",
-      "settings",
-      "currencysettings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
+    "props": "BadgeProps"
   },
   {
     "name": "POSClient",
@@ -418,6 +379,192 @@
       "component"
     ],
     "props": "POSClientProps"
+  },
+  {
+    "name": "PaymentModal",
+    "type": "component",
+    "path": "src/components/payment/PaymentModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "payment",
+      "modal",
+      "paymentmodal",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "PaymentModalProps"
+  },
+  {
+    "name": "WelcomeScreen",
+    "type": "component",
+    "path": "src/components/layout/WelcomeScreen.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "welcome",
+      "screen",
+      "welcomescreen",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "WelcomeScreenProps"
+  },
+  {
+    "name": "Sidebar",
+    "type": "component",
+    "path": "src/components/layout/Sidebar.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ManagementPageLayout",
+    "type": "component",
+    "path": "src/components/layout/ManagementPageLayout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "management",
+      "page",
+      "layout",
+      "managementpagelayout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ManagementPageLayoutProps"
+  },
+  {
+    "name": "BaseSidebarLayout",
+    "type": "component",
+    "path": "src/components/layout/BaseSidebarLayout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "base",
+      "sidebar",
+      "layout",
+      "basesidebarlayout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "BaseSidebarLayoutProps"
+  },
+  {
+    "name": "AppShell",
+    "type": "component",
+    "path": "src/components/layout/AppShell.tsx",
+    "description": "AppShell handles the core layout and scaling isolation. It wraps the main content and sidebar in a zoomed container while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.",
+    "keywords": [
+      "app",
+      "shell",
+      "appshell",
+      "layout",
+      "handles",
+      "core",
+      "scaling",
+      "isolation",
+      "wraps",
+      "main",
+      "content",
+      "sidebar",
+      "zoomed",
+      "container",
+      "while",
+      "keeping",
+      "bottomcontrolpanel",
+      "gobackbutton",
+      "scale",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ReceiptList",
+    "type": "component",
+    "path": "src/components/history/ReceiptList.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "list",
+      "receiptlist",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ReceiptListProps"
+  },
+  {
+    "name": "ReceiptDetailModal",
+    "type": "component",
+    "path": "src/components/history/ReceiptDetailModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "receipt",
+      "detail",
+      "modal",
+      "receiptdetailmodal",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ReceiptDetailModalProps"
+  },
+  {
+    "name": "IdSearch",
+    "type": "component",
+    "path": "src/components/history/IdSearch.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "id",
+      "search",
+      "idsearch",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "IdSearchProps"
+  },
+  {
+    "name": "HistoryHeader",
+    "type": "component",
+    "path": "src/components/history/HistoryHeader.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "header",
+      "historyheader",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "DateFilter",
+    "type": "component",
+    "path": "src/components/history/DateFilter.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "date",
+      "filter",
+      "datefilter",
+      "history",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "DateFilterProps"
   },
   {
     "name": "StockTable",
@@ -630,454 +777,6 @@
     "props": "CategoryModalProps"
   },
   {
-    "name": "WelcomeScreen",
-    "type": "component",
-    "path": "src/components/layout/WelcomeScreen.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "welcome",
-      "screen",
-      "welcomescreen",
-      "layout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "WelcomeScreenProps"
-  },
-  {
-    "name": "Sidebar",
-    "type": "component",
-    "path": "src/components/layout/Sidebar.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "sidebar",
-      "layout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "ManagementPageLayout",
-    "type": "component",
-    "path": "src/components/layout/ManagementPageLayout.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "management",
-      "page",
-      "layout",
-      "managementpagelayout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ManagementPageLayoutProps"
-  },
-  {
-    "name": "BaseSidebarLayout",
-    "type": "component",
-    "path": "src/components/layout/BaseSidebarLayout.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "base",
-      "sidebar",
-      "layout",
-      "basesidebarlayout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "BaseSidebarLayoutProps"
-  },
-  {
-    "name": "AppShell",
-    "type": "component",
-    "path": "src/components/layout/AppShell.tsx",
-    "description": "AppShell handles the core layout and scaling isolation. It wraps the main content and sidebar in a zoomed container while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.",
-    "keywords": [
-      "app",
-      "shell",
-      "appshell",
-      "layout",
-      "handles",
-      "core",
-      "scaling",
-      "isolation",
-      "wraps",
-      "main",
-      "content",
-      "sidebar",
-      "zoomed",
-      "container",
-      "while",
-      "keeping",
-      "bottomcontrolpanel",
-      "gobackbutton",
-      "scale",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "PaymentModal",
-    "type": "component",
-    "path": "src/components/payment/PaymentModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "payment",
-      "modal",
-      "paymentmodal",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "PaymentModalProps"
-  },
-  {
-    "name": "ReceiptList",
-    "type": "component",
-    "path": "src/components/history/ReceiptList.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "receipt",
-      "list",
-      "receiptlist",
-      "history",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ReceiptListProps"
-  },
-  {
-    "name": "ReceiptDetailModal",
-    "type": "component",
-    "path": "src/components/history/ReceiptDetailModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "receipt",
-      "detail",
-      "modal",
-      "receiptdetailmodal",
-      "history",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ReceiptDetailModalProps"
-  },
-  {
-    "name": "IdSearch",
-    "type": "component",
-    "path": "src/components/history/IdSearch.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "id",
-      "search",
-      "idsearch",
-      "history",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "IdSearchProps"
-  },
-  {
-    "name": "HistoryHeader",
-    "type": "component",
-    "path": "src/components/history/HistoryHeader.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "history",
-      "header",
-      "historyheader",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "DateFilter",
-    "type": "component",
-    "path": "src/components/history/DateFilter.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "date",
-      "filter",
-      "datefilter",
-      "history",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "DateFilterProps"
-  },
-  {
-    "name": "TypographyTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/TypographyTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "typography",
-      "tuner",
-      "typographytuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "TypographyTunerProps"
-  },
-  {
-    "name": "TunerSidebar",
-    "type": "component",
-    "path": "src/components/design-tuner/TunerSidebar.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "tuner",
-      "sidebar",
-      "tunersidebar",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "TunerSidebarProps"
-  },
-  {
-    "name": "ThemePresetsPanel",
-    "type": "component",
-    "path": "src/components/design-tuner/ThemePresetsPanel.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "theme",
-      "presets",
-      "panel",
-      "themepresetspanel",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ThemePresetsPanelProps"
-  },
-  {
-    "name": "SidebarTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/SidebarTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "sidebar",
-      "tuner",
-      "sidebartuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "SidebarTunerProps"
-  },
-  {
-    "name": "SidebarSlider",
-    "type": "component",
-    "path": "src/components/design-tuner/SidebarSlider.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "sidebar",
-      "slider",
-      "sidebarslider",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "SidebarSliderProps"
-  },
-  {
-    "name": "SelectorTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/SelectorTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "selector",
-      "tuner",
-      "selectortuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "NumpadTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/NumpadTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "numpad",
-      "tuner",
-      "numpadtuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "NumpadTunerProps"
-  },
-  {
-    "name": "NavButton",
-    "type": "component",
-    "path": "src/components/design-tuner/NavButton.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "nav",
-      "button",
-      "navbutton",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "HistoryTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/HistoryTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "history",
-      "tuner",
-      "historytuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "HistoryTunerProps"
-  },
-  {
-    "name": "GridTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/GridTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "grid",
-      "tuner",
-      "gridtuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "GridTunerProps"
-  },
-  {
-    "name": "GlobalTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/GlobalTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "global",
-      "tuner",
-      "globaltuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "GlobalTunerProps"
-  },
-  {
-    "name": "GlobalStylesPanel",
-    "type": "component",
-    "path": "src/components/design-tuner/GlobalStylesPanel.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "global",
-      "styles",
-      "panel",
-      "globalstylespanel",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "GlobalStylesPanelProps"
-  },
-  {
-    "name": "CartItemTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/CartItemTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "item",
-      "tuner",
-      "cartitemtuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartItemTunerProps"
-  },
-  {
-    "name": "CartItemStylesPanel",
-    "type": "component",
-    "path": "src/components/design-tuner/CartItemStylesPanel.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "item",
-      "styles",
-      "panel",
-      "cartitemstylespanel",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartItemStylesPanelProps"
-  },
-  {
-    "name": "ButtonTuner",
-    "type": "component",
-    "path": "src/components/design-tuner/ButtonTuner.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "button",
-      "tuner",
-      "buttontuner",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ButtonTunerProps"
-  },
-  {
-    "name": "ButtonStylesPanel",
-    "type": "component",
-    "path": "src/components/design-tuner/ButtonStylesPanel.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "button",
-      "styles",
-      "panel",
-      "buttonstylespanel",
-      "design-tuner",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ButtonStylesPanelProps"
-  },
-  {
     "name": "SelectableOverlay",
     "type": "component",
     "path": "src/components/design-mode/SelectableOverlay.tsx",
@@ -1140,23 +839,6 @@
       "component"
     ],
     "props": null
-  },
-  {
-    "name": "GridItemSize",
-    "type": "component",
-    "path": "src/components/design-mode/GridItemSize.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "grid",
-      "item",
-      "size",
-      "griditemsize",
-      "design-mode",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "GridItemSizeProps"
   },
   {
     "name": "GlobalScaleControls",
@@ -1276,34 +958,6 @@
     "props": null
   },
   {
-    "name": "CartEmpty",
-    "type": "component",
-    "path": "src/components/cart/CartEmpty.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "empty",
-      "cartempty",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "Cart",
-    "type": "component",
-    "path": "src/components/cart/Cart.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartProps"
-  },
-  {
     "name": "SmoothScroll",
     "type": "component",
     "path": "src/components/common/SmoothScroll.tsx",
@@ -1334,6 +988,34 @@
       "component"
     ],
     "props": null
+  },
+  {
+    "name": "CartEmpty",
+    "type": "component",
+    "path": "src/components/cart/CartEmpty.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "empty",
+      "cartempty",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "Cart",
+    "type": "component",
+    "path": "src/components/cart/Cart.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartProps"
   },
   {
     "name": "PasswordSetupScreen",
@@ -1367,6 +1049,176 @@
       "component"
     ],
     "props": null
+  },
+  {
+    "name": "UISetupMode",
+    "type": "component",
+    "path": "src/components/settings/UISetupMode.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "u",
+      "i",
+      "setup",
+      "mode",
+      "uisetupmode",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "UISetupModeProps"
+  },
+  {
+    "name": "ThemeSettings",
+    "type": "component",
+    "path": "src/components/settings/ThemeSettings.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "settings",
+      "themesettings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SettingsSetup",
+    "type": "component",
+    "path": "src/components/settings/SettingsSetup.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "settings",
+      "setup",
+      "settingssetup",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SettingsSetupProps"
+  },
+  {
+    "name": "ResetSettingsButton",
+    "type": "component",
+    "path": "src/components/settings/ResetSettingsButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "reset",
+      "settings",
+      "button",
+      "resetsettingsbutton",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ExportSection",
+    "type": "component",
+    "path": "src/components/settings/ExportSection.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "export",
+      "section",
+      "exportsection",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "CURRENCIES",
+    "type": "component",
+    "path": "src/components/settings/CurrencySettings.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "c",
+      "u",
+      "r",
+      "e",
+      "n",
+      "i",
+      "s",
+      "currencies",
+      "settings",
+      "currencysettings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "SidebarItem",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "item",
+      "sidebaritem",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarItemProps"
+  },
+  {
+    "name": "SidebarGroup",
+    "type": "component",
+    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "group",
+      "sidebargroup",
+      "layout",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarGroupProps"
+  },
+  {
+    "name": "ImportExportControls",
+    "type": "component",
+    "path": "src/components/manage/stock/ImportExportControls.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "import",
+      "export",
+      "controls",
+      "importexportcontrols",
+      "manage",
+      "stock",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ImportExportControlsProps"
+  },
+  {
+    "name": "ThemeLibraryModal",
+    "type": "component",
+    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "library",
+      "modal",
+      "themelibrarymodal",
+      "manage",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemeLibraryModalProps"
   },
   {
     "name": "VolumeEdge",
@@ -1560,63 +1412,50 @@
     "props": null
   },
   {
-    "name": "SidebarItem",
+    "name": "TunerSlider",
     "type": "component",
-    "path": "src/components/layout/sidebar/SidebarItem.tsx",
+    "path": "src/components/design-tuner/ui/TunerSlider.tsx",
     "description": "No description provided.",
     "keywords": [
-      "sidebar",
-      "item",
-      "sidebaritem",
-      "layout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "SidebarItemProps"
-  },
-  {
-    "name": "SidebarGroup",
-    "type": "component",
-    "path": "src/components/layout/sidebar/SidebarGroup.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "sidebar",
-      "group",
-      "sidebargroup",
-      "layout",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "SidebarGroupProps"
-  },
-  {
-    "name": "TypographySlider",
-    "type": "component",
-    "path": "src/components/design-tuner/typography/TypographySlider.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "typography",
+      "tuner",
       "slider",
-      "typographyslider",
+      "tunerslider",
       "design-tuner",
+      "ui",
       "description",
       "provided",
       "component"
     ],
-    "props": "TypographySliderProps"
+    "props": "TunerSliderProps"
+  },
+  {
+    "name": "NavButton",
+    "type": "component",
+    "path": "src/components/design-tuner/ui/NavButton.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "nav",
+      "button",
+      "navbutton",
+      "design-tuner",
+      "ui",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
   },
   {
     "name": "TypographyPreview",
     "type": "component",
-    "path": "src/components/design-tuner/typography/TypographyPreview.tsx",
+    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
     "description": "No description provided.",
     "keywords": [
       "typography",
       "preview",
       "typographypreview",
       "design-tuner",
+      "previews",
       "description",
       "provided",
       "component"
@@ -1624,20 +1463,373 @@
     "props": "TypographyPreviewProps"
   },
   {
-    "name": "TypographyControls",
+    "name": "ThemeCard",
     "type": "component",
-    "path": "src/components/design-tuner/typography/TypographyControls.tsx",
+    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
     "description": "No description provided.",
     "keywords": [
-      "typography",
-      "controls",
-      "typographycontrols",
+      "theme",
+      "card",
+      "themecard",
       "design-tuner",
+      "previews",
       "description",
       "provided",
       "component"
     ],
-    "props": "TypographyControlsProps"
+    "props": "ThemeCardProps"
+  },
+  {
+    "name": "TypographyTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/TypographyTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "tuner",
+      "typographytuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "TypographyTunerProps"
+  },
+  {
+    "name": "SidebarTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/SidebarTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "tuner",
+      "sidebartuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarTunerProps"
+  },
+  {
+    "name": "SelectorTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/SelectorTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "selector",
+      "tuner",
+      "selectortuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "NumpadTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/NumpadTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "numpad",
+      "tuner",
+      "numpadtuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "NumpadTunerProps"
+  },
+  {
+    "name": "HistoryTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/HistoryTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "tuner",
+      "historytuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "HistoryTunerProps"
+  },
+  {
+    "name": "GridTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/GridTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "grid",
+      "tuner",
+      "gridtuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GridTunerProps"
+  },
+  {
+    "name": "GlobalTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/GlobalTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "tuner",
+      "globaltuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalTunerProps"
+  },
+  {
+    "name": "CartItemTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/CartItemTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "item",
+      "tuner",
+      "cartitemtuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartItemTunerProps"
+  },
+  {
+    "name": "ButtonTuner",
+    "type": "component",
+    "path": "src/components/design-tuner/tuners/ButtonTuner.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "button",
+      "tuner",
+      "buttontuner",
+      "design-tuner",
+      "tuners",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ButtonTunerProps"
+  },
+  {
+    "name": "TypographyStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/TypographyStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "typography",
+      "styles",
+      "panel",
+      "typographystylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "ThemePresetsPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/ThemePresetsPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "presets",
+      "panel",
+      "themepresetspanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemePresetsPanelProps"
+  },
+  {
+    "name": "SidebarStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/SidebarStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "sidebar",
+      "styles",
+      "panel",
+      "sidebarstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "SidebarStylesPanelProps"
+  },
+  {
+    "name": "NumpadStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/NumpadStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "numpad",
+      "styles",
+      "panel",
+      "numpadstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "NumpadStylesPanelProps"
+  },
+  {
+    "name": "HistoryStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/HistoryStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "styles",
+      "panel",
+      "historystylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "HistoryStylesPanelProps"
+  },
+  {
+    "name": "GridStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/GridStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "grid",
+      "styles",
+      "panel",
+      "gridstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GridStylesPanelProps"
+  },
+  {
+    "name": "GlobalStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/GlobalStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "global",
+      "styles",
+      "panel",
+      "globalstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "GlobalStylesPanelProps"
+  },
+  {
+    "name": "CartItemStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/CartItemStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "item",
+      "styles",
+      "panel",
+      "cartitemstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartItemStylesPanelProps"
+  },
+  {
+    "name": "ButtonStylesPanel",
+    "type": "component",
+    "path": "src/components/design-tuner/panels/ButtonStylesPanel.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "button",
+      "styles",
+      "panel",
+      "buttonstylespanel",
+      "design-tuner",
+      "panels",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ButtonStylesPanelProps"
+  },
+  {
+    "name": "TunerSidebar",
+    "type": "component",
+    "path": "src/components/design-tuner/core/TunerSidebar.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "tuner",
+      "sidebar",
+      "tunersidebar",
+      "design-tuner",
+      "core",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "TunerSidebarProps"
+  },
+  {
+    "name": "ThemeExplorerModal",
+    "type": "component",
+    "path": "src/components/design-tuner/core/ThemeExplorerModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "explorer",
+      "modal",
+      "themeexplorermodal",
+      "design-tuner",
+      "core",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemeExplorerModalProps"
   },
   {
     "name": "useTax",

@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import { FaBoxOpen } from "react-icons/fa";
 import { cn } from "@/lib";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export interface Column<T> {
   header: string;
@@ -53,14 +53,8 @@ export default function GlobalTable<T>({
         <tbody className="divide-border divide-y">
           {data.length === 0 ? (
             <tr>
-              <td
-                colSpan={columns.length}
-                className="text-muted-foreground/60 px-6 py-16 text-center"
-              >
-                <div className="flex flex-col items-center gap-3">
-                  <FaBoxOpen className="text-muted-foreground/20 text-5xl" />
-                  <span className="text-sm font-medium">{emptyMessage}</span>
-                </div>
+              <td colSpan={columns.length} className="px-6 py-16">
+                <EmptyState message={emptyMessage} />
               </td>
             </tr>
           ) : (

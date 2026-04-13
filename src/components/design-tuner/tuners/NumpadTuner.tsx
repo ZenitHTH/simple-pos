@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { NumpadStylesPanel } from "../panels/NumpadStylesPanel";
-import VirtualNumpad from "@/components/payment/VirtualNumpad";
+import VirtualNumpad from "@/components/ui/VirtualNumpad";
 import { AppSettings, DeepPartial } from "@/lib/types";
 
 const container = {

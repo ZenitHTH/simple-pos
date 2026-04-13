@@ -5,6 +5,7 @@ import { FaEdit, FaTrash, FaImage, FaUtensils, FaBoxes } from "react-icons/fa";
 import GlobalTable from "@/components/ui/GlobalTable";
 import { Switch } from "@/components/ui/Switch";
 import { Badge } from "@/components/ui/Badge";
+import { TableActionButton } from "@/components/ui/TableActionButton";
 import { AppSettings } from "@/lib";
 
 interface ProductTableProps {
@@ -96,7 +97,7 @@ export default function ProductTable({
                     : "Stock Mode: Normal"
                 }
               />
-              <button
+              <TableActionButton
                 onClick={() =>
                   router.push(
                     product.use_recipe_stock
@@ -104,27 +105,22 @@ export default function ProductTable({
                       : `/manage/stock?product_id=${product.product_id}`,
                   )
                 }
-                className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
                 title={
                   product.use_recipe_stock ? "Manage Recipe" : "Manage Stock"
                 }
-              >
-                {product.use_recipe_stock ? <FaUtensils /> : <FaBoxes />}
-              </button>
-              <button
+                icon={product.use_recipe_stock ? <FaUtensils /> : <FaBoxes />}
+              />
+              <TableActionButton
                 onClick={() => onEdit(product)}
-                className="text-muted-foreground hover:text-accent-foreground hover:bg-accent rounded-lg p-2 transition-colors"
                 title="Edit"
-              >
-                <FaEdit />
-              </button>
-              <button
+                icon={<FaEdit />}
+              />
+              <TableActionButton
                 onClick={() => onDelete(product.product_id)}
-                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors"
                 title="Delete"
-              >
-                <FaTrash />
-              </button>
+                variant="destructive"
+                icon={<FaTrash />}
+              />
             </div>
           ),
         },

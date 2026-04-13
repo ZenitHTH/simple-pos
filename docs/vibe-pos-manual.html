@@ -545,6 +545,8 @@
                         <li><a href="#schema" class="nav-link">Database Schema</a></li>
                         <li><a href="#ai-registry" class="nav-link">AI Registry</a></li>
                         <li><a href="#backend-crates" class="nav-link">Backend Crates</a></li>
+                        <li><a href="#frontend-components" class="nav-link">Frontend Components</a></li>
+                        <li><a href="#structure" class="nav-link">Project Structure</a></li>
                         <li><a href="#commands" class="nav-link">Quick Reference</a></li>
                     </ul>
                 </div>
@@ -1047,10 +1049,167 @@
                     </div>
                 </section>
 
-                <!-- 9. Commands -->
+                <!-- 09. Frontend Component Architecture -->
+                <section id="frontend-components" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-indigo-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 09</span>
+                        <h2 class="text-5xl font-black italic">Frontend Component Architecture</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Our frontend is engineered with a strict hierarchical component model, ensuring modularity, reusability, and high-performance rendering using <strong>React 19 Server & Client Components</strong>.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                Root[App Root] --> Layout[Global Layout / AppShell]
+                                Layout --> Sidebar[Navigation Sidebar]
+                                Layout --> BCP[Bottom Control Panel]
+                                Layout --> Main[Page Content]
+
+                                subgraph UI Layers
+                                Main --> Views[Domain-Specific Views]
+                                Views --> DomainComp[Domain Components]
+                                DomainComp --> Shared[Shared / UI Primitives]
+                                end
+
+                                subgraph State Management
+                                SC[SettingsContext] -.-> Shared
+                                MC[MockupContext] -.-> DomainComp
+                                DC[DatabaseContext] -.-> Views
+                                end
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6 mt-12">
+                            <!-- Shell & Layout -->
+                            <div class="glass-card p-8 border-l-4 border-blue-500">
+                                <h4 class="text-xl font-bold mb-4">1. The AppShell (Core Layout)</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Located in <code>src/components/layout/</code>, the AppShell acts as the global container. It manages the persistent Sidebar, the BottomControlPanel, and handles global keyboard shortcuts.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">Sidebar.tsx</span>
+                                    <span class="tag">AppShell.tsx</span>
+                                    <span class="tag">BottomControlPanel.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Domain Logic -->
+                            <div class="glass-card p-8 border-l-4 border-purple-500">
+                                <h4 class="text-xl font-bold mb-4">2. Domain-Specific Components</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Each feature domain (POS, Manage, History) has its own component directory. These components encapsulate business logic and interact with domain-specific hooks like <code>usePOSLogic</code>.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">pos/ProductGrid.tsx</span>
+                                    <span class="tag">cart/CartItem.tsx</span>
+                                    <span class="tag">manage/ProductForm.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Design Tuner -->
+                            <div class="glass-card p-8 border-l-4 border-pink-500">
+                                <h4 class="text-xl font-bold mb-4">3. Design Tuner Ecosystem</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">A specialized subset of components for the WYSIWYG editor. They leverage <code>SettingsContext</code> to provide real-time visual feedback and state manipulation.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">design-mode/MiniTuner.tsx</span>
+                                    <span class="tag">design-tuner/ui/TunerSlider.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Shared UI -->
+                            <div class="glass-card p-8 border-l-4 border-zinc-500">
+                                <h4 class="text-xl font-bold mb-4">4. Shared UI Primitives</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Atomic components found in <code>src/components/ui/</code>. These are purely visual, stateless elements (Buttons, Inputs, Modals) styled with Tailwind CSS and CSS variables.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">ui/Button.tsx</span>
+                                    <span class="tag">ui/Card.tsx</span>
+                                    <span class="tag">ui/Input.tsx</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Project Structure -->
+                <section id="structure" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-indigo-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 10</span>
+                        <h2 class="text-5xl font-black italic">Project Structure</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS follows a strict architectural alignment between <strong>Next.js 16 (App Router)</strong> and <strong>Tauri 2.0</strong>, ensuring high-performance local execution with modern web standards.
+                        </p>
+
+                        <div class="mt-8 glass-card p-10 overflow-hidden">
+                            <h3 class="mb-6 text-2xl font-bold">App Anatomy (Deep Dive)</h3>
+                            <pre class="text-xs leading-relaxed text-indigo-300"><code>simple-pos/
+├── .agents/                 # AI Knowledge Base
+│   ├── rules/               # Coding standards (Backend/Component)
+│   └── skills/              # Specialized agent capabilities
+├── e2e/                     # End-to-End Testing
+│   └── playwright/          # Playwright test suites & helpers
+├── public/                  # Static Assets (Icons, Mock images)
+├── scripts/                 # Maintenance & Setup scripts
+├── src/                     # Frontend (Next.js 16 / React 19)
+│   ├── app/                 # App Router
+│   │   ├── design/tuner/    # Full-screen UI Editor
+│   │   ├── history/         # Transaction logs
+│   │   ├── manage/          # CRUD (Products/Categories)
+│   │   └── setting/         # App configuration
+│   ├── components/          # React Component Library
+│   │   ├── design-mode/     # WYSIWYG Editor components
+│   │   ├── pos/             # Cashier interface logic
+│   │   ├── ui/              # Shadcn-style primitives
+│   │   └── layout/          # Sidebar & AppShell
+│   ├── context/             # Global Providers
+│   │   └── settings/        # Design/Undo history state
+│   ├── hooks/               # Custom hooks (usePOSLogic, useCurrency)
+│   └── lib/                 # Core utilities
+│       ├── api/             # Tauri RPC wrappers
+│       └── types/           # Shared TypeScript interfaces
+└── src-tauri/               # Backend (Rust / Tauri 2.0)
+    ├── src/                 # Main entry & commands
+    │   └── commands/        # Domain-specific RPC handlers
+    ├── database/            # Encrypted Persistence
+    │   ├── migrations/      # SQL versioning
+    │   └── src/             # Diesel models & schema
+    ├── export_lib/          # Reporting engine
+    ├── image_lib/           # Media processing (SHA-256)
+    └── settings_lib/        # Cross-platform config manager</code></pre>
+                        </div>
+
+                        <div class="grid gap-8 md:grid-cols-2 mt-12">
+                            <div class="glass-card p-8">
+                                <h4 class="mb-4 text-xl font-bold text-indigo-400">Next.js Alignment</h4>
+                                <ul class="space-y-4 text-sm text-zinc-500">
+                                    <li><strong class="text-zinc-300">app/</strong>: Uses the <code>page.tsx</code> and <code>layout.tsx</code> convention for zero-config routing.</li>
+                                    <li><strong class="text-zinc-300">components/ui/</strong>: Atomic components following Shadcn-like modularity.</li>
+                                    <li><strong class="text-zinc-300">lib/api/</strong>: Standardized Tauri <code>invoke</code> wrappers for type-safe RPC calls.</li>
+                                </ul>
+                            </div>
+                            <div class="glass-card p-8">
+                                <h4 class="mb-4 text-xl font-bold text-indigo-400">Tauri Integration</h4>
+                                <ul class="space-y-4 text-sm text-zinc-500">
+                                    <li><strong class="text-zinc-300">src-tauri/src/commands/</strong>: Modular Rust handlers exposed to the frontend.</li>
+                                    <li><strong class="text-zinc-300">src-tauri/capabilities/</strong>: Fine-grained security permissions for system access.</li>
+                                    <li><strong class="text-zinc-300">database/migrations/</strong>: Versioned SQL schemas for local-first synchronization.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Commands -->
                 <section id="commands" class="mb-40 scroll-mt-32 animate-section">
                     <div class="mb-12 text-center">
-                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 09</span>
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 10</span>
                         <h2 class="text-5xl font-black italic">Quick Reference</h2>
                     </div>
 

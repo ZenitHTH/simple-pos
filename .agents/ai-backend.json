@@ -94,6 +94,38 @@
     ]
   },
   {
+    "name": "export_stock_data",
+    "type": "rust-command",
+    "path": "src-tauri/src/commands/stock.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn export_stock_data(",
+    "keywords": [
+      "export",
+      "stock",
+      "data",
+      "export_stock_data",
+      "documentation",
+      "provided",
+      "rust-command"
+    ]
+  },
+  {
+    "name": "import_stock_data",
+    "type": "rust-command",
+    "path": "src-tauri/src/commands/stock.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_stock_data(",
+    "keywords": [
+      "import",
+      "stock",
+      "data",
+      "import_stock_data",
+      "documentation",
+      "provided",
+      "rust-command"
+    ]
+  },
+  {
     "name": "get_settings",
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
@@ -145,7 +177,7 @@
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
     "description": "No documentation provided.",
-    "signature": "pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), String>",
+    "signature": "pub fn migrate_image_directory(",
     "keywords": [
       "migrate",
       "image",
@@ -1173,6 +1205,121 @@
     ]
   },
   {
+    "name": "link_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn link_product_image(",
+    "keywords": [
+      "link",
+      "product",
+      "image",
+      "link_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "unlink_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn unlink_product_image(",
+    "keywords": [
+      "unlink",
+      "product",
+      "image",
+      "unlink_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "unlink_all_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn unlink_all_product_images(",
+    "keywords": [
+      "unlink",
+      "all",
+      "product",
+      "images",
+      "unlink_all_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_linked_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn get_linked_images(",
+    "keywords": [
+      "get",
+      "linked",
+      "images",
+      "get_linked_images",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn get_product_images(",
+    "keywords": [
+      "get",
+      "product",
+      "images",
+      "get_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_all_links",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn get_all_links(",
+    "keywords": [
+      "get",
+      "all",
+      "links",
+      "get_all_links",
+      "database",
+      "product_image",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
     "name": "get_datetime",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/model.rs",
@@ -1517,208 +1664,6 @@
     ]
   },
   {
-    "name": "link_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn link_product_image(",
-    "keywords": [
-      "link",
-      "product",
-      "image",
-      "link_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn unlink_product_image(",
-    "keywords": [
-      "unlink",
-      "product",
-      "image",
-      "unlink_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_all_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn unlink_all_product_images(",
-    "keywords": [
-      "unlink",
-      "all",
-      "product",
-      "images",
-      "unlink_all_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_linked_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_linked_images(",
-    "keywords": [
-      "get",
-      "linked",
-      "images",
-      "get_linked_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_product_images(",
-    "keywords": [
-      "get",
-      "product",
-      "images",
-      "get_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_links",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_all_links(",
-    "keywords": [
-      "get",
-      "all",
-      "links",
-      "get_all_links",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_materials",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_all_materials(conn: &mut SqliteConnection) -> QueryResult<Vec<Material>>",
-    "keywords": [
-      "get",
-      "all",
-      "materials",
-      "get_all_materials",
-      "database",
-      "material",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "insert_material",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn insert_material(",
-    "keywords": [
-      "insert",
-      "material",
-      "insert_material",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_material",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn update_material(",
-    "keywords": [
-      "update",
-      "material",
-      "update_material",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "remove_material",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn remove_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<usize>",
-    "keywords": [
-      "remove",
-      "material",
-      "remove_material",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "find_material",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn find_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<Material>",
-    "keywords": [
-      "find",
-      "material",
-      "find_material",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
     "name": "insert_image",
     "type": "rust-db",
     "path": "src-tauri/database/src/image/mod.rs",
@@ -1844,6 +1789,147 @@
     ]
   },
   {
+    "name": "get_all_materials",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/material/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn get_all_materials(conn: &mut SqliteConnection) -> QueryResult<Vec<Material>>",
+    "keywords": [
+      "get",
+      "all",
+      "materials",
+      "get_all_materials",
+      "database",
+      "material",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "insert_material",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/material/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn insert_material(",
+    "keywords": [
+      "insert",
+      "material",
+      "insert_material",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "update_material",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/material/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn update_material(",
+    "keywords": [
+      "update",
+      "material",
+      "update_material",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "remove_material",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/material/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn remove_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<usize>",
+    "keywords": [
+      "remove",
+      "material",
+      "remove_material",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "find_material",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/material/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn find_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<Material>",
+    "keywords": [
+      "find",
+      "material",
+      "find_material",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_all_customers",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
+    "keywords": [
+      "get",
+      "all",
+      "customers",
+      "get_all_customers",
+      "database",
+      "customer",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "insert_customer",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn insert_customer(",
+    "keywords": [
+      "insert",
+      "customer",
+      "insert_customer",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "update_customer_record",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn update_customer_record(",
+    "keywords": [
+      "update",
+      "customer",
+      "record",
+      "update_customer_record",
+      "database",
+      "mod",
+      "documentation",
+      "provided",
+      "rust-db"
+    ]
+  },
+  {
     "name": "get_all_categories",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
@@ -1933,60 +2019,6 @@
     ]
   },
   {
-    "name": "get_all_customers",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
-    "keywords": [
-      "get",
-      "all",
-      "customers",
-      "get_all_customers",
-      "database",
-      "customer",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "insert_customer",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn insert_customer(",
-    "keywords": [
-      "insert",
-      "customer",
-      "insert_customer",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_customer_record",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn update_customer_record(",
-    "keywords": [
-      "update",
-      "customer",
-      "record",
-      "update_customer_record",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
     "name": "export_to_xlsx",
     "type": "rust-lib",
     "path": "src-tauri/export_lib/src/xlsx_export.rs",
@@ -2027,6 +2059,24 @@
     ]
   },
   {
+    "name": "import_from_xlsx",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/xlsx_export.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_from_xlsx<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "from",
+      "xlsx",
+      "import_from_xlsx",
+      "export_lib",
+      "xlsx_export",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
     "name": "build_thai_sales_tax_report",
     "type": "rust-lib",
     "path": "src-tauri/export_lib/src/thai_accounting.rs",
@@ -2057,6 +2107,24 @@
       "to",
       "ods",
       "export_to_ods",
+      "export_lib",
+      "ods_export",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
+    "name": "import_from_ods",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/ods_export.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_from_ods<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "from",
+      "ods",
+      "import_from_ods",
       "export_lib",
       "ods_export",
       "documentation",
@@ -2185,6 +2253,54 @@
     ]
   },
   {
+    "name": "import_csv",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/lib.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_csv<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "csv",
+      "import_csv",
+      "export_lib",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
+    "name": "import_xlsx",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/lib.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_xlsx<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "xlsx",
+      "import_xlsx",
+      "export_lib",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
+    "name": "import_ods",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/lib.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_ods<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "ods",
+      "import_ods",
+      "export_lib",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
     "name": "export_xlsx_sheets",
     "type": "rust-lib",
     "path": "src-tauri/export_lib/src/lib.rs",
@@ -2215,6 +2331,24 @@
       "to",
       "csv",
       "export_to_csv",
+      "export_lib",
+      "csv_export",
+      "documentation",
+      "provided",
+      "rust-lib"
+    ]
+  },
+  {
+    "name": "import_from_csv",
+    "type": "rust-lib",
+    "path": "src-tauri/export_lib/src/csv_export.rs",
+    "description": "No documentation provided.",
+    "signature": "pub fn import_from_csv<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>>",
+    "keywords": [
+      "import",
+      "from",
+      "csv",
+      "import_from_csv",
       "export_lib",
       "csv_export",
       "documentation",

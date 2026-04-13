@@ -1,6 +1,8 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Material, formatVolume } from "@/lib";
 import { Badge } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { TableActionButton } from "@/components/ui/TableActionButton";
 
 interface MaterialTableProps {
   materials: Material[];
@@ -15,9 +17,10 @@ export default function MaterialTable({
 }: MaterialTableProps) {
   if (materials.length === 0) {
     return (
-      <div className="text-muted-foreground flex h-64 items-center justify-center rounded-xl border border-dashed">
-        No materials found. Add some materials to get started.
-      </div>
+      <EmptyState
+        message="No materials found. Add some materials to get started."
+        className="h-64 border border-dashed rounded-xl"
+      />
     );
   }
 
@@ -71,20 +74,17 @@ export default function MaterialTable({
                 <td className="px-6 py-4 font-semibold">{m.quantity}</td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-2">
-                    <button
+                    <TableActionButton
                       onClick={() => onEdit(m)}
-                      className="text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
                       title="Edit material"
-                    >
-                      <FaEdit size={16} />
-                    </button>
-                    <button
+                      icon={<FaEdit size={16} />}
+                    />
+                    <TableActionButton
                       onClick={() => onDelete(m.id)}
-                      className="text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors"
                       title="Delete material"
-                    >
-                      <FaTrash size={16} />
-                    </button>
+                      variant="destructive"
+                      icon={<FaTrash size={16} />}
+                    />
                   </div>
                 </td>
               </tr>
