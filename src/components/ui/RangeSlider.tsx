@@ -3,6 +3,7 @@
 interface RangeSliderProps {
   value: number;
   onChange: (value: number) => void;
+  onPointerUp?: () => void;
   min?: number;
   max?: number;
   step?: number;
@@ -11,6 +12,7 @@ interface RangeSliderProps {
 export default function RangeSlider({
   value,
   onChange,
+  onPointerUp,
   min = 0,
   max = 100,
   step = 1,
@@ -23,6 +25,7 @@ export default function RangeSlider({
       step={step}
       value={value}
       onChange={(e) => onChange(parseFloat(e.target.value))}
+      onPointerUp={onPointerUp}
       className="bg-secondary accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 [&::-webkit-slider-thumb]:bg-primary h-2 w-full cursor-pointer appearance-none rounded-lg [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
     />
   );

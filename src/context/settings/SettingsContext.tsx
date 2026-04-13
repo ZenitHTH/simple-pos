@@ -21,6 +21,11 @@ interface SettingsContextType {
   resetToCheckpoint: () => void;
   resetToDefault: () => void;
   setAutoSave: (enabled: boolean) => void;
+  undo: () => void;
+  redo: () => void;
+  commitHistory: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -29,6 +34,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+  const [past, setPast] = useState<AppSettings[]>([]);
+  const [future, setFuture] = useState<AppSettings[]>([]);
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
@@ -52,6 +59,31 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const commitHistory = () => {
+    setPast((prev) => [...prev.slice(-19), settings]);
+    setFuture([]); // Clear future on new action
+  };
+
+  const undo = () => {
+    if (past.length === 0) return;
+    const previous = past[past.length - 1];
+    const newPast = past.slice(0, -1);
+
+    setFuture((prev) => [settings, ...prev]);
+    setPast(newPast);
+    setSettings(previous);
+  };
+
+  const redo = () => {
+    if (future.length === 0) return;
+    const next = future[0];
+    const newFuture = future.slice(1);
+
+    setPast((prev) => [...prev, settings]);
+    setFuture(newFuture);
+    setSettings(next);
   };
 
   const updateSettings = (updates: DeepPartial<AppSettings>) => {
@@ -121,6 +153,11 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         resetToCheckpoint,
         resetToDefault,
         setAutoSave: setAutoSaveEnabled,
+        undo,
+        redo,
+        commitHistory,
+        canUndo: past.length > 0,
+        canRedo: future.length > 0,
       }}
     >
       {children}

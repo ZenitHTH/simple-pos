@@ -5,6 +5,7 @@ import { AppSettings, CustomPreset, DeepPartial } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
 import { FaLayerGroup, FaCoffee, FaSave, FaTrash, FaPlus, FaPalette, FaExpand } from "react-icons/fa";
 import { THEME_PRESETS } from "@/context/settings/constants";
+import { useSettings } from "@/context/settings/SettingsContext";
 
 interface ThemePresetsPanelProps {
   settings: AppSettings;
@@ -17,6 +18,7 @@ export function ThemePresetsPanel({
   updateSettings,
   onOpenLibrary,
 }: ThemePresetsPanelProps) {
+  const { commitHistory } = useSettings();
   const [newPresetName, setNewPresetName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -52,6 +54,7 @@ export function ThemePresetsPanel({
       custom_presets: [...(settings.custom_presets || []), newPreset],
       theme: { ...settings.theme, theme_preset: "custom" as any }
     });
+    commitHistory();
 
     setNewPresetName("");
     setIsSaving(false);
@@ -75,7 +78,7 @@ export function ThemePresetsPanel({
           {onOpenLibrary && (
             <button
               onClick={onOpenLibrary}
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-muted-foreground hover:text-primary transition-colors"      
               title="Open full library"
             >
               <FaExpand size={14} />
@@ -86,9 +89,12 @@ export function ThemePresetsPanel({
           {presets.map((preset) => (
             <button
               key={preset.id}
-              onClick={() => updateSettings(preset.values)}
+              onClick={() => {
+                updateSettings(preset.values);
+                commitHistory();
+              }}
               className={cn(
-                "flex items-center gap-3 rounded-xl border p-3 text-left transition-all",
+                "flex items-center gap-3 rounded-xl border p-3 text-left transition-all", 
                 settings.theme.theme_preset === preset.id
                   ? "border-primary bg-primary/10 shadow-sm"
                   : "border-border bg-card/50 hover:bg-secondary/50"
@@ -169,11 +175,14 @@ export function ThemePresetsPanel({
             settings.custom_presets?.map((preset) => (
               <button
                 key={preset.id}
-                onClick={() => updateSettings({
-                  theme: { ...preset.theme, theme_preset: "custom" as any },
-                  styling: preset.styling,
-                  scaling: preset.scaling
-                })}
+                onClick={() => {
+                  updateSettings({
+                    theme: { ...preset.theme, theme_preset: "custom" as any },
+                    styling: preset.styling,
+                    scaling: preset.scaling
+                  });
+                  commitHistory();
+                }}
                 className={cn(
                   "group flex items-center gap-3 rounded-xl border p-3 text-left transition-all",
                   settings.theme.theme_preset === "custom" && preset.name === preset.name // Simplistic check
@@ -202,3 +211,4 @@ export function ThemePresetsPanel({
     </div>
   );
 }
+

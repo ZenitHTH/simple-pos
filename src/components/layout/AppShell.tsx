@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSettings } from "@/context/settings/SettingsContext";
 import Sidebar from "./Sidebar";
 import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";
 import MiniTuner from "@/components/design-mode/MiniTuner";
 
-import { useSpring, useMotionValue, useTransform, animate } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useMotionValue, animate } from "framer-motion";
 
 /**
  * AppShell handles the core layout and scaling isolation.
@@ -16,10 +15,25 @@ import { useEffect, useState } from "react";
  * while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const { settings } = useSettings();
+  const { settings, undo, redo } = useSettings();
+
+  // Keyboard Shortcuts for Undo/Redo
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+        if (e.shiftKey) redo();
+        else undo();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === "y") {
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo]);
+
   const targetScale = (settings.scaling.display_scale || 100) / 100;
   
-  // Use a motion value to animate the scale
+  // Use a motion value to animate the scale (Animated Scaling)
   const scaleMV = useMotionValue(targetScale);
   const [displayScale, setDisplayScale] = useState(targetScale);
 
