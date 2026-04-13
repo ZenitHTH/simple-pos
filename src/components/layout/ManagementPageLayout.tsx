@@ -1,10 +1,10 @@
 "use client";
 
-import { FaSearch } from "react-icons/fa";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import ScalableContainer from "@/components/design-mode/ScalableContainer";
 import ScrollableContainer from "@/components/ui/ScrollableContainer";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
+import { SearchInput } from "@/components/ui/SearchInput";
 
 import { AppSettings } from "@/lib";
 
@@ -53,14 +53,11 @@ export default function ManagementPageLayout({
 
         <ScalableContainer settingKey={scaleKey}>
           {setSearchQuery && (
-            <div className="relative mb-6 max-w-md">
-              <FaSearch className="text-muted absolute top-1/2 left-3 -translate-y-1/2" />
-              <input
-                type="text"
+            <div className="mb-6">
+              <SearchInput
                 placeholder={`Search ${title.toLowerCase()}...`}
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border-border bg-card focus:ring-primary/50 w-full rounded-lg border py-2 pr-4 pl-10 outline-none focus:ring-2"
               />
             </div>
           )}

@@ -1,8 +1,9 @@
 "use client";
 
 import { BackendProduct } from "@/lib";
-import { FaBoxOpen, FaSearch } from "react-icons/fa";
+import { FaBoxOpen } from "react-icons/fa";
 import { useState } from "react";
+import { SearchInput } from "@/components/ui/SearchInput";
 
 interface ProductSidebarProps {
   products: BackendProduct[];
@@ -29,16 +30,13 @@ export default function ProductSidebar({
         <FaBoxOpen className="text-secondary-foreground" /> Products
       </h3>
 
-      <div className="relative mb-4 shrink-0">
-        <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-2 -translate-y-1/2 text-xs" />
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={productSearch}
-          onChange={(e) => setProductSearch(e.target.value)}
-          className="border-border bg-background focus:ring-secondary/50 w-full rounded-lg border py-2 pr-2 pl-8 text-xs transition-all outline-none focus:ring-2"
-        />
-      </div>
+      <SearchInput
+        placeholder="Search products..."
+        value={productSearch}
+        onChange={(e) => setProductSearch(e.target.value)}
+        containerClassName="mb-4 shrink-0"
+        className="py-2 pr-2 text-xs"
+      />
 
       <div className="flex-1 space-y-2 overflow-y-auto pr-1">
         {filteredProducts.map((product) => (
