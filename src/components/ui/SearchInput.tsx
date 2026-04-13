@@ -3,14 +3,29 @@
 import { FaSearch } from "react-icons/fa";
 import { cn } from "@/lib";
 
+/**
+ * Props for the SearchInput component.
+ */
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** The current search query value. */
   value: string;
+  /** Callback triggered when the input value changes. */
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Optional placeholder text. Defaults to "Search...". */
   placeholder?: string;
+  /** Optional CSS class for the input element. */
   className?: string;
+  /** Optional CSS class for the container div. */
   containerClassName?: string;
 }
 
+/**
+ * A reusable search input component with an icon.
+ * Features a magnifying glass icon and standard input behavior.
+ * 
+ * @param props - The search input props.
+ * @returns A styled search input element.
+ */
 export function SearchInput({
   value,
   onChange,

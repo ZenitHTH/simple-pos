@@ -131,7 +131,13 @@ export function Select({
   );
 }
 
-// Export Option for compatibility if needed, though we moved to props
+/**
+ * A legacy or helper component for representing an option in the select.
+ * Used for compatibility where standard option elements might be expected.
+ * 
+ * @param props - Component children.
+ * @returns A standard HTML option element.
+ */
 export function Option({ children }: { children: React.ReactNode }) {
   return <option>{children}</option>;
 }

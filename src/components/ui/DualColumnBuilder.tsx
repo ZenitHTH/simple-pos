@@ -69,11 +69,17 @@ function Pane({
  * Configuration for a pane in the DualColumnBuilder.
  */
 interface PaneConfig {
+  /** Header content for the pane. */
   header: ReactNode;
+  /** Main content for the pane. */
   content: ReactNode;
+  /** Optional CSS class for the pane container. */
   className?: string;
+  /** Optional drop event handler for drag-and-drop. */
   onDrop?: (e: React.DragEvent) => void;
+  /** Optional drag over event handler for drag-and-drop. */
   onDragOver?: (e: React.DragEvent) => void;
+  /** Whether the pane is currently active or highlighted. */
   isActive?: boolean;
 }
 

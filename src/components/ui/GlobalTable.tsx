@@ -15,11 +15,20 @@ export interface Column<T> {
   headerClassName?: string;
 }
 
+/**
+ * Props for the GlobalTable component.
+ * @template T - The type of data being displayed in the table.
+ */
 interface GlobalTableProps<T> {
+  /** Array of column definitions. */
   columns: Column<T>[];
+  /** The data array to display. */
   data: T[];
+  /** The field name that serves as a unique key for each row. */
   keyField: keyof T;
+  /** Message to display when there is no data. Defaults to "No items found". */
   emptyMessage?: string;
+  /** Additional CSS classes. */
   className?: string;
 }
 

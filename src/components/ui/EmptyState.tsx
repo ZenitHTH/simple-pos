@@ -2,9 +2,15 @@ import * as React from "react";
 import { cn } from "@/lib";
 import { FaBoxOpen } from "react-icons/fa";
 
+/**
+ * Props for the EmptyState component.
+ */
 interface EmptyStateProps {
+  /** The text message to display. */
   message: string;
+  /** Optional React node (icon) to display above the message. */
   icon?: React.ReactNode;
+  /** Additional CSS classes for custom styling. */
   className?: string;
 }
 

@@ -5,11 +5,19 @@ import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 import { ComponentType } from "react";
 
+/**
+ * Props for the GlobalHeader component.
+ */
 interface GlobalHeaderProps {
+  /** The main title of the page. */
   title: string;
+  /** Optional subtitle text below the main title. */
   subtitle?: string;
+  /** Optional React component (icon) to display next to the title. */
   icon?: ComponentType<{ className?: string }>;
+  /** Optional elements to display on the right side of the header. */
   children?: React.ReactNode;
+  /** Additional CSS classes. */
   className?: string;
 }
 
