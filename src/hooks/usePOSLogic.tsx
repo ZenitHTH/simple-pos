@@ -11,11 +11,11 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
 
 /**
- * Custom hook to manage Point of Sale (POS) logic.
- * Handles product selection, cart management, and payment processing.
+ * Comprehensive hook to manage Point of Sale (POS) logic.
+ * Handles product display, category filtering, search, cart operations, customer selection, and payment processing.
  *
- * @param initialProducts - List of products available for sale.
- * @returns Object containing cart state, handlers, and current currency/tax settings.
+ * @param {Product[]} initialProducts - List of products available for sale.
+ * @returns {object} An object containing POS state and handler functions.
  */
 export function usePOSLogic(initialProducts: Product[]) {
   const { isMockupMode, mockupView, setMockupView } = useMockup();

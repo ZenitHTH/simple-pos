@@ -10,6 +10,15 @@ interface ProductCardProps {
   currency: string;
 }
 
+/**
+ * ProductCard component displays individual product information in a card format.
+ * It shows the product image (or color placeholder), name, category, and price.
+ * 
+ * @param {ProductCardProps} props - The component props.
+ * @param {Product} props.product - The product data to display.
+ * @param {(product: Product) => void} props.onAdd - Callback when the card is clicked or the add button is pressed.
+ * @param {string} props.currency - The currency symbol to display.
+ */
 const ProductCard = memo(function ProductCard({
   product,
   onAdd,

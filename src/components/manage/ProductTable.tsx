@@ -17,6 +17,18 @@ interface ProductTableProps {
   settings: AppSettings;
 }
 
+/**
+ * ProductTable component displays a list of products in a tabular format with detailed information.
+ * It shows images, titles, categories, prices, and provides actions for editing, deleting, and managing stock/recipes.
+ * 
+ * @param {ProductTableProps} props - The component props.
+ * @param {(BackendProduct & { image_path?: string })[]} props.products - List of products to display, including optional image path.
+ * @param {Category[]} props.categories - List of all categories for display name lookup.
+ * @param {(product: BackendProduct) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {(id: number) => void} props.onDelete - Callback when the delete button is clicked.
+ * @param {(id: number, current: boolean) => void} props.onToggleStockMode - Callback to toggle between normal and recipe stock modes.
+ * @param {AppSettings} props.settings - Application settings for currency display.
+ */
 export default function ProductTable({
   products,
   categories,

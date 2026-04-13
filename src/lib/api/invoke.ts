@@ -10,8 +10,13 @@ function sanitizeArgs(args?: Record<string, any>): Record<string, any> | undefin
 }
 
 /**
- * A wrapper around Tauri's invoke that falls back to a mock implementation
- * if the Tauri bridge is not available (e.g., when running in a standard browser).
+ * Generic wrapper for calling backend functions.
+ * It detects if the application is running within Tauri and falls back to a mock implementation if not.
+ * 
+ * @template T - The expected return type of the command.
+ * @param {string} command - The name of the Tauri command to invoke.
+ * @param {Record<string, any>} [args] - Optional arguments to pass to the command.
+ * @returns {Promise<T>} A promise resolving to the command's return value.
  */
 export async function invoke<T>(command: string, args?: Record<string, any>): Promise<T> {
   // Check if we are running in a Tauri environment

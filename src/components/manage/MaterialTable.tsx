@@ -10,6 +10,15 @@ interface MaterialTableProps {
   onDelete: (id: number) => void;
 }
 
+/**
+ * MaterialTable component displays a list of materials in a tabular format.
+ * It shows details like ID, name, type, tags, volume, and quantity, with edit/delete actions.
+ * 
+ * @param {MaterialTableProps} props - The component props.
+ * @param {Material[]} props.materials - List of materials to display.
+ * @param {(material: Material) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {(id: number) => void} props.onDelete - Callback when the delete button is clicked.
+ */
 export default function MaterialTable({
   materials,
   onEdit,

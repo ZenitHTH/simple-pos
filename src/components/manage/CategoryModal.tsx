@@ -13,6 +13,16 @@ interface CategoryModalProps {
   isSubmitting: boolean;
 }
 
+/**
+ * CategoryModal component provides a modal dialog for creating or editing product categories.
+ * 
+ * @param {CategoryModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(data: string) => Promise<void>} props.onSubmit - Callback to submit the category name.
+ * @param {Category} [props.initialData] - Optional initial category data for editing.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function CategoryModal({
   isOpen,
   onClose,

@@ -3,8 +3,12 @@
 import { useState, useCallback } from "react";
 
 /**
- * useColorSampler extracts dominant colors from an HTMLImageElement using Canvas.
- * It returns an array of hex colors.
+ * Hook to extract dominant colors from an HTMLImageElement using the Canvas API.
+ * 
+ * @returns {object} An object containing:
+ * - colors: Array of hex color strings (top 3 most frequent).
+ * - sampleImage: Function to trigger color extraction from an image element.
+ * - isSampling: Boolean indicating if an extraction is currently in progress.
  */
 export function useColorSampler() {
   const [colors, setColors] = useState<string[]>([]);

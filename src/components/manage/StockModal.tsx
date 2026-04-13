@@ -15,6 +15,18 @@ interface StockModalProps {
   isSubmitting: boolean;
 }
 
+/**
+ * StockModal component provides a form for adding or editing stock entries for products.
+ * It allows selecting a product and specifying the available quantity.
+ * 
+ * @param {StockModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(productId: number, quantity: number) => Promise<void>} props.onSubmit - Callback to submit the stock data.
+ * @param {Stock} [props.initialData] - Optional initial stock data for editing.
+ * @param {BackendProduct[]} props.products - List of products available for selection.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function StockModal({
   isOpen,
   onClose,

@@ -19,6 +19,21 @@ interface POSProductGridProps {
   currency: string;
 }
 
+/**
+ * POSProductGrid component renders a responsive grid of products with filtering capabilities.
+ * It handles category selection, search queries, and dynamic grid scaling based on application settings.
+ * 
+ * @param {POSProductGridProps} props - The component props.
+ * @param {Product[]} props.products - List of products to display.
+ * @param {string[]} props.categories - List of available categories for filtering.
+ * @param {string} props.selectedCategory - The currently selected category.
+ * @param {(category: string) => void} props.onCategoryChange - Callback when a category is selected.
+ * @param {string} props.searchQuery - Current search string.
+ * @param {(query: string) => void} props.onSearchChange - Callback when search query changes.
+ * @param {AppSettings} props.settings - Application settings for UI scaling.
+ * @param {(product: Product) => void} props.onAddToCart - Callback when a product is added to the cart.
+ * @param {string} props.currency - The currency symbol to display.
+ */
 const POSProductGrid = memo(function POSProductGrid({
   products,
   categories,

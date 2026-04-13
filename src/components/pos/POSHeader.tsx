@@ -12,6 +12,16 @@ interface POSHeaderProps {
   onToggleCart: () => void;
 }
 
+/**
+ * POSHeader component displays the top navigation bar for the POS interface.
+ * It includes the application title, cart toggle (desktop), cart button (mobile), and navigation to history.
+ * 
+ * @param {POSHeaderProps} props - The component props.
+ * @param {number} props.cartCount - Total number of items in the cart.
+ * @param {() => void} props.onOpenCart - Callback to open the cart drawer on mobile.
+ * @param {boolean} props.isCartVisible - Whether the cart sidebar is visible on desktop.
+ * @param {() => void} props.onToggleCart - Callback to toggle cart visibility on desktop.
+ */
 const POSHeader = memo(function POSHeader({
   cartCount,
   onOpenCart,

@@ -12,6 +12,17 @@ interface CustomerModalProps {
     isSubmitting: boolean;
 }
 
+/**
+ * CustomerModal component provides a modal dialog for creating or editing customer information.
+ * It includes fields for name, tax ID, branch ID, and address.
+ * 
+ * @param {CustomerModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(data: NewCustomer) => Promise<Customer | undefined>} props.onSubmit - Callback to submit customer data.
+ * @param {Customer} [props.initialData] - Optional initial customer data for editing.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function CustomerModal({
     isOpen,
     onClose,

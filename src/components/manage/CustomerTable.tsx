@@ -9,6 +9,15 @@ interface CustomerTableProps {
     settings: AppSettings;
 }
 
+/**
+ * CustomerTable component displays a list of customers in a tabular format.
+ * It includes customer name, tax ID, branch, and address, with an action to edit.
+ * 
+ * @param {CustomerTableProps} props - The component props.
+ * @param {Customer[]} props.customers - List of customers to display.
+ * @param {(customer: Customer) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {AppSettings} props.settings - Application settings for font scaling.
+ */
 export default function CustomerTable({
     customers,
     onEdit,

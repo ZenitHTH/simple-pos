@@ -31,6 +31,17 @@ interface ProductModalProps {
   isSubmitting: boolean;
 }
 
+/**
+ * ProductModal component provides a comprehensive form for creating or editing products.
+ * It includes fields for title, category, price, stock tracking mode, and image upload/selection.
+ * 
+ * @param {ProductModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(product: NewProduct, afterSubmit?: (saved: BackendProduct) => Promise<void>) => Promise<BackendProduct | undefined>} props.onSubmit - Callback to submit the product data.
+ * @param {BackendProduct} [props.initialData] - Optional initial product data for editing.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function ProductModal({
   isOpen,
   onClose,

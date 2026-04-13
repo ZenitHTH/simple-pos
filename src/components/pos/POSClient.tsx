@@ -15,6 +15,13 @@ interface POSClientProps {
   initialProducts?: Product[];
 }
 
+/**
+ * POSClient component serves as the main entry point for the Point of Sale interface.
+ * It manages the product grid, category filtering, search, and the shopping cart.
+ * 
+ * @param {POSClientProps} props - The component props.
+ * @param {Product[]} [props.initialProducts] - Optional initial list of products to display.
+ */
 export default function POSClient({ initialProducts = [] }: POSClientProps) {
   const { settings } = useSettings();
   const {

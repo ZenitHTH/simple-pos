@@ -1,3 +1,6 @@
+/**
+ * Barrel file for all API wrapper modules.
+ */
 export * from "./products";
 export * from "./categories";
 export * from "./receipts";

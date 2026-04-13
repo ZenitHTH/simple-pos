@@ -22,6 +22,17 @@ interface MaterialModalProps {
   isSubmitting?: boolean;
 }
 
+/**
+ * MaterialModal component provides a form for creating or editing raw materials/inventory items.
+ * It handles fields for name, volume, quantity, unit type, and tags.
+ * 
+ * @param {MaterialModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(data: MaterialFormData) => Promise<void>} props.onSubmit - Callback to submit the material form data.
+ * @param {Material} [props.initialData] - Optional initial material data for editing.
+ * @param {boolean} [props.isSubmitting] - Whether the form is currently being submitted.
+ */
 export default function MaterialModal({
   isOpen,
   onClose,

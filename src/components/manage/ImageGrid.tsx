@@ -12,6 +12,17 @@ interface ImageGridProps {
   handleDelete: (img: Image) => void;
 }
 
+/**
+ * ImageGrid component renders a responsive grid of uploaded images.
+ * Each image card shows usage statistics and provides actions for linking, positioning, and deletion.
+ * 
+ * @param {ImageGridProps} props - The component props.
+ * @param {Image[]} props.images - List of images to display.
+ * @param {(imageId: number) => BackendProduct[]} props.getProductUsage - Function to determine which products use a given image.
+ * @param {(img: Image) => void} props.openLinkModal - Callback to open the modal for linking an image to products.
+ * @param {(img: Image) => void} props.openPositionModal - Callback to open the modal for adjusting image object position.
+ * @param {(img: Image) => void} props.handleDelete - Callback to delete an image.
+ */
 export default function ImageGrid({
   images,
   getProductUsage,
