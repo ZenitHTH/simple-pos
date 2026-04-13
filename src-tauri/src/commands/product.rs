@@ -3,12 +3,15 @@ use database::product;
 use database::product::model::ProductWithImage;
 use database::{NewProduct, Product};
 
+/// Retrieves all products with their associated images from the database.
 #[tauri::command]
 pub fn get_products(key: String) -> Result<Vec<ProductWithImage>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())
 }
 
+/// Creates a new product with the specified details.
+/// Validates input length, price range, and ensures the product name is unique.
 #[tauri::command]
 pub fn create_product(
     key: String,
@@ -48,6 +51,9 @@ pub fn create_product(
     product::insert_product(&mut conn, &new_prod).map_err(|e| e.to_string())
 }
 
+/// Updates an existing product's information.
+/// Performs validation on title length, price, and ensures name uniqueness.
+/// Also synchronizes the product price in the stock records.
 #[tauri::command]
 pub fn update_product(
     key: String,
@@ -100,6 +106,9 @@ pub fn update_product(
     Ok(updated_prod)
 }
 
+/// Deletes a product by its ID.
+/// Before deletion, checks if the product is referenced in past receipts.
+/// Cleans up associated stock records and image links.
 #[tauri::command]
 pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -122,6 +131,8 @@ pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
 
     product::remove_product(&mut conn, id).map_err(|e| e.to_string())
 }
+
+/// Sets whether a product uses recipe-based stock tracking.
 #[tauri::command]
 pub fn set_product_stock_mode(key: String, id: i32, use_recipe: bool) -> Result<(), String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;

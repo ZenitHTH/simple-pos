@@ -3,12 +3,14 @@ use crate::conn;
 use database::recipe;
 use database::{NewRecipeItem, RecipeItem, RecipeList};
 
+/// Creates a new recipe list for a specific product.
 #[tauri::command]
 pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, String> {
     let mut conn = conn!(key);
     recipe::create_recipe_list(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
+/// Retrieves the recipe list associated with a specific product.
 #[tauri::command]
 pub fn get_recipe_list_by_product(
     key: String,
@@ -18,12 +20,15 @@ pub fn get_recipe_list_by_product(
     recipe::get_recipe_list_by_product(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
+/// Deletes a recipe list by its ID.
 #[tauri::command]
 pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
     let mut conn = conn!(key);
     recipe::delete_recipe_list(&mut conn, list_id).map_err(|e| e.to_string())
 }
 
+/// Adds a new item (material) to a recipe list.
+/// Scales the volume use based on the provided precision.
 #[tauri::command]
 pub fn add_recipe_item(
     key: String,
@@ -46,12 +51,14 @@ pub fn add_recipe_item(
     recipe::add_recipe_item(&mut conn, &new_item).map_err(|e| e.to_string())
 }
 
+/// Retrieves all items belonging to a specific recipe list.
 #[tauri::command]
 pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeItem>, String> {
     let mut conn = conn!(key);
     recipe::get_items_by_recipe_list_id(&mut conn, recipe_list_id).map_err(|e| e.to_string())
 }
 
+/// Updates an existing recipe item's volume use and unit.
 #[tauri::command]
 pub fn update_recipe_item(
     key: String,
@@ -66,6 +73,7 @@ pub fn update_recipe_item(
     recipe::update_recipe_item(&mut conn, item_id, val, unit, prec).map_err(|e| e.to_string())
 }
 
+/// Deletes a recipe item by its ID.
 #[tauri::command]
 pub fn delete_recipe_item(key: String, item_id: i32) -> Result<usize, String> {
     let mut conn = conn!(key);

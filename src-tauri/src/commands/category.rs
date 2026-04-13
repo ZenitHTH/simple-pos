@@ -2,12 +2,15 @@ use database::category;
 use database::establish_connection;
 use database::{Category, NewCategory};
 
+/// Retrieves all product categories from the database.
 #[tauri::command]
 pub fn get_categories(key: String) -> Result<Vec<Category>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     category::get_all_categories(&mut conn).map_err(|e| e.to_string())
 }
 
+/// Creates a new product category.
+/// Validates that the name is not empty, not too long, and unique.
 #[tauri::command]
 pub fn create_category(key: String, name: String) -> Result<Category, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -28,6 +31,8 @@ pub fn create_category(key: String, name: String) -> Result<Category, String> {
     category::insert_category(&mut conn, &new_cat).map_err(|e| e.to_string())
 }
 
+/// Updates an existing product category's name.
+/// Performs validation on name length and ensures uniqueness.
 #[tauri::command]
 pub fn update_category(key: String, id: i32, name: String) -> Result<Category, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -53,8 +58,10 @@ pub fn update_category(key: String, id: i32, name: String) -> Result<Category, S
     category::update_category(&mut conn, cat).map_err(|e| e.to_string())
 }
 
+/// Deletes a product category by its ID.
 #[tauri::command]
 pub fn delete_category(key: String, id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     category::remove_category(&mut conn, id).map_err(|e| e.to_string())
 }
+

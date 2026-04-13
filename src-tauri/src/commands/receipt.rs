@@ -5,12 +5,14 @@ use database::{NewReceipt, Receipt, ReceiptList};
 use diesel::Connection;
 use serde::Serialize;
 
+/// Represents an accumulated report of products and materials sold within a date range.
 #[derive(Serialize)]
 pub struct AccumulatedReport {
     pub products: Vec<ProductAccumulation>,
     pub materials: Vec<MaterialAccumulation>,
 }
 
+/// Represents the total quantity of a specific product sold.
 #[derive(Serialize)]
 pub struct ProductAccumulation {
     pub product_id: i32,
@@ -18,6 +20,7 @@ pub struct ProductAccumulation {
     pub total_quantity: i64,
 }
 
+/// Represents the total volume of a specific material used in products sold.
 #[derive(Serialize)]
 pub struct MaterialAccumulation {
     pub material_id: i32,
@@ -26,6 +29,7 @@ pub struct MaterialAccumulation {
     pub precision: i32,
 }
 
+/// Creates a new invoice (receipt header) for an optional customer.
 #[tauri::command]
 pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptList, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -33,6 +37,8 @@ pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptLi
     receipt::create_receipt_header(&mut conn, None, customer_id).map_err(|e| e.to_string())
 }
 
+/// Adds items to an existing invoice and updates stock levels accordingly.
+/// Supports both direct product stock and recipe-based material stock.
 #[tauri::command]
 pub fn add_invoice_items(
     key: String,
@@ -76,6 +82,7 @@ pub fn add_invoice_items(
     .map_err(|e| e.to_string())
 }
 
+/// Retrieves the header and all items for a specific invoice.
 #[tauri::command]
 pub fn get_invoice_detail(
     key: String,
@@ -85,6 +92,7 @@ pub fn get_invoice_detail(
     receipt::get_full_receipt(&mut conn, receipt_id).map_err(|e| e.to_string())
 }
 
+/// Retrieves all invoices created within a specific Unix timestamp range.
 #[tauri::command]
 pub fn get_invoices_by_date(
     key: String,
@@ -95,6 +103,7 @@ pub fn get_invoices_by_date(
     receipt::find_headers_by_date_range(&mut conn, start_unix, end_unix).map_err(|e| e.to_string())
 }
 
+/// Generates an accumulated report of products and materials sold within a date range.
 #[tauri::command]
 pub fn get_accumulated_report(
     key: String,

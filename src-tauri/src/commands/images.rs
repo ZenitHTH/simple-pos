@@ -8,6 +8,8 @@ use image_lib::save_image as lib_save_image;
 use settings_lib::get_settings;
 use tauri::command;
 
+/// Saves an image from raw byte data to the configured image storage path.
+/// Returns the saved Image database record.
 #[command]
 pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
     let settings = get_settings().map_err(|e| e.to_string())?;
@@ -15,6 +17,7 @@ pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<databa
     lib_save_image(&data, &filename, target_dir.as_deref(), &key).map_err(|e| e.to_string())
 }
 
+/// Links an existing image to a product.
 #[command]
 pub fn link_product_image(
     key: String,
@@ -32,6 +35,7 @@ pub fn link_product_image(
     db_link_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
 }
 
+/// Unlinks an image from a product.
 #[command]
 pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -45,6 +49,7 @@ pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Resu
     db_unlink_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
 }
 
+/// Removes all image links from a product.
 #[command]
 pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
@@ -56,6 +61,7 @@ pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, Strin
     db_clear_product_images(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
+/// Retrieves all images linked to a specific product.
 #[command]
 pub fn get_product_images(
     key: String,
@@ -65,12 +71,14 @@ pub fn get_product_images(
     db_get_images(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
+/// Retrieves all images stored in the database.
 #[command]
 pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     database::image::get_all_images(&mut conn).map_err(|e| e.to_string())
 }
 
+/// Deletes an image record from the database and removes the associated file from disk.
 #[command]
 pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
     // 1. Get image info to find the file path
@@ -94,6 +102,7 @@ pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
     Ok(())
 }
 
+/// Retrieves all product-to-image associations.
 #[command]
 pub fn get_all_image_links(
     key: String,
@@ -102,6 +111,7 @@ pub fn get_all_image_links(
     db_get_all_links(&mut conn).map_err(|e| e.to_string())
 }
 
+/// Updates the metadata position of an image.
 #[command]
 pub fn update_image_position(
     key: String,

@@ -2,12 +2,14 @@ use database::customer;
 use database::establish_connection;
 use database::{Customer, NewCustomer};
 
+/// Retrieves all customer records from the database.
 #[tauri::command]
 pub fn get_customers(key: String) -> Result<Vec<Customer>, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     customer::get_all_customers(&mut conn).map_err(|e| e.to_string())
 }
 
+/// Creates a new customer record.
 #[tauri::command]
 pub fn create_customer(
     key: String,
@@ -26,6 +28,7 @@ pub fn create_customer(
     customer::insert_customer(&mut conn, &new_customer).map_err(|e| e.to_string())
 }
 
+/// Updates an existing customer record.
 #[tauri::command]
 pub fn update_customer(
     key: String,
