@@ -8,11 +8,13 @@ export const materialHandlers = {
     type,
     volume,
     quantity,
+    tags,
   }: {
     name: string;
     type: string;
     volume: number;
     quantity: number;
+    tags: string[];
   }) => {
     const newMaterial: Material = {
       id: Math.max(0, ...state.materials.map((m) => m.id)) + 1,
@@ -21,6 +23,7 @@ export const materialHandlers = {
       volume,
       precision: 4,
       quantity,
+      tags,
     };
     state.materials.push(newMaterial);
     return newMaterial;
@@ -31,12 +34,14 @@ export const materialHandlers = {
     type,
     volume,
     quantity,
+    tags,
   }: {
     id: number;
     name: string;
     type: string;
     volume: number;
     quantity: number;
+    tags: string[];
   }) => {
     const material = state.materials.find((m) => m.id === id);
     if (material) {
@@ -44,6 +49,7 @@ export const materialHandlers = {
       material.type_ = type;
       material.volume = volume;
       material.quantity = quantity;
+      material.tags = tags;
     }
     return material;
   },

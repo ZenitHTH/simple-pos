@@ -71,8 +71,8 @@ export default function PaymentModal({
   if (!isOpen) return null;
 
   // Calculate base width (e.g. 512px for max-w-lg) and apply scaling
-  const scale = (settings?.payment_modal_scale || 100) / 100;
-  const fontScale = (settings?.payment_modal_font_scale || 100) / 100;
+  const scale = (settings.scaling.components.payment_modal || 100) / 100;
+  const fontScale = (settings.scaling.fonts.payment_modal || 100) / 100;
   const baseWidth = 512; // approx 32rem
   const scaledWidth = `${baseWidth * scale}px`;
 
@@ -120,7 +120,7 @@ export default function PaymentModal({
           onChange={setCashReceived}
           quickAmounts={quickAmounts}
           currency={currency}
-          numpadHeight={settings?.payment_numpad_height ?? undefined}
+          numpadHeight={settings.styling.payment.numpad_height || 320}
         />
       </div>
 

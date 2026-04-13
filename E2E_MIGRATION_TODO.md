@@ -1,0 +1,3 @@
+- [x] Task 1: Clean Up Obsolete and Broken Test Files
+- [x] Task 2: Rewrite E2E Runner Script
+- [x] Task 3: Refine Playwright Configuration

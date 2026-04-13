@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { CURRENCIES } from "./CurrencySettings";
 import { logger } from "@/lib/logger";
-import { SidebarSlider } from "../design-tuner/SidebarSlider";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface SettingsSetupProps {
   onComplete: () => void;

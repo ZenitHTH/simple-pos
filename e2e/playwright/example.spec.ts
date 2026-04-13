@@ -10,6 +10,4 @@ test('Simple POS App Launch', async () => {
   
   // Verify the app title
   await expect(page).toHaveTitle('Simple POS');
-  
-  await browser.close();
-});
+  });

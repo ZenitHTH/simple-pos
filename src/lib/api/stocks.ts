@@ -37,4 +37,12 @@ export const stockApi = {
   remove: async (key: string, stockId: number): Promise<number> => {
     return await invoke("remove_stock", { key, stockId: Number(stockId) });
   },
+
+  exportData: async (key: string, path: string, format: string): Promise<void> => {
+    return await invoke("export_stock_data", { key, path, format });
+  },
+
+  importData: async (key: string, path: string, format: string): Promise<number> => {
+    return await invoke("import_stock_data", { key, path, format });
+  },
 };

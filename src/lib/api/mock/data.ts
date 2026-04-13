@@ -87,6 +87,7 @@ export const mockMaterials: Material[] = [
     volume: 1000,
     precision: 4,
     quantity: 50,
+    tags: [],
   },
   {
     id: 2,
@@ -95,6 +96,7 @@ export const mockMaterials: Material[] = [
     volume: 1,
     precision: 4,
     quantity: 20,
+    tags: [],
   },
   {
     id: 3,
@@ -103,6 +105,7 @@ export const mockMaterials: Material[] = [
     volume: 500,
     precision: 4,
     quantity: 10,
+    tags: [],
   },
   {
     id: 4,
@@ -111,6 +114,7 @@ export const mockMaterials: Material[] = [
     volume: 1000,
     precision: 4,
     quantity: 15,
+    tags: [],
   },
   {
     id: 5,
@@ -119,6 +123,7 @@ export const mockMaterials: Material[] = [
     volume: 20,
     precision: 4,
     quantity: 5,
+    tags: [],
   },
   {
     id: 6,
@@ -127,6 +132,7 @@ export const mockMaterials: Material[] = [
     volume: 500,
     precision: 4,
     quantity: 30,
+    tags: [],
   },
 ];
 

@@ -47,7 +47,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
   // Calculate Cart Width
   const cartBaseWidth = 320; // w-80
-  const cartWidthMultiplier = (settings?.cart_scale || 100) / 100;
+  const cartWidthMultiplier = (settings.scaling.components.cart || 100) / 100;
   const cartDynamicWidth = isCartVisible ? `${cartBaseWidth * cartWidthMultiplier}px` : "0px";
 
   return (
@@ -81,7 +81,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         }`}
         style={{
           width: cartDynamicWidth,
-          fontSize: `${settings?.cart_font_scale || 100}%`,
+          fontSize: `${settings.scaling.fonts.cart || 100}%`,
         }}
       >
         <SelectableOverlay id="cart_scale" />
@@ -117,7 +117,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         <div
           className="h-full overflow-y-auto"
           style={{
-            fontSize: `${settings?.cart_font_scale || 100}%`,
+            fontSize: `${settings.scaling.fonts.cart || 100}%`,
           }}
         >
           <Cart

@@ -1,11 +1,11 @@
+use serde::{Deserialize, Serialize};
+use std::error::Error;
+use std::path::Path;
+
 pub mod csv_export;
 pub mod ods_export;
 pub mod thai_accounting;
 pub mod xlsx_export;
-
-use serde::{Deserialize, Serialize};
-use std::error::Error;
-use std::path::Path;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -94,7 +94,7 @@ impl ExportTable {
         if row.len() == self.headers.len() {
             self.rows.push(row);
         } else {
-            // Log warning or handle error? For now, we'll allow it but it might cause export issues if headers don't match
+            // Log warning or handle error? For now, we'll allow it
             self.rows.push(row);
         }
     }
@@ -119,6 +119,18 @@ impl ExportTable {
 
     pub fn export_ods<P: AsRef<Path>>(&self, path: P) -> Result<(), Box<dyn Error>> {
         ods_export::export_to_ods(self, path)
+    }
+
+    pub fn import_csv<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>> {
+        csv_export::import_from_csv(path)
+    }
+
+    pub fn import_xlsx<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>> {
+        xlsx_export::import_from_xlsx(path)
+    }
+
+    pub fn import_ods<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn Error>> {
+        ods_export::import_from_ods(path)
     }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect, useCallback } from "react";
 import {
   FaBoxes,
   FaSearch,
@@ -13,9 +13,7 @@ import { useSimpleRecipe } from "@/app/manage/material/recipe/hooks/useSimpleRec
 import { cn, materialApi } from "@/lib";
 import MaterialModal from "@/components/manage/MaterialModal";
 import { useDatabase } from "@/context/DatabaseContext";
-import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
-import { UNIT_OPTIONS } from "@/lib";
 import { DualColumnBuilder } from "@/components/ui/DualColumnBuilder";
 import { logger } from "@/lib/logger";
 
@@ -57,6 +55,56 @@ export default function SimpleRecipeBuilder({
   const [productSearch, setProductSearch] = useState("");
   const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
   const [isCreatingMaterial, setIsCreatingMaterial] = useState(false);
+  const [showConnections, setShowConnections] = useState(true);
+
+  // Connection line logic
+  const [connections, setConnections] = useState<Array<{ d: string; id: number }>>([]);
+  const rightPaneRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const updateConnections = useCallback(() => {
+    if (!showConnections || !selectedProduct || !rightPaneRef.current || !headerRef.current) {
+      setConnections([]);
+      return;
+    }
+
+    const paneRect = rightPaneRef.current.getBoundingClientRect();
+    const headerRect = headerRef.current.getBoundingClientRect();
+    
+    // Start point: middle right of the product header
+    const startX = headerRect.left - paneRect.left + headerRect.width;
+    const startY = headerRect.top + headerRect.height / 2 - paneRect.top;
+
+    const newConnections = recipeItems.map((item) => {
+      const el = itemRefs.current.get(item.material_id);
+      if (!el) return null;
+
+      const elRect = el.getBoundingClientRect();
+      // End point: middle left of the recipe item
+      const endX = elRect.left - paneRect.left;
+      const endY = elRect.top + elRect.height / 2 - paneRect.top;
+
+      // Quadratic bezier curve
+      const cp1x = startX + 40;
+      const cp1y = startY;
+      const cp2x = endX - 40;
+      const cp2y = endY;
+
+      return {
+        id: item.material_id,
+        d: `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`,
+      };
+    }).filter(Boolean) as Array<{ d: string; id: number }>;
+
+    setConnections(newConnections);
+  }, [showConnections, selectedProduct, recipeItems]);
+
+  useLayoutEffect(() => {
+    updateConnections();
+    window.addEventListener("resize", updateConnections);
+    return () => window.removeEventListener("resize", updateConnections);
+  }, [updateConnections]);
 
   const filteredMaterials = materials.filter((m) =>
     m.name.toLowerCase().includes(materialSearch.toLowerCase()),
@@ -97,6 +145,7 @@ export default function SimpleRecipeBuilder({
         data.type_,
         data.volume,
         data.quantity,
+        data.tags
       );
       await refreshMaterials();
       setIsMaterialModalOpen(false);
@@ -226,7 +275,7 @@ export default function SimpleRecipeBuilder({
             </>
           ),
           content: (
-            <>
+            <div ref={rightPaneRef} className="relative h-full">
               {!selectedProduct ? (
                 <div className="space-y-3">
                   {filteredProducts.map((product) => (
@@ -266,7 +315,7 @@ export default function SimpleRecipeBuilder({
                   )}
                 </div>
               )}
-            </>
+            </div>
           ),
         }}
       />

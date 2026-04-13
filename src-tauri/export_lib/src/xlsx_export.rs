@@ -1,5 +1,6 @@
 use super::{CellValue, ExportTable, sanitize_cell_text};
 use rust_xlsxwriter::*;
+use calamine::{Reader, Xlsx, open_workbook, Data};
 use std::error::Error;
 use std::path::Path;
 
@@ -50,4 +51,49 @@ pub fn export_to_xlsx_sheets<P: AsRef<Path>>(
 
     workbook.save(path)?;
     Ok(())
+}
+
+pub fn import_from_xlsx<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>> {
+    let mut excel: Xlsx<_> = open_workbook(path)?;
+    
+    // Get the first sheet
+    let sheet_name = excel.sheet_names().get(0).cloned()
+        .ok_or_else(|| "No sheets found in XLSX file")?;
+    
+    let range = excel.worksheet_range(&sheet_name)?;
+    
+    let mut rows = range.rows();
+    
+    // First row is header
+    let headers: Vec<String> = rows.next()
+        .ok_or_else(|| "XLSX file is empty")?
+        .iter()
+        .map(|data: &Data| data.to_string())
+        .collect();
+        
+    let mut table = ExportTable::new(headers);
+    
+    for row in rows {
+        let cell_values: Vec<CellValue> = row.iter()
+            .map(|data: &Data| match data {
+                Data::String(s) => {
+                    // Remove leading single quote if it was added for sanitization
+                    if s.starts_with('\'') && (s.len() > 1) {
+                        let inner = &s[1..];
+                        if inner.starts_with('=') || inner.starts_with('+') || inner.starts_with('-') || inner.starts_with('@') {
+                            return CellValue::Text(inner.to_string());
+                        }
+                    }
+                    CellValue::Text(s.clone())
+                }
+                Data::Float(f) => CellValue::Number(*f),
+                Data::Int(i) => CellValue::Int(*i),
+                Data::Bool(b) => CellValue::Bool(*b),
+                _ => CellValue::None,
+            })
+            .collect();
+        table.add_row(cell_values);
+    }
+    
+    Ok(table)
 }

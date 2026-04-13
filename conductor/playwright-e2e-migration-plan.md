@@ -1,94 +1,203 @@
-# Playwright E2E Migration Plan
+# Playwright E2E Migration Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Migrate E2E testing to Playwright using the Remote Debugging Port (CDP) and implement native Wayland/GPU workarounds in Rust to ensure compatibility across Windows 11 and Linux KDE Wayland without GNOME dependencies.
+**Goal:** Clean up obsolete test files and rewrite the custom `run-e2e.mjs` script to properly launch the Tauri application with remote debugging and execute standard Playwright tests.
 
-**Architecture:** 
-1. Inject the `WEBKIT_DISABLE_DMABUF_RENDERER=1` workaround in the Rust backend (`main.rs`) for Linux KDE Wayland compatibility on NVIDIA/Radeon.
-2. Add a `playwright.config.ts` that configures the test suite.
-3. Create a custom Node.js script (`scripts/run-e2e.mjs`) to launch the Tauri application with the correct environment variables for Windows (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS`) and Linux (`WEBKIT_INSPECTOR_SERVER`), and then execute Playwright.
-4. Replace `wdio` with Playwright in `package.json`.
+**Architecture:** We will remove outdated WebdriverIO tests (`e2e/specs/`) and broken Playwright configurations. We will rewrite the Node runner script (`scripts/run-e2e.mjs`) to use `child_process.spawn` to start the built Tauri application with the `--remote-debugging-port` flag, wait for the port to become available, execute `npx playwright test`, and finally kill the Tauri process. We will also clean up `playwright.config.ts`.
 
-**Tech Stack:** Playwright, Node.js, Rust, Tauri 2.0
+**Tech Stack:** Node.js (`child_process`), Playwright, Tauri.
 
 ---
 
-### Task 1: Implement Linux Wayland Workaround in Rust
+### Task 1: Clean Up Obsolete and Broken Test Files
 
 **Files:**
-- Modify: `src-tauri/src/main.rs:1-10`
+- Delete: `e2e/specs/` directory
+- Delete: `e2e/playwright/config/` directory
+- Delete: `e2e/playwright/test/` directory
 
-- [ ] **Step 1: Inject DMABUF workaround in main.rs**
+- [ ] **Step 1: Delete obsolete directories**
 
-Update `src-tauri/src/main.rs` to set the environment variable on Linux Wayland before running the app.
+Run: `Remove-Item -Recurse -Force e2e/specs, e2e/playwright/config, e2e/playwright/test -ErrorAction SilentlyContinue`
+Expected: Directories are deleted without errors.
 
-```rust
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+- [ ] **Step 2: Commit**
 
-fn main() {
-    #[cfg(target_os = "linux")]
-    {
-        if std::env::var("XDG_SESSION_TYPE").unwrap_or_default() == "wayland" {
-            std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
-        }
-    }
-    app_lib::run();
+```bash
+git add -u e2e
+git commit -m "chore(test): remove obsolete WebdriverIO tests and broken Playwright configs"
+```
+
+---
+
+### Task 2: Rewrite E2E Runner Script
+
+**Files:**
+- Modify: `scripts/run-e2e.mjs`
+
+- [ ] **Step 1: Write new run-e2e.mjs implementation**
+
+Replace the entire contents of `scripts/run-e2e.mjs` with the following:
+
+```javascript
+#!/usr/bin/env node
+import { spawn, spawnSync, execSync } from 'child_process';
+import os from 'os';
+import net from 'net';
+
+console.log('=== Vibe POS E2E Testing Setup ===\n');
+
+const DEBUG_PORT = 9223;
+
+// 1. Build the Tauri app in debug mode (faster than release, sufficient for E2E)
+console.log('Building Tauri app in debug mode...');
+const buildResult = spawnSync('npm', ['run', 'tauri', 'build', '--', '--debug', '--no-bundle'], { stdio: 'inherit', shell: true });
+
+if (buildResult.status !== 0) {
+  console.error('Failed to build Tauri app.');
+  process.exit(1);
 }
+console.log('Tauri app build successful!\n');
+
+// Determine the path to the built executable
+const isWindows = os.platform() === 'win32';
+const isMac = os.platform() === 'darwin';
+let executablePath;
+
+if (isWindows) {
+  executablePath = 'src-tauri\\target\\debug\\app.exe';
+} else if (isMac) {
+  executablePath = 'src-tauri/target/debug/bundle/macos/app.app/Contents/MacOS/app';
+} else {
+  // Linux
+  executablePath = 'src-tauri/target/debug/app';
+}
+
+console.log(`Starting Tauri app from: ${executablePath}`);
+
+// 2. Start the Tauri app with remote debugging enabled
+const tauriProcess = spawn(executablePath, [], {
+  env: {
+    ...process.env,
+    WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`, // Windows
+    // Linux/macOS WebKit debugging is more complex and might require different environment variables 
+    // or rebuilding webkit2gtk with debug flags. For this setup, we prioritize Windows/Chromium CDP.
+  },
+  stdio: 'ignore', // We don't need the app's output cluttering the test output
+  detached: !isWindows, // Keep it attached on Windows so we can kill it easily, detach on unix to avoid signal forwarding
+});
+
+if (isWindows) {
+    // Windows requires specific handling to kill spawned processes
+    process.on('SIGINT', () => {
+        execSync(`taskkill /pid ${tauriProcess.pid} /T /F`);
+        process.exit(0);
+    });
+} else {
+    tauriProcess.unref();
+}
+
+console.log(`Tauri app started with PID: ${tauriProcess.pid}. Waiting for debugging port ${DEBUG_PORT}...`);
+
+// Helper to wait for a port to open
+async function waitForPort(port, timeout = 30000) {
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    try {
+      await new Promise((resolve, reject) => {
+        const socket = new net.Socket();
+        socket.setTimeout(1000);
+        socket.on('connect', () => {
+          socket.destroy();
+          resolve();
+        });
+        socket.on('timeout', () => {
+          socket.destroy();
+          reject(new Error('timeout'));
+        });
+        socket.on('error', (err) => {
+          socket.destroy();
+          reject(err);
+        });
+        socket.connect(port, '127.0.0.1');
+      });
+      return true; // Connected successfully
+    } catch (e) {
+      // Port not open yet, wait and retry
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  }
+  return false;
+}
+
+// 3. Wait for the CDP port to become available
+const isPortOpen = await waitForPort(DEBUG_PORT);
+
+if (!isPortOpen) {
+  console.error(`Timeout waiting for remote debugging port ${DEBUG_PORT} to open.`);
+  if (isWindows) {
+      execSync(`taskkill /pid ${tauriProcess.pid} /T /F`);
+  } else {
+      process.kill(-tauriProcess.pid);
+  }
+  process.exit(1);
+}
+
+console.log('Debugging port is open! Starting Playwright tests...\n');
+
+// 4. Run Playwright tests
+const playwrightResult = spawnSync('npx', ['playwright', 'test'], { stdio: 'inherit', shell: true });
+
+console.log('\nPlaywright tests completed.');
+
+// 5. Cleanup: Kill the Tauri app
+console.log('Closing Tauri application...');
+try {
+  if (isWindows) {
+      execSync(`taskkill /pid ${tauriProcess.pid} /T /F`, { stdio: 'ignore' });
+  } else {
+      process.kill(-tauriProcess.pid); // Kill process group
+  }
+} catch (e) {
+  console.log('Process already exited or could not be killed gracefully.');
+}
+
+process.exit(playwrightResult.status);
 ```
 
 - [ ] **Step 2: Commit**
 
 ```bash
-git add src-tauri/src/main.rs
-git commit -m "fix: implement wayland dmabuf workaround for linux"
+git add scripts/run-e2e.mjs
+git commit -m "test: rewrite E2E runner to use standard Playwright via CDP"
 ```
 
-### Task 2: Install Playwright Dependencies and Clean Up WebdriverIO
+---
+
+### Task 3: Refine Playwright Configuration
 
 **Files:**
-- Modify: `package.json`
-- Delete: `wdio.conf.mjs`
+- Modify: `playwright.config.ts`
 
-- [ ] **Step 1: Install Playwright and remove wdio**
+- [ ] **Step 1: Update Playwright Config**
 
-```bash
-npm uninstall webdriverio @wdio/cli @wdio/local-runner @wdio/mocha-framework @wdio/spec-reporter
-npm install -D @playwright/test
-```
+Update `playwright.config.ts` to ensure it only looks for tests in the correct directory and sets appropriate defaults.
 
-- [ ] **Step 2: Delete wdio configuration**
-
-```bash
-rm wdio.conf.mjs
-```
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add package.json package-lock.json
-git rm wdio.conf.mjs
-git commit -m "chore: replace webdriverio with playwright"
-```
-
-### Task 3: Create Playwright Configuration
-
-**Files:**
-- Create: `playwright.config.ts`
-
-- [ ] **Step 1: Write Playwright Config**
-
-Create `playwright.config.ts` in the project root.
+Replace the contents of `playwright.config.ts` with:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e/playwright',
-  timeout: 30000,
+  testMatch: '**/*.spec.ts',
+  timeout: 60000,
+  workers: 1, // Important: Run sequentially since they share a single Tauri instance
+  reporter: 'list',
   use: {
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
 });
 ```
@@ -97,103 +206,14 @@ export default defineConfig({
 
 ```bash
 git add playwright.config.ts
-git commit -m "chore: add playwright configuration"
+git commit -m "chore(test): refine Playwright configuration"
 ```
 
-### Task 4: Create Unified Test Runner Script
+---
 
-**Files:**
-- Create: `scripts/run-e2e.mjs`
-- Modify: `package.json`
+## Self-Review Check
+1. **Spec Coverage:** The plan covers cleaning up old tests, rewriting the runner to use standard Playwright execution against a live Tauri instance via CDP, and updating the Playwright config.
+2. **Placeholder Scan:** No placeholders. The full runner script is provided.
+3. **Type Consistency:** The runner correctly handles cross-platform pathing for the Tauri debug build output.
 
-- [ ] **Step 1: Create test runner script**
-
-Create `scripts/run-e2e.mjs` to handle cross-platform environment variables and process spawning.
-
-```javascript
-import { spawn, spawnSync } from 'child_process';
-import os from 'os';
-
-const isWindows = os.platform() === 'win32';
-
-// 1. Build the Tauri app in debug mode
-console.log('Building Tauri app...');
-spawnSync('npm', ['run', 'tauri', 'build', '--', '--debug', '--no-bundle'], { stdio: 'inherit', shell: true });
-
-// 2. Set up environment variables for remote debugging
-const env = { ...process.env };
-if (isWindows) {
-  env.WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS = '--remote-debugging-port=9222';
-} else {
-  env.WEBKIT_INSPECTOR_SERVER = '127.0.0.1:9222';
-}
-
-// 3. Launch Tauri app
-console.log('Launching Tauri app...');
-const appPath = `./src-tauri/target/debug/app${isWindows ? '.exe' : ''}`;
-const tauriProcess = spawn(appPath, [], { env, stdio: 'inherit' });
-
-// 4. Wait a moment for the app to start
-setTimeout(() => {
-  // 5. Run Playwright
-  console.log('Running Playwright...');
-  const playwrightProcess = spawn('npx', ['playwright', 'test'], { stdio: 'inherit', shell: true });
-  
-  playwrightProcess.on('close', (code) => {
-    tauriProcess.kill();
-    process.exit(code);
-  });
-}, 3000);
-```
-
-- [ ] **Step 2: Update package.json scripts**
-
-Modify `package.json` to use the new runner. Find the `"test:e2e"` script and replace it.
-
-```javascript
-// Change this line in package.json:
-// "test:e2e": "wdio run wdio.conf.mjs",
-// To:
-// "test:e2e": "node scripts/run-e2e.mjs",
-```
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add scripts/run-e2e.mjs package.json
-git commit -m "test: create unified e2e runner script"
-```
-
-### Task 5: Migrate Example Test to Playwright
-
-**Files:**
-- Create: `e2e/playwright/example.spec.ts`
-
-- [ ] **Step 1: Write Playwright Test**
-
-Create `e2e/playwright/example.spec.ts` connecting over CDP.
-
-```typescript
-import { test, expect, chromium } from '@playwright/test';
-
-test('Simple POS App Launch', async () => {
-  // Connect to the Tauri app's remote debugging port
-  const browser = await chromium.connectOverCDP('http://127.0.0.1:9222');
-  
-  // Get the first context and page (the Tauri window)
-  const context = browser.contexts()[0];
-  const page = context.pages()[0];
-  
-  // Verify the app title
-  await expect(page).toHaveTitle('Simple POS');
-  
-  await browser.close();
-});
-```
-
-- [ ] **Step 2: Commit**
-
-```bash
-git add e2e/playwright/example.spec.ts
-git commit -m "test: migrate example test to playwright"
-```
+---

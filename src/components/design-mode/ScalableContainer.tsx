@@ -3,6 +3,7 @@
 import { useSettings } from "@/context/settings/SettingsContext";
 import { AppSettings } from "@/lib";
 import SelectableOverlay from "./SelectableOverlay";
+import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface ScalableContainerProps {
@@ -59,16 +60,24 @@ export default function ScalableContainer({
   const { scale, fontScale } = getScaleValues(String(settingKey));
 
   return (
-    <div
-      className={`group relative origin-top transition-transform duration-200 ease-out ${className}`}
-      style={{
-        transform: `scale(${scale / 100})`,
+    <motion.div
+      className={`group relative origin-top ${className}`}
+      animate={{
+        scale: scale / 100,
         marginBottom: `${(scale - 100) * 0.5}%`,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        mass: 1,
+      }}
+      style={{
         fontSize: `${fontScale}%`,
       }}
     >
       <SelectableOverlay id={String(settingKey)} />
       {children}
-    </div>
+    </motion.div>
   );
 }

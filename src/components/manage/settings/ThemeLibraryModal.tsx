@@ -1,7 +1,7 @@
 "use client";
 
 import { Modal } from "@/components/ui/Modal";
-import { ThemePresetsPanel } from "@/components/design-tuner/ThemePresetsPanel";
+import { ThemePresetsPanel } from "@/components/design-tuner/panels/ThemePresetsPanel";
 import { AppSettings, DeepPartial } from "@/lib/types";
 
 interface ThemeLibraryModalProps {

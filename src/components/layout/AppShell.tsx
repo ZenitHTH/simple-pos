@@ -7,6 +7,9 @@ import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";
 import MiniTuner from "@/components/design-mode/MiniTuner";
 
+import { useSpring, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useState } from "react";
+
 /**
  * AppShell handles the core layout and scaling isolation.
  * It wraps the main content and sidebar in a zoomed container
@@ -14,7 +17,29 @@ import MiniTuner from "@/components/design-mode/MiniTuner";
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { settings } = useSettings();
-  const scale = (settings.scaling.display_scale || 100) / 100;
+  const targetScale = (settings.scaling.display_scale || 100) / 100;
+  
+  // Use a motion value to animate the scale
+  const scaleMV = useMotionValue(targetScale);
+  const [displayScale, setDisplayScale] = useState(targetScale);
+
+  // Sync motion value with settings changes
+  useEffect(() => {
+    const controls = animate(scaleMV, targetScale, {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+      mass: 1
+    });
+    return () => controls.stop();
+  }, [targetScale, scaleMV]);
+
+  // Update local state for CSS zoom (since zoom isn't a motion prop)
+  useEffect(() => {
+    return scaleMV.on("change", (latest) => {
+      setDisplayScale(latest);
+    });
+  }, [scaleMV]);
 
   return (
     <div className="bg-background text-foreground relative flex h-screen w-full flex-col overflow-hidden antialiased">
@@ -26,7 +51,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       */}
       <div 
         className="relative flex flex-1 overflow-hidden" 
-        style={{ zoom: scale } as React.CSSProperties}
+        style={{ zoom: displayScale } as React.CSSProperties}
       >
         <Sidebar />
         <main className="relative flex flex-1 flex-col overflow-hidden pt-16 lg:pt-0">

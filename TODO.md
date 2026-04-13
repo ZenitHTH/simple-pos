@@ -26,14 +26,14 @@
     - [x] **Extraction**: Canvas-based extraction of top 3 dominant colors.
     - [x] **Explicit Apply**: Clicking a swatch shows a preview; requires clicking "Apply" to confirm.
 - [x] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
-- [ ] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
+- [x] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
 - [ ] **Undo/Redo History**: Add a state stack to allow users to revert design changes step-by-step.
 
-## Inventory & Recipe Enhancements (In Progress)
-- [ ] **Inventory Bulk Operations**: Verify import/export for CSV, XLSX, and ODS formats.
-    - [ ] Add more robust error handling for malformed files in the Rust backend.
-    - [ ] Implement progress indicators for large file imports.
-- [ ] **Recipe Builder Visuals**: Finalize and verify SVG connection lines on various screen sizes and resolutions.
-    - [ ] Add a toggle to show/hide lines for a cleaner look when not needed.
-- [ ] **Inline Stock Updates**: Perform stress tests on rapid quantity adjustments to ensure database integrity and UI sync.
-- [ ] **Final Integration**: Merge `feature/recipe-stock-enhancements` branch into `dev` and remove the worktree.
+## Inventory & Recipe Enhancements
+- [x] **Inventory Bulk Operations**: Verify import/export for CSV, XLSX, and ODS formats.
+    - [x] Add more robust error handling for malformed files in the Rust backend.
+    - [x] Implement progress indicators for large file imports.
+- [x] **Recipe Builder Visuals**: Finalize and verify SVG connection lines on various screen sizes and resolutions.
+    - [x] Add a toggle to show/hide lines for a cleaner look when not needed.
+- [x] **Inline Stock Updates**: Perform stress tests on rapid quantity adjustments to ensure database integrity and UI sync.
+- [x] **Final Integration**: Merge `feature/recipe-stock-enhancements` branch into `dev` and remove the worktree.
