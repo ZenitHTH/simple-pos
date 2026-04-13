@@ -36,7 +36,7 @@ export function sanitize(input: any, seen = new WeakSet()): any {
       sanitized.stack = sanitize(input.stack, seen);
     }
 
-    for (const key in input) {
+    for (const key of Object.keys(input)) {
       const lowerKey = key.toLowerCase();
       if (
         lowerKey.includes("tax") ||
