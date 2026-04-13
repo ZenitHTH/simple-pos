@@ -20,14 +20,16 @@
     "name": "get_stock",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the stock record for a specific product.",
     "signature": "pub fn get_stock(key: String, product_id: i32) -> Result<Stock, String>",
     "keywords": [
       "get",
       "stock",
       "get_stock",
-      "documentation",
-      "provided",
+      "retrieves",
+      "record",
+      "specific",
+      "product",
       "rust-command"
     ]
   },
@@ -35,7 +37,7 @@
     "name": "get_all_stocks",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all stock records from the database.",
     "signature": "pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String>",
     "keywords": [
       "get",
@@ -43,8 +45,10 @@
       "stocks",
       "get_all_stocks",
       "stock",
-      "documentation",
-      "provided",
+      "retrieves",
+      "records",
+      "from",
+      "database",
       "rust-command"
     ]
   },
@@ -52,14 +56,20 @@
     "name": "insert_stock",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new stock record for a product. Validates the quantity range and ensures the product exists.",
     "signature": "pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String>",
     "keywords": [
       "insert",
       "stock",
       "insert_stock",
-      "documentation",
-      "provided",
+      "inserts",
+      "record",
+      "product",
+      "validates",
+      "quantity",
+      "range",
+      "ensures",
+      "exists",
       "rust-command"
     ]
   },
@@ -67,14 +77,16 @@
     "name": "update_stock",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Updates the quantity of an existing stock record.",
     "signature": "pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String>",
     "keywords": [
       "update",
       "stock",
       "update_stock",
-      "documentation",
-      "provided",
+      "updates",
+      "quantity",
+      "existing",
+      "record",
       "rust-command"
     ]
   },
@@ -82,14 +94,14 @@
     "name": "remove_stock",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Removes a stock record by its ID.",
     "signature": "pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String>",
     "keywords": [
       "remove",
       "stock",
       "remove_stock",
-      "documentation",
-      "provided",
+      "removes",
+      "record",
       "rust-command"
     ]
   },
@@ -97,15 +109,16 @@
     "name": "export_stock_data",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Exports all stock data to a file (CSV, XLSX, or ODS).",
     "signature": "pub fn export_stock_data(",
     "keywords": [
       "export",
       "stock",
       "data",
       "export_stock_data",
-      "documentation",
-      "provided",
+      "exports",
+      "file",
+      "xlsx",
       "rust-command"
     ]
   },
@@ -113,15 +126,27 @@
     "name": "import_stock_data",
     "type": "rust-command",
     "path": "src-tauri/src/commands/stock.rs",
-    "description": "No documentation provided.",
+    "description": "Imports stock data from a file (CSV, XLSX, or ODS). Updates existing stock records or inserts new ones. Emits progress events to the frontend during the import.",
     "signature": "pub fn import_stock_data(",
     "keywords": [
       "import",
       "stock",
       "data",
       "import_stock_data",
-      "documentation",
-      "provided",
+      "imports",
+      "from",
+      "file",
+      "xlsx",
+      "updates",
+      "existing",
+      "records",
+      "inserts",
+      "ones",
+      "emits",
+      "progress",
+      "events",
+      "frontend",
+      "during",
       "rust-command"
     ]
   },
@@ -129,14 +154,16 @@
     "name": "get_settings",
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the current application settings. #[command]",
     "signature": "pub fn get_settings() -> Result<AppSettings, String>",
     "keywords": [
       "get",
       "settings",
       "get_settings",
-      "documentation",
-      "provided",
+      "retrieves",
+      "current",
+      "application",
+      "command",
       "rust-command"
     ]
   },
@@ -144,14 +171,17 @@
     "name": "save_settings",
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
-    "description": "No documentation provided.",
+    "description": "Saves the provided application settings to disk. #[command]",
     "signature": "pub fn save_settings(settings: AppSettings) -> Result<(), String>",
     "keywords": [
       "save",
       "settings",
       "save_settings",
-      "documentation",
+      "saves",
       "provided",
+      "application",
+      "disk",
+      "command",
       "rust-command"
     ]
   },
@@ -159,7 +189,7 @@
     "name": "get_storage_info",
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves information about the current application storage and data paths. #[command]",
     "signature": "pub fn get_storage_info() -> Result<StorageInfo, String>",
     "keywords": [
       "get",
@@ -167,8 +197,14 @@
       "info",
       "get_storage_info",
       "settings",
-      "documentation",
-      "provided",
+      "retrieves",
+      "information",
+      "about",
+      "current",
+      "application",
+      "data",
+      "paths",
+      "command",
       "rust-command"
     ]
   },
@@ -176,7 +212,7 @@
     "name": "migrate_image_directory",
     "type": "rust-command",
     "path": "src-tauri/src/commands/settings.rs",
-    "description": "No documentation provided.",
+    "description": "Migrates the image storage directory to a new path. Moves all existing image files to the new location and updates their database paths. Restricted to subdirectories of the application's local data directory for security. #[command]",
     "signature": "pub fn migrate_image_directory(",
     "keywords": [
       "migrate",
@@ -184,8 +220,24 @@
       "directory",
       "migrate_image_directory",
       "settings",
-      "documentation",
-      "provided",
+      "migrates",
+      "storage",
+      "path",
+      "moves",
+      "existing",
+      "files",
+      "location",
+      "updates",
+      "their",
+      "database",
+      "paths",
+      "restricted",
+      "subdirectories",
+      "application",
+      "local",
+      "data",
+      "security",
+      "command",
       "rust-command"
     ]
   },
@@ -193,15 +245,16 @@
     "name": "create_recipe_list",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new recipe list for a specific product.",
     "signature": "pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, String>",
     "keywords": [
       "create",
       "recipe",
       "list",
       "create_recipe_list",
-      "documentation",
-      "provided",
+      "creates",
+      "specific",
+      "product",
       "rust-command"
     ]
   },
@@ -209,7 +262,7 @@
     "name": "get_recipe_list_by_product",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the recipe list associated with a specific product.",
     "signature": "pub fn get_recipe_list_by_product(",
     "keywords": [
       "get",
@@ -218,8 +271,10 @@
       "by",
       "product",
       "get_recipe_list_by_product",
-      "documentation",
-      "provided",
+      "retrieves",
+      "associated",
+      "with",
+      "specific",
       "rust-command"
     ]
   },
@@ -227,15 +282,14 @@
     "name": "delete_recipe_list",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a recipe list by its ID.",
     "signature": "pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String>",
     "keywords": [
       "delete",
       "recipe",
       "list",
       "delete_recipe_list",
-      "documentation",
-      "provided",
+      "deletes",
       "rust-command"
     ]
   },
@@ -243,15 +297,21 @@
     "name": "add_recipe_item",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Adds a new item (material) to a recipe list. Scales the volume use based on the provided precision.",
     "signature": "pub fn add_recipe_item(",
     "keywords": [
       "add",
       "recipe",
       "item",
       "add_recipe_item",
-      "documentation",
+      "adds",
+      "material",
+      "list",
+      "scales",
+      "volume",
+      "based",
       "provided",
+      "precision",
       "rust-command"
     ]
   },
@@ -259,15 +319,17 @@
     "name": "get_recipe_items",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all items belonging to a specific recipe list.",
     "signature": "pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeItem>, String>",
     "keywords": [
       "get",
       "recipe",
       "items",
       "get_recipe_items",
-      "documentation",
-      "provided",
+      "retrieves",
+      "belonging",
+      "specific",
+      "list",
       "rust-command"
     ]
   },
@@ -275,15 +337,17 @@
     "name": "update_recipe_item",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing recipe item's volume use and unit.",
     "signature": "pub fn update_recipe_item(",
     "keywords": [
       "update",
       "recipe",
       "item",
       "update_recipe_item",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "volume",
+      "unit",
       "rust-command"
     ]
   },
@@ -291,15 +355,14 @@
     "name": "delete_recipe_item",
     "type": "rust-command",
     "path": "src-tauri/src/commands/recipe.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a recipe item by its ID.",
     "signature": "pub fn delete_recipe_item(key: String, item_id: i32) -> Result<usize, String>",
     "keywords": [
       "delete",
       "recipe",
       "item",
       "delete_recipe_item",
-      "documentation",
-      "provided",
+      "deletes",
       "rust-command"
     ]
   },
@@ -307,15 +370,47 @@
     "name": "create_invoice",
     "type": "rust-command",
     "path": "src-tauri/src/commands/receipt.rs",
-    "description": "No documentation provided.",
+    "description": "Represents an accumulated report of products and materials sold within a date range. #[derive(Serialize)] pub struct AccumulatedReport { pub products: Vec<ProductAccumulation>, pub materials: Vec<MaterialAccumulation>, } Represents the total quantity of a specific product sold. #[derive(Serialize)] pub struct ProductAccumulation { pub product_id: i32, pub title: String, pub total_quantity: i64, } Represents the total volume of a specific material used in products sold. #[derive(Serialize)] pub struct MaterialAccumulation { pub material_id: i32, pub name: String, pub total_volume_used: i64, pub precision: i32, } Creates a new invoice (receipt header) for an optional customer.",
     "signature": "pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptList, String>",
     "keywords": [
       "create",
       "invoice",
       "create_invoice",
       "receipt",
-      "documentation",
-      "provided",
+      "represents",
+      "accumulated",
+      "report",
+      "products",
+      "materials",
+      "sold",
+      "within",
+      "date",
+      "range",
+      "derive",
+      "serialize",
+      "struct",
+      "accumulatedreport",
+      "productaccumulation",
+      "materialaccumulation",
+      "total",
+      "quantity",
+      "specific",
+      "product",
+      "product_id",
+      "title",
+      "string",
+      "total_quantity",
+      "volume",
+      "material",
+      "used",
+      "material_id",
+      "name",
+      "total_volume_used",
+      "precision",
+      "creates",
+      "header",
+      "optional",
+      "customer",
       "rust-command"
     ]
   },
@@ -323,7 +418,7 @@
     "name": "add_invoice_items",
     "type": "rust-command",
     "path": "src-tauri/src/commands/receipt.rs",
-    "description": "No documentation provided.",
+    "description": "Adds items to an existing invoice and updates stock levels accordingly. Supports both direct product stock and recipe-based material stock.",
     "signature": "pub fn add_invoice_items(",
     "keywords": [
       "add",
@@ -331,8 +426,19 @@
       "items",
       "add_invoice_items",
       "receipt",
-      "documentation",
-      "provided",
+      "adds",
+      "existing",
+      "updates",
+      "stock",
+      "levels",
+      "accordingly",
+      "supports",
+      "both",
+      "direct",
+      "product",
+      "recipe",
+      "based",
+      "material",
       "rust-command"
     ]
   },
@@ -340,7 +446,7 @@
     "name": "get_invoice_detail",
     "type": "rust-command",
     "path": "src-tauri/src/commands/receipt.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the header and all items for a specific invoice.",
     "signature": "pub fn get_invoice_detail(",
     "keywords": [
       "get",
@@ -348,8 +454,10 @@
       "detail",
       "get_invoice_detail",
       "receipt",
-      "documentation",
-      "provided",
+      "retrieves",
+      "header",
+      "items",
+      "specific",
       "rust-command"
     ]
   },
@@ -357,7 +465,7 @@
     "name": "get_invoices_by_date",
     "type": "rust-command",
     "path": "src-tauri/src/commands/receipt.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all invoices created within a specific Unix timestamp range.",
     "signature": "pub fn get_invoices_by_date(",
     "keywords": [
       "get",
@@ -366,8 +474,13 @@
       "date",
       "get_invoices_by_date",
       "receipt",
-      "documentation",
-      "provided",
+      "retrieves",
+      "created",
+      "within",
+      "specific",
+      "unix",
+      "timestamp",
+      "range",
       "rust-command"
     ]
   },
@@ -375,7 +488,7 @@
     "name": "get_accumulated_report",
     "type": "rust-command",
     "path": "src-tauri/src/commands/receipt.rs",
-    "description": "No documentation provided.",
+    "description": "Generates an accumulated report of products and materials sold within a date range.",
     "signature": "pub fn get_accumulated_report(",
     "keywords": [
       "get",
@@ -383,8 +496,13 @@
       "report",
       "get_accumulated_report",
       "receipt",
-      "documentation",
-      "provided",
+      "generates",
+      "products",
+      "materials",
+      "sold",
+      "within",
+      "date",
+      "range",
       "rust-command"
     ]
   },
@@ -392,15 +510,20 @@
     "name": "get_products",
     "type": "rust-command",
     "path": "src-tauri/src/commands/product.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all products with their associated images from the database.",
     "signature": "pub fn get_products(key: String) -> Result<Vec<ProductWithImage>, String>",
     "keywords": [
       "get",
       "products",
       "get_products",
       "product",
-      "documentation",
-      "provided",
+      "retrieves",
+      "with",
+      "their",
+      "associated",
+      "images",
+      "from",
+      "database",
       "rust-command"
     ]
   },
@@ -408,14 +531,24 @@
     "name": "create_product",
     "type": "rust-command",
     "path": "src-tauri/src/commands/product.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new product with the specified details. Validates input length, price range, and ensures the product name is unique.",
     "signature": "pub fn create_product(",
     "keywords": [
       "create",
       "product",
       "create_product",
-      "documentation",
-      "provided",
+      "creates",
+      "with",
+      "specified",
+      "details",
+      "validates",
+      "input",
+      "length",
+      "price",
+      "range",
+      "ensures",
+      "name",
+      "unique",
       "rust-command"
     ]
   },
@@ -423,14 +556,27 @@
     "name": "update_product",
     "type": "rust-command",
     "path": "src-tauri/src/commands/product.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing product's information. Performs validation on title length, price, and ensures name uniqueness. Also synchronizes the product price in the stock records.",
     "signature": "pub fn update_product(",
     "keywords": [
       "update",
       "product",
       "update_product",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "information",
+      "performs",
+      "validation",
+      "title",
+      "length",
+      "price",
+      "ensures",
+      "name",
+      "uniqueness",
+      "also",
+      "synchronizes",
+      "stock",
+      "records",
       "rust-command"
     ]
   },
@@ -438,14 +584,25 @@
     "name": "delete_product",
     "type": "rust-command",
     "path": "src-tauri/src/commands/product.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a product by its ID. Before deletion, checks if the product is referenced in past receipts. Cleans up associated stock records and image links.",
     "signature": "pub fn delete_product(key: String, id: i32) -> Result<usize, String>",
     "keywords": [
       "delete",
       "product",
       "delete_product",
-      "documentation",
-      "provided",
+      "deletes",
+      "before",
+      "deletion",
+      "checks",
+      "referenced",
+      "past",
+      "receipts",
+      "cleans",
+      "associated",
+      "stock",
+      "records",
+      "image",
+      "links",
       "rust-command"
     ]
   },
@@ -453,7 +610,7 @@
     "name": "set_product_stock_mode",
     "type": "rust-command",
     "path": "src-tauri/src/commands/product.rs",
-    "description": "No documentation provided.",
+    "description": "Sets whether a product uses recipe-based stock tracking.",
     "signature": "pub fn set_product_stock_mode(key: String, id: i32, use_recipe: bool) -> Result<(), String>",
     "keywords": [
       "set",
@@ -461,8 +618,12 @@
       "stock",
       "mode",
       "set_product_stock_mode",
-      "documentation",
-      "provided",
+      "sets",
+      "whether",
+      "uses",
+      "recipe",
+      "based",
+      "tracking",
       "rust-command"
     ]
   },
@@ -531,15 +692,25 @@
     "name": "save_image",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Saves an image from raw byte data to the configured image storage path. Returns the saved Image database record. #[command]",
     "signature": "pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<database::Image, String>",
     "keywords": [
       "save",
       "image",
       "save_image",
       "images",
-      "documentation",
-      "provided",
+      "saves",
+      "from",
+      "byte",
+      "data",
+      "configured",
+      "storage",
+      "path",
+      "returns",
+      "saved",
+      "database",
+      "record",
+      "command",
       "rust-command"
     ]
   },
@@ -547,7 +718,7 @@
     "name": "link_product_image",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Links an existing image to a product. #[command]",
     "signature": "pub fn link_product_image(",
     "keywords": [
       "link",
@@ -555,8 +726,9 @@
       "image",
       "link_product_image",
       "images",
-      "documentation",
-      "provided",
+      "links",
+      "existing",
+      "command",
       "rust-command"
     ]
   },
@@ -564,7 +736,7 @@
     "name": "unlink_product_image",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Unlinks an image from a product. #[command]",
     "signature": "pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Result<usize, String>",
     "keywords": [
       "unlink",
@@ -572,8 +744,9 @@
       "image",
       "unlink_product_image",
       "images",
-      "documentation",
-      "provided",
+      "unlinks",
+      "from",
+      "command",
       "rust-command"
     ]
   },
@@ -581,15 +754,18 @@
     "name": "clear_product_images",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Removes all image links from a product. #[command]",
     "signature": "pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, String>",
     "keywords": [
       "clear",
       "product",
       "images",
       "clear_product_images",
-      "documentation",
-      "provided",
+      "removes",
+      "image",
+      "links",
+      "from",
+      "command",
       "rust-command"
     ]
   },
@@ -597,15 +773,17 @@
     "name": "get_product_images",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all images linked to a specific product. #[command]",
     "signature": "pub fn get_product_images(",
     "keywords": [
       "get",
       "product",
       "images",
       "get_product_images",
-      "documentation",
-      "provided",
+      "retrieves",
+      "linked",
+      "specific",
+      "command",
       "rust-command"
     ]
   },
@@ -613,15 +791,17 @@
     "name": "get_all_images",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all images stored in the database. #[command]",
     "signature": "pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>, String>",
     "keywords": [
       "get",
       "all",
       "images",
       "get_all_images",
-      "documentation",
-      "provided",
+      "retrieves",
+      "stored",
+      "database",
+      "command",
       "rust-command"
     ]
   },
@@ -629,15 +809,22 @@
     "name": "delete_image",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes an image record from the database and removes the associated file from disk. #[command]",
     "signature": "pub fn delete_image(key: String, image_id: i32) -> Result<(), String>",
     "keywords": [
       "delete",
       "image",
       "delete_image",
       "images",
-      "documentation",
-      "provided",
+      "deletes",
+      "record",
+      "from",
+      "database",
+      "removes",
+      "associated",
+      "file",
+      "disk",
+      "command",
       "rust-command"
     ]
   },
@@ -645,7 +832,7 @@
     "name": "get_all_image_links",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all product-to-image associations. #[command]",
     "signature": "pub fn get_all_image_links(",
     "keywords": [
       "get",
@@ -654,8 +841,10 @@
       "links",
       "get_all_image_links",
       "images",
-      "documentation",
-      "provided",
+      "retrieves",
+      "product",
+      "associations",
+      "command",
       "rust-command"
     ]
   },
@@ -663,7 +852,7 @@
     "name": "update_image_position",
     "type": "rust-command",
     "path": "src-tauri/src/commands/images.rs",
-    "description": "No documentation provided.",
+    "description": "Updates the metadata position of an image. #[command]",
     "signature": "pub fn update_image_position(",
     "keywords": [
       "update",
@@ -671,8 +860,9 @@
       "position",
       "update_image_position",
       "images",
-      "documentation",
-      "provided",
+      "updates",
+      "metadata",
+      "command",
       "rust-command"
     ]
   },
@@ -695,14 +885,19 @@
     "name": "initialize_database",
     "type": "rust-command",
     "path": "src-tauri/src/commands/database.rs",
-    "description": "No documentation provided.",
+    "description": "Initializes the database using the provided encryption key. Runs all pending database migrations.",
     "signature": "pub fn initialize_database(key: String) -> Result<(), String>",
     "keywords": [
       "initialize",
       "database",
       "initialize_database",
-      "documentation",
+      "initializes",
+      "using",
       "provided",
+      "encryption",
+      "runs",
+      "pending",
+      "migrations",
       "rust-command"
     ]
   },
@@ -710,15 +905,16 @@
     "name": "check_database_exists",
     "type": "rust-command",
     "path": "src-tauri/src/commands/database.rs",
-    "description": "No documentation provided.",
+    "description": "Checks if the database file exists on disk.",
     "signature": "pub fn check_database_exists(_app: tauri::AppHandle) -> Result<bool, String>",
     "keywords": [
       "check",
       "database",
       "exists",
       "check_database_exists",
-      "documentation",
-      "provided",
+      "checks",
+      "file",
+      "disk",
       "rust-command"
     ]
   },
@@ -726,15 +922,17 @@
     "name": "get_customers",
     "type": "rust-command",
     "path": "src-tauri/src/commands/customer.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all customer records from the database.",
     "signature": "pub fn get_customers(key: String) -> Result<Vec<Customer>, String>",
     "keywords": [
       "get",
       "customers",
       "get_customers",
       "customer",
-      "documentation",
-      "provided",
+      "retrieves",
+      "records",
+      "from",
+      "database",
       "rust-command"
     ]
   },
@@ -742,14 +940,14 @@
     "name": "create_customer",
     "type": "rust-command",
     "path": "src-tauri/src/commands/customer.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new customer record.",
     "signature": "pub fn create_customer(",
     "keywords": [
       "create",
       "customer",
       "create_customer",
-      "documentation",
-      "provided",
+      "creates",
+      "record",
       "rust-command"
     ]
   },
@@ -757,14 +955,15 @@
     "name": "update_customer",
     "type": "rust-command",
     "path": "src-tauri/src/commands/customer.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing customer record.",
     "signature": "pub fn update_customer(",
     "keywords": [
       "update",
       "customer",
       "update_customer",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "record",
       "rust-command"
     ]
   },
@@ -772,15 +971,17 @@
     "name": "get_categories",
     "type": "rust-command",
     "path": "src-tauri/src/commands/category.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all product categories from the database.",
     "signature": "pub fn get_categories(key: String) -> Result<Vec<Category>, String>",
     "keywords": [
       "get",
       "categories",
       "get_categories",
       "category",
-      "documentation",
-      "provided",
+      "retrieves",
+      "product",
+      "from",
+      "database",
       "rust-command"
     ]
   },
@@ -788,14 +989,20 @@
     "name": "create_category",
     "type": "rust-command",
     "path": "src-tauri/src/commands/category.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new product category. Validates that the name is not empty, not too long, and unique.",
     "signature": "pub fn create_category(key: String, name: String) -> Result<Category, String>",
     "keywords": [
       "create",
       "category",
       "create_category",
-      "documentation",
-      "provided",
+      "creates",
+      "product",
+      "validates",
+      "that",
+      "name",
+      "empty",
+      "long",
+      "unique",
       "rust-command"
     ]
   },
@@ -803,14 +1010,21 @@
     "name": "update_category",
     "type": "rust-command",
     "path": "src-tauri/src/commands/category.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing product category's name. Performs validation on name length and ensures uniqueness.",
     "signature": "pub fn update_category(key: String, id: i32, name: String) -> Result<Category, String>",
     "keywords": [
       "update",
       "category",
       "update_category",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "product",
+      "name",
+      "performs",
+      "validation",
+      "length",
+      "ensures",
+      "uniqueness",
       "rust-command"
     ]
   },
@@ -818,14 +1032,14 @@
     "name": "delete_category",
     "type": "rust-command",
     "path": "src-tauri/src/commands/category.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a product category by its ID.",
     "signature": "pub fn delete_category(key: String, id: i32) -> Result<usize, String>",
     "keywords": [
       "delete",
       "category",
       "delete_category",
-      "documentation",
-      "provided",
+      "deletes",
+      "product",
       "rust-command"
     ]
   },
@@ -833,15 +1047,20 @@
     "name": "run_migrations",
     "type": "rust-db",
     "path": "src-tauri/database/src/lib.rs",
-    "description": "No documentation provided.",
+    "description": "Embedded database migrations for SQLite. pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!(); Runs all pending database migrations.",
     "signature": "pub fn run_migrations(",
     "keywords": [
       "run",
       "migrations",
       "run_migrations",
       "database",
-      "documentation",
-      "provided",
+      "embedded",
+      "sqlite",
+      "const",
+      "embeddedmigrations",
+      "embed_migrations",
+      "runs",
+      "pending",
       "rust-db"
     ]
   },
@@ -915,7 +1134,7 @@
     "name": "insert_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new stock record into the database and returns the created record.",
     "signature": "pub fn insert_stock(conn: &mut SqliteConnection, new_stock: &NewStock) -> Result<Stock, Error>",
     "keywords": [
       "insert",
@@ -923,8 +1142,11 @@
       "insert_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "inserts",
+      "record",
+      "into",
+      "returns",
+      "created",
       "rust-db"
     ]
   },
@@ -932,7 +1154,7 @@
     "name": "update_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates the quantity of a specific product in stock.",
     "signature": "pub fn update_stock(",
     "keywords": [
       "update",
@@ -940,8 +1162,10 @@
       "update_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "updates",
+      "quantity",
+      "specific",
+      "product",
       "rust-db"
     ]
   },
@@ -949,7 +1173,7 @@
     "name": "remove_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a stock record from the database by its ID.",
     "signature": "pub fn remove_stock(conn: &mut SqliteConnection, stock_id: i32) -> Result<usize, Error>",
     "keywords": [
       "remove",
@@ -957,8 +1181,9 @@
       "remove_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "record",
+      "from",
       "rust-db"
     ]
   },
@@ -966,7 +1191,7 @@
     "name": "remove_stock_by_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a stock record from the database by its associated product ID.",
     "signature": "pub fn remove_stock_by_product(conn: &mut SqliteConnection, target_product_id: i32) -> Result<usize, Error>",
     "keywords": [
       "remove",
@@ -976,8 +1201,10 @@
       "remove_stock_by_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "record",
+      "from",
+      "associated",
       "rust-db"
     ]
   },
@@ -985,7 +1212,7 @@
     "name": "get_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the stock record for a specific product.",
     "signature": "pub fn get_stock(conn: &mut SqliteConnection, product_id_target: i32) -> Result<Stock, Error>",
     "keywords": [
       "get",
@@ -993,8 +1220,10 @@
       "get_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "record",
+      "specific",
+      "product",
       "rust-db"
     ]
   },
@@ -1002,7 +1231,7 @@
     "name": "get_all_stocks",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all stock records from the database.",
     "signature": "pub fn get_all_stocks(conn: &mut SqliteConnection) -> Result<Vec<Stock>, Error>",
     "keywords": [
       "get",
@@ -1012,8 +1241,9 @@
       "database",
       "stock",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "records",
+      "from",
       "rust-db"
     ]
   },
@@ -1021,7 +1251,7 @@
     "name": "sync_product_price_in_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Synchronizes the product price stored in the stock record.",
     "signature": "pub fn sync_product_price_in_stock(",
     "keywords": [
       "sync",
@@ -1032,8 +1262,9 @@
       "sync_product_price_in_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "synchronizes",
+      "stored",
+      "record",
       "rust-db"
     ]
   },
@@ -1041,7 +1272,7 @@
     "name": "deduct_stock",
     "type": "rust-db",
     "path": "src-tauri/database/src/stock/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deducts a specified quantity from the stock of a product.",
     "signature": "pub fn deduct_stock(",
     "keywords": [
       "deduct",
@@ -1049,8 +1280,11 @@
       "deduct_stock",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deducts",
+      "specified",
+      "quantity",
+      "from",
+      "product",
       "rust-db"
     ]
   },
@@ -1058,7 +1292,7 @@
     "name": "create_recipe_list",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new recipe list header for a specific product.",
     "signature": "pub fn create_recipe_list(",
     "keywords": [
       "create",
@@ -1067,8 +1301,10 @@
       "create_recipe_list",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "creates",
+      "header",
+      "specific",
+      "product",
       "rust-db"
     ]
   },
@@ -1076,7 +1312,7 @@
     "name": "get_recipe_list_by_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves the recipe list header associated with a specific product ID.",
     "signature": "pub fn get_recipe_list_by_product(",
     "keywords": [
       "get",
@@ -1087,8 +1323,11 @@
       "get_recipe_list_by_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "header",
+      "associated",
+      "with",
+      "specific",
       "rust-db"
     ]
   },
@@ -1096,7 +1335,7 @@
     "name": "delete_recipe_list",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a recipe list header and all its associated items (via cascading or manual cleanup).",
     "signature": "pub fn delete_recipe_list(",
     "keywords": [
       "delete",
@@ -1105,8 +1344,13 @@
       "delete_recipe_list",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "header",
+      "associated",
+      "items",
+      "cascading",
+      "manual",
+      "cleanup",
       "rust-db"
     ]
   },
@@ -1114,7 +1358,7 @@
     "name": "add_recipe_item",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Adds a new ingredient item to an existing recipe list.",
     "signature": "pub fn add_recipe_item(",
     "keywords": [
       "add",
@@ -1123,8 +1367,10 @@
       "add_recipe_item",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "adds",
+      "ingredient",
+      "existing",
+      "list",
       "rust-db"
     ]
   },
@@ -1132,7 +1378,7 @@
     "name": "get_items_by_recipe_list_id",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all ingredient items belonging to a specific recipe list header.",
     "signature": "pub fn get_items_by_recipe_list_id(",
     "keywords": [
       "get",
@@ -1144,8 +1390,11 @@
       "get_items_by_recipe_list_id",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "ingredient",
+      "belonging",
+      "specific",
+      "header",
       "rust-db"
     ]
   },
@@ -1153,7 +1402,7 @@
     "name": "update_recipe_item",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates the quantity, unit, and precision of a specific recipe item.",
     "signature": "pub fn update_recipe_item(",
     "keywords": [
       "update",
@@ -1162,8 +1411,11 @@
       "update_recipe_item",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "updates",
+      "quantity",
+      "unit",
+      "precision",
+      "specific",
       "rust-db"
     ]
   },
@@ -1171,7 +1423,7 @@
     "name": "remove_recipe_item",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Removes an individual ingredient item from a recipe list.",
     "signature": "pub fn remove_recipe_item(",
     "keywords": [
       "remove",
@@ -1180,8 +1432,11 @@
       "remove_recipe_item",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "removes",
+      "individual",
+      "ingredient",
+      "from",
+      "list",
       "rust-db"
     ]
   },
@@ -1189,7 +1444,7 @@
     "name": "deduct_stock_from_recipe",
     "type": "rust-db",
     "path": "src-tauri/database/src/recipe/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deducts material stock based on the recipe of a product sold in a receipt.",
     "signature": "pub fn deduct_stock_from_recipe(",
     "keywords": [
       "deduct",
@@ -1199,123 +1454,12 @@
       "deduct_stock_from_recipe",
       "database",
       "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "link_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn link_product_image(",
-    "keywords": [
-      "link",
+      "deducts",
+      "material",
+      "based",
       "product",
-      "image",
-      "link_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn unlink_product_image(",
-    "keywords": [
-      "unlink",
-      "product",
-      "image",
-      "unlink_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_all_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn unlink_all_product_images(",
-    "keywords": [
-      "unlink",
-      "all",
-      "product",
-      "images",
-      "unlink_all_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_linked_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_linked_images(",
-    "keywords": [
-      "get",
-      "linked",
-      "images",
-      "get_linked_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_product_images(",
-    "keywords": [
-      "get",
-      "product",
-      "images",
-      "get_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_links",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_all_links(",
-    "keywords": [
-      "get",
-      "all",
-      "links",
-      "get_all_links",
-      "database",
-      "product_image",
-      "mod",
-      "documentation",
-      "provided",
+      "sold",
+      "receipt",
       "rust-db"
     ]
   },
@@ -1323,7 +1467,7 @@
     "name": "get_datetime",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/model.rs",
-    "description": "Convert the stored Unix timestamp to a readable Date Pass `offset_hours` to adjust the timezone (e.g., 7 for Thailand)",
+    "description": "Represents a receipt header, storing high-level transaction information. #[derive(Queryable, Selectable, Serialize, Identifiable, Debug, Clone)] #[diesel(table_name = receipt_list)] #[diesel(primary_key(receipt_id))] pub struct ReceiptList { Unique identifier for the receipt. pub receipt_id: i32, Unix timestamp when the transaction occurred. pub datetime_unix: i64, Optional ID of the customer associated with this transaction. pub customer_id: Option<i32>, } impl ReceiptList { Convert the stored Unix timestamp to a readable Date Pass `offset_hours` to adjust the timezone (e.g., 7 for Thailand)",
     "signature": "pub fn get_datetime(&self, offset_hours: i32) -> Option<NaiveDateTime>",
     "keywords": [
       "get",
@@ -1332,10 +1476,44 @@
       "database",
       "receipt",
       "model",
-      "convert",
-      "stored",
+      "represents",
+      "header",
+      "storing",
+      "high",
+      "level",
+      "transaction",
+      "information",
+      "derive",
+      "queryable",
+      "selectable",
+      "serialize",
+      "identifiable",
+      "debug",
+      "clone",
+      "diesel",
+      "table_name",
+      "receipt_list",
+      "primary_key",
+      "receipt_id",
+      "struct",
+      "receiptlist",
+      "unique",
+      "identifier",
       "unix",
       "timestamp",
+      "when",
+      "occurred",
+      "datetime_unix",
+      "optional",
+      "customer",
+      "associated",
+      "with",
+      "this",
+      "customer_id",
+      "option",
+      "impl",
+      "convert",
+      "stored",
       "readable",
       "date",
       "pass",
@@ -1350,7 +1528,7 @@
     "name": "create_receipt_header",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Creates a new receipt header (transaction record). If `custom_timestamp` is not provided, the current UTC timestamp is used.",
     "signature": "pub fn create_receipt_header(",
     "keywords": [
       "create",
@@ -1359,8 +1537,14 @@
       "create_receipt_header",
       "database",
       "mod",
-      "documentation",
+      "creates",
+      "transaction",
+      "record",
+      "custom_timestamp",
       "provided",
+      "current",
+      "timestamp",
+      "used",
       "rust-db"
     ]
   },
@@ -1368,7 +1552,7 @@
     "name": "get_all_headers",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all receipt headers from the database.",
     "signature": "pub fn get_all_headers(",
     "keywords": [
       "get",
@@ -1378,8 +1562,8 @@
       "database",
       "receipt",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "from",
       "rust-db"
     ]
   },
@@ -1387,7 +1571,7 @@
     "name": "add_item",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Adds a new item to an existing receipt.",
     "signature": "pub fn add_item(",
     "keywords": [
       "add",
@@ -1396,8 +1580,8 @@
       "database",
       "receipt",
       "mod",
-      "documentation",
-      "provided",
+      "adds",
+      "existing",
       "rust-db"
     ]
   },
@@ -1405,7 +1589,7 @@
     "name": "add_item_material",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Adds historical material usage data for a specific receipt item.",
     "signature": "pub fn add_item_material(",
     "keywords": [
       "add",
@@ -1415,8 +1599,11 @@
       "database",
       "receipt",
       "mod",
-      "documentation",
-      "provided",
+      "adds",
+      "historical",
+      "usage",
+      "data",
+      "specific",
       "rust-db"
     ]
   },
@@ -1424,7 +1611,7 @@
     "name": "get_items_by_header_id",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all items associated with a specific receipt header ID.",
     "signature": "pub fn get_items_by_header_id(",
     "keywords": [
       "get",
@@ -1436,8 +1623,10 @@
       "database",
       "receipt",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "associated",
+      "with",
+      "specific",
       "rust-db"
     ]
   },
@@ -1445,7 +1634,7 @@
     "name": "find_headers_by_date_range",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Finds receipt headers within a specific Unix timestamp range.",
     "signature": "pub fn find_headers_by_date_range(",
     "keywords": [
       "find",
@@ -1457,8 +1646,11 @@
       "database",
       "receipt",
       "mod",
-      "documentation",
-      "provided",
+      "finds",
+      "within",
+      "specific",
+      "unix",
+      "timestamp",
       "rust-db"
     ]
   },
@@ -1466,7 +1658,7 @@
     "name": "get_full_receipt",
     "type": "rust-db",
     "path": "src-tauri/database/src/receipt/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves a full receipt including its header and all associated items.",
     "signature": "pub fn get_full_receipt(",
     "keywords": [
       "get",
@@ -1475,8 +1667,137 @@
       "get_full_receipt",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "including",
+      "header",
+      "associated",
+      "items",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "link_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Creates a link between a product and an image in the database.",
+    "signature": "pub fn link_product_image(",
+    "keywords": [
+      "link",
+      "product",
+      "image",
+      "link_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "creates",
+      "between",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "unlink_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Removes a specific link between a product and an image.",
+    "signature": "pub fn unlink_product_image(",
+    "keywords": [
+      "unlink",
+      "product",
+      "image",
+      "unlink_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "removes",
+      "specific",
+      "link",
+      "between",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "unlink_all_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Removes all image links for a specific product.",
+    "signature": "pub fn unlink_all_product_images(",
+    "keywords": [
+      "unlink",
+      "all",
+      "product",
+      "images",
+      "unlink_all_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "removes",
+      "image",
+      "links",
+      "specific",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_linked_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all `Image` records linked to a specific product.",
+    "signature": "pub fn get_linked_images(",
+    "keywords": [
+      "get",
+      "linked",
+      "images",
+      "get_linked_images",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "image",
+      "records",
+      "specific",
+      "product",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all `ProductImage` link records for a specific product.",
+    "signature": "pub fn get_product_images(",
+    "keywords": [
+      "get",
+      "product",
+      "images",
+      "get_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "productimage",
+      "link",
+      "records",
+      "specific",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_all_links",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all product-image links in the database.",
+    "signature": "pub fn get_all_links(",
+    "keywords": [
+      "get",
+      "all",
+      "links",
+      "get_all_links",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "product",
+      "image",
       "rust-db"
     ]
   },
@@ -1484,7 +1805,7 @@
     "name": "insert_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new product into the database and returns the created record.",
     "signature": "pub fn insert_product(conn: &mut SqliteConnection, newprod: &NewProduct) -> Result<Product, Error>",
     "keywords": [
       "insert",
@@ -1492,8 +1813,11 @@
       "insert_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "inserts",
+      "into",
+      "returns",
+      "created",
+      "record",
       "rust-db"
     ]
   },
@@ -1501,7 +1825,7 @@
     "name": "remove_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a product from the database by its ID.",
     "signature": "pub fn remove_product(conn: &mut SqliteConnection, id: i32) -> Result<usize, Error>",
     "keywords": [
       "remove",
@@ -1509,8 +1833,8 @@
       "remove_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "from",
       "rust-db"
     ]
   },
@@ -1518,7 +1842,7 @@
     "name": "remove_product_images_link",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Removes all image associations for a specific product.",
     "signature": "pub fn remove_product_images_link(",
     "keywords": [
       "remove",
@@ -1528,8 +1852,10 @@
       "remove_product_images_link",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "removes",
+      "image",
+      "associations",
+      "specific",
       "rust-db"
     ]
   },
@@ -1537,7 +1863,7 @@
     "name": "check_product_dependencies",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Checks if a product has any dependencies (e.g., used in receipts) that would prevent deletion.",
     "signature": "pub fn check_product_dependencies(",
     "keywords": [
       "check",
@@ -1546,8 +1872,13 @@
       "check_product_dependencies",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "checks",
+      "used",
+      "receipts",
+      "that",
+      "would",
+      "prevent",
+      "deletion",
       "rust-db"
     ]
   },
@@ -1555,7 +1886,7 @@
     "name": "find_product_by_title",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Finds a product by its title. Returns None if not found.",
     "signature": "pub fn find_product_by_title(",
     "keywords": [
       "find",
@@ -1565,8 +1896,10 @@
       "find_product_by_title",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "finds",
+      "returns",
+      "none",
+      "found",
       "rust-db"
     ]
   },
@@ -1574,7 +1907,7 @@
     "name": "get_all_products",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all products from the database.",
     "signature": "pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Error>",
     "keywords": [
       "get",
@@ -1584,8 +1917,8 @@
       "database",
       "product",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "from",
       "rust-db"
     ]
   },
@@ -1593,7 +1926,7 @@
     "name": "update_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing product record in the database.",
     "signature": "pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error>",
     "keywords": [
       "update",
@@ -1601,8 +1934,9 @@
       "update_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "record",
       "rust-db"
     ]
   },
@@ -1610,7 +1944,7 @@
     "name": "set_product_stock_mode",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Toggles whether a product should use recipe-based stock tracking.",
     "signature": "pub fn set_product_stock_mode(",
     "keywords": [
       "set",
@@ -1620,8 +1954,12 @@
       "set_product_stock_mode",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "toggles",
+      "whether",
+      "should",
+      "recipe",
+      "based",
+      "tracking",
       "rust-db"
     ]
   },
@@ -1629,7 +1967,7 @@
     "name": "find_product",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves a specific product from the database by its ID.",
     "signature": "pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Product, Error>",
     "keywords": [
       "find",
@@ -1637,8 +1975,9 @@
       "find_product",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "specific",
+      "from",
       "rust-db"
     ]
   },
@@ -1646,7 +1985,7 @@
     "name": "get_all_products_with_images",
     "type": "rust-db",
     "path": "src-tauri/database/src/product/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all products along with their associated image paths.",
     "signature": "pub fn get_all_products_with_images(",
     "keywords": [
       "get",
@@ -1658,133 +1997,12 @@
       "database",
       "product",
       "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "insert_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn insert_image(",
-    "keywords": [
-      "insert",
+      "retrieves",
+      "along",
+      "their",
+      "associated",
       "image",
-      "insert_image",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_image(",
-    "keywords": [
-      "get",
-      "image",
-      "get_image",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_image_by_hash",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_image_by_hash(",
-    "keywords": [
-      "get",
-      "image",
-      "by",
-      "hash",
-      "get_image_by_hash",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn get_all_images(",
-    "keywords": [
-      "get",
-      "all",
-      "images",
-      "get_all_images",
-      "database",
-      "image",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "delete_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn delete_image(",
-    "keywords": [
-      "delete",
-      "image",
-      "delete_image",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_image_path",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn update_image_path(",
-    "keywords": [
-      "update",
-      "image",
-      "path",
-      "update_image_path",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_image_position",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/image/mod.rs",
-    "description": "No documentation provided.",
-    "signature": "pub fn update_image_position(",
-    "keywords": [
-      "update",
-      "image",
-      "position",
-      "update_image_position",
-      "database",
-      "mod",
-      "documentation",
-      "provided",
+      "paths",
       "rust-db"
     ]
   },
@@ -1792,7 +2010,7 @@
     "name": "get_all_materials",
     "type": "rust-db",
     "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all material records from the database.",
     "signature": "pub fn get_all_materials(conn: &mut SqliteConnection) -> QueryResult<Vec<Material>>",
     "keywords": [
       "get",
@@ -1802,8 +2020,9 @@
       "database",
       "material",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "records",
+      "from",
       "rust-db"
     ]
   },
@@ -1811,7 +2030,7 @@
     "name": "insert_material",
     "type": "rust-db",
     "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new material record into the database.",
     "signature": "pub fn insert_material(",
     "keywords": [
       "insert",
@@ -1819,8 +2038,9 @@
       "insert_material",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "inserts",
+      "record",
+      "into",
       "rust-db"
     ]
   },
@@ -1828,7 +2048,7 @@
     "name": "update_material",
     "type": "rust-db",
     "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing material record.",
     "signature": "pub fn update_material(",
     "keywords": [
       "update",
@@ -1836,8 +2056,9 @@
       "update_material",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "record",
       "rust-db"
     ]
   },
@@ -1845,7 +2066,7 @@
     "name": "remove_material",
     "type": "rust-db",
     "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a material record from the database by its ID.",
     "signature": "pub fn remove_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<usize>",
     "keywords": [
       "remove",
@@ -1853,8 +2074,9 @@
       "remove_material",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "record",
+      "from",
       "rust-db"
     ]
   },
@@ -1862,7 +2084,7 @@
     "name": "find_material",
     "type": "rust-db",
     "path": "src-tauri/database/src/material/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Finds a specific material by its ID.",
     "signature": "pub fn find_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<Material>",
     "keywords": [
       "find",
@@ -1870,8 +2092,145 @@
       "find_material",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "finds",
+      "specific",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "insert_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Inserts a new image record into the database.",
+    "signature": "pub fn insert_image(",
+    "keywords": [
+      "insert",
+      "image",
+      "insert_image",
+      "database",
+      "mod",
+      "inserts",
+      "record",
+      "into",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Retrieves an image by its ID.",
+    "signature": "pub fn get_image(",
+    "keywords": [
+      "get",
+      "image",
+      "get_image",
+      "database",
+      "mod",
+      "retrieves",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_image_by_hash",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Retrieves an image by its file hash. Returns `Ok(None)` if no image with that hash exists.",
+    "signature": "pub fn get_image_by_hash(",
+    "keywords": [
+      "get",
+      "image",
+      "by",
+      "hash",
+      "get_image_by_hash",
+      "database",
+      "mod",
+      "retrieves",
+      "file",
+      "returns",
+      "none",
+      "with",
+      "that",
+      "exists",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "get_all_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Retrieves all image records from the database, ordered by newest first.",
+    "signature": "pub fn get_all_images(",
+    "keywords": [
+      "get",
+      "all",
+      "images",
+      "get_all_images",
+      "database",
+      "image",
+      "mod",
+      "retrieves",
+      "records",
+      "from",
+      "ordered",
+      "newest",
+      "first",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "delete_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Deletes an image record from the database by its ID.",
+    "signature": "pub fn delete_image(",
+    "keywords": [
+      "delete",
+      "image",
+      "delete_image",
+      "database",
+      "mod",
+      "deletes",
+      "record",
+      "from",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "update_image_path",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Updates the stored file path of an image.",
+    "signature": "pub fn update_image_path(",
+    "keywords": [
+      "update",
+      "image",
+      "path",
+      "update_image_path",
+      "database",
+      "mod",
+      "updates",
+      "stored",
+      "file",
+      "rust-db"
+    ]
+  },
+  {
+    "name": "update_image_position",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/image/mod.rs",
+    "description": "Updates the CSS object-position value for an image.",
+    "signature": "pub fn update_image_position(",
+    "keywords": [
+      "update",
+      "image",
+      "position",
+      "update_image_position",
+      "database",
+      "mod",
+      "updates",
+      "object",
+      "value",
       "rust-db"
     ]
   },
@@ -1879,7 +2238,7 @@
     "name": "get_all_customers",
     "type": "rust-db",
     "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all customers from the database.",
     "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
     "keywords": [
       "get",
@@ -1889,8 +2248,8 @@
       "database",
       "customer",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "from",
       "rust-db"
     ]
   },
@@ -1898,7 +2257,7 @@
     "name": "insert_customer",
     "type": "rust-db",
     "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new customer record into the database.",
     "signature": "pub fn insert_customer(",
     "keywords": [
       "insert",
@@ -1906,8 +2265,9 @@
       "insert_customer",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "inserts",
+      "record",
+      "into",
       "rust-db"
     ]
   },
@@ -1915,7 +2275,7 @@
     "name": "update_customer_record",
     "type": "rust-db",
     "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing customer record. If `update_data.branch` is not provided, it defaults to \"00000\".",
     "signature": "pub fn update_customer_record(",
     "keywords": [
       "update",
@@ -1924,8 +2284,13 @@
       "update_customer_record",
       "database",
       "mod",
-      "documentation",
+      "updates",
+      "existing",
+      "update_data",
+      "branch",
       "provided",
+      "defaults",
+      "00000",
       "rust-db"
     ]
   },
@@ -1933,7 +2298,7 @@
     "name": "get_all_categories",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Retrieves all product categories from the database.",
     "signature": "pub fn get_all_categories(conn: &mut SqliteConnection) -> QueryResult<Vec<Category>>",
     "keywords": [
       "get",
@@ -1943,8 +2308,9 @@
       "database",
       "category",
       "mod",
-      "documentation",
-      "provided",
+      "retrieves",
+      "product",
+      "from",
       "rust-db"
     ]
   },
@@ -1952,7 +2318,7 @@
     "name": "insert_category",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Inserts a new category into the database and returns the created record.",
     "signature": "pub fn insert_category(",
     "keywords": [
       "insert",
@@ -1960,8 +2326,11 @@
       "insert_category",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "inserts",
+      "into",
+      "returns",
+      "created",
+      "record",
       "rust-db"
     ]
   },
@@ -1969,7 +2338,7 @@
     "name": "update_category",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Updates an existing category record in the database.",
     "signature": "pub fn update_category(",
     "keywords": [
       "update",
@@ -1977,8 +2346,9 @@
       "update_category",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "updates",
+      "existing",
+      "record",
       "rust-db"
     ]
   },
@@ -1986,7 +2356,7 @@
     "name": "remove_category",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Deletes a category from the database by its ID.",
     "signature": "pub fn remove_category(conn: &mut SqliteConnection, category_id: i32) -> QueryResult<usize>",
     "keywords": [
       "remove",
@@ -1994,8 +2364,8 @@
       "remove_category",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "deletes",
+      "from",
       "rust-db"
     ]
   },
@@ -2003,7 +2373,7 @@
     "name": "find_category_by_name",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
-    "description": "No documentation provided.",
+    "description": "Finds a category by its name. Returns None if not found.",
     "signature": "pub fn find_category_by_name(",
     "keywords": [
       "find",
@@ -2013,8 +2383,10 @@
       "find_category_by_name",
       "database",
       "mod",
-      "documentation",
-      "provided",
+      "finds",
+      "returns",
+      "none",
+      "found",
       "rust-db"
     ]
   },
