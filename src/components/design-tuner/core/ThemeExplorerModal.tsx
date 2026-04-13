@@ -13,6 +13,12 @@ interface ThemeExplorerModalProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * ThemeExplorerModal Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function ThemeExplorerModal({
   isOpen,
   onClose,

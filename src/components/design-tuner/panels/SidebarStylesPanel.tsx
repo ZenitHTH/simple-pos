@@ -8,6 +8,12 @@ interface SidebarStylesPanelProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * SidebarStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function SidebarStylesPanel({
   settings,
   updateSettings,

@@ -31,6 +31,12 @@ interface GlobalTunerProps {
   setPreviewZoom: (v: number) => void;
 }
 
+/**
+ * GlobalTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function GlobalTuner({
   settings,
   updateSettings,

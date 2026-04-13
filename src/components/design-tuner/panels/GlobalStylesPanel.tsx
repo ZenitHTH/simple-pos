@@ -15,6 +15,12 @@ interface GlobalStylesPanelProps {
   setPreviewZoom: (v: number) => void;
 }
 
+/**
+ * GlobalStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function GlobalStylesPanel({
   settings,
   updateSettings,

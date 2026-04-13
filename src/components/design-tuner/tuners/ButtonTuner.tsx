@@ -26,6 +26,12 @@ interface ButtonTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * ButtonTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function ButtonTuner({ settings, updateSettings }: ButtonTunerProps) {
   return (
     <motion.div 

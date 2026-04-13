@@ -9,6 +9,12 @@ import { Select } from "@/components/ui/Select";
 import { logger } from "@/lib/logger";
 import { useDatabase } from "@/context/DatabaseContext";
 
+/**
+ * ExportSection Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function ExportSection() {
   const { dbKey } = useDatabase();
   // Default: Last 30 days

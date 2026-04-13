@@ -13,6 +13,12 @@ interface SettingsSetupProps {
   onComplete: () => void;
 }
 
+/**
+ * SettingsSetup Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
   const { settings, updateSettings, save } = useSettings();
   const [saving, setSaving] = useState(false);

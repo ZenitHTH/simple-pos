@@ -16,6 +16,12 @@ interface TunerSliderProps {
   variant?: "default" | "compact"; // To handle slight visual differences if needed, default covers both
 }
 
+/**
+ * TunerSlider Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function TunerSlider({
   label,
   value,

@@ -19,6 +19,12 @@ const levels = [
   { val: 150, label: "XL" },
 ];
 
+/**
+ * GridStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function GridStylesPanel({
   settings,
   onUpdate,

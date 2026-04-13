@@ -10,6 +10,12 @@ interface ThemeCardProps {
   onClick: () => void;
 }
 
+/**
+ * ThemeCard Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export const ThemeCard = memo(function ThemeCard({
   name,
   color,

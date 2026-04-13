@@ -25,6 +25,12 @@ interface SidebarTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * SidebarTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function SidebarTuner({ settings, updateSettings }: SidebarTunerProps) {
   return (
     <motion.div

@@ -20,6 +20,12 @@ const item = {
   show: { y: 0, opacity: 1 }
 };
 
+/**
+ * SelectorTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function SelectorTuner() {
   const [val, setVal] = useState<string | number>("");
   const options = [

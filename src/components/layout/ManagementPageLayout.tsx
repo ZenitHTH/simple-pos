@@ -23,6 +23,12 @@ interface ManagementPageLayoutProps {
   scrollable?: boolean;
 }
 
+/**
+ * ManagementPageLayout Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function ManagementPageLayout({
   title,
   subtitle,

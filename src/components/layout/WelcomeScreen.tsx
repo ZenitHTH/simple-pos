@@ -7,6 +7,12 @@ interface WelcomeScreenProps {
   onStart: () => void;
 }
 
+/**
+ * WelcomeScreen Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
   return (
     <div className="page-container">

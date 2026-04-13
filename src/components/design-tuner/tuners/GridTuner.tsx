@@ -58,6 +58,12 @@ interface GridTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * GridTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function GridTuner({ settings, updateSettings }: GridTunerProps) {
   // Calculate Grid Layout based on scale (same logic as real grid)
   const gridScale = settings.scaling.components.grid || 100;

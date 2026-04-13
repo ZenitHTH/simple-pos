@@ -2,6 +2,12 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useSettings } from "@/context/settings/SettingsContext";
 
+/**
+ * HistoryHeader Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function HistoryHeader() {
   const router = useRouter();
   const { settings } = useSettings();

@@ -11,6 +11,12 @@ interface TypographyPreviewProps {
   letterSpacing: number;
 }
 
+/**
+ * TypographyPreview Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function TypographyPreview({
   fontFamily,
   baseSize,

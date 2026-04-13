@@ -10,6 +10,12 @@ interface TypographyTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * TypographyTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function TypographyTuner({
   settings,
   updateSettings,

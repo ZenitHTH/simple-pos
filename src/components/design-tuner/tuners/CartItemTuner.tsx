@@ -56,6 +56,12 @@ interface CartItemTunerProps {
     updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * CartItemTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function CartItemTuner({
     settings,
     updateSettings,

@@ -8,6 +8,12 @@ interface NumpadStylesPanelProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * NumpadStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function NumpadStylesPanel({
   settings,
   updateSettings,

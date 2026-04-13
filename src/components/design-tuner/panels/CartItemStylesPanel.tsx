@@ -9,6 +9,12 @@ interface CartItemStylesPanelProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * CartItemStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function CartItemStylesPanel({
   settings,
   updateSettings,

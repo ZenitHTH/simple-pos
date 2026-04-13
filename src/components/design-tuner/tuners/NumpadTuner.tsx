@@ -24,6 +24,12 @@ interface NumpadTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * NumpadTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
   const [displayValue, setDisplayValue] = useState("");
 

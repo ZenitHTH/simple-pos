@@ -32,6 +32,12 @@ interface HistoryTunerProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * HistoryTuner Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function HistoryTuner({ settings, updateSettings }: HistoryTunerProps) {
   return (
     <motion.div

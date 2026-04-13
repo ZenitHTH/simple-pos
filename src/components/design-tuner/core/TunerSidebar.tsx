@@ -38,6 +38,12 @@ interface TunerSidebarProps {
   setPreviewZoom: (v: number) => void;
 }
 
+/**
+ * TunerSidebar Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function TunerSidebar({
   activeTab,
   setActiveTab,

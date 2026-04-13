@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/Button";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { useEffect, useState } from "react";
 
+/**
+ * ThemeSettings Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function ThemeSettings() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);

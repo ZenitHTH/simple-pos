@@ -8,6 +8,12 @@ interface ButtonStylesPanelProps {
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
 }
 
+/**
+ * ButtonStylesPanel Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export function ButtonStylesPanel({
   settings,
   updateSettings,

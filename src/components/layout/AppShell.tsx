@@ -14,6 +14,12 @@ import { useMotionValue, animate } from "framer-motion";
  * It wraps the main content and sidebar in a zoomed container
  * while keeping the BottomControlPanel and GoBackButton at a 1:1 scale.
  */
+/**
+ * AppShell Component
+ * 
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { settings, undo, redo } = useSettings();
 

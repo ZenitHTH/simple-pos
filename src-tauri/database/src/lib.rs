@@ -1,3 +1,9 @@
+//! The database crate for Vibe POS.
+//!
+//! This crate provides the data models, schema definitions, and database operations
+//! for the application using Diesel ORM and SQLite (SQLCipher for encryption).
+//! It is organized into modules for each domain entity (products, categories, etc.).
+
 use diesel::prelude::*;
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
