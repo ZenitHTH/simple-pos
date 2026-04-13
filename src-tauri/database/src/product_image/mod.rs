@@ -2,6 +2,7 @@ use diesel::prelude::*;
 
 pub mod model;
 
+/// Creates a link between a product and an image in the database.
 pub fn link_product_image(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -20,6 +21,7 @@ pub fn link_product_image(
         .get_result(conn)
 }
 
+/// Removes a specific link between a product and an image.
 pub fn unlink_product_image(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -31,6 +33,7 @@ pub fn unlink_product_image(
         .execute(conn)
 }
 
+/// Removes all image links for a specific product.
 pub fn unlink_all_product_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -40,6 +43,7 @@ pub fn unlink_all_product_images(
     diesel::delete(product_images.filter(product_id.eq(prod_id))).execute(conn)
 }
 
+/// Retrieves all `Image` records linked to a specific product.
 pub fn get_linked_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -54,6 +58,7 @@ pub fn get_linked_images(
         .load(conn)
 }
 
+/// Retrieves all `ProductImage` link records for a specific product.
 pub fn get_product_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -66,6 +71,7 @@ pub fn get_product_images(
         .load(conn)
 }
 
+/// Retrieves all product-image links in the database.
 pub fn get_all_links(
     conn: &mut SqliteConnection,
 ) -> Result<Vec<model::ProductImage>, diesel::result::Error> {

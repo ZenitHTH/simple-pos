@@ -1,6 +1,7 @@
 use diesel::prelude::*;
 use serde::Serialize;
 
+/// Represents a product record from the database.
 #[derive(Queryable, Selectable, Serialize, Debug, Clone)]
 #[diesel(table_name = crate::schema::product)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
@@ -13,6 +14,7 @@ pub struct Product {
     pub use_recipe_stock: bool,
 }
 
+/// Represents a product combined with its associated image data.
 #[derive(Serialize, Debug, Clone)]
 pub struct ProductWithImage {
     #[serde(flatten)]
@@ -21,6 +23,7 @@ pub struct ProductWithImage {
     pub image_object_position: Option<String>,
 }
 
+/// Data structure for inserting a new product into the database.
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::product)]
 pub struct NewProduct<'a> {

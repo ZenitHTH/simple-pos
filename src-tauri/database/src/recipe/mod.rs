@@ -7,6 +7,7 @@ pub use model::*;
 
 // --- Header Functions ---
 
+/// Creates a new recipe list header for a specific product.
 pub fn create_recipe_list(
     conn: &mut SqliteConnection,
     product_id: i32,
@@ -19,6 +20,7 @@ pub fn create_recipe_list(
         .get_result(conn)
 }
 
+/// Retrieves the recipe list header associated with a specific product ID.
 pub fn get_recipe_list_by_product(
     conn: &mut SqliteConnection,
     pid: i32,
@@ -29,6 +31,7 @@ pub fn get_recipe_list_by_product(
         .optional()
 }
 
+/// Deletes a recipe list header and all its associated items (via cascading or manual cleanup).
 pub fn delete_recipe_list(
     conn: &mut SqliteConnection,
     list_id: i32,
@@ -38,6 +41,7 @@ pub fn delete_recipe_list(
 
 // --- Item Functions ---
 
+/// Adds a new ingredient item to an existing recipe list.
 pub fn add_recipe_item(
     conn: &mut SqliteConnection,
     new_item: &NewRecipeItem,
@@ -48,6 +52,7 @@ pub fn add_recipe_item(
         .get_result(conn)
 }
 
+/// Retrieves all ingredient items belonging to a specific recipe list header.
 pub fn get_items_by_recipe_list_id(
     conn: &mut SqliteConnection,
     header_id: i32,
@@ -57,6 +62,7 @@ pub fn get_items_by_recipe_list_id(
         .load::<RecipeItem>(conn)
 }
 
+/// Updates the quantity, unit, and precision of a specific recipe item.
 pub fn update_recipe_item(
     conn: &mut SqliteConnection,
     item_id: i32,
@@ -74,6 +80,7 @@ pub fn update_recipe_item(
         .get_result(conn)
 }
 
+/// Removes an individual ingredient item from a recipe list.
 pub fn remove_recipe_item(
     conn: &mut SqliteConnection,
     item_id: i32,
@@ -81,6 +88,7 @@ pub fn remove_recipe_item(
     diesel::delete(recipe_item::table.find(item_id)).execute(conn)
 }
 
+/// Deducts material stock based on the recipe of a product sold in a receipt.
 pub fn deduct_stock_from_recipe(
     conn: &mut SqliteConnection,
     product_id: i32,
@@ -127,6 +135,7 @@ pub fn deduct_stock_from_recipe(
     Ok(())
 }
 
+/// Utility function to align precision differences when deducting material stock.
 fn calculate_aligned_deduction(total_scaled: i64, from_prec: i32, to_prec: i32) -> i64 {
     if to_prec >= from_prec {
         total_scaled * 10i64.pow((to_prec - from_prec) as u32)

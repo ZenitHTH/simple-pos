@@ -1,8 +1,10 @@
 use diesel::prelude::*;
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
+/// Embedded database migrations for SQLite.
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
+/// Runs all pending database migrations.
 pub fn run_migrations(
     connection: &mut SqliteConnection,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {

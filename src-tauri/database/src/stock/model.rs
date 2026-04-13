@@ -8,6 +8,7 @@
 use diesel::prelude::*;
 use serde::Serialize;
 
+/// Represents a stock record in the database, tracking quantity and price (satang) for a product.
 #[derive(Queryable, Selectable, Serialize, Debug, Clone)]
 #[diesel(table_name = crate::stock::schema::stock)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
@@ -18,6 +19,7 @@ pub struct Stock {
     pub quantity: i32,
 }
 
+/// Data structure for inserting a new stock record into the database.
 #[derive(Insertable)]
 #[diesel(table_name = crate::stock::schema::stock)]
 pub struct NewStock {
