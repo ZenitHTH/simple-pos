@@ -2,6 +2,12 @@ use super::{CellValue, ExportTable, sanitize_cell_text};
 use std::error::Error;
 use std::path::Path;
 
+/// Exports an `ExportTable` to a CSV file.
+///
+/// # Arguments
+///
+/// * `table` - The table to export.
+/// * `path` - The destination file path.
 pub fn export_to_csv<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_path(path)?;
 
@@ -25,6 +31,15 @@ pub fn export_to_csv<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(),
     Ok(())
 }
 
+/// Imports an `ExportTable` from a CSV file.
+///
+/// # Arguments
+///
+/// * `path` - The source file path.
+///
+/// # Returns
+///
+/// An `ExportTable` containing the data from the CSV file.
 pub fn import_from_csv<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>> {
     let mut rdr = csv::Reader::from_path(path)?;
     

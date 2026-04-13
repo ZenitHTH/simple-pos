@@ -9,6 +9,22 @@ use std::path::PathBuf;
 use tauri::command;
 
 #[command]
+/// Exports receipts within a specific date range to a file (CSV or XLSX).
+///
+/// The export generates a Thai sales tax report format, including VAT calculations
+/// based on the configured tax rate.
+///
+/// # Arguments
+///
+/// * `key` - The database encryption key.
+/// * `export_path` - The absolute destination file path.
+/// * `format` - The export format ("csv" or "xlsx").
+/// * `start_date` - The start of the date range (Unix timestamp in seconds).
+/// * `end_date` - The end of the date range (Unix timestamp in seconds).
+///
+/// # Returns
+///
+/// A success message string.
 pub fn export_receipts(
     key: String,
     export_path: String,

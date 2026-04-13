@@ -5,6 +5,12 @@ use calamine::{Reader, Ods, open_workbook, Data};
 use std::error::Error;
 use std::path::Path;
 
+/// Exports an `ExportTable` to an ODS (OpenDocument Spreadsheet) file.
+///
+/// # Arguments
+///
+/// * `table` - The table to export.
+/// * `path` - The destination file path.
 pub fn export_to_ods<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(), Box<dyn Error>> {
     let mut wb = WorkBook::new_empty();
     let mut sheet = Sheet::new("Receipts");
@@ -37,6 +43,15 @@ pub fn export_to_ods<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(),
     Ok(())
 }
 
+/// Imports an `ExportTable` from the first sheet of an ODS file.
+///
+/// # Arguments
+///
+/// * `path` - The source file path.
+///
+/// # Returns
+///
+/// An `ExportTable` containing the data from the ODS file.
 pub fn import_from_ods<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>> {
     let mut ods: Ods<_> = open_workbook(path)?;
     

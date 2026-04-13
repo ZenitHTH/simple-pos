@@ -5,24 +5,46 @@ use std::io::Write;
 use std::path::Path;
 use thiserror::Error;
 
+/// Errors that can occur during image processing and storage operations.
 #[derive(Error, Debug)]
 pub enum ImageError {
+    /// Errors originating from the database layer.
     #[error("Database error: {0}")]
     Database(#[from] diesel::result::Error),
+    /// Errors originating from standard I/O operations.
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
+    /// Errors originating from the image processing library.
     #[error("Image error: {0}")]
     Image(#[from] image::ImageError),
+    /// Connection-related errors, typically stringified database errors.
     #[error("Connection error: {0}")]
     Connection(String),
+    /// The target image directory could not be determined or found.
     #[error("Directory not found")]
     DirectoryNotFound,
+    /// The file extension is not supported or the filename is invalid.
     #[error("Invalid file extension: {0}")]
     InvalidExtension(String),
 }
 
 const ALLOWED_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "webp"];
 
+/// Saves an image to disk and creates a record in the database.
+///
+/// This function handles hash-based deduplication, path traversal protection,
+/// and atomic file writes.
+///
+/// # Arguments
+///
+/// * `data` - The raw image byte data.
+/// * `filename` - The original filename of the image.
+/// * `target_dir` - Optional custom directory to save the image. Defaults to `images/` next to the DB.
+/// * `key` - The database encryption key.
+///
+/// # Returns
+///
+/// The created or existing `Image` record.
 pub fn save_image(
     data: &[u8],
     filename: &str,
@@ -81,10 +103,6 @@ pub fn save_image(
     let file_path = save_dir.join(&safe_filename);
 
     // Atomic Write
-    // Note: atomic-write-file doesn't seem to have a simple `write` method that takes path + content directly in one go that returns Result cleanly without opening, but `AtomicWriteFile` struct does.
-    // Let's use `atomic_write_file::write` if available, or the struct.
-    // The struct `AtomicWriteFile` in version 0.1 usually requires opening.
-    // Wait, `atomic-write-file` 0.1 has `AtomicWriteFile::open`.
     let mut file = AtomicWriteFile::open(&file_path).map_err(ImageError::Io)?;
     file.write_all(data).map_err(ImageError::Io)?;
     file.commit().map_err(ImageError::Io)?;
@@ -108,18 +126,19 @@ pub fn save_image(
     Ok(saved_image)
 }
 
+/// Verifies that an image file exists and matches its stored hash.
+///
+/// # Arguments
+///
+/// * `image_id` - The ID of the image to verify.
+/// * `key` - The database encryption key.
+///
+/// # Returns
+///
+/// `true` if the image is valid and matches the hash, `false` otherwise.
 pub fn verify_image(image_id: i32, key: &str) -> Result<bool, ImageError> {
     let mut conn = establish_connection(key).map_err(|e| ImageError::Connection(e.to_string()))?;
 
-    // Fix: `database::image::get_image` is not pub or not reachable via that path?
-    // `insert_image` and `get_image` are imported at top level of `database` crate via `pub use image::...`?
-    // Let's check `database/src/lib.rs`.
-    // It has `pub mod image;` and `pub use image::model::{Image, NewImage};`
-    // It does NOT seem to export `get_image` directly unless I added it.
-    // I added `pub fn get_image` to `database/src/image.rs`, but did I export it in `lib.rs`?
-    // I only exported models. I should adjust `database/src/lib.rs` to export functions too, or use `database::image::get_image`.
-
-    // Assuming `database::image::get_image` is public (it is in my edit), so this call should work if `image` mod is public.
     let img = database::image::get_image(&mut conn, image_id).map_err(ImageError::Database)?;
     let path = Path::new(&img.file_path);
 
@@ -135,6 +154,11 @@ pub fn verify_image(image_id: i32, key: &str) -> Result<bool, ImageError> {
     Ok(hash == img.file_hash)
 }
 
+/// Deletes an image file from disk.
+///
+/// # Arguments
+///
+/// * `file_path` - The absolute path to the file to delete.
 pub fn delete_image_file(file_path: &str) -> Result<(), ImageError> {
     let path = Path::new(file_path);
     if path.exists() {

@@ -1,3 +1,6 @@
+//! This crate provides management for application settings, including
+//! loading/saving from disk, data migrations, and storage path handling.
+
 pub mod manager;
 pub mod migration;
 pub mod models;

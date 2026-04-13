@@ -4,11 +4,22 @@ use calamine::{Reader, Xlsx, open_workbook, Data};
 use std::error::Error;
 use std::path::Path;
 
+/// Exports an `ExportTable` to an XLSX file.
+///
+/// # Arguments
+///
+/// * `table` - The table to export.
+/// * `path` - The destination file path.
 pub fn export_to_xlsx<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(), Box<dyn Error>> {
     export_to_xlsx_sheets(&[("Sheet1", table)], path)
 }
 
-/// Export multiple named sheets into a single xlsx workbook.
+/// Exports multiple named sheets into a single XLSX workbook.
+///
+/// # Arguments
+///
+/// * `sheets` - A slice of tuples containing the sheet name and the table reference.
+/// * `path` - The destination file path.
 pub fn export_to_xlsx_sheets<P: AsRef<Path>>(
     sheets: &[(&str, &ExportTable)],
     path: P,
@@ -53,6 +64,15 @@ pub fn export_to_xlsx_sheets<P: AsRef<Path>>(
     Ok(())
 }
 
+/// Imports an `ExportTable` from the first sheet of an XLSX file.
+///
+/// # Arguments
+///
+/// * `path` - The source file path.
+///
+/// # Returns
+///
+/// An `ExportTable` containing the data from the XLSX file.
 pub fn import_from_xlsx<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>> {
     let mut excel: Xlsx<_> = open_workbook(path)?;
     
