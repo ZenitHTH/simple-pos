@@ -1,3 +1,7 @@
+//! Category database operations.
+//!
+//! This module provides CRUD operations for product categories.
+
 pub mod model;
 pub mod schema;
 

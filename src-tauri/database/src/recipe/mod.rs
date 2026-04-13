@@ -1,3 +1,9 @@
+//! Recipe database operations.
+//!
+//! This module handles the management of product recipes, which define the materials
+//! and quantities required to produce a product. It also handles automatic stock
+//! deduction for materials when products are sold.
+
 pub mod model;
 pub mod schema;
 

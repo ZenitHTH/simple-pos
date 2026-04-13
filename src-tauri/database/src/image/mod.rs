@@ -1,3 +1,9 @@
+//! Image database operations.
+//!
+//! This module handles CRUD operations for the image library. It manages image
+//! metadata, including file paths, hashes for deduplication, and display preferences
+//! (like CSS object-position).
+
 use diesel::prelude::*;
 
 pub mod model;
@@ -15,7 +21,7 @@ pub fn insert_image(
         .get_result(conn)
 }
 
-/// Retrieves an image by its ID.
+/// Retrieves an image record by its unique ID.
 pub fn get_image(
     conn: &mut SqliteConnection,
     image_id: i32,
@@ -28,7 +34,8 @@ pub fn get_image(
         .first(conn)
 }
 
-/// Retrieves an image by its file hash.
+/// Retrieves an image record by its file hash (SHA-256).
+///
 /// Returns `Ok(None)` if no image with that hash exists.
 pub fn get_image_by_hash(
     conn: &mut SqliteConnection,
@@ -53,6 +60,8 @@ pub fn get_all_images(
 }
 
 /// Deletes an image record from the database by its ID.
+///
+/// Note: This only deletes the database record; the physical file must be handled separately.
 pub fn delete_image(
     conn: &mut SqliteConnection,
     image_id: i32,
@@ -75,7 +84,10 @@ pub fn update_image_path(
         .execute(conn)
 }
 
-/// Updates the CSS object-position value for an image.
+/// Updates the CSS `object-position` value for an image.
+///
+/// This is used by the frontend to control which part of the image is visible
+/// when it's cropped in a square or fixed-aspect-ratio container.
 pub fn update_image_position(
     conn: &mut SqliteConnection,
     image_id: i32,

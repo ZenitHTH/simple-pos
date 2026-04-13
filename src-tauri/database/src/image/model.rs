@@ -1,3 +1,7 @@
+//! Image data models.
+//!
+//! This module defines the structs used to represent images in the database.
+
 use crate::schema::images;
 use chrono::NaiveDateTime;
 use diesel::prelude::*;

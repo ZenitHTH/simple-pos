@@ -1,3 +1,7 @@
+//! Stock database operations.
+//!
+//! This module handles CRUD operations for product inventory and stock levels.
+
 pub mod model;
 pub mod schema;
 

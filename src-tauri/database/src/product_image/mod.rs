@@ -1,3 +1,8 @@
+//! Product-Image association database operations.
+//!
+//! This module handles the many-to-many relationship between products and images.
+//! It provides functions to link/unlink images to products and retrieve associated records.
+
 use diesel::prelude::*;
 
 pub mod model;

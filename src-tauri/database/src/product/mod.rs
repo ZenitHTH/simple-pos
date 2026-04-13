@@ -1,3 +1,8 @@
+//! Product database operations.
+//!
+//! This module handles CRUD operations for products, including managing their associations
+//! with images and handling their stock tracking modes.
+
 pub mod model;
 pub mod schema;
 

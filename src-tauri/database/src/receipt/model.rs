@@ -1,3 +1,8 @@
+//! Receipt data models.
+//!
+//! This module defines the structs used to represent receipts and their line items
+//! in the database, capturing transaction history and material usage at the time of sale.
+
 use crate::receipt::schema::{receipt_item, receipt_item_material, receipt_list};
 use chrono::{DateTime, FixedOffset, NaiveDateTime};
 use diesel::prelude::*;
@@ -17,8 +22,9 @@ pub struct ReceiptList {
 }
 
 impl ReceiptList {
-    /// Convert the stored Unix timestamp to a readable Date
-    /// Pass `offset_hours` to adjust the timezone (e.g., 7 for Thailand)
+    /// Converts the stored Unix timestamp to a readable `NaiveDateTime`.
+    ///
+    /// The `offset_hours` parameter adjusts the timezone (e.g., 7 for ICT/Thailand).
     pub fn get_datetime(&self, offset_hours: i32) -> Option<NaiveDateTime> {
         // 1. Create the timezone offset (hours * 3600 seconds)
         // .unwrap() is safe here because 7 * 3600 is a valid offset
@@ -31,7 +37,7 @@ impl ReceiptList {
     }
 }
 
-/// Struct for inserting a new receipt header into the database.
+/// Data structure for inserting a new receipt header into the database.
 #[derive(Insertable)]
 #[diesel(table_name = receipt_list)]
 pub struct NewReceiptList {
@@ -54,11 +60,11 @@ pub struct Receipt {
     pub product_id: i32,
     /// Quantity of the product sold.
     pub quantity: i32,
-    /// Price of the product at the time of sale (in satang/cents).
+    /// Price of the product at the time of sale (in satang).
     pub satang_at_sale: i32,
 }
 
-/// Struct for inserting a new item into a receipt.
+/// Data structure for inserting a new item into a receipt.
 #[derive(Insertable)]
 #[diesel(table_name = receipt_item)]
 pub struct NewReceipt {
@@ -68,11 +74,14 @@ pub struct NewReceipt {
     pub product_id: i32,
     /// Quantity being sold.
     pub quantity: i32,
-    /// Sale price at this moment (in satang/cents).
+    /// Sale price at this moment (in satang).
     pub satang_at_sale: i32,
 }
 
 /// Records the historical material usage for a specific receipt item at the time of sale.
+///
+/// This snapshot ensures that even if a recipe changes later, the record of what was
+/// actually consumed for this specific sale remains accurate.
 #[derive(Queryable, Selectable, Serialize, Associations, Debug, Clone)]
 #[diesel(table_name = receipt_item_material)]
 #[diesel(belongs_to(Receipt, foreign_key = receipt_item_id))]
@@ -89,7 +98,7 @@ pub struct ReceiptItemMaterial {
     pub precision: i32,
 }
 
-/// Struct for inserting a new material usage record associated with a receipt item.
+/// Data structure for inserting a new material usage record associated with a receipt item.
 #[derive(Insertable)]
 #[diesel(table_name = receipt_item_material)]
 pub struct NewReceiptItemMaterial {

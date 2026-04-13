@@ -1,3 +1,7 @@
+//! Customer data models.
+//!
+//! This module defines the structs used to represent customers in the database.
+
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
