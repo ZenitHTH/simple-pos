@@ -7,8 +7,6 @@ import { ThemePresetsPanel } from "../panels/ThemePresetsPanel";
 import { GlobalStylesPanel } from "../panels/GlobalStylesPanel";
 import { ThemeExplorerModal } from "../core/ThemeExplorerModal";
 
-// ... (container/item variants) ...
-
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -52,7 +50,13 @@ export function GlobalTuner({
       animate="show"
       className="space-y-12"
     >
-      {/* ... (Header) ... */}
+      <motion.div variants={item} className="mb-8">
+        <h2 className="text-3xl font-black tracking-tight">Global Tuner</h2>
+        <p className="text-muted-foreground mt-2 max-w-2xl text-base">
+          Customize the core aesthetics of your POS system. These settings affect
+          all screens and components universally.
+        </p>
+      </motion.div>
 
       {/* Panels Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -74,7 +78,15 @@ export function GlobalTuner({
           />
         </motion.div>
 
-        {/* ... (GlobalStylesPanel) ... */}
+        {/* Global Styles Column */}
+        <motion.div variants={item}>
+          <GlobalStylesPanel
+            settings={settings}
+            updateSettings={updateSettings}
+            previewZoom={previewZoom}
+            setPreviewZoom={setPreviewZoom}
+          />
+        </motion.div>
       </div>
 
       <ThemeExplorerModal
