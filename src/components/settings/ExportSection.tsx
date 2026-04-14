@@ -8,6 +8,7 @@ import SettingsSection from "@/components/ui/SettingsSection";
 import { Select } from "@/components/ui/Select";
 import { logger } from "@/lib/logger";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 
 /**
  * ExportSection Component
@@ -17,6 +18,7 @@ import { useDatabase } from "@/context/DatabaseContext";
  */
 export default function ExportSection() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   // Default: Last 30 days
   const [startDate, setStartDate] = useState(() => {
     const d = new Date();
@@ -44,7 +46,7 @@ export default function ExportSection() {
       if (!path || !dbKey) return;
 
       await receiptApi.exportReceipts(dbKey, path, ext, start, end);
-      alert(`${label} Export successful!`);
+      await showAlert("Export", `${label} Export successful!`);
     };
 
     try {
@@ -63,7 +65,7 @@ export default function ExportSection() {
       }
     } catch (error) {
       logger.error(`Export failed for format ${format}:`, error);
-      alert(`Export failed for ${format.toUpperCase()}: ` + error);
+      await showAlert("Export Error", `Export failed for ${format.toUpperCase()}: ` + error);
     } finally {
       setLoading(false);
     }

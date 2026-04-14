@@ -4,9 +4,11 @@ import { Customer, NewCustomer } from "@/lib";
 import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 
 export function useCustomerManagement() {
     const { dbKey } = useDatabase();
+    const { showAlert } = useAlert();
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -69,7 +71,7 @@ export function useCustomerManagement() {
             return result;
         } catch (err) {
             logger.error("Failed to save customer:", err);
-            alert(err);
+            await showAlert("Customer Error", String(err));
         } finally {
             setIsSubmitting(false);
         }

@@ -3,10 +3,12 @@ import { useState, useMemo, useEffect } from "react";
 import { materialApi } from "@/lib";
 import { Material } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 import { logger } from "@/lib/logger";
 
 export function useMaterialManagement() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,8 +63,9 @@ export function useMaterialManagement() {
       await materialApi.delete(dbKey, id);
       await fetchMaterials();
     } catch (err: unknown) {
-      alert(
-        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`, 
+      await showAlert(
+        "Material Error",
+        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`
       );
     }
   };
@@ -96,8 +99,9 @@ export function useMaterialManagement() {
       await fetchMaterials();
       setIsModalOpen(false);
     } catch (err: unknown) {
-      alert(
-        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,   
+      await showAlert(
+        "Material Error",
+        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`
       );
     } finally {
       setIsSubmitting(false);

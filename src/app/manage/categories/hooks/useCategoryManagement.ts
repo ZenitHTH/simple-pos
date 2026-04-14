@@ -4,9 +4,11 @@ import { Category } from "@/lib";
 import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 
 export function useCategoryManagement() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -52,7 +54,7 @@ export function useCategoryManagement() {
       setCategories(categories.filter((c) => c.id !== id));
     } catch (err) {
       logger.error("Failed to delete category:", err);
-      alert("Failed to delete category");
+      await showAlert("Category Error", "Failed to delete category");
     }
   };
 
@@ -75,7 +77,7 @@ export function useCategoryManagement() {
       setIsModalOpen(false);
     } catch (err) {
       logger.error("Failed to save category:", err);
-      alert("Failed to save category");
+      await showAlert("Category Error", "Failed to save category");
     } finally {
       setIsSubmitting(false);
     }

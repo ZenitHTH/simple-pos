@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
 import { logger } from "@/lib/logger";
 
 export function useImageManagement() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [images, setImages] = useState<Image[]>([]);
   const [links, setLinks] = useState<ProductImage[]>([]);
   const [products, setProducts] = useState<BackendProduct[]>([]);
@@ -64,7 +66,7 @@ export function useImageManagement() {
       setLinks((prev) => prev.filter((l) => l.image_id !== image.id));
     } catch (err) {
       logger.error("Failed to delete image", err);
-      alert("Failed to delete image");
+      await showAlert("Image Error", "Failed to delete image");
     }
   };
 
@@ -89,7 +91,7 @@ export function useImageManagement() {
       fetchData(); // Refresh all to get new ID and sort
     } catch (err) {
       logger.error("Upload failed", err);
-      alert("Upload failed: " + err);
+      await showAlert("Image Error", "Upload failed: " + err);
     }
   };
 
@@ -152,7 +154,7 @@ export function useImageManagement() {
       setIsPositionModalOpen(false);
     } catch (err) {
       logger.error("Failed to update position:", err);
-      alert("Failed to update position. Check console for details.");
+      await showAlert("Image Error", "Failed to update position. Check console for details.");
     }
   };
 

@@ -5,10 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { stockApi, productApi } from "@/lib";
 import { Stock, BackendProduct } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 import { logger } from "@/lib/logger";
 
 export function useStockManagement() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [products, setProducts] = useState<BackendProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,7 +79,7 @@ export function useStockManagement() {
       setStocks(stocks.filter((s) => s.stock_id !== stockId));
     } catch (err) {
       logger.error("Failed to delete stock:", err);
-      alert("Failed to delete stock entry");
+      await showAlert("Stock Error", "Failed to delete stock entry");
     }
   };
 
@@ -99,7 +101,7 @@ export function useStockManagement() {
       setIsModalOpen(false);
     } catch (err) {
       logger.error("Failed to save stock:", err);
-      alert("Failed to save stock entry");
+      await showAlert("Stock Error", "Failed to save stock entry");
     } finally {
       setIsSubmitting(false);
     }

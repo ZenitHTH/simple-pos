@@ -6,7 +6,8 @@ const FRONTEND_CONFIG = {
   scanDirs: [
     { path: 'src/components', type: 'component' },
     { path: 'src/hooks', type: 'hook' },
-    { path: 'src/lib/api', type: 'api' }
+    { path: 'src/lib/api', type: 'api' },
+    { path: 'src/app', type: 'page/hook' }
   ],
   outputFile: '.agents/ai-components.json'
 };
@@ -61,6 +62,15 @@ async function extractFrontendMetadata(filePath, type) {
     const content = await fs.readFile(filePath, 'utf-8');
     const results = [];
 
+    const imports = [];
+    const importRegex = /import\s+([\s\S]*?)\s+from\s+['"]([^'"]+)['"]/g;
+    let importMatch;
+    while ((importMatch = importRegex.exec(content)) !== null) {
+      const items = importMatch[1].replace(/[\n\r]/g, ' ').replace(/\s+/g, ' ').trim();
+      const source = importMatch[2];
+      imports.push({ source, items });
+    }
+
     const exportRegex = /(?:\/\*\*\s*([\s\S]*?)\s*\*\/)?\s*export\s+(?:async\s+)?(?:const|function|default\s+function)\s+([a-zA-Z0-9_]+)?/g;
     
     let match;
@@ -94,7 +104,8 @@ async function extractFrontendMetadata(filePath, type) {
         path: normalizedPath,
         description,
         keywords: generateKeywords(name, normalizedPath, description, type),
-        props: propsMatch ? propsMatch[1] : null
+        props: propsMatch ? propsMatch[1] : null,
+        imports
       });
     }
 
@@ -112,6 +123,13 @@ async function extractBackendMetadata(filePath, type) {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     const results = [];
+
+    const imports = [];
+    const useRegex = /^\s*use\s+([^;]+);/gm;
+    let useMatch;
+    while ((useMatch = useRegex.exec(content)) !== null) {
+      imports.push(useMatch[1].trim());
+    }
 
     // Match pub fn, pub async fn, or #[tauri::command] followed by pub fn
     const rustRegex = /(?:\/\/\/([\s\S]*?)\n)?\s*(?:#\[tauri::command\]\s*)?pub\s+(?:async\s+)?fn\s+([a-zA-Z0-9_]+)\s*([\s\S]*?)\s*\{/g;
@@ -135,7 +153,8 @@ async function extractBackendMetadata(filePath, type) {
         path: normalizedPath,
         description,
         signature,
-        keywords: generateKeywords(name, normalizedPath, description, type)
+        keywords: generateKeywords(name, normalizedPath, description, type),
+        imports
       });
     }
 

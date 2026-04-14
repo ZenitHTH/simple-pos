@@ -34,14 +34,37 @@ export function usePOSLogic(initialProducts: Product[]) {
   const searchQuery = searchParams.get("search") || "";
 
   // Local State (Cart)
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(
+    isMockupMode ? exampleCartItems : []
+  );
   const [categories, setCategories] = useState<string[]>(["All"]);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(
+    isMockupMode && mockupView === "payment"
+  );
 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<
     number | undefined
   >(undefined);
+
+  const [prevIsMockupMode, setPrevIsMockupMode] = useState(isMockupMode);
+  const [prevMockupView, setPrevMockupView] = useState(mockupView);
+
+  // Modern React 19/2025 pattern: Avoid useEffect for syncing state. Update during render instead.
+  if (isMockupMode !== prevIsMockupMode) {
+    setPrevIsMockupMode(isMockupMode);
+    setCartItems(isMockupMode ? exampleCartItems : []);
+    if (isMockupMode) {
+      setIsPaymentModalOpen(mockupView === "payment");
+    } else {
+      setIsPaymentModalOpen(false);
+    }
+  }
+
+  if (isMockupMode && mockupView !== prevMockupView) {
+    setPrevMockupView(mockupView);
+    setIsPaymentModalOpen(mockupView === "payment");
+  }
 
   useEffect(() => {
     if (!dbKey) return;
@@ -54,26 +77,6 @@ export function usePOSLogic(initialProducts: Product[]) {
         logger.error("Failed to fetch initial pos data", err);
       });
   }, [dbKey]);
-
-  // Effect to handle mockup mode cart items
-  useEffect(() => {
-    if (isMockupMode) {
-      setCartItems(exampleCartItems);
-    } else {
-      setCartItems([]);
-    }
-  }, [isMockupMode]);
-
-  // Effect to view syncing
-  useEffect(() => {
-    if (isMockupMode) {
-      if (mockupView === "payment") {
-        setIsPaymentModalOpen(true);
-      } else {
-        setIsPaymentModalOpen(false);
-      }
-    }
-  }, [isMockupMode, mockupView]);
 
   const updateURL = useCallback(
     (key: string, value: string) => {

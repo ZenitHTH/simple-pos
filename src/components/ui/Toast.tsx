@@ -79,6 +79,8 @@ export const Toast = ({
 
   return (
     <div
+      role="alert"
+      aria-live="assertive"
       className={cn(
         "flex max-w-md min-w-[300px] overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md transition-all duration-300 ease-in-out",
         bg,
