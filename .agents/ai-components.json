@@ -1098,45 +1098,6 @@
     "props": "BadgeProps"
   },
   {
-    "name": "POSClient",
-    "type": "component",
-    "path": "src/components/pos/POSClient.tsx",
-    "description": "POSClient component serves as the main entry point for the Point of Sale interface. It manages the product grid, category filtering, search, and the shopping cart. @param {POSClientProps} props - The component props. @param {Product[]} [props.initialProducts] - Optional initial list of products to display.",
-    "keywords": [
-      "p",
-      "o",
-      "s",
-      "client",
-      "posclient",
-      "pos",
-      "component",
-      "serves",
-      "main",
-      "entry",
-      "point",
-      "sale",
-      "interface",
-      "manages",
-      "product",
-      "grid",
-      "category",
-      "filtering",
-      "search",
-      "shopping",
-      "cart",
-      "param",
-      "posclientprops",
-      "props",
-      "initialproducts",
-      "optional",
-      "initial",
-      "list",
-      "products",
-      "display"
-    ],
-    "props": "POSClientProps"
-  },
-  {
     "name": "UISetupMode",
     "type": "component",
     "path": "src/components/settings/UISetupMode.tsx",
@@ -1275,25 +1236,43 @@
     "props": null
   },
   {
-    "name": "PaymentModal",
+    "name": "POSClient",
     "type": "component",
-    "path": "src/components/payment/PaymentModal.tsx",
-    "description": "PaymentModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "path": "src/components/pos/POSClient.tsx",
+    "description": "POSClient component serves as the main entry point for the Point of Sale interface. It manages the product grid, category filtering, search, and the shopping cart. @param {POSClientProps} props - The component props. @param {Product[]} [props.initialProducts] - Optional initial list of products to display.",
     "keywords": [
-      "payment",
-      "modal",
-      "paymentmodal",
+      "p",
+      "o",
+      "s",
+      "client",
+      "posclient",
+      "pos",
       "component",
+      "serves",
+      "main",
+      "entry",
+      "point",
+      "sale",
+      "interface",
+      "manages",
+      "product",
+      "grid",
+      "category",
+      "filtering",
+      "search",
+      "shopping",
+      "cart",
       "param",
-      "object",
+      "posclientprops",
       "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
+      "initialproducts",
+      "optional",
+      "initial",
+      "list",
+      "products",
+      "display"
     ],
-    "props": "PaymentModalProps"
+    "props": "POSClientProps"
   },
   {
     "name": "StockTable",
@@ -2375,6 +2354,55 @@
     "props": null
   },
   {
+    "name": "PaymentModal",
+    "type": "component",
+    "path": "src/components/payment/PaymentModal.tsx",
+    "description": "PaymentModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "payment",
+      "modal",
+      "paymentmodal",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "PaymentModalProps"
+  },
+  {
+    "name": "CartEmpty",
+    "type": "component",
+    "path": "src/components/cart/CartEmpty.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "empty",
+      "cartempty",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null
+  },
+  {
+    "name": "Cart",
+    "type": "component",
+    "path": "src/components/cart/Cart.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartProps"
+  },
+  {
     "name": "SmoothScroll",
     "type": "component",
     "path": "src/components/common/SmoothScroll.tsx",
@@ -2405,34 +2433,6 @@
       "component"
     ],
     "props": null
-  },
-  {
-    "name": "CartEmpty",
-    "type": "component",
-    "path": "src/components/cart/CartEmpty.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "empty",
-      "cartempty",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "Cart",
-    "type": "component",
-    "path": "src/components/cart/Cart.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartProps"
   },
   {
     "name": "PasswordSetupScreen",
@@ -2981,53 +2981,6 @@
     "props": "ButtonTunerProps"
   },
   {
-    "name": "TunerSidebar",
-    "type": "component",
-    "path": "src/components/design-tuner/core/TunerSidebar.tsx",
-    "description": "TunerSidebar Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "tuner",
-      "sidebar",
-      "tunersidebar",
-      "design-tuner",
-      "core",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "TunerSidebarProps"
-  },
-  {
-    "name": "ThemeExplorerModal",
-    "type": "component",
-    "path": "src/components/design-tuner/core/ThemeExplorerModal.tsx",
-    "description": "ThemeExplorerModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "theme",
-      "explorer",
-      "modal",
-      "themeexplorermodal",
-      "design-tuner",
-      "core",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "ThemeExplorerModalProps"
-  },
-  {
     "name": "TypographyPreview",
     "type": "component",
     "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
@@ -3289,6 +3242,53 @@
       "rendered"
     ],
     "props": "ButtonStylesPanelProps"
+  },
+  {
+    "name": "TunerSidebar",
+    "type": "component",
+    "path": "src/components/design-tuner/core/TunerSidebar.tsx",
+    "description": "TunerSidebar Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "tuner",
+      "sidebar",
+      "tunersidebar",
+      "design-tuner",
+      "core",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "TunerSidebarProps"
+  },
+  {
+    "name": "ThemeExplorerModal",
+    "type": "component",
+    "path": "src/components/design-tuner/core/ThemeExplorerModal.tsx",
+    "description": "ThemeExplorerModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "theme",
+      "explorer",
+      "modal",
+      "themeexplorermodal",
+      "design-tuner",
+      "core",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "ThemeExplorerModalProps"
   },
   {
     "name": "useTax",
