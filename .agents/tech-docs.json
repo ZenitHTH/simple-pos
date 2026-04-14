@@ -1,0 +1,95 @@
+{
+  "project_metadata": {
+    "name": "Vibe POS",
+    "version": "2.0.0",
+    "stack": "Tauri v2, Next.js 16, Rust, Diesel ORM, SQLCipher",
+    "encryption": "AES-256 (SQLCipher)",
+    "description": "Local-first encrypted Point of Sale system with dynamic UI scaling and content-addressable image storage."
+  },
+  "architecture_map": {
+    "backend_rust": {
+      "root": "src-tauri/",
+      "core_logic": {
+        "main": "src-tauri/src/main.rs (Entry point)",
+        "lib": "src-tauri/src/lib.rs (Tauri setup and command registration)",
+        "commands": "src-tauri/src/commands/ (Tauri invoke handlers)"
+      },
+      "local_crates": {
+        "database": {
+          "path": "src-tauri/database/",
+          "purpose": "Diesel ORM models, SQLCipher connection, and migrations.",
+          "key_files": ["src/lib.rs", "src/schema.rs", "migrations/"]
+        },
+        "settings_lib": {
+          "path": "src-tauri/settings_lib/",
+          "purpose": "Manages unencrypted settings.json for UI preferences.",
+          "key_files": ["src/manager.rs", "src/models.rs"]
+        },
+        "export_lib": {
+          "path": "src-tauri/export_lib/",
+          "purpose": "Data export logic for CSV, XLSX, and ODS formats.",
+          "key_files": ["src/xlsx_export.rs", "src/thai_accounting.rs"]
+        },
+        "image_lib": {
+          "path": "src-tauri/image_lib/",
+          "purpose": "Content-addressable storage for product images using SHA-256.",
+          "key_files": ["src/lib.rs"]
+        }
+      }
+    },
+    "frontend_nextjs": {
+      "root": "src/",
+      "app_router": {
+        "path": "src/app/",
+        "key_pages": [
+          "page.tsx (POS Home)",
+          "manage/page.tsx (Product Management)",
+          "manage/material/recipe/page.tsx (Recipe Builder)",
+          "design/tuner/page.tsx (Design Mode UI)"
+        ],
+        "styles": "src/app/styles/ (Tunable tokens and component CSS)"
+      },
+      "components": {
+        "path": "src/components/",
+        "categories": {
+          "pos": "Main POS interface and product grid.",
+          "manage": "Management tables and forms (Products, Stock, Categories).",
+          "ui": "Reusable base components (Button, Input, Table, etc.).",
+          "design-mode": "On-canvas design adjustment tools.",
+          "design-tuner": "Detailed design token editors."
+        }
+      },
+      "state_management": {
+        "path": "src/context/",
+        "contexts": {
+          "SettingsContext": "UI scaling, theme tokens, and undo/redo.",
+          "DatabaseContext": "SQLCipher key management and connection state.",
+          "ToastContext": "Global notification system.",
+          "AlertContext": "Themed replacement for window.alert().",
+          "MockupContext": "Development-only mock data toggle."
+        }
+      },
+      "api_layer": {
+        "path": "src/lib/api/",
+        "core": "invoke.ts (Tauri invoke wrapper with mock support)",
+        "handlers": "src/lib/api/mock/ (Browser-based development handlers)"
+      }
+    }
+  },
+  "data_flow_integrity": {
+    "financial_precision": {
+      "strategy": "Integer scaling (Satang) to avoid float inaccuracies.",
+      "backend": "src-tauri/src/commands/utils.rs (float_to_scaled)",
+      "frontend": "src/lib/utils/precision.ts (scaledToFloat)"
+    },
+    "image_storage": {
+      "strategy": "Content-addressable storage (SHA-256) in app data directory.",
+      "coordinate_system": "Packed position string 'X% Y%|Scale' for object-position control."
+    }
+  },
+  "registry_relations": {
+    "component_to_command": "Frontend components in @src/components/ navigate through @src/lib/api/ to trigger Rust commands in @src-tauri/src/commands/.",
+    "model_consistency": "TypeScript types in @src/lib/types/ must align with Diesel models in @src-tauri/database/src/mod.rs.",
+    "design_tokens": "Settings defined in @src/context/settings/constants.ts are injected as CSS variables used by @src/app/styles/tokens.css."
+  }
+}

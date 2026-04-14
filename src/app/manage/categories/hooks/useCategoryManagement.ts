@@ -10,7 +10,7 @@ export function useCategoryManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +23,8 @@ export function useCategoryManagement() {
     const fetchCategories = async () => {
       if (!dbKey) return;
       try {
-        setLoading(true);
+        // Only show loading if we have no categories yet (first load of the session)
+        if (categories.length === 0) setLoading(true);
         const data = await categoryApi.getAll(dbKey);
         setCategories(data);
       } catch (err) {
