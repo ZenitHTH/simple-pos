@@ -185,4 +185,25 @@ if (value !== prevValue) {
 
 ---
 
+## 🦀 8. Rust 2024 Edition (Backend Standard)
+
+The Tauri backend (`src-tauri` and all local crates like `database`, `export_lib`, `image_lib`, `settings_lib`) is strictly compiled using the **Rust 2024 Edition** (Stabilized in Rust 1.85.0). 
+
+When writing Rust code for Vibe POS, strictly adhere to 2024 edition idioms:
+
+### ✨ Key 2024 Ergonomic Improvements
+*   **Drop Order Fixes:** The borrow checker is smarter with temporary variables.
+    *   Temporaries in **tail expressions** drop *after* local variables, resolving many lifetime issues in block returns.
+    *   Temporaries in `if let` guards drop immediately if the condition fails, freeing locks (like `MutexGuard`) before executing the `else` block.
+*   **RPIT Lifetime Capture:** Returning `impl Trait` now automatically captures *all* in-scope parameters and lifetimes by default. Use the new `use<..>` syntax if you need to restrict captured lifetimes.
+*   **Async Closures:** Use native `async || {}` closures for returning futures that capture local environment variables cleanly.
+*   **Future in Prelude:** `Future` and `IntoFuture` are in the standard prelude; no need for `use std::future::Future;`.
+
+### 🛡️ Stricter `unsafe` Requirements
+Rust 2024 introduces stricter boundaries for unsafe behavior:
+*   **Unsafe Extern:** External FFI blocks must be explicitly marked `unsafe extern`.
+*   **Unsafe Attributes:** Linker attributes like `#[no_mangle]` or `#[export_name]` can cause undefined behavior if misused, so they now require an unsafe wrapper: `#[unsafe(no_mangle)]`.
+*   **`unsafe_op_in_unsafe_fn`:** This lint is a warning by default. Even inside an `unsafe fn`, you **must** wrap the specifically dangerous operations in an `unsafe {}` block.
+*   **`static mut` References:** Creating a reference to a `static mut` item is an error. Use `&raw const` or `&raw mut` instead.
+
 *This manual was generated to provide a clear, visual understanding of the Vibe POS architecture and workflows.*
