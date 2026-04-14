@@ -4,11 +4,11 @@ import { BackendProduct, NewProduct, Category } from "@/lib";
 import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
-import { useToast } from "@/context/ToastContext";
+import { useAlert } from "@/context/AlertContext";
 
 export function useProductManagement() {
   const { dbKey } = useDatabase();
-  const { showToast } = useToast();
+  const { showAlert } = useAlert();
   const [products, setProducts] = useState<BackendProduct[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,7 @@ export function useProductManagement() {
       setProducts(products.filter((p) => p.product_id !== id));
     } catch (err) {
       logger.error("Failed to delete product:", err);
-      showToast(String(err), "error");
+      await showAlert("Product Error", String(err));
     }
   };
 
@@ -97,7 +97,7 @@ export function useProductManagement() {
       return result;
     } catch (err) {
       logger.error("Failed to save product:", err);
-      showToast(String(err), "error");
+      await showAlert("Product Error", String(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -136,7 +136,7 @@ export function useProductManagement() {
         ),
       );
       logger.error("Failed to toggle stock mode:", err);
-      showToast("Failed to toggle stock mode", "error");
+      await showAlert("Product Error", "Failed to toggle stock mode");
     }
   };
 

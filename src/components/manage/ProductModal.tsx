@@ -125,7 +125,7 @@ export default function ProductModal({
         setSelectedImage(savedImage);
       } catch (err) {
         logger.error("Failed to upload image:", err);
-        await showAlert("Failed to upload image.");
+        await showAlert("Upload Error", "Failed to upload image.");
       } finally {
         setIsUploading(false);
       }

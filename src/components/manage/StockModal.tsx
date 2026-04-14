@@ -55,7 +55,7 @@ export default function StockModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (productId === 0) {
-      await showAlert("Please select a product");
+      await showAlert("Validation Error", "Please select a product.");
       return;
     }
     onSubmit(productId, quantity);

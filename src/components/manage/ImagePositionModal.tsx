@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import NumberSlider from "@/components/ui/NumberSlider";
 import { convertFileSrc } from "@/lib/api/invoke";
 import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
 
 interface ImagePositionModalProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export default function ImagePositionModal({
   image,
   onUpdate,
 }: ImagePositionModalProps) {
+  const { showAlert } = useAlert();
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPercentages, setCroppedAreaPercentages] =
@@ -151,7 +153,7 @@ export default function ImagePositionModal({
       onClose();
     } catch (err) {
       logger.error("Critical: Failed to save position:", err);
-      alert("Error saving: " + err);
+      await showAlert("Image Error", "Error saving: " + err);
     } finally {
       setIsSubmitting(false);
     }

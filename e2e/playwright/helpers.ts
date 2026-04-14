@@ -34,7 +34,7 @@ export async function clickElement(page: Page, selector: string | any) {
     console.log("Executing click via dispatchEvent...");
     await locator.dispatchEvent('click');
   } catch (err) {
-    console.error(`Failed to click element: ${err.message}`);
+    console.error(`Failed to click element: ${(err as Error).message}`);
     throw err;
   }
 }
