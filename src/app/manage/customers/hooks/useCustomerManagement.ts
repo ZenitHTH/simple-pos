@@ -10,7 +10,7 @@ export function useCustomerManagement() {
     const { dbKey } = useDatabase();
     const { showAlert } = useAlert();
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,7 +24,7 @@ export function useCustomerManagement() {
     const fetchCustomers = async () => {
         if (!dbKey) return;
         try {
-            setLoading(true);
+            if (customers.length === 0) setLoading(true);
             const data = await customerApi.getAll(dbKey);
             setCustomers(data);
         } catch (err) {
