@@ -147,4 +147,42 @@ To help AI assistants (like the Gemini CLI) navigate the codebase instantly, we 
 
 ---
 
+## 🚀 7. React 19 vs. 18 Developer Cheat Sheet (2025 Standard)
+
+Since Vibe POS uses **React 19**, it is critical to follow the modern "2025" paradigm shift. The focus is now on **Automation and Declarative state** rather than manual synchronization.
+
+### 🚀 Key Improvements
+| Feature | React 18 (Manual) | React 19 (Automatic) |
+| :--- | :--- | :--- |
+| **Memoization** | Manual `useMemo`, `useCallback`, `React.memo`. | **React Compiler** automatically optimizes re-renders. |
+| **Form Handling** | Manual `useState` for loading, error, and data. | **Actions** handle async transitions & state automatically. |
+| **Data Fetching** | `useEffect` or complex Suspense patterns. | **`use()` hook** handles Promises and Context in-render. |
+
+### 🛠️ The New Hooks
+*   **`useActionState`**: Replaces complex form state logic. It tracks the pending state, errors, and the returned value of an async action automatically.
+*   **`useFormStatus`**: A "Context-like" hook for child components to access a parent `<form>`'s status (e.g., `pending`) without prop drilling.
+*   **`useOptimistic`**: Simplifies "optimistic UI" (showing the result before the server responds) by managing the temporary state and reverting automatically on failure.
+*   **`use()`**: A unique hook that can be called **conditionally** or inside loops to read a Promise or Context. It replaces `useContext` and simplifies async data loading.
+
+### ⚠️ The "useEffect" Rule (2025 Paradigm)
+**`useEffect` should be a last resort.** 
+
+In Vibe POS, do not use `useEffect` to synchronize state based on props or context changes. Instead, use the **"updating state during render"** pattern:
+
+```typescript
+// ✅ GOOD: Updating state during render phase
+const [prevValue, setPrevValue] = useState(value);
+if (value !== prevValue) {
+  setPrevValue(value);
+  setDependentState(newValue);
+}
+```
+
+### 🏗️ Breaking Changes to Note
+*   **Ref as a Prop**: You no longer need `forwardRef`. Just pass `ref` as a standard prop to functional components.
+*   **Metadata Support**: Direct use of `<title>`, `<meta>`, and `<link>` tags anywhere in the tree; React automatically hoists them to the head.
+*   **Asset Loading**: New APIs like `preload` and `preinit` for early resource loading.
+
+---
+
 *This manual was generated to provide a clear, visual understanding of the Vibe POS architecture and workflows.*
