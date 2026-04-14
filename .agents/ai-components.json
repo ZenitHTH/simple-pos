@@ -1098,6 +1098,45 @@
     "props": "BadgeProps"
   },
   {
+    "name": "POSClient",
+    "type": "component",
+    "path": "src/components/pos/POSClient.tsx",
+    "description": "POSClient component serves as the main entry point for the Point of Sale interface. It manages the product grid, category filtering, search, and the shopping cart. @param {POSClientProps} props - The component props. @param {Product[]} [props.initialProducts] - Optional initial list of products to display.",
+    "keywords": [
+      "p",
+      "o",
+      "s",
+      "client",
+      "posclient",
+      "pos",
+      "component",
+      "serves",
+      "main",
+      "entry",
+      "point",
+      "sale",
+      "interface",
+      "manages",
+      "product",
+      "grid",
+      "category",
+      "filtering",
+      "search",
+      "shopping",
+      "cart",
+      "param",
+      "posclientprops",
+      "props",
+      "initialproducts",
+      "optional",
+      "initial",
+      "list",
+      "products",
+      "display"
+    ],
+    "props": "POSClientProps"
+  },
+  {
     "name": "UISetupMode",
     "type": "component",
     "path": "src/components/settings/UISetupMode.tsx",
@@ -1234,45 +1273,6 @@
       "rendered"
     ],
     "props": null
-  },
-  {
-    "name": "POSClient",
-    "type": "component",
-    "path": "src/components/pos/POSClient.tsx",
-    "description": "POSClient component serves as the main entry point for the Point of Sale interface. It manages the product grid, category filtering, search, and the shopping cart. @param {POSClientProps} props - The component props. @param {Product[]} [props.initialProducts] - Optional initial list of products to display.",
-    "keywords": [
-      "p",
-      "o",
-      "s",
-      "client",
-      "posclient",
-      "pos",
-      "component",
-      "serves",
-      "main",
-      "entry",
-      "point",
-      "sale",
-      "interface",
-      "manages",
-      "product",
-      "grid",
-      "category",
-      "filtering",
-      "search",
-      "shopping",
-      "cart",
-      "param",
-      "posclientprops",
-      "props",
-      "initialproducts",
-      "optional",
-      "initial",
-      "list",
-      "products",
-      "display"
-    ],
-    "props": "POSClientProps"
   },
   {
     "name": "PaymentModal",
@@ -2486,6 +2486,24 @@
     "props": "ImportExportControlsProps"
   },
   {
+    "name": "ThemeLibraryModal",
+    "type": "component",
+    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "library",
+      "modal",
+      "themelibrarymodal",
+      "manage",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemeLibraryModalProps"
+  },
+  {
     "name": "VolumeEdge",
     "type": "component",
     "path": "src/components/manage/recipe/VolumeEdge.tsx",
@@ -2675,24 +2693,6 @@
       "component"
     ],
     "props": null
-  },
-  {
-    "name": "ThemeLibraryModal",
-    "type": "component",
-    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "theme",
-      "library",
-      "modal",
-      "themelibrarymodal",
-      "manage",
-      "settings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ThemeLibraryModalProps"
   },
   {
     "name": "SidebarItem",
@@ -2981,52 +2981,6 @@
     "props": "ButtonTunerProps"
   },
   {
-    "name": "TypographyPreview",
-    "type": "component",
-    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
-    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "typography",
-      "preview",
-      "typographypreview",
-      "design-tuner",
-      "previews",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "TypographyPreviewProps"
-  },
-  {
-    "name": "ThemeCard",
-    "type": "component",
-    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
-    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "theme",
-      "card",
-      "themecard",
-      "design-tuner",
-      "previews",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "ThemeCardProps"
-  },
-  {
     "name": "TunerSidebar",
     "type": "component",
     "path": "src/components/design-tuner/core/TunerSidebar.tsx",
@@ -3072,6 +3026,52 @@
       "rendered"
     ],
     "props": "ThemeExplorerModalProps"
+  },
+  {
+    "name": "TypographyPreview",
+    "type": "component",
+    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
+    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "typography",
+      "preview",
+      "typographypreview",
+      "design-tuner",
+      "previews",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "TypographyPreviewProps"
+  },
+  {
+    "name": "ThemeCard",
+    "type": "component",
+    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
+    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "theme",
+      "card",
+      "themecard",
+      "design-tuner",
+      "previews",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "ThemeCardProps"
   },
   {
     "name": "TypographyStylesPanel",
