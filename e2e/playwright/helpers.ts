@@ -15,17 +15,28 @@ export async function setInputValue(page: Page, selector: string, value: string)
 }
 
 /**
- * Clicks an element, ensuring it's in view.
+ * Clicks an element, ensuring it's in view and attached to the DOM.
  */
 export async function clickElement(page: Page, selector: string | any) {
   const locator = typeof selector === 'string' ? page.locator(selector) : selector;
   
-  // Wait a tiny bit for any animations to finish
-  await page.waitForTimeout(200);
-  
-  await locator.scrollIntoViewIfNeeded().catch(() => {});
-  console.log("Executing click via dispatchEvent...");
-  await locator.dispatchEvent('click');
+  try {
+    // Wait for the element to be present in the DOM
+    await locator.waitFor({ state: 'attached', timeout: 10000 });
+    
+    // Wait a tiny bit for any animations or transitions to settle
+    await page.waitForTimeout(300);
+    
+    await locator.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {
+        console.log("Note: scrollIntoViewIfNeeded failed or timed out, proceeding anyway");
+    });
+
+    console.log("Executing click via dispatchEvent...");
+    await locator.dispatchEvent('click');
+  } catch (err) {
+    console.error(`Failed to click element: ${err.message}`);
+    throw err;
+  }
 }
 
 /**
@@ -171,19 +182,17 @@ export async function navigateTo(page: Page, groupName: string | null, linkName:
   // Check for mobile hamburger
   const hamburger = page.locator('button.text-muted.-ml-2');
   if (await hamburger.isVisible()) {
-    await hamburger.click();
+    await clickElement(page, hamburger);
     await page.waitForTimeout(500);
   }
 
   if (groupName) {
     const group = page.getByRole('button').filter({ hasText: groupName });
-    await group.waitFor({ state: 'visible' });
-    await group.click({ force: true });
+    await clickElement(page, group);
     await page.waitForTimeout(500);
   }
 
   const link = page.getByRole('link', { name: linkName, exact: true });
-  await link.waitFor({ state: 'visible' });
-  await link.click({ force: true });
+  await clickElement(page, link);
   await page.waitForTimeout(1000);
 }

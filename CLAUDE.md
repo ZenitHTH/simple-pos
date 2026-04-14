@@ -99,7 +99,27 @@ Use Diesel CLI: `diesel migration generate <name>`, then implement in `src-tauri
 
 ## E2E Testing
 
-Uses WebdriverIO with `tauri-driver` to test the desktop app. Configuration in `wdio.conf.mjs`.
+Uses Playwright to test the desktop app via Chrome DevTools Protocol (CDP).
+
+### Runner Script: `scripts/run-e2e.mjs`
+Automates the full test lifecycle:
+1.  **Cleanup**: Deletes existing `simple-pos.db` to ensure a fresh test state.
+2.  **Build**: Compiles the Next.js frontend and the Tauri debug binary.
+3.  **Orchestration**: Starts the Next.js dev server and waits for readiness (200 OK).
+4.  **Launch**: Spawns the Tauri app with `--remote-debugging-port=9223`.
+5.  **Execution**: Runs `npx playwright test`.
+6.  **Cleanup**: Gracefully terminates all background processes.
+
+### Commands
+| Command | Description |
+| ------- | ----------- |
+| `npm run test:e2e` | Run the full Playwright pipeline (includes build) |
+| `node scripts/run-e2e.mjs --skip-build` | Run tests faster if already built |
+
+### Test Structure
+- `e2e/playwright/vibe-pos.spec.ts`: Consolidated comprehensive workflow test.
+- `e2e/playwright/helpers.ts`: Resilient helper functions for setup, navigation, and interaction.
+
 
 ## Project Structure
 

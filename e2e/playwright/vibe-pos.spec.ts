@@ -42,7 +42,7 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     
     console.log("Creating new category...");
     await clickElement(page, page.getByRole('button', { name: /New Category/i }));
-    await setInputValue(page, 'input[placeholder="e.g., Coffee"]', 'Beverages');
+    await page.locator('div:has(> label:text-is("Category Name")) input').fill('Beverages');
     await clickElement(page, page.getByRole('button', { name: /Save Category/i }));
     
     // Verify category exists in table
@@ -60,22 +60,23 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await page.waitForTimeout(1000);
     
     console.log("Entering product details...");
-    await page.getByLabel('Title').fill('Espresso');
+    // The Input component doesn't have htmlFor, so we find it by the parent label
+    await page.locator('div:has(> label:text-is("Title")) input').fill('Espresso');
     
     // Select Category (Custom Select component)
     console.log("Selecting category...");
-    // The trigger usually has "Select Category" text
-    const categoryTrigger = page.locator('button, div').filter({ hasText: /^Select Category$/ }).last();
+    // Find the select trigger next to the Category label
+    const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
     await clickElement(page, categoryTrigger);
     
     // Wait for popover and select "Beverages"
     console.log("Waiting for Beverages option...");
-    const option = page.getByRole('option', { name: 'Beverages' }).or(page.locator('div.bg-popover').getByText('Beverages', { exact: true }));
+    const option = page.locator('div.bg-popover').getByText('Beverages', { exact: true });
     await clickElement(page, option);
     
     // Set Price (Satang) - 5000 satang = 50.00
     console.log("Setting price...");
-    await page.getByLabel('Price (Satang)').fill('5000');
+    await page.locator('div:has(> label:text-is("Price (Satang)")) input').fill('5000');
     
     console.log("Saving product...");
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
@@ -100,32 +101,35 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await clickElement(page, productCard);
     
     // Verify it's in the cart
-    await expect(page.locator('aside')).toContainText('Espresso', { timeout: 10000 });
+    // The cart container is a Card with "Current Order" in the header
+    const cart = page.locator('div.bg-card').filter({ hasText: 'Current Order' }).first();
+    await expect(cart).toContainText('Espresso', { timeout: 10000 });
     
     // Click Checkout/Charge
     console.log("Checking out...");
     await clickElement(page, page.getByRole('button', { name: /Charge|Checkout/i }));
     
     // Payment Modal
-    await expect(page.locator('div:has-text("Cash Payment")')).toBeVisible({ timeout: 10000 });
+    console.log("Waiting for Payment Modal...");
+    const paymentModal = page.locator('div.bg-card').filter({ hasText: 'Cash Payment' }).first();
+    await expect(paymentModal).toBeVisible({ timeout: 10000 });
     
-    // Click "Exact"
-    const exactBtn = page.getByRole('button', { name: /Exact|฿50\.00/i });
-    if (await exactBtn.isVisible()) {
-        await clickElement(page, exactBtn);
-    } else {
-        await clickElement(page, page.locator('button.border-primary\\/20').first());
-    }
+    // Click first quick amount button (e.g., $100)
+    console.log("Selecting quick amount...");
+    const quickAmountBtn = page.locator('button.bg-primary\\/10').first();
+    await clickElement(page, quickAmountBtn);
     
     // Confirm Payment
     console.log("Confirming payment...");
-    await clickElement(page, page.getByRole('button', { name: /Confirm|Complete|Pay/i }));
+    await clickElement(page, page.getByRole('button', { name: /Confirm Payment/i }));
     
     // Modal should close
-    await expect(page.locator('div:has-text("Cash Payment")')).toBeHidden({ timeout: 15000 });
+    console.log("Waiting for payment modal to close...");
+    await expect(paymentModal).toBeHidden({ timeout: 15000 });
     
     // Cart should be empty
-    await expect(page.locator('aside')).toContainText(/Your cart is empty/i, { timeout: 10000 });
+    console.log("Verifying cart is empty...");
+    await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
     console.log("Workflow completed successfully!");
   });
 });
