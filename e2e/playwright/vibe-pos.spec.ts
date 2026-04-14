@@ -60,8 +60,7 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await page.waitForTimeout(1000);
     
     console.log("Entering product details...");
-    // The Input component doesn't have htmlFor, so we find it by the parent label
-    await page.locator('div:has(> label:text-is("Title")) input').fill('Espresso');
+    await page.getByLabel('Title').fill('Espresso');
     
     // Select Category (Custom Select component)
     console.log("Selecting category...");
@@ -76,7 +75,7 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     
     // Set Price (Satang) - 5000 satang = 50.00
     console.log("Setting price...");
-    await page.locator('div:has(> label:text-is("Price (Satang)")) input').fill('5000');
+    await page.getByLabel('Price (Satang)').fill('5000');
     
     console.log("Saving product...");
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
@@ -131,5 +130,46 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     console.log("Verifying cart is empty...");
     await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
     console.log("Workflow completed successfully!");
+  });
+
+  test('Step 3: Verify Duplicate Product Name Alert', async () => {
+    console.log("Navigating to Product Management for duplicate check...");
+    await navigateTo(page, 'Management', 'Product Management');
+    
+    console.log("Attempting to create duplicate product 'Espresso'...");
+    await clickElement(page, page.getByRole('button', { name: /New Product/i }));
+    await page.waitForTimeout(500);
+    
+    await page.getByLabel('Title').fill('Espresso');
+    
+    // Select Category
+    const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
+    await clickElement(page, categoryTrigger);
+    const option = page.locator('div.bg-popover').getByText('Beverages', { exact: true });
+    await clickElement(page, option);
+    
+    await page.getByLabel('Price (Satang)').fill('1000');
+    
+    console.log("Saving duplicate product...");
+    await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
+    
+    // Verify AlertDialog appears
+    console.log("Verifying AlertDialog notification...");
+    const alertDialog = page.getByRole('alertdialog');
+    await expect(alertDialog).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('heading', { name: /Product Error/i })).toBeVisible();
+    await expect(alertDialog.getByText(/exists/i)).toBeVisible();
+    
+    // Click OK on AlertDialog
+    console.log("Closing AlertDialog...");
+    const okBtn = alertDialog.getByRole('button', { name: /OK/i });
+    await clickElement(page, okBtn);
+    
+    // Verify AlertDialog is hidden
+    await expect(alertDialog).toBeHidden({ timeout: 5000 });
+    console.log("AlertDialog closed successfully.");
+    
+    // Close modal
+    await clickElement(page, page.getByRole('button', { name: /Cancel/i }));
   });
 });
