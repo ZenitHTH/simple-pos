@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useEffect,
+  use,
   useRef,
   ReactNode,
 } from "react";
@@ -166,7 +167,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 }
 
 export function useSettings() {
-  const context = React.use(SettingsContext);
+  const context = use(SettingsContext);
   if (context === undefined) {
     throw new Error("useSettings must be used within a SettingsProvider");
   }

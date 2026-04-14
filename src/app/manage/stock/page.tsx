@@ -2,7 +2,7 @@
 
 import { FaPlus, FaProjectDiagram } from "react-icons/fa";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StockModal from "@/components/manage/StockModal";
 import { useStockManagement } from "./hooks/useStockManagement";
 import StockTable from "@/components/manage/StockTable";
@@ -23,15 +23,18 @@ export default function StockPage() {
     initialTab,
   );
 
-  // Sync tab with URL
-  useEffect(() => {
+  const [prevSearchParams, setPrevSearchParams] = useState(searchParams);
+
+  // Modern React 19 pattern: Sync state during render phase
+  if (searchParams !== prevSearchParams) {
+    setPrevSearchParams(searchParams);
     const tab = searchParams.get("tab");
     if (tab === "materials") {
       setActiveTab("materials");
     } else {
       setActiveTab("products");
     }
-  }, [searchParams]);
+  }
 
   const {
     stocks,
