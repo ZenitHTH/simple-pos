@@ -11,7 +11,7 @@ export function useImageManagement() {
   const [images, setImages] = useState<Image[]>([]);
   const [links, setLinks] = useState<ProductImage[]>([]);
   const [products, setProducts] = useState<BackendProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Linking Modal State
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
@@ -21,7 +21,7 @@ export function useImageManagement() {
 
   const fetchData = useCallback(async () => {
     if (!dbKey) return;
-    setLoading(true);
+    if (images.length === 0) setLoading(true);
     try {
       // Parallel fetch
       const [imgs, lnks, prods] = await Promise.all([

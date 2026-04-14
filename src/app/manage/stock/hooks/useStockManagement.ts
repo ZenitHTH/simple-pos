@@ -13,7 +13,7 @@ export function useStockManagement() {
   const { showAlert } = useAlert();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [products, setProducts] = useState<BackendProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export function useStockManagement() {
     const fetchData = async () => {
       if (!dbKey) return;
       try {
-        setLoading(true);
+        if (stocks.length === 0) setLoading(true);
         const [stockData, productData] = await Promise.all([
           stockApi.getAll(dbKey),
           productApi.getAll(dbKey),

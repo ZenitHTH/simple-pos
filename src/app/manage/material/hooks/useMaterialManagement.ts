@@ -10,7 +10,7 @@ export function useMaterialManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -23,7 +23,7 @@ export function useMaterialManagement() {
   const fetchMaterials = async () => {
     if (!dbKey) return;
     try {
-      setLoading(true);
+      if (materials.length === 0) setLoading(true);
       const data = await materialApi.getAll(dbKey);
       setMaterials(data);
       setError(null);

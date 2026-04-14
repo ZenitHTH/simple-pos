@@ -11,7 +11,7 @@ export function useProductManagement() {
   const { showAlert } = useAlert();
   const [products, setProducts] = useState<BackendProduct[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -25,7 +25,7 @@ export function useProductManagement() {
   const fetchProducts = async () => {
     if (!dbKey) return;
     try {
-      setLoading(true);
+      if (products.length === 0) setLoading(true);
       const [data, fetchedCategories] = await Promise.all([
         productApi.getAll(dbKey),
         categoryApi.getAll(dbKey),
