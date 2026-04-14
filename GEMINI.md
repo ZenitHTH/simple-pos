@@ -107,6 +107,19 @@ AI agents should check this file first when looking for existing functionality.
 
 ---
 
+## AI Development Mandates
+
+### 📜 Technical Standards
+Strictly follow the architectural guidelines and 2025 standards (React 19, Rust 2024, Next.js 16) defined in **`@conductor/vibe-pos-manual.md`**. This manual contains the foundational "source of truth" for state management, styling flows, and async patterns.
+
+### 📚 Project Yellowpages (Registries)
+Always consult the following registries before implementing new features or refactoring to ensure consistency and maximize reuse:
+- **`@.agents/tech-docs.json`**: Master architectural map and data flow integrity rules.
+- **`@.agents/ai-components.json`**: Registry of reusable React components and hooks.
+- **`@.agents/ai-backend.json`**: Registry of available Tauri commands and database models.
+
+---
+
 ## Key Files
 - `CLAUDE.md`: Detailed project guidelines and command references.
 - `package.json`: Frontend dependencies and scripts.

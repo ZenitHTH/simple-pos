@@ -5,11 +5,13 @@ import { logger } from "@/lib/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
+import { useDataCache } from "@/context/DataContext";
 
 export function useCustomerManagement() {
     const { dbKey } = useDatabase();
     const { showAlert } = useAlert();
-    const [customers, setCustomers] = useState<Customer[]>([]);
+    const { customers, updateCache, refreshAll } = useDataCache();
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
@@ -20,24 +22,6 @@ export function useCustomerManagement() {
         Customer | undefined
     >(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const fetchCustomers = async () => {
-        if (!dbKey) return;
-        try {
-            if (customers.length === 0) setLoading(true);
-            const data = await customerApi.getAll(dbKey);
-            setCustomers(data);
-        } catch (err) {
-            logger.error("Failed to fetch customers:", err);
-            setError("Failed to load customers. Is the backend running?");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchCustomers();
-    }, [dbKey]);
 
     const handleCreate = () => {
         setEditingCustomer(undefined);
@@ -62,11 +46,12 @@ export function useCustomerManagement() {
                     editingCustomer.id,
                     data
                 );
+                updateCache.customers(customers.map(c => c.id === result.id ? result : c));
             } else {
                 result = await customerApi.create(dbKey, data);
+                updateCache.customers([...customers, result]);
             }
 
-            await fetchCustomers();
             setIsModalOpen(false);
             return result;
         } catch (err) {

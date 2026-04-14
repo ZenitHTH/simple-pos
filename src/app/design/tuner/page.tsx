@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { SelectorTuner } from "@/components/design-tuner/tuners/SelectorTuner";
 import { ButtonTuner } from "@/components/design-tuner/tuners/ButtonTuner";
 import { TypographyTuner } from "@/components/design-tuner/tuners/TypographyTuner";
@@ -15,6 +16,7 @@ import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 
 export default function DesignTunerPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TunerTab>("global");
   const { settings, updateSettings, save, resetToCheckpoint, setAutoSave } =
     useSettings();
@@ -27,6 +29,16 @@ export default function DesignTunerPage() {
 
   // Local state for tuning preview zoom (doesn't affect actual app scale)
   const [previewZoom, setPreviewZoom] = useState(16);
+
+  const handleDiscard = async () => {
+    await resetToCheckpoint();
+    router.push("/");
+  };
+
+  const handleSave = async () => {
+    await save();
+    router.push("/");
+  };
 
   return (
     <div className="bg-zinc-950 text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/30">
@@ -101,14 +113,14 @@ export default function DesignTunerPage() {
 
           <div className="flex items-center gap-4">
             <button
-              onClick={resetToCheckpoint}
+              onClick={handleDiscard}
               className="flex items-center gap-3 rounded-2xl px-5 py-3 text-sm font-black transition-all hover:bg-zinc-800 text-zinc-400 hover:text-white active:scale-95"
             >
               <FaUndo className="text-xs" />
               Discard
             </button>
             <button
-              onClick={() => save()}
+              onClick={handleSave}
               className="bg-primary text-primary-foreground flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
             >
               <FaSave className="text-xs" />

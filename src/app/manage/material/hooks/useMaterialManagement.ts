@@ -5,11 +5,13 @@ import { Material } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
 import { logger } from "@/lib/logger";
+import { useDataCache } from "@/context/DataContext";
 
 export function useMaterialManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
-  const [materials, setMaterials] = useState<Material[]>([]);
+  const { materials, updateCache, refreshAll } = useDataCache();
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,27 +21,6 @@ export function useMaterialManagement() {
     undefined,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const fetchMaterials = async () => {
-    if (!dbKey) return;
-    try {
-      if (materials.length === 0) setLoading(true);
-      const data = await materialApi.getAll(dbKey);
-      setMaterials(data);
-      setError(null);
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch materials",
-      );
-      logger.error("Failed to fetch materials:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMaterials();
-  }, [dbKey]);
 
   const handleCreate = () => {
     setEditingMaterial(undefined);
@@ -61,7 +42,7 @@ export function useMaterialManagement() {
 
     try {
       await materialApi.delete(dbKey, id);
-      await fetchMaterials();
+      updateCache.materials(materials.filter((m) => m.id !== id));
     } catch (err: unknown) {
       await showAlert(
         "Material Error",
@@ -76,7 +57,7 @@ export function useMaterialManagement() {
       setIsSubmitting(true);
 
       if (editingMaterial) {
-        await materialApi.update(
+        const updated = await materialApi.update(
           dbKey,
           editingMaterial.id,
           data.name,
@@ -85,8 +66,9 @@ export function useMaterialManagement() {
           parseInt(data.quantity, 10),
           data.tags,
         );
+        updateCache.materials(materials.map(m => m.id === updated.id ? updated : m));
       } else {
-        await materialApi.create(
+        const created = await materialApi.create(
           dbKey,
           data.name,
           data.type_,
@@ -94,9 +76,9 @@ export function useMaterialManagement() {
           parseInt(data.quantity, 10),
           data.tags,
         );
+        updateCache.materials([...materials, created]);
       }
 
-      await fetchMaterials();
       setIsModalOpen(false);
     } catch (err: unknown) {
       await showAlert(

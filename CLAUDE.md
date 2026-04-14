@@ -121,6 +121,17 @@ Automates the full test lifecycle:
 - `e2e/playwright/helpers.ts`: Resilient helper functions for setup, navigation, and interaction.
 
 
+## AI Development Mandates
+
+### Technical Standards
+Strictly follow guidelines and 2025 standards (React 19, Rust 2024, Next.js 16) in **`@conductor/vibe-pos-manual.md`**.
+
+### Project Yellowpages (Registries)
+Consult registries before implementing to ensure consistency:
+- **`@.agents/tech-docs.json`**: Master architectural map.
+- **`@.agents/ai-components.json`**: UI Component registry.
+- **`@.agents/ai-backend.json`**: Tauri command/Rust registry.
+
 ## Project Structure
 
 - **`src/`**: Next.js frontend source code.

@@ -17,6 +17,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/common/SmoothScroll";
 import { ToastProvider } from "@/context/ToastContext";
 import { AlertProvider } from "@/context/AlertContext";
+import { DataProvider } from "@/context/DataContext";
 import AppShell from "@/components/layout/AppShell";
 
 const inter = Inter({
@@ -78,11 +79,13 @@ export default function RootLayout({
               <AlertProvider>
                 <ToastProvider>
                   <DatabaseProvider>
-                    <MockupProvider>
-                      <DatabaseGuard>
-                        <AppShell>{children}</AppShell>
-                      </DatabaseGuard>
-                    </MockupProvider>
+                    <DataProvider>
+                      <MockupProvider>
+                        <DatabaseGuard>
+                          <AppShell>{children}</AppShell>
+                        </DatabaseGuard>
+                      </MockupProvider>
+                    </DataProvider>
                   </DatabaseProvider>
                 </ToastProvider>
               </AlertProvider>
