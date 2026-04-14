@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 import { logger } from "@/lib/logger";
 
 interface ProductModalProps {
@@ -50,6 +51,7 @@ export default function ProductModal({
   isSubmitting,
 }: ProductModalProps) {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [formData, setFormData] = useState<NewProduct>({
     title: initialData?.title || "",
     category_id: initialData?.category_id || 0,
@@ -123,7 +125,7 @@ export default function ProductModal({
         setSelectedImage(savedImage);
       } catch (err) {
         logger.error("Failed to upload image:", err);
-        alert("Failed to upload image.");
+        await showAlert("Failed to upload image.");
       } finally {
         setIsUploading(false);
       }
@@ -147,6 +149,7 @@ export default function ProductModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
+          id="product-title"
           label="Title"
           required
           value={formData.title}
@@ -168,6 +171,7 @@ export default function ProductModal({
 
         <div className="grid grid-cols-2 gap-4">
           <Input
+            id="product-price"
             label="Price (Satang)"
             type="number"
             required

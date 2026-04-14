@@ -5,6 +5,7 @@ import { Stock, BackendProduct } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { useAlert } from "@/context/AlertContext";
 
 interface StockModalProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export default function StockModal({
   products,
   isSubmitting,
 }: StockModalProps) {
+  const { showAlert } = useAlert();
   const [productId, setProductId] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
 
@@ -50,10 +52,10 @@ export default function StockModal({
     }
   }, [isOpen, initialData, products]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (productId === 0) {
-      alert("Please select a product");
+      await showAlert("Please select a product");
       return;
     }
     onSubmit(productId, quantity);
