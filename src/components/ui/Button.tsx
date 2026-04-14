@@ -24,8 +24,13 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 /**
  * A reusable button component that supports multiple variants and sizes.
  */
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+const Button = ({
+  className,
+  variant = "default",
+  size = "default",
+  ref,
+  ...props
+}: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) => {
     return (
       <button
         style={{
@@ -61,8 +66,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
-);
+  };
 Button.displayName = "Button";
 
 export { Button };

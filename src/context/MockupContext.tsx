@@ -54,7 +54,7 @@ export function MockupProvider({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <MockupContext.Provider
+    <MockupContext
       value={{
         isMockupMode,
         selectedElementId,
@@ -65,12 +65,12 @@ export function MockupProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </MockupContext.Provider>
+    </MockupContext>
   );
 }
 
 export function useMockup() {
-  const context = useContext(MockupContext);
+  const context = React.use(MockupContext);
   if (!context) {
     throw new Error("useMockup must be used within a MockupProvider");
   }

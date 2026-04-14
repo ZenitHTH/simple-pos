@@ -10,10 +10,12 @@ import { cn } from "@/lib";
  * @param ref - React ref for the button element.
  * @returns A toggle switch element.
  */
-const Switch = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentPropsWithoutRef<"button"> & { checked?: boolean }
->(({ className, checked, ...props }, ref) => (
+const Switch = ({
+  className,
+  checked,
+  ref,
+  ...props
+}: React.ComponentPropsWithRef<"button"> & { checked?: boolean }) => (
   <button
     type="button"
     className={cn(
@@ -35,7 +37,7 @@ const Switch = React.forwardRef<
       )}
     />
   </button>
-));
+);
 Switch.displayName = "Switch";
 
 export { Switch };

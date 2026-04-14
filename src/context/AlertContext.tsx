@@ -55,7 +55,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AlertContext.Provider value={{ showAlert }}>
+    <AlertContext value={{ showAlert }}>
       {children}
       <AlertDialog
         isOpen={isOpen}
@@ -63,7 +63,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
         title={title}
         message={message}
       />
-    </AlertContext.Provider>
+    </AlertContext>
   );
 }
 
@@ -75,7 +75,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
  * @throws Error if used outside of an AlertProvider.
  */
 export function useAlert() {
-  const context = useContext(AlertContext);
+  const context = React.use(AlertContext);
   if (context === undefined) {
     throw new Error("useAlert must be used within an AlertProvider");
   }

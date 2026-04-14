@@ -144,7 +144,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <SettingsContext.Provider
+    <SettingsContext
       value={{
         settings,
         loading,
@@ -161,12 +161,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </SettingsContext.Provider>
+    </SettingsContext>
   );
 }
 
 export function useSettings() {
-  const context = useContext(SettingsContext);
+  const context = React.use(SettingsContext);
   if (context === undefined) {
     throw new Error("useSettings must be used within a SettingsProvider");
   }

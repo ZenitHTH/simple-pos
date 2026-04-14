@@ -57,16 +57,16 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <DatabaseContext.Provider
+    <DatabaseContext
       value={{ dbKey, isLoggedIn: !!dbKey, login, logout, isLoading, dbExists }}
     >
       {children}
-    </DatabaseContext.Provider>
+    </DatabaseContext>
   );
 }
 
 export function useDatabase() {
-  const context = useContext(DatabaseContext);
+  const context = React.use(DatabaseContext);
   if (context === undefined) {
     throw new Error("useDatabase must be used within a DatabaseProvider");
   }

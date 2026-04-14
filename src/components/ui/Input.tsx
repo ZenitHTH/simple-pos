@@ -17,8 +17,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
  * Standard text input component with support for labels and error messages.
  * Styled to match the application's design system.
  */
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className = "", label, error, ...props }, ref) => {
+export const Input = ({ className = "", label, error, ref, ...props }: InputProps & { ref?: React.Ref<HTMLInputElement> }) => {
     return (
       <div className="w-full">
         {label && (
@@ -43,6 +42,5 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  },
-);
+  };
 Input.displayName = "Input";
