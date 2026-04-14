@@ -206,4 +206,41 @@ Rust 2024 introduces stricter boundaries for unsafe behavior:
 *   **`unsafe_op_in_unsafe_fn`:** This lint is a warning by default. Even inside an `unsafe fn`, you **must** wrap the specifically dangerous operations in an `unsafe {}` block.
 *   **`static mut` References:** Creating a reference to a `static mut` item is an error. Use `&raw const` or `&raw mut` instead.
 
+---
+
+## 📘 9. TypeScript 2025 Standard (The Native Era)
+
+Vibe POS uses the **TypeScript 2025** standard. The focus has moved from slow transpilation to **Native Speed** and **Simplified Configuration**.
+
+### ⚡ Key Standards
+*   **Native Execution:** We prioritize runtimes that support native TypeScript execution (like Node.js with `--experimental-strip-types` or Bun/Deno). Traditional `ts-node` is deprecated.
+*   **Strict Return Checks:** TypeScript now validates every branch of a conditional return independently. Ensure all paths in a ternary or `if/else` strictly match the return type.
+*   **Modern Targets:** We no longer target ES5. The minimum baseline is **ES2015 (ES6)**.
+*   **Clean Config:** Keep `tsconfig.json` minimal. Use `moduleResolution: "bundler"` or `"nodenext"`.
+
+---
+
+## 🚀 10. Next.js 16 & Turbopack
+
+Vibe POS is built on **Next.js 16**, which marks the end of the Webpack era and the rise of **Explicit Caching**.
+
+### 🏗️ Bundling & Performance
+*   **Turbopack by Default:** We use `next dev --turbopack`. Builds are up to 5x faster than Webpack.
+*   **File System Caching:** Next.js 16 caches compilation data to disk. Cold starts should be near-instant.
+
+### 💾 Explicit Caching (`"use cache"`)
+Next.js 16 moves away from "guessing" what to cache.
+*   Use the **`"use cache"`** directive at the top of functions or components to explicitly persist data.
+*   **Request-Time Default:** Unless marked with `"use cache"`, all code runs at request time.
+
+### ⚠️ Critical Migration Rules (The "Async" Rule)
+In Next.js 16, several previously synchronous APIs are now **Asynchronous**. You **must** await them:
+*   **`params` and `searchParams`**: `const { id } = await params;`
+*   **`cookies()` and `headers()`**: `const cookieStore = await cookies();`
+
+### 🎨 Native View Transitions
+Next.js 16 supports the **Browser View Transitions API**. Use it for smooth, app-like animations during page navigation without heavy external libraries.
+
+---
+
 *This manual was generated to provide a clear, visual understanding of the Vibe POS architecture and workflows.*
