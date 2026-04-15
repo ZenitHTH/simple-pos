@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { categoryApi } from "@/lib";
 import { Category } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";

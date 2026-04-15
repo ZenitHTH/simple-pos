@@ -6,7 +6,7 @@ import { FaCheck, FaCog } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { CURRENCIES } from "./CurrencySettings";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface SettingsSetupProps {

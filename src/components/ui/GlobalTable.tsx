@@ -3,17 +3,7 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib";
 import { EmptyState } from "@/components/ui/EmptyState";
-
-/**
- * Definition for a table column in GlobalTable.
- */
-export interface Column<T> {
-  header: string;
-  accessor?: keyof T;
-  render?: (item: T) => ReactNode;
-  className?: string;
-  headerClassName?: string;
-}
+import { Column } from "@/lib/types/common";
 
 /**
  * Props for the GlobalTable component.

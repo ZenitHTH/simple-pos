@@ -10,7 +10,7 @@ import {
   ReactNode,
 } from "react";
 import { AppSettings, settingsApi, deepMerge, DeepPartial } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { DEFAULT_SETTINGS, THEME_PRESETS } from "./constants";
 import { useApplySettings } from "./hooks";
 

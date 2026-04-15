@@ -7,7 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import NumberSlider from "@/components/ui/NumberSlider";
 import { convertFileSrc } from "@/lib/api/invoke";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { useAlert } from "@/context/AlertContext";
 
 interface ImagePositionModalProps {

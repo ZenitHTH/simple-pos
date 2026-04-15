@@ -6,7 +6,7 @@ import { FaFileExport, FaFolderOpen } from "react-icons/fa";
 import { save } from "@tauri-apps/plugin-dialog";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Select } from "@/components/ui/Select";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
 

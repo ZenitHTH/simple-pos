@@ -18,7 +18,7 @@ import {
   AppSettings,
 } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { Input } from "@/components/ui/Input";
 
 export default function LoginScreen() {

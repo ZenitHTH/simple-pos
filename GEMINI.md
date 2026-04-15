@@ -97,6 +97,9 @@ AI agents should check this file first when looking for existing functionality.
 
 ### Frontend (React/Next.js)
 - **Component Reuse**: Prioritize using global components from `src/components/ui/` or `src/components/common/`.
+- **Directory Organization**:
+  - **`src/hooks/`**: Must be grouped by reach: `common/` (generic), `features/` (logic-heavy), or domain-specific folders (e.g., `settings/`).
+  - **`src/lib/`**: Must be categorized by responsibility: `api/` (Tauri invokes), `constants/` (static data), `types/` (TS interfaces), and `utils/` (pure helpers).
 - **CSS Standards**: Avoid hardcoded CSS values. Use Tailwind CSS and global styles in `src/app/globals.css`.
 - **Code Splitting**: Keep files focused. Split logic into dedicated components, hooks, or utility libraries.
 - **Types**: Always define and update shared types in `src/lib/types/`.

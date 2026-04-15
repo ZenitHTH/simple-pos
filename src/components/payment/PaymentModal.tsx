@@ -8,7 +8,7 @@ import { useSettings } from "@/context/settings/SettingsContext";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Modal } from "@/components/ui/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface PaymentModalProps {
   isOpen: boolean;

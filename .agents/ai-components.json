@@ -36,7 +36,17 @@
       "element",
       "default"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "* as React"
+      },
+      {
+        "source": "next-themes",
+        "items": "{ ThemeProvider as NextThemesProvider }"
+      }
+    ]
   },
   {
     "name": "Toast",
@@ -90,7 +100,21 @@
       "returns",
       "element"
     ],
-    "props": "ToastProps"
+    "props": "ToastProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useEffect, useState }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaTimes, }"
+      }
+    ]
   },
   {
     "name": "TableActionButton",
@@ -139,7 +163,17 @@
       "returns",
       "styled"
     ],
-    "props": "TableActionButtonProps"
+    "props": "TableActionButtonProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "* as React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "SettingsSection",
@@ -183,7 +217,25 @@
       "returns",
       "wrapped"
     ],
-    "props": "SettingsSectionProps"
+    "props": "SettingsSectionProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ ReactNode }"
+      },
+      {
+        "source": "react-icons",
+        "items": "{ IconType }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/components/ui/Card",
+        "items": "{ Card, CardHeader, CardTitle, CardContent }"
+      }
+    ]
   },
   {
     "name": "Separator",
@@ -218,7 +270,13 @@
       "styled",
       "acting"
     ],
-    "props": "SeparatorProps"
+    "props": "SeparatorProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "Select",
@@ -275,7 +333,21 @@
       "returns",
       "element"
     ],
-    "props": "SelectProps"
+    "props": "SelectProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState, useRef, useEffect }"
+      },
+      {
+        "source": "react-icons/fa6",
+        "items": "{ FaChevronDown, FaCheck }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "Option",
@@ -304,7 +376,21 @@
       "html",
       "element"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState, useRef, useEffect }"
+      },
+      {
+        "source": "react-icons/fa6",
+        "items": "{ FaChevronDown, FaCheck }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "SearchInput",
@@ -356,7 +442,17 @@
       "returns",
       "styled"
     ],
-    "props": "SearchInputProps"
+    "props": "SearchInputProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSearch }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "ScrollableContainer",
@@ -400,7 +496,17 @@
       "element",
       "with"
     ],
-    "props": "ScrollableContainerProps"
+    "props": "ScrollableContainerProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ ReactNode }"
+      },
+      {
+        "source": "lenis/react",
+        "items": "{ ReactLenis }"
+      }
+    ]
   },
   {
     "name": "RangeSlider",
@@ -451,7 +557,8 @@
       "returns",
       "element"
     ],
-    "props": "RangeSliderProps"
+    "props": "RangeSliderProps",
+    "imports": []
   },
   {
     "name": "PillGroup",
@@ -524,7 +631,13 @@
       "number",
       "param"
     ],
-    "props": "PillGroupProps"
+    "props": "PillGroupProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "NumberStepper",
@@ -585,7 +698,17 @@
       "coarse",
       "param"
     ],
-    "props": "NumberStepperProps"
+    "props": "NumberStepperProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useMemo }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "NumberSlider",
@@ -632,7 +755,13 @@
       "adjustment",
       "param"
     ],
-    "props": "NumberSliderProps"
+    "props": "NumberSliderProps",
+    "imports": [
+      {
+        "source": "./RangeSlider",
+        "items": "RangeSlider"
+      }
+    ]
   },
   {
     "name": "Modal",
@@ -696,7 +825,25 @@
       "blur",
       "param"
     ],
-    "props": "ModalProps"
+    "props": "ModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useEffect, useState }"
+      },
+      {
+        "source": "react-dom",
+        "items": "{ createPortal }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTimes }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "Input",
@@ -735,7 +882,17 @@
       "design",
       "system"
     ],
-    "props": "InputProps"
+    "props": "InputProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "GoBackButton",
@@ -756,7 +913,17 @@
       "navigation",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaArrowLeft }"
+      }
+    ]
   },
   {
     "name": "GlobalTable",
@@ -815,7 +982,21 @@
       "displaying",
       "param"
     ],
-    "props": "GlobalTableProps"
+    "props": "GlobalTableProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ ReactNode }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/components/ui/EmptyState",
+        "items": "{ EmptyState }"
+      }
+    ]
   },
   {
     "name": "GlobalHeader",
@@ -860,7 +1041,21 @@
       "application",
       "param"
     ],
-    "props": "GlobalHeaderProps"
+    "props": "GlobalHeaderProps",
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "react",
+        "items": "{ ComponentType }"
+      }
+    ]
   },
   {
     "name": "EmptyState",
@@ -897,7 +1092,21 @@
       "collection",
       "param"
     ],
-    "props": "EmptyStateProps"
+    "props": "EmptyStateProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "* as React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxOpen }"
+      }
+    ]
   },
   {
     "name": "DualColumnBuilder",
@@ -996,7 +1205,17 @@
       "adjust",
       "param"
     ],
-    "props": "DualColumnBuilderProps"
+    "props": "DualColumnBuilderProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { ReactNode, useState, useRef, useCallback, useEffect, }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "Drawer",
@@ -1055,7 +1274,21 @@
       "element",
       "null"
     ],
-    "props": "DrawerProps"
+    "props": "DrawerProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useEffect, useState }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTimes }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "Badge",
@@ -1095,7 +1328,79 @@
       "span",
       "attributes"
     ],
-    "props": "BadgeProps"
+    "props": "BadgeProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "* as React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
+  },
+  {
+    "name": "AlertDialog",
+    "type": "component",
+    "path": "src/components/ui/AlertDialog.tsx",
+    "description": "Props for the AlertDialog component. / interface AlertDialogProps { /** Whether the alert dialog is currently open. */ isOpen: boolean; /** Callback triggered when the dialog is closed (e.g., clicking OK, backdrop, or close button). */ onClose: () => void; /** The title of the alert dialog. */ title: string; /** The message body to display in the alert. */ message: string; } /** A custom alert dialog component that replaces the native browser alert(). It uses the Modal component for consistent styling and provides an \"OK\" button. @param props - The component props.",
+    "keywords": [
+      "alert",
+      "dialog",
+      "alertdialog",
+      "ui",
+      "props",
+      "component",
+      "interface",
+      "alertdialogprops",
+      "whether",
+      "currently",
+      "open",
+      "isopen",
+      "boolean",
+      "callback",
+      "triggered",
+      "when",
+      "closed",
+      "clicking",
+      "backdrop",
+      "close",
+      "button",
+      "onclose",
+      "void",
+      "title",
+      "string",
+      "message",
+      "body",
+      "display",
+      "custom",
+      "that",
+      "replaces",
+      "native",
+      "browser",
+      "uses",
+      "modal",
+      "consistent",
+      "styling",
+      "provides",
+      "param"
+    ],
+    "props": "AlertDialogProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "./Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "./Button",
+        "items": "{ Button }"
+      }
+    ]
   },
   {
     "name": "UISetupMode",
@@ -1119,7 +1424,25 @@
       "null",
       "rendered"
     ],
-    "props": "UISetupModeProps"
+    "props": "UISetupModeProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaArrowRight, FaDesktop }"
+      },
+      {
+        "source": "@/components/pos/POSClient",
+        "items": "POSClient"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ exampleProducts }"
+      }
+    ]
   },
   {
     "name": "ThemeSettings",
@@ -1140,7 +1463,29 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "next-themes",
+        "items": "{ useTheme }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPalette, FaSun, FaMoon, FaDesktop }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "@/components/ui/SettingsSection",
+        "items": "SettingsSection"
+      },
+      {
+        "source": "react",
+        "items": "{ useEffect, useState }"
+      }
+    ]
   },
   {
     "name": "SettingsSetup",
@@ -1161,7 +1506,41 @@
       "null",
       "rendered"
     ],
-    "props": "SettingsSetupProps"
+    "props": "SettingsSetupProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaCheck, FaCog }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "./CurrencySettings",
+        "items": "{ CURRENCIES }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "../design-tuner/ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      }
+    ]
   },
   {
     "name": "ResetSettingsButton",
@@ -1183,7 +1562,21 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTrash }"
+      }
+    ]
   },
   {
     "name": "ExportSection",
@@ -1205,7 +1598,45 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ receiptApi }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaFileExport, FaFolderOpen }"
+      },
+      {
+        "source": "@tauri-apps/plugin-dialog",
+        "items": "{ save }"
+      },
+      {
+        "source": "@/components/ui/SettingsSection",
+        "items": "SettingsSection"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      }
+    ]
   },
   {
     "name": "CURRENCIES",
@@ -1233,7 +1664,25 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ memo }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaCoins }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/SettingsSection",
+        "items": "SettingsSection"
+      }
+    ]
   },
   {
     "name": "POSClient",
@@ -1272,7 +1721,112 @@
       "products",
       "display"
     ],
-    "props": "POSClientProps"
+    "props": "POSClientProps",
+    "imports": [
+      {
+        "source": "@/hooks/features/usePOSLogic",
+        "items": "{ usePOSLogic }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Product }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "./POSHeader",
+        "items": "POSHeader"
+      },
+      {
+        "source": "./POSProductGrid",
+        "items": "POSProductGrid"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "@/components/cart/Cart",
+        "items": "Cart"
+      },
+      {
+        "source": "@/components/payment/PaymentModal",
+        "items": "PaymentModal"
+      },
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/ui/Drawer",
+        "items": "{ Drawer }"
+      }
+    ]
+  },
+  {
+    "name": "PaymentModal",
+    "type": "component",
+    "path": "src/components/payment/PaymentModal.tsx",
+    "description": "PaymentModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "payment",
+      "modal",
+      "paymentmodal",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "PaymentModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useMemo }"
+      },
+      {
+        "source": "./AmountSummary",
+        "items": "AmountSummary"
+      },
+      {
+        "source": "./CashInput",
+        "items": "CashInput"
+      },
+      {
+        "source": "./ChangeDisplay",
+        "items": "ChangeDisplay"
+      },
+      {
+        "source": "./PaymentFooter",
+        "items": "PaymentFooter"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaMoneyBillWave }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
   },
   {
     "name": "StockTable",
@@ -1322,7 +1876,21 @@
       "stockid",
       "ondelete"
     ],
-    "props": "StockTableProps"
+    "props": "StockTableProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ Stock }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaEdit, FaTrash }"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable"
+      }
+    ]
   },
   {
     "name": "StockModal",
@@ -1375,7 +1943,33 @@
       "submission",
       "progress"
     ],
-    "props": "StockModalProps"
+    "props": "StockModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useEffect, useState }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Stock, BackendProduct }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      }
+    ]
   },
   {
     "name": "ProductTable",
@@ -1445,7 +2039,45 @@
       "application",
       "currency"
     ],
-    "props": "ProductTableProps"
+    "props": "ProductTableProps",
+    "imports": [
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
+      },
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ convertFileSrc }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Category, cn }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaEdit, FaTrash, FaImage, FaUtensils, FaBoxes }"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable"
+      },
+      {
+        "source": "@/components/ui/Switch",
+        "items": "{ Switch }"
+      },
+      {
+        "source": "@/components/ui/Badge",
+        "items": "{ Badge }"
+      },
+      {
+        "source": "@/components/ui/TableActionButton",
+        "items": "{ TableActionButton }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings }"
+      }
+    ]
   },
   {
     "name": "ProductModal",
@@ -1503,7 +2135,65 @@
       "submission",
       "progress"
     ],
-    "props": "ProductModalProps"
+    "props": "ProductModalProps",
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ convertFileSrc }"
+      },
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, NewProduct, Category, Image, parseImageStyle, }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ categoryApi, imageApi }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/Switch",
+        "items": "{ Switch }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "@/components/ui/Separator",
+        "items": "{ Separator }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaImage, FaTrash }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
   },
   {
     "name": "MaterialTable",
@@ -1546,7 +2236,29 @@
       "number",
       "ondelete"
     ],
-    "props": "MaterialTableProps"
+    "props": "MaterialTableProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaEdit, FaTrash }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material, formatVolume }"
+      },
+      {
+        "source": "@/components/ui/Badge",
+        "items": "{ Badge }"
+      },
+      {
+        "source": "@/components/ui/EmptyState",
+        "items": "{ EmptyState }"
+      },
+      {
+        "source": "@/components/ui/TableActionButton",
+        "items": "{ TableActionButton }"
+      }
+    ]
   },
   {
     "name": "MaterialModal",
@@ -1598,7 +2310,37 @@
       "being",
       "submitted"
     ],
-    "props": "MaterialModalProps"
+    "props": "MaterialModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useEffect, useState }"
+      },
+      {
+        "source": "react-hook-form",
+        "items": "{ useForm }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material, scaledToFloat, UNIT_OPTIONS }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "react-hook-form",
+        "items": "{ Controller }"
+      }
+    ]
   },
   {
     "name": "LinkImageModal",
@@ -1662,7 +2404,29 @@
       "togglelink",
       "product"
     ],
-    "props": "LinkImageModalProps"
+    "props": "LinkImageModalProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ Image, ProductImage, BackendProduct }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSearch }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      }
+    ]
   },
   {
     "name": "ImagePositionModal",
@@ -1707,7 +2471,45 @@
       "onupdate",
       "save"
     ],
-    "props": "ImagePositionModalProps"
+    "props": "ImagePositionModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback }"
+      },
+      {
+        "source": "react-easy-crop",
+        "items": "Cropper, { Area, Point }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Image }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "@/components/ui/NumberSlider",
+        "items": "NumberSlider"
+      },
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ convertFileSrc }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      }
+    ]
   },
   {
     "name": "ImageGrid",
@@ -1760,13 +2562,35 @@
       "handledelete",
       "delete"
     ],
-    "props": "ImageGridProps"
+    "props": "ImageGridProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ Image, BackendProduct, parseImageStyle }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTrash, FaLink, FaCrop }"
+      },
+      {
+        "source": "@/components/ui/Card",
+        "items": "{ Card }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ convertFileSrc }"
+      }
+    ]
   },
   {
     "name": "CustomerTable",
     "type": "component",
     "path": "src/components/manage/CustomerTable.tsx",
-    "description": "CustomerTable component displays a list of customers in a tabular format. It includes customer name, tax ID, branch, and address, with an action to edit. @param {CustomerTableProps} props - The component props. @param {Customer[]} props.customers - List of customers to display. @param {(customer: Customer) => void} props.onEdit - Callback when the edit button is clicked. @param {AppSettings} props.settings - Application settings for font scaling.",
+    "description": "CustomerTable component displays a list of customers in a tabular format. It includes customer name, tax ID, branch, and address, with actions to edit or delete. @param {CustomerTableProps} props - The component props. @param {Customer[]} props.customers - List of customers to display. @param {(customer: Customer) => void} props.onEdit - Callback when the edit button is clicked. @param {(id: number) => void} props.onDelete - Callback when the delete button is clicked. @param {AppSettings} props.settings - Application settings for font scaling.",
     "keywords": [
       "customer",
       "table",
@@ -1783,8 +2607,9 @@
       "branch",
       "address",
       "with",
-      "action",
+      "actions",
       "edit",
+      "delete",
       "param",
       "customertableprops",
       "props",
@@ -1795,13 +2620,33 @@
       "when",
       "button",
       "clicked",
+      "number",
+      "ondelete",
       "appsettings",
       "settings",
       "application",
       "font",
       "scaling"
     ],
-    "props": "CustomerTableProps"
+    "props": "CustomerTableProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaEdit, FaTrash }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Customer, AppSettings }"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable, { Column }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      }
+    ]
   },
   {
     "name": "CustomerModal",
@@ -1849,7 +2694,29 @@
       "submission",
       "progress"
     ],
-    "props": "CustomerModalProps"
+    "props": "CustomerModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ NewCustomer, Customer }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      }
+    ]
   },
   {
     "name": "CategoryTable",
@@ -1893,7 +2760,25 @@
       "implementation",
       "passed"
     ],
-    "props": "CategoryTableProps"
+    "props": "CategoryTableProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ Category }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaEdit, FaTrash }"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings }"
+      }
+    ]
   },
   {
     "name": "CategoryModal",
@@ -1937,7 +2822,25 @@
       "submission",
       "progress"
     ],
-    "props": "CategoryModalProps"
+    "props": "CategoryModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useEffect, useState }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Category }"
+      },
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "WelcomeScreen",
@@ -1959,7 +2862,17 @@
       "null",
       "rendered"
     ],
-    "props": "WelcomeScreenProps"
+    "props": "WelcomeScreenProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPlay }"
+      }
+    ]
   },
   {
     "name": "Sidebar",
@@ -1979,7 +2892,45 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "next/link",
+        "items": "Link"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ usePathname }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaHome, FaBoxOpen, FaCog, FaTags, FaBars, FaWarehouse, FaClipboardList, FaImages, }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "./sidebar/SidebarItem",
+        "items": "{ SidebarItem }"
+      },
+      {
+        "source": "./sidebar/SidebarGroup",
+        "items": "{ SidebarGroup }"
+      },
+      {
+        "source": "./BaseSidebarLayout",
+        "items": "BaseSidebarLayout"
+      }
+    ]
   },
   {
     "name": "ManagementPageLayout",
@@ -2001,7 +2952,33 @@
       "null",
       "rendered"
     ],
-    "props": "ManagementPageLayoutProps"
+    "props": "ManagementPageLayoutProps",
+    "imports": [
+      {
+        "source": "@/components/ui/GlobalHeader",
+        "items": "GlobalHeader"
+      },
+      {
+        "source": "@/components/design-mode/ScalableContainer",
+        "items": "ScalableContainer"
+      },
+      {
+        "source": "@/components/ui/ScrollableContainer",
+        "items": "ScrollableContainer"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "@/components/ui/SearchInput",
+        "items": "{ SearchInput }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings }"
+      }
+    ]
   },
   {
     "name": "BaseSidebarLayout",
@@ -2023,7 +3000,37 @@
       "null",
       "rendered"
     ],
-    "props": "BaseSidebarLayoutProps"
+    "props": "BaseSidebarLayoutProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ ReactNode }"
+      },
+      {
+        "source": "react-icons",
+        "items": "{ IconType }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTimes }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/components/ui/GlobalHeader",
+        "items": "GlobalHeader"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
   },
   {
     "name": "AppShell",
@@ -2060,7 +3067,37 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useEffect, useState }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "./Sidebar",
+        "items": "Sidebar"
+      },
+      {
+        "source": "@/components/design-mode/BottomControlPanel",
+        "items": "BottomControlPanel"
+      },
+      {
+        "source": "@/components/ui/GoBackButton",
+        "items": "GoBackButton"
+      },
+      {
+        "source": "@/components/design-mode/MiniTuner",
+        "items": "MiniTuner"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ useMotionValue, animate }"
+      }
+    ]
   },
   {
     "name": "ReceiptList",
@@ -2082,7 +3119,17 @@
       "null",
       "rendered"
     ],
-    "props": "ReceiptListProps"
+    "props": "ReceiptListProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaReceipt }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ ReceiptList as ReceiptListType }"
+      }
+    ]
   },
   {
     "name": "ReceiptDetailModal",
@@ -2105,7 +3152,21 @@
       "null",
       "rendered"
     ],
-    "props": "ReceiptDetailModalProps"
+    "props": "ReceiptDetailModalProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaArrowLeft, FaReceipt }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ ReceiptList as ReceiptListType }"
+      },
+      {
+        "source": "./hooks/useReceiptDetail",
+        "items": "{ useReceiptDetail, formatDate }"
+      }
+    ]
   },
   {
     "name": "IdSearch",
@@ -2127,7 +3188,17 @@
       "null",
       "rendered"
     ],
-    "props": "IdSearchProps"
+    "props": "IdSearchProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSearch }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "HistoryHeader",
@@ -2148,7 +3219,21 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaArrowLeft }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
   },
   {
     "name": "DateFilter",
@@ -2170,7 +3255,17 @@
       "null",
       "rendered"
     ],
-    "props": "DateFilterProps"
+    "props": "DateFilterProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSearch }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "SelectableOverlay",
@@ -2186,7 +3281,29 @@
       "provided",
       "component"
     ],
-    "props": "SelectableOverlayProps"
+    "props": "SelectableOverlayProps",
+    "imports": [
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion, PanInfo }"
+      },
+      {
+        "source": "react",
+        "items": "{ useState, useRef }"
+      }
+    ]
   },
   {
     "name": "ScalableContainer",
@@ -2202,7 +3319,29 @@
       "provided",
       "component"
     ],
-    "props": "ScalableContainerProps"
+    "props": "ScalableContainerProps",
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings }"
+      },
+      {
+        "source": "./SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "react",
+        "items": "{ ReactNode }"
+      }
+    ]
   },
   {
     "name": "NavigationMenu",
@@ -2218,7 +3357,25 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter, usePathname }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaCompass, FaHome, FaBoxOpen, FaTags, FaCog }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "MiniTuner",
@@ -2234,7 +3391,57 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useRef }"
+      },
+      {
+        "source": "react-dom",
+        "items": "{ createPortal }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion, AnimatePresence }"
+      },
+      {
+        "source": "react-draggable",
+        "items": "Draggable"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaLayerGroup, FaMagic, FaCheckCircle, FaTextHeight }"
+      },
+      {
+        "source": "@/hooks/common/useColorSampler",
+        "items": "{ useColorSampler }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "../design-tuner/panels/GridStylesPanel",
+        "items": "{ GridStylesPanel }"
+      },
+      {
+        "source": "../design-tuner/ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/components/ui/NumberStepper",
+        "items": "NumberStepper"
+      }
+    ]
   },
   {
     "name": "GlobalScaleControls",
@@ -2251,7 +3458,13 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/components/ui/NumberStepper",
+        "items": "NumberStepper"
+      }
+    ]
   },
   {
     "name": "GlobalLayoutControls",
@@ -2268,7 +3481,33 @@
       "provided",
       "component"
     ],
-    "props": "GlobalLayoutControlsProps"
+    "props": "GlobalLayoutControlsProps",
+    "imports": [
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaHistory, FaCompass }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/components/ui/NumberSlider",
+        "items": "NumberSlider"
+      },
+      {
+        "source": "../design-tuner/ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      }
+    ]
   },
   {
     "name": "DualColumnTuner",
@@ -2285,7 +3524,21 @@
       "provided",
       "component"
     ],
-    "props": "DualColumnTunerProps"
+    "props": "DualColumnTunerProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "react-icons/fa6",
+        "items": "{ FaTableColumns, FaRotateLeft }"
+      }
+    ]
   },
   {
     "name": "DesignModeWrapper",
@@ -2302,7 +3555,37 @@
       "provided",
       "component"
     ],
-    "props": "DesignModeWrapperProps"
+    "props": "DesignModeWrapperProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useEffect }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/components/pos/POSClient",
+        "items": "POSClient"
+      },
+      {
+        "source": "@/components/layout/Sidebar",
+        "items": "Sidebar"
+      },
+      {
+        "source": "./BottomControlPanel",
+        "items": "BottomControlPanel"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSave, FaArrowRight }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ exampleProducts }"
+      }
+    ]
   },
   {
     "name": "ComponentScaleControls",
@@ -2318,7 +3601,25 @@
       "description",
       "provided"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/components/ui/NumberStepper",
+        "items": "NumberStepper"
+      },
+      {
+        "source": "@/components/ui/NumberSlider",
+        "items": "NumberSlider"
+      },
+      {
+        "source": "../design-tuner/panels/GridStylesPanel",
+        "items": "{ GridStylesPanel }"
+      }
+    ]
   },
   {
     "name": "BottomControlPanel",
@@ -2335,7 +3636,41 @@
       "provided",
       "component"
     ],
-    "props": "BottomControlPanelProps"
+    "props": "BottomControlPanelProps",
+    "imports": [
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter, usePathname }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaUndo, FaRedo }"
+      },
+      {
+        "source": "./NavigationMenu",
+        "items": "NavigationMenu"
+      },
+      {
+        "source": "./DualColumnTuner",
+        "items": "DualColumnTuner"
+      },
+      {
+        "source": "./ActionButton",
+        "items": "ActionButton"
+      },
+      {
+        "source": "../design-tuner/ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      }
+    ]
   },
   {
     "name": "ActionButton",
@@ -2351,56 +3686,8 @@
       "provided",
       "component"
     ],
-    "props": null
-  },
-  {
-    "name": "PaymentModal",
-    "type": "component",
-    "path": "src/components/payment/PaymentModal.tsx",
-    "description": "PaymentModal Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "payment",
-      "modal",
-      "paymentmodal",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "PaymentModalProps"
-  },
-  {
-    "name": "CartEmpty",
-    "type": "component",
-    "path": "src/components/cart/CartEmpty.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "empty",
-      "cartempty",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": null
-  },
-  {
-    "name": "Cart",
-    "type": "component",
-    "path": "src/components/cart/Cart.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "cart",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "CartProps"
+    "props": null,
+    "imports": []
   },
   {
     "name": "SmoothScroll",
@@ -2416,7 +3703,13 @@
       "provided",
       "component"
     ],
-    "props": "SmoothScrollProps"
+    "props": "SmoothScrollProps",
+    "imports": [
+      {
+        "source": "lenis/react",
+        "items": "{ ReactLenis }"
+      }
+    ]
   },
   {
     "name": "DatabaseGuard",
@@ -2432,7 +3725,97 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/components/auth/LoginScreen",
+        "items": "LoginScreen"
+      },
+      {
+        "source": "@/components/layout/WelcomeScreen",
+        "items": "WelcomeScreen"
+      },
+      {
+        "source": "@/components/auth/PasswordSetupScreen",
+        "items": "PasswordSetupScreen"
+      },
+      {
+        "source": "@/components/settings/SettingsSetup",
+        "items": "SettingsSetup"
+      }
+    ]
+  },
+  {
+    "name": "CartEmpty",
+    "type": "component",
+    "path": "src/components/cart/CartEmpty.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "empty",
+      "cartempty",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaShoppingCart }"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "type": "component",
+    "path": "src/components/cart/Cart.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "cart",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "CartProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ CartItem as CartItemType, Customer }"
+      },
+      {
+        "source": "./CartItem",
+        "items": "CartItem"
+      },
+      {
+        "source": "./CartSummary",
+        "items": "CartSummary"
+      },
+      {
+        "source": "./CartEmpty",
+        "items": "CartEmpty"
+      },
+      {
+        "source": "@/hooks/settings/useTax",
+        "items": "{ useTax }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/components/ui/Card",
+        "items": "{ Card, CardHeader, CardTitle, CardContent }"
+      }
+    ]
   },
   {
     "name": "PasswordSetupScreen",
@@ -2449,7 +3832,29 @@
       "provided",
       "component"
     ],
-    "props": "PasswordSetupScreenProps"
+    "props": "PasswordSetupScreenProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaShieldAlt, FaEye, FaEyeSlash, FaArrowRight, FaExclamationTriangle, }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "LoginScreen",
@@ -2465,7 +3870,25 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React, { useState }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "ImportExportControls",
@@ -2483,7 +3906,41 @@
       "provided",
       "component"
     ],
-    "props": "ImportExportControlsProps"
+    "props": "ImportExportControlsProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaFileImport, FaFileExport, FaCaretDown }"
+      },
+      {
+        "source": "@tauri-apps/plugin-dialog",
+        "items": "{ save, open }"
+      },
+      {
+        "source": "@tauri-apps/api/event",
+        "items": "{ listen }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ stockApi }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/ToastContext",
+        "items": "{ useToast }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
   },
   {
     "name": "ThemeLibraryModal",
@@ -2501,7 +3958,21 @@
       "provided",
       "component"
     ],
-    "props": "ThemeLibraryModalProps"
+    "props": "ThemeLibraryModalProps",
+    "imports": [
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/design-tuner/panels/ThemePresetsPanel",
+        "items": "{ ThemePresetsPanel }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "VolumeEdge",
@@ -2518,7 +3989,13 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@xyflow/react",
+        "items": "{ EdgeProps, getBezierPath, EdgeLabelRenderer, useReactFlow, }"
+      }
+    ]
   },
   {
     "name": "SimpleRecipeBuilder",
@@ -2535,7 +4012,49 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useRef, useLayoutEffect, useCallback }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes, FaSearch, FaTrash, FaPlus, FaSave, FaBoxOpen, }"
+      },
+      {
+        "source": "@/app/manage/material/recipe/hooks/useSimpleRecipe",
+        "items": "{ useSimpleRecipe }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn, materialApi }"
+      },
+      {
+        "source": "@/components/manage/MaterialModal",
+        "items": "MaterialModal"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      },
+      {
+        "source": "@/components/ui/DualColumnBuilder",
+        "items": "{ DualColumnBuilder }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "./RecipeBuilderComponents",
+        "items": "{ MaterialSourceItem, ProductSelectionItem, RecipeTargetItem, }"
+      }
+    ]
   },
   {
     "name": "RecipeTable",
@@ -2551,7 +4070,21 @@
       "provided",
       "component"
     ],
-    "props": "RecipeTableProps"
+    "props": "RecipeTableProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, formatVolume }"
+      },
+      {
+        "source": "@/lib/types/recipe",
+        "items": "{ RecipeItem, RecipeList }"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable, { Column }"
+      }
+    ]
   },
   {
     "name": "RecipeFlowBuilder",
@@ -2568,7 +4101,41 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useCallback, useMemo, useRef }"
+      },
+      {
+        "source": "@xyflow/react",
+        "items": "{ ReactFlow, Background, Controls, MiniMap, useReactFlow, Panel, }"
+      },
+      {
+        "source": "@/app/manage/material/recipe/hooks/useRecipeFlow",
+        "items": "{ useRecipeFlow }"
+      },
+      {
+        "source": "./MaterialSidebar",
+        "items": "MaterialSidebar"
+      },
+      {
+        "source": "./ProductSidebar",
+        "items": "ProductSidebar"
+      },
+      {
+        "source": "./ProductNode",
+        "items": "ProductNode"
+      },
+      {
+        "source": "./MaterialNode",
+        "items": "MaterialNode"
+      },
+      {
+        "source": "./VolumeEdge",
+        "items": "VolumeEdge"
+      }
+    ]
   },
   {
     "name": "MaterialSourceItem",
@@ -2587,7 +4154,29 @@
       "provided",
       "component"
     ],
-    "props": "MaterialSourceItemProps"
+    "props": "MaterialSourceItemProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes, FaPlus, FaBoxOpen, FaTrash }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, UNIT_OPTIONS }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "ProductSelectionItem",
@@ -2606,7 +4195,29 @@
       "provided",
       "component"
     ],
-    "props": "ProductSelectionItemProps"
+    "props": "ProductSelectionItemProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes, FaPlus, FaBoxOpen, FaTrash }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, UNIT_OPTIONS }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "RecipeTargetItem",
@@ -2624,7 +4235,29 @@
       "provided",
       "component"
     ],
-    "props": "RecipeTargetItemProps"
+    "props": "RecipeTargetItemProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes, FaPlus, FaBoxOpen, FaTrash }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, UNIT_OPTIONS }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/Input",
+        "items": "{ Input }"
+      }
+    ]
   },
   {
     "name": "ProductSidebar",
@@ -2641,7 +4274,25 @@
       "provided",
       "component"
     ],
-    "props": "ProductSidebarProps"
+    "props": "ProductSidebarProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxOpen }"
+      },
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/ui/SearchInput",
+        "items": "{ SearchInput }"
+      }
+    ]
   },
   {
     "name": "ProductNode",
@@ -2658,7 +4309,17 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@xyflow/react",
+        "items": "{ Handle, Position, NodeProps, Node }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxOpen }"
+      }
+    ]
   },
   {
     "name": "MaterialSidebar",
@@ -2675,7 +4336,25 @@
       "provided",
       "component"
     ],
-    "props": "MaterialSidebarProps"
+    "props": "MaterialSidebarProps",
+    "imports": [
+      {
+        "source": "@/lib",
+        "items": "{ Material }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes }"
+      },
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/ui/SearchInput",
+        "items": "{ SearchInput }"
+      }
+    ]
   },
   {
     "name": "MaterialNode",
@@ -2692,7 +4371,17 @@
       "provided",
       "component"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@xyflow/react",
+        "items": "{ Handle, Position, NodeProps, Node }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaBoxes }"
+      }
+    ]
   },
   {
     "name": "SidebarItem",
@@ -2708,7 +4397,17 @@
       "provided",
       "component"
     ],
-    "props": "SidebarItemProps"
+    "props": "SidebarItemProps",
+    "imports": [
+      {
+        "source": "next/link",
+        "items": "Link"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "SidebarGroup",
@@ -2724,7 +4423,21 @@
       "provided",
       "component"
     ],
-    "props": "SidebarGroupProps"
+    "props": "SidebarGroupProps",
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaChevronDown, FaChevronRight }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "./SidebarItem",
+        "items": "{ SidebarItem }"
+      }
+    ]
   },
   {
     "name": "TunerSlider",
@@ -2747,7 +4460,21 @@
       "null",
       "rendered"
     ],
-    "props": "TunerSliderProps"
+    "props": "TunerSliderProps",
+    "imports": [
+      {
+        "source": "@/components/ui/RangeSlider",
+        "items": "RangeSlider"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
   },
   {
     "name": "NavButton",
@@ -2770,7 +4497,13 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      }
+    ]
   },
   {
     "name": "TypographyTuner",
@@ -2793,7 +4526,25 @@
       "null",
       "rendered"
     ],
-    "props": "TypographyTunerProps"
+    "props": "TypographyTunerProps",
+    "imports": [
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/lib/constants/typography",
+        "items": "{ TYPOGRAPHY_DEFAULTS }"
+      },
+      {
+        "source": "../panels/TypographyStylesPanel",
+        "items": "{ TypographyStylesPanel }"
+      },
+      {
+        "source": "../previews/TypographyPreview",
+        "items": "{ TypographyPreview }"
+      }
+    ]
   },
   {
     "name": "SidebarTuner",
@@ -2816,7 +4567,33 @@
       "null",
       "rendered"
     ],
-    "props": "SidebarTunerProps"
+    "props": "SidebarTunerProps",
+    "imports": [
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "../panels/SidebarStylesPanel",
+        "items": "{ SidebarStylesPanel }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaHome, FaCog, FaBoxOpen, FaTags }"
+      },
+      {
+        "source": "@/components/layout/sidebar/SidebarItem",
+        "items": "{ SidebarItem }"
+      },
+      {
+        "source": "@/components/layout/sidebar/SidebarGroup",
+        "items": "{ SidebarGroup }"
+      }
+    ]
   },
   {
     "name": "SelectorTuner",
@@ -2839,7 +4616,25 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaInfoCircle, FaCheckCircle }"
+      }
+    ]
   },
   {
     "name": "NumpadTuner",
@@ -2862,7 +4657,29 @@
       "null",
       "rendered"
     ],
-    "props": "NumpadTunerProps"
+    "props": "NumpadTunerProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "../panels/NumpadStylesPanel",
+        "items": "{ NumpadStylesPanel }"
+      },
+      {
+        "source": "@/components/ui/VirtualNumpad",
+        "items": "VirtualNumpad"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "HistoryTuner",
@@ -2885,7 +4702,37 @@
       "null",
       "rendered"
     ],
-    "props": "HistoryTunerProps"
+    "props": "HistoryTunerProps",
+    "imports": [
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "../panels/HistoryStylesPanel",
+        "items": "{ HistoryStylesPanel }"
+      },
+      {
+        "source": "@/components/history/HistoryHeader",
+        "items": "HistoryHeader"
+      },
+      {
+        "source": "@/components/history/DateFilter",
+        "items": "DateFilter"
+      },
+      {
+        "source": "@/components/history/IdSearch",
+        "items": "IdSearch"
+      },
+      {
+        "source": "@/components/history/ReceiptList",
+        "items": "ReceiptList"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "GridTuner",
@@ -2908,7 +4755,25 @@
       "null",
       "rendered"
     ],
-    "props": "GridTunerProps"
+    "props": "GridTunerProps",
+    "imports": [
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "../panels/GridStylesPanel",
+        "items": "{ GridStylesPanel }"
+      },
+      {
+        "source": "@/components/pos/ProductCard",
+        "items": "ProductCard"
+      }
+    ]
   },
   {
     "name": "GlobalTuner",
@@ -2931,7 +4796,33 @@
       "null",
       "rendered"
     ],
-    "props": "GlobalTunerProps"
+    "props": "GlobalTunerProps",
+    "imports": [
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "../panels/ThemePresetsPanel",
+        "items": "{ ThemePresetsPanel }"
+      },
+      {
+        "source": "../panels/GlobalStylesPanel",
+        "items": "{ GlobalStylesPanel }"
+      },
+      {
+        "source": "../core/ThemeExplorerModal",
+        "items": "{ ThemeExplorerModal }"
+      }
+    ]
   },
   {
     "name": "CartItemTuner",
@@ -2955,7 +4846,29 @@
       "null",
       "rendered"
     ],
-    "props": "CartItemTunerProps"
+    "props": "CartItemTunerProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/cart/CartItem",
+        "items": "CartItem"
+      },
+      {
+        "source": "@/lib/types/settings",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "../panels/CartItemStylesPanel",
+        "items": "{ CartItemStylesPanel }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      }
+    ]
   },
   {
     "name": "ButtonTuner",
@@ -2978,7 +4891,29 @@
       "null",
       "rendered"
     ],
-    "props": "ButtonTunerProps"
+    "props": "ButtonTunerProps",
+    "imports": [
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPalette, FaPlus, FaTrash, FaCheck, FaArrowRight }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "@/lib/types/settings",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "../panels/ButtonStylesPanel",
+        "items": "{ ButtonStylesPanel }"
+      }
+    ]
   },
   {
     "name": "TypographyPreview",
@@ -3001,7 +4936,13 @@
       "null",
       "rendered"
     ],
-    "props": "TypographyPreviewProps"
+    "props": "TypographyPreviewProps",
+    "imports": [
+      {
+        "source": "@/lib/constants/typography",
+        "items": "{ FONT_FAMILIES }"
+      }
+    ]
   },
   {
     "name": "ThemeCard",
@@ -3024,7 +4965,21 @@
       "null",
       "rendered"
     ],
-    "props": "ThemeCardProps"
+    "props": "ThemeCardProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ memo }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
   },
   {
     "name": "TypographyStylesPanel",
@@ -3048,7 +5003,29 @@
       "null",
       "rendered"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      },
+      {
+        "source": "@/components/ui/PillGroup",
+        "items": "{ PillGroup }"
+      },
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib/constants/typography",
+        "items": "{ FONT_FAMILIES, WEIGHT_OPTIONS, TYPOGRAPHY_DEFAULTS, }"
+      }
+    ]
   },
   {
     "name": "ThemePresetsPanel",
@@ -3072,7 +5049,33 @@
       "null",
       "rendered"
     ],
-    "props": "ThemePresetsPanelProps"
+    "props": "ThemePresetsPanelProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, CustomPreset, DeepPartial }"
+      },
+      {
+        "source": "@/lib/utils/cn",
+        "items": "{ cn }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaLayerGroup, FaCoffee, FaSave, FaTrash, FaPlus, FaPalette, FaExpand }"
+      },
+      {
+        "source": "@/context/settings/constants",
+        "items": "{ THEME_PRESETS }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
   },
   {
     "name": "SidebarStylesPanel",
@@ -3096,7 +5099,17 @@
       "null",
       "rendered"
     ],
-    "props": "SidebarStylesPanelProps"
+    "props": "SidebarStylesPanelProps",
+    "imports": [
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "NumpadStylesPanel",
@@ -3120,7 +5133,17 @@
       "null",
       "rendered"
     ],
-    "props": "NumpadStylesPanelProps"
+    "props": "NumpadStylesPanelProps",
+    "imports": [
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "HistoryStylesPanel",
@@ -3144,7 +5167,17 @@
       "null",
       "rendered"
     ],
-    "props": "HistoryStylesPanelProps"
+    "props": "HistoryStylesPanelProps",
+    "imports": [
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "GridStylesPanel",
@@ -3168,7 +5201,25 @@
       "null",
       "rendered"
     ],
-    "props": "GridStylesPanelProps"
+    "props": "GridStylesPanelProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "GlobalStylesPanel",
@@ -3192,7 +5243,33 @@
       "null",
       "rendered"
     ],
-    "props": "GlobalStylesPanelProps"
+    "props": "GlobalStylesPanelProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "../core/ThemeExplorerModal",
+        "items": "{ ThemeExplorerModal }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaCompass }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/context/settings/constants",
+        "items": "{ DEFAULT_SETTINGS }"
+      },
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      }
+    ]
   },
   {
     "name": "CartItemStylesPanel",
@@ -3217,7 +5294,21 @@
       "null",
       "rendered"
     ],
-    "props": "CartItemStylesPanelProps"
+    "props": "CartItemStylesPanelProps",
+    "imports": [
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/components/ui/Select",
+        "items": "{ Select }"
+      }
+    ]
   },
   {
     "name": "ButtonStylesPanel",
@@ -3241,7 +5332,17 @@
       "null",
       "rendered"
     ],
-    "props": "ButtonStylesPanelProps"
+    "props": "ButtonStylesPanelProps",
+    "imports": [
+      {
+        "source": "../ui/TunerSlider",
+        "items": "{ TunerSlider }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
   },
   {
     "name": "TunerSidebar",
@@ -3264,7 +5365,29 @@
       "null",
       "rendered"
     ],
-    "props": "TunerSidebarProps"
+    "props": "TunerSidebarProps",
+    "imports": [
+      {
+        "source": "framer-motion",
+        "items": "{ motion, AnimatePresence }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPalette, FaFont, FaMousePointer, FaHandPointer, FaShoppingCart, FaThLarge, FaSlidersH, FaCalculator, FaHistory, FaColumns, }"
+      },
+      {
+        "source": "../ui/NavButton",
+        "items": "{ NavButton }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "@/components/layout/BaseSidebarLayout",
+        "items": "BaseSidebarLayout"
+      }
+    ]
   },
   {
     "name": "ThemeExplorerModal",
@@ -3288,20 +5411,50 @@
       "null",
       "rendered"
     ],
-    "props": "ThemeExplorerModalProps"
+    "props": "ThemeExplorerModalProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useEffect, useCallback, useState }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion, AnimatePresence }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaTimes, FaPalette, FaMoon, FaSun }"
+      },
+      {
+        "source": "../previews/ThemeCard",
+        "items": "{ ThemeCard }"
+      },
+      {
+        "source": "@/context/settings/constants",
+        "items": "{ CURATED_THEMES }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      },
+      {
+        "source": "next-themes",
+        "items": "{ useTheme }"
+      }
+    ]
   },
   {
     "name": "useTax",
     "type": "hook",
-    "path": "src/hooks/useTax.tsx",
+    "path": "src/hooks/settings/useTax.tsx",
     "description": "Hook to manage tax settings within the application. Provides functions to toggle tax calculation and update the tax rate. @returns {object} An object containing: - isTaxEnabled: Boolean indicating if tax should be applied. - toggleTax: Function to toggle tax enablement. - taxPercentage: The current tax rate as a percentage (e.g., 7 for 7%). - setTaxPercentage: Function to update the tax rate. - taxRate: The tax rate as a decimal multiplier (e.g., 0.07).",
     "keywords": [
       "use",
       "tax",
       "usetax",
+      "settings",
       "hook",
       "manage",
-      "settings",
       "within",
       "application",
       "provides",
@@ -3329,12 +5482,57 @@
       "decimal",
       "multiplier"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
+  },
+  {
+    "name": "useCurrency",
+    "type": "hook",
+    "path": "src/hooks/settings/useCurrency.tsx",
+    "description": "Hook to manage currency settings within the application. It provides access to the current currency symbol and functions to update or reset it. @returns {object} An object containing: - currency: The current currency symbol (e.g., \"$\", \"฿\"). - updateCurrency: Function to update the currency symbol in settings. - clearCurrency: Function to reset the currency symbol to default \"$\". - clearAllCookies: Function to reset all application settings to defaults.",
+    "keywords": [
+      "use",
+      "currency",
+      "usecurrency",
+      "settings",
+      "hook",
+      "manage",
+      "within",
+      "application",
+      "provides",
+      "access",
+      "current",
+      "symbol",
+      "functions",
+      "update",
+      "reset",
+      "returns",
+      "object",
+      "containing",
+      "updatecurrency",
+      "function",
+      "clearcurrency",
+      "default",
+      "clearallcookies",
+      "defaults"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
   },
   {
     "name": "usePOSLogic",
     "type": "hook",
-    "path": "src/hooks/usePOSLogic.tsx",
+    "path": "src/hooks/features/usePOSLogic.tsx",
     "description": "Comprehensive hook to manage Point of Sale (POS) logic. Handles product display, category filtering, search, cart operations, customer selection, and payment processing. @param {Product[]} initialProducts - List of products available for sale. @returns {object} An object containing POS state and handler functions.",
     "keywords": [
       "use",
@@ -3343,6 +5541,7 @@
       "s",
       "logic",
       "useposlogic",
+      "features",
       "comprehensive",
       "hook",
       "manage",
@@ -3372,51 +5571,65 @@
       "handler",
       "functions"
     ],
-    "props": null
-  },
-  {
-    "name": "useCurrency",
-    "type": "hook",
-    "path": "src/hooks/useCurrency.tsx",
-    "description": "Hook to manage currency settings within the application. It provides access to the current currency symbol and functions to update or reset it. @returns {object} An object containing: - currency: The current currency symbol (e.g., \"$\", \"฿\"). - updateCurrency: Function to update the currency symbol in settings. - clearCurrency: Function to reset the currency symbol to default \"$\". - clearAllCookies: Function to reset all application settings to defaults.",
-    "keywords": [
-      "use",
-      "currency",
-      "usecurrency",
-      "hook",
-      "manage",
-      "settings",
-      "within",
-      "application",
-      "provides",
-      "access",
-      "current",
-      "symbol",
-      "functions",
-      "update",
-      "reset",
-      "returns",
-      "object",
-      "containing",
-      "updatecurrency",
-      "function",
-      "clearcurrency",
-      "default",
-      "clearallcookies",
-      "defaults"
-    ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback, useMemo }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter, useSearchParams }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ CartItem, Product, Customer }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ categoryApi, receiptApi, customerApi }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/hooks/settings/useCurrency",
+        "items": "{ useCurrency }"
+      },
+      {
+        "source": "@/hooks/settings/useTax",
+        "items": "{ useTax }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ exampleProducts, exampleCartItems }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/ToastContext",
+        "items": "{ useToast }"
+      }
+    ]
   },
   {
     "name": "useColorSampler",
     "type": "hook",
-    "path": "src/hooks/useColorSampler.ts",
+    "path": "src/hooks/common/useColorSampler.ts",
     "description": "Hook to extract dominant colors from an HTMLImageElement using the Canvas API. @returns {object} An object containing: - colors: Array of hex color strings (top 3 most frequent). - sampleImage: Function to trigger color extraction from an image element. - isSampling: Boolean indicating if an extraction is currently in progress.",
     "keywords": [
       "use",
       "color",
       "sampler",
       "usecolorsampler",
+      "common",
       "hook",
       "extract",
       "dominant",
@@ -3444,7 +5657,13 @@
       "currently",
       "progress"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useCallback }"
+      }
+    ]
   },
   {
     "name": "stockApi",
@@ -3461,7 +5680,17 @@
       "inventory",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Stock }"
+      }
+    ]
   },
   {
     "name": "settingsApi",
@@ -3477,7 +5706,17 @@
       "system",
       "info"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, StorageInfo }"
+      }
+    ]
   },
   {
     "name": "recipeApi",
@@ -3495,7 +5734,17 @@
       "material",
       "composition"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ RecipeList, RecipeItem }"
+      }
+    ]
   },
   {
     "name": "receiptApi",
@@ -3511,7 +5760,17 @@
       "transaction",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ ReceiptList, Receipt, AccumulatedReport }"
+      }
+    ]
   },
   {
     "name": "productApi",
@@ -3527,7 +5786,17 @@
       "related",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ BackendProduct, NewProduct }"
+      }
+    ]
   },
   {
     "name": "materialApi",
@@ -3543,7 +5812,17 @@
       "inventory",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Material }"
+      }
+    ]
   },
   {
     "name": "invoke",
@@ -3595,7 +5874,21 @@
       "value",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@tauri-apps/api/core",
+        "items": "{ invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc }"
+      },
+      {
+        "source": "./mock",
+        "items": "{ mockInvoke }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger, sanitize }"
+      }
+    ]
   },
   {
     "name": "convertFileSrc",
@@ -3617,7 +5910,21 @@
       "environment",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@tauri-apps/api/core",
+        "items": "{ invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc }"
+      },
+      {
+        "source": "./mock",
+        "items": "{ mockInvoke }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger, sanitize }"
+      }
+    ]
   },
   {
     "name": "imageApi",
@@ -3637,7 +5944,17 @@
       "product",
       "linking"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Image, ProductImage }"
+      }
+    ]
   },
   {
     "name": "databaseApi",
@@ -3652,7 +5969,13 @@
       "management",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      }
+    ]
   },
   {
     "name": "customerApi",
@@ -3667,7 +5990,17 @@
       "related",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Customer, NewCustomer }"
+      }
+    ]
   },
   {
     "name": "categoryApi",
@@ -3683,7 +6016,17 @@
       "related",
       "operations"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Category }"
+      }
+    ]
   },
   {
     "name": "state",
@@ -3697,7 +6040,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "./data",
+        "items": "* as data"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockInvoke",
@@ -3719,7 +6072,17 @@
       "handler",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "./handlers",
+        "items": "{ handlers }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
   },
   {
     "name": "handlers",
@@ -3733,7 +6096,45 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "./handlers/categories",
+        "items": "{ categoryHandlers }"
+      },
+      {
+        "source": "./handlers/products",
+        "items": "{ productHandlers }"
+      },
+      {
+        "source": "./handlers/materials",
+        "items": "{ materialHandlers }"
+      },
+      {
+        "source": "./handlers/recipes",
+        "items": "{ recipeHandlers }"
+      },
+      {
+        "source": "./handlers/customers",
+        "items": "{ customerHandlers }"
+      },
+      {
+        "source": "./handlers/stocks",
+        "items": "{ stockHandlers }"
+      },
+      {
+        "source": "./handlers/images",
+        "items": "{ imageHandlers }"
+      },
+      {
+        "source": "./handlers/receipts",
+        "items": "{ receiptHandlers }"
+      },
+      {
+        "source": "./handlers/settings",
+        "items": "{ settingHandlers }"
+      }
+    ]
   },
   {
     "name": "mockCategories",
@@ -3749,7 +6150,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockProducts",
@@ -3765,7 +6172,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockMaterials",
@@ -3781,7 +6194,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockRecipeLists",
@@ -3798,7 +6217,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockRecipeItems",
@@ -3815,7 +6240,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockCustomers",
@@ -3831,7 +6262,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockStocks",
@@ -3847,7 +6284,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockImages",
@@ -3863,7 +6306,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockProductImages",
@@ -3880,7 +6329,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockReceiptLists",
@@ -3897,7 +6352,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "mockReceipts",
@@ -3913,7 +6374,13 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "../../types",
+        "items": "{ BackendProduct, Category, Material, RecipeList, RecipeItem, Customer, Stock, Image, ProductImage, ReceiptList, Receipt, }"
+      }
+    ]
   },
   {
     "name": "stockHandlers",
@@ -3930,7 +6397,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Stock }"
+      }
+    ]
   },
   {
     "name": "settingHandlers",
@@ -3947,7 +6424,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings }"
+      }
+    ]
   },
   {
     "name": "recipeHandlers",
@@ -3964,7 +6451,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ RecipeList, RecipeItem }"
+      }
+    ]
   },
   {
     "name": "receiptHandlers",
@@ -3981,7 +6478,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ ReceiptList, Receipt }"
+      }
+    ]
   },
   {
     "name": "productHandlers",
@@ -3998,7 +6505,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ BackendProduct }"
+      }
+    ]
   },
   {
     "name": "materialHandlers",
@@ -4015,7 +6532,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Material }"
+      }
+    ]
   },
   {
     "name": "imageHandlers",
@@ -4032,7 +6559,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Image }"
+      }
+    ]
   },
   {
     "name": "customerHandlers",
@@ -4049,7 +6586,17 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Customer }"
+      }
+    ]
   },
   {
     "name": "categoryHandlers",
@@ -4066,6 +6613,1398 @@
       "provided",
       "api"
     ],
-    "props": null
+    "props": null,
+    "imports": [
+      {
+        "source": "@/lib/api/mock/state",
+        "items": "{ state }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ Category }"
+      }
+    ]
+  },
+  {
+    "name": "Page",
+    "type": "page/hook",
+    "path": "src/app/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "page",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ Suspense, useEffect, useState }"
+      },
+      {
+        "source": "@/components/pos/POSClient",
+        "items": "POSClient"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Product }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ productApi, categoryApi }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "metadata",
+    "type": "page/hook",
+    "path": "src/app/layout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "metadata",
+      "app",
+      "layout",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "next",
+        "items": "type { Metadata }"
+      },
+      {
+        "source": "next/font/google",
+        "items": "{ Noto_Sans, Noto_Sans_Thai, Prompt, Sarabun, Inter, Kanit, }"
+      },
+      {
+        "source": "@/components/layout/Sidebar",
+        "items": "\"./globals.css\"; import Sidebar"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ SettingsProvider }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ DatabaseProvider }"
+      },
+      {
+        "source": "@/components/common/DatabaseGuard",
+        "items": "DatabaseGuard"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ MockupProvider }"
+      },
+      {
+        "source": "@/components/theme-provider",
+        "items": "{ ThemeProvider }"
+      },
+      {
+        "source": "@/components/common/SmoothScroll",
+        "items": "SmoothScroll"
+      },
+      {
+        "source": "@/context/ToastContext",
+        "items": "{ ToastProvider }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ AlertProvider }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ DataProvider }"
+      },
+      {
+        "source": "@/components/layout/AppShell",
+        "items": "AppShell"
+      }
+    ]
+  },
+  {
+    "name": "RootLayout",
+    "type": "page/hook",
+    "path": "src/app/layout.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "root",
+      "layout",
+      "rootlayout",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "next",
+        "items": "type { Metadata }"
+      },
+      {
+        "source": "next/font/google",
+        "items": "{ Noto_Sans, Noto_Sans_Thai, Prompt, Sarabun, Inter, Kanit, }"
+      },
+      {
+        "source": "@/components/layout/Sidebar",
+        "items": "\"./globals.css\"; import Sidebar"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ SettingsProvider }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ DatabaseProvider }"
+      },
+      {
+        "source": "@/components/common/DatabaseGuard",
+        "items": "DatabaseGuard"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ MockupProvider }"
+      },
+      {
+        "source": "@/components/theme-provider",
+        "items": "{ ThemeProvider }"
+      },
+      {
+        "source": "@/components/common/SmoothScroll",
+        "items": "SmoothScroll"
+      },
+      {
+        "source": "@/context/ToastContext",
+        "items": "{ ToastProvider }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ AlertProvider }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ DataProvider }"
+      },
+      {
+        "source": "@/components/layout/AppShell",
+        "items": "AppShell"
+      }
+    ]
+  },
+  {
+    "name": "SettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "setting",
+      "page",
+      "settingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "next/navigation",
+        "items": "{ redirect }"
+      }
+    ]
+  },
+  {
+    "name": "ReportPage",
+    "type": "page/hook",
+    "path": "src/app/report/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "report",
+      "page",
+      "reportpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/components/history/DateFilter",
+        "items": "DateFilter"
+      },
+      {
+        "source": "@/components/ui/GlobalTable",
+        "items": "GlobalTable, { Column }"
+      },
+      {
+        "source": "@/lib/api/receipts",
+        "items": "{ receiptApi }"
+      },
+      {
+        "source": "@/lib/types/receipt",
+        "items": "{ ProductAccumulation, MaterialAccumulation }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/ToastContext",
+        "items": "{ useToast }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      }
+    ]
+  },
+  {
+    "name": "MockupPage",
+    "type": "page/hook",
+    "path": "src/app/mockup/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "mockup",
+      "page",
+      "mockuppage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useEffect, useState }"
+      },
+      {
+        "source": "@/components/pos/POSClient",
+        "items": "POSClient"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Product }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ productApi, categoryApi }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "ManagePage",
+    "type": "page/hook",
+    "path": "src/app/manage/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "manage",
+      "page",
+      "managepage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPlus }"
+      },
+      {
+        "source": "@/components/manage/ProductModal",
+        "items": "ProductModal"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "./hooks/useProductManagement",
+        "items": "{ useProductManagement }"
+      },
+      {
+        "source": "@/components/manage/ProductTable",
+        "items": "ProductTable"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      }
+    ]
+  },
+  {
+    "name": "HistoryPage",
+    "type": "page/hook",
+    "path": "src/app/history/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "history",
+      "page",
+      "historypage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ receiptApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ ReceiptList as ReceiptListType }"
+      },
+      {
+        "source": "@/components/history/HistoryHeader",
+        "items": "HistoryHeader"
+      },
+      {
+        "source": "@/components/history/DateFilter",
+        "items": "DateFilter"
+      },
+      {
+        "source": "@/components/history/IdSearch",
+        "items": "IdSearch"
+      },
+      {
+        "source": "@/components/history/ReceiptList",
+        "items": "ReceiptList"
+      },
+      {
+        "source": "@/components/history/ReceiptDetailModal",
+        "items": "ReceiptDetailModal"
+      },
+      {
+        "source": "@/components/design-mode/SelectableOverlay",
+        "items": "SelectableOverlay"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "TaxSettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/tax/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "tax",
+      "setting",
+      "page",
+      "taxsettingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react",
+        "items": "{ useCallback }"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/settings/TaxSettings",
+        "items": "TaxSettings"
+      },
+      {
+        "source": "@/components/settings/ResetSettingsButton",
+        "items": "ResetSettingsButton"
+      }
+    ]
+  },
+  {
+    "name": "GeneralSettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/general/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "general",
+      "setting",
+      "page",
+      "generalsettingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react",
+        "items": "{ useCallback }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ DeepPartial }"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/settings/GeneralSettings",
+        "items": "GeneralSettings"
+      },
+      {
+        "source": "@/components/settings/ThemeSettings",
+        "items": "ThemeSettings"
+      },
+      {
+        "source": "@/components/settings/DisplaySettings",
+        "items": "DisplaySettings"
+      },
+      {
+        "source": "@/components/settings/ResetSettingsButton",
+        "items": "ResetSettingsButton"
+      }
+    ]
+  },
+  {
+    "name": "FinanceSettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/finance/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "finance",
+      "setting",
+      "page",
+      "financesettingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react",
+        "items": "{ useCallback }"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/settings/CurrencySettings",
+        "items": "CurrencySettings"
+      },
+      {
+        "source": "@/components/settings/TaxSettings",
+        "items": "TaxSettings"
+      },
+      {
+        "source": "@/components/settings/ResetSettingsButton",
+        "items": "ResetSettingsButton"
+      },
+      {
+        "source": "@/components/ui/Separator",
+        "items": "{ Separator }"
+      }
+    ]
+  },
+  {
+    "name": "ExportSettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/export/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "export",
+      "setting",
+      "page",
+      "exportsettingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/settings/ExportSection",
+        "items": "ExportSection"
+      },
+      {
+        "source": "@/components/settings/ResetSettingsButton",
+        "items": "ResetSettingsButton"
+      }
+    ]
+  },
+  {
+    "name": "CurrencySettingPage",
+    "type": "page/hook",
+    "path": "src/app/setting/currency/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "currency",
+      "setting",
+      "page",
+      "currencysettingpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react",
+        "items": "{ useCallback }"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/settings/CurrencySettings",
+        "items": "CurrencySettings"
+      },
+      {
+        "source": "@/components/settings/ResetSettingsButton",
+        "items": "ResetSettingsButton"
+      }
+    ]
+  },
+  {
+    "name": "StockPage",
+    "type": "page/hook",
+    "path": "src/app/manage/stock/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "stock",
+      "page",
+      "stockpage",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPlus, FaProjectDiagram }"
+      },
+      {
+        "source": "next/link",
+        "items": "Link"
+      },
+      {
+        "source": "react",
+        "items": "{ useState }"
+      },
+      {
+        "source": "@/components/manage/StockModal",
+        "items": "StockModal"
+      },
+      {
+        "source": "./hooks/useStockManagement",
+        "items": "{ useStockManagement }"
+      },
+      {
+        "source": "@/components/manage/StockTable",
+        "items": "StockTable"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/app/manage/material/hooks/useMaterialManagement",
+        "items": "{ useMaterialManagement }"
+      },
+      {
+        "source": "@/components/manage/MaterialTable",
+        "items": "MaterialTable"
+      },
+      {
+        "source": "@/components/manage/MaterialModal",
+        "items": "MaterialModal"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useSearchParams, useRouter }"
+      }
+    ]
+  },
+  {
+    "name": "MaterialPage",
+    "type": "page/hook",
+    "path": "src/app/manage/material/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "material",
+      "page",
+      "materialpage",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "next/navigation",
+        "items": "{ redirect }"
+      }
+    ]
+  },
+  {
+    "name": "ImageManagePage",
+    "type": "page/hook",
+    "path": "src/app/manage/images/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "image",
+      "manage",
+      "page",
+      "imagemanagepage",
+      "app",
+      "images",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaUpload }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "./hooks/useImageManagement",
+        "items": "{ useImageManagement }"
+      },
+      {
+        "source": "@/components/manage/ImageGrid",
+        "items": "ImageGrid"
+      },
+      {
+        "source": "@/components/manage/LinkImageModal",
+        "items": "LinkImageModal"
+      },
+      {
+        "source": "@/components/manage/ImagePositionModal",
+        "items": "ImagePositionModal"
+      }
+    ]
+  },
+  {
+    "name": "useProductManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/hooks/useProductManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "product",
+      "management",
+      "useproductmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ productApi, categoryApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, NewProduct, Category }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "CustomersPage",
+    "type": "page/hook",
+    "path": "src/app/manage/customers/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "customers",
+      "page",
+      "customerspage",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPlus }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "./hooks/useCustomerManagement",
+        "items": "{ useCustomerManagement }"
+      },
+      {
+        "source": "@/components/manage/CustomerTable",
+        "items": "CustomerTable"
+      },
+      {
+        "source": "@/components/manage/CustomerModal",
+        "items": "CustomerModal"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      }
+    ]
+  },
+  {
+    "name": "CategoriesPage",
+    "type": "page/hook",
+    "path": "src/app/manage/categories/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "categories",
+      "page",
+      "categoriespage",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaPlus }"
+      },
+      {
+        "source": "@/components/manage/CategoryModal",
+        "items": "CategoryModal"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "./hooks/useCategoryManagement",
+        "items": "{ useCategoryManagement }"
+      },
+      {
+        "source": "@/components/manage/CategoryTable",
+        "items": "CategoryTable"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      }
+    ]
+  },
+  {
+    "name": "DesignTunerPage",
+    "type": "page/hook",
+    "path": "src/app/design/tuner/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "design",
+      "tuner",
+      "page",
+      "designtunerpage",
+      "app",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/SelectorTuner",
+        "items": "{ SelectorTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/ButtonTuner",
+        "items": "{ ButtonTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/TypographyTuner",
+        "items": "{ TypographyTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/CartItemTuner",
+        "items": "{ CartItemTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/GridTuner",
+        "items": "{ GridTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/SidebarTuner",
+        "items": "{ SidebarTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/HistoryTuner",
+        "items": "{ HistoryTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/NumpadTuner",
+        "items": "{ NumpadTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/tuners/GlobalTuner",
+        "items": "{ GlobalTuner }"
+      },
+      {
+        "source": "@/components/design-tuner/core/TunerSidebar",
+        "items": "{ TunerSidebar, TunerTab }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaSave, FaUndo }"
+      }
+    ]
+  },
+  {
+    "name": "useStockManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/stock/hooks/useStockManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "stock",
+      "management",
+      "usestockmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useSearchParams }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ stockApi, productApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Stock, BackendProduct }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "RecipeBuilderPage",
+    "type": "page/hook",
+    "path": "src/app/manage/material/recipe/page.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "recipe",
+      "builder",
+      "page",
+      "recipebuilderpage",
+      "app",
+      "manage",
+      "material",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ Suspense, useState }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaArrowLeft }"
+      },
+      {
+        "source": "next/link",
+        "items": "Link"
+      },
+      {
+        "source": "@/components/layout/ManagementPageLayout",
+        "items": "ManagementPageLayout"
+      },
+      {
+        "source": "@/components/manage/recipe/SimpleRecipeBuilder",
+        "items": "SimpleRecipeBuilder"
+      },
+      {
+        "source": "@/components/manage/recipe/RecipeTable",
+        "items": "RecipeTable"
+      },
+      {
+        "source": "@/components/design-mode/BottomControlPanel",
+        "items": "BottomControlPanel"
+      },
+      {
+        "source": "./hooks/useRecipeTable",
+        "items": "{ useRecipeTable }"
+      },
+      {
+        "source": "@/context/MockupContext",
+        "items": "{ useMockup }"
+      }
+    ]
+  },
+  {
+    "name": "useImageManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/images/hooks/useImageManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "image",
+      "management",
+      "useimagemanagement",
+      "app",
+      "manage",
+      "images",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback }"
+      },
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Image, ProductImage, BackendProduct, productApi }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "useMaterialManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "material",
+      "management",
+      "usematerialmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useMemo, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ materialApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "useCategoryManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/categories/hooks/useCategoryManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "category",
+      "management",
+      "usecategorymanagement",
+      "app",
+      "manage",
+      "categories",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ categoryApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Category }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "useCustomerManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/customers/hooks/useCustomerManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "customer",
+      "management",
+      "usecustomermanagement",
+      "app",
+      "manage",
+      "customers",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ customerApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Customer, NewCustomer }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "useSimpleRecipe",
+    "type": "page/hook",
+    "path": "src/app/manage/material/recipe/hooks/useSimpleRecipe.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "simple",
+      "recipe",
+      "usesimplerecipe",
+      "app",
+      "manage",
+      "material",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useCallback, useEffect, useRef }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useSearchParams }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, recipeApi, productApi, materialApi, scaledToFloat, }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      }
+    ]
+  },
+  {
+    "name": "useRecipeTable",
+    "type": "page/hook",
+    "path": "src/app/manage/material/recipe/hooks/useRecipeTable.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "recipe",
+      "table",
+      "userecipetable",
+      "app",
+      "manage",
+      "material",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, recipeApi, productApi, materialApi, }"
+      },
+      {
+        "source": "@/lib/types/recipe",
+        "items": "{ RecipeItem, RecipeList }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "useRecipeFlow",
+    "type": "page/hook",
+    "path": "src/app/manage/material/recipe/hooks/useRecipeFlow.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "recipe",
+      "flow",
+      "userecipeflow",
+      "app",
+      "manage",
+      "material",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useCallback, useEffect }"
+      },
+      {
+        "source": "@xyflow/react",
+        "items": "{ Node, Edge, addEdge, useNodesState, useEdgesState, OnConnect, Connection, XYPosition, }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ BackendProduct, Material, recipeApi, productApi, materialApi, AppSettings, }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
   }
 ]

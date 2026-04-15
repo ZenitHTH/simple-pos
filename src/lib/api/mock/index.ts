@@ -1,5 +1,5 @@
 import { handlers } from "./handlers";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 /**
  * Mock implementation of Tauri's invoke.

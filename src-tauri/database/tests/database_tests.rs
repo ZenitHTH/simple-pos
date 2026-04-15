@@ -96,6 +96,7 @@ fn test_material_operations() {
         volume: 1000,
         quantity: 10,
         precision: 0,
+        tags: None,
     };
     let inserted = database::material::insert_material(&mut conn, &new_mat).unwrap();
     assert_eq!(inserted.name, "Sugar");

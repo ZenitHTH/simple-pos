@@ -15,7 +15,7 @@ import MaterialModal from "@/components/manage/MaterialModal";
 import { useDatabase } from "@/context/DatabaseContext";
 import { Input } from "@/components/ui/Input";
 import { DualColumnBuilder } from "@/components/ui/DualColumnBuilder";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 import {
   MaterialSourceItem,

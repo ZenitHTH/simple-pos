@@ -1,6 +1,6 @@
 import { invoke as tauriInvoke, convertFileSrc as tauriConvertFileSrc } from "@tauri-apps/api/core";
 import { mockInvoke } from "./mock";
-import { logger, sanitize } from "@/lib/logger";
+import { logger, sanitize } from "@/lib/utils/logger";
 
 /**
  * Redacts sensitive fields from arguments for secure logging.
@@ -28,7 +28,17 @@ export async function invoke<T>(command: string, args?: Record<string, any>): Pr
       logger.debug(`[Tauri API] Invoking command: ${command}`, sanitizeArgs(args));
       return await tauriInvoke<T>(command, args);
     } catch (error) {
-      logger.error(`Tauri invoke error [${command}]:`, error);
+      // Check if the error is related to database access or decryption (common with wrong keys)
+      const errorMsg = String(error).toLowerCase();
+      const isAuthError = errorMsg.includes("no such table") || 
+                          errorMsg.includes("file is not a database") ||
+                          errorMsg.includes("invalid encryption key");
+
+      if (isAuthError) {
+        logger.warn(`Database access error [${command}] (possible auth issue):`, error);
+      } else {
+        logger.error(`Tauri invoke error [${command}]:`, error);
+      }
       throw error;
     }
   }

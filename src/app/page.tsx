@@ -5,7 +5,7 @@ import POSClient from "@/components/pos/POSClient";
 import { Product } from "@/lib";
 import { productApi, categoryApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 function POSLoader() {
   const { dbKey } = useDatabase();
@@ -34,8 +34,17 @@ function POSLoader() {
           image_object_position: p.image_object_position,
         }));
         setProducts(mappedProducts);
-      } catch (error) {
-        logger.error("Failed to load products:", error);
+      } catch (error: any) {
+        const errorMsg = String(error).toLowerCase();
+        const isAuthError = errorMsg.includes("no such table") || 
+                            errorMsg.includes("file is not a database") ||
+                            errorMsg.includes("invalid encryption key");
+
+        if (isAuthError) {
+          logger.warn("Failed to load POS data: Database session invalid or wrong key.");
+        } else {
+          logger.error("Failed to load products:", error);
+        }
       } finally {
         setLoading(false);
       }

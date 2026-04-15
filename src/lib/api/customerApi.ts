@@ -24,4 +24,6 @@ export const customerApi = {
         address: data.address,
         branch: data.branch
     }),
+    /** Deletes a customer record. */
+    delete: (key: string, id: number): Promise<void> => invoke("delete_customer", { key, id }),
 };

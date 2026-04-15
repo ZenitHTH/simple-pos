@@ -1,6 +1,6 @@
 "use client";
 
-import { usePOSLogic } from "@/hooks/usePOSLogic";
+import { usePOSLogic } from "@/hooks/features/usePOSLogic";
 import { Product } from "@/lib";
 import { useSettings } from "@/context/settings/SettingsContext";
 import POSHeader from "./POSHeader";

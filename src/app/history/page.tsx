@@ -14,7 +14,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { useAlert } from "@/context/AlertContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 export default function HistoryPage() {
   const { dbKey } = useDatabase();

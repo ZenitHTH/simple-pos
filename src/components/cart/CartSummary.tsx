@@ -2,8 +2,8 @@ import { memo } from "react";
 import { CardFooter } from "@/components/ui/Card";
 import { Customer } from "@/lib";
 import { Select } from "@/components/ui/Select";
-import { useTax } from "@/hooks/useTax";
-import { logger } from "@/lib/logger";
+import { useTax } from "@/hooks/settings/useTax";
+import { logger } from "@/lib/utils/logger";
 
 interface CartSummaryProps {
   subtotal: number;

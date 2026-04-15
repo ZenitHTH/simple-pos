@@ -3,7 +3,7 @@ import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
 import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 export function useImageManagement() {
   const { dbKey } = useDatabase();

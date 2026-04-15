@@ -7,7 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import { stockApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface ImportExportControlsProps {
   onRefresh: () => void;

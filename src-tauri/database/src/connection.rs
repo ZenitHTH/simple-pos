@@ -73,6 +73,9 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
 }
 
 fn get_database_url() -> Result<String, String> {
+    if std::env::var("VIBE_POS_IN_MEMORY").is_ok() {
+        return Ok(":memory:".to_string());
+    }
     get_database_path()?
         .to_str()
         .map(|s| s.to_string())

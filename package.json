@@ -9,6 +9,9 @@
     "lint": "eslint",
     "tauri": "tauri",
     "test:e2e": "node scripts/run-e2e.mjs",
+    "test:e2e:windows": "node scripts/run-e2e.mjs --target-env=windows",
+    "test:e2e:wsl": "node scripts/run-e2e.mjs --target-env=wsl",
+    "test:e2e:linux": "node scripts/run-e2e.mjs --target-env=linux",
     "registry": "node scripts/generate-registry.mjs"
   },
   "dependencies": {

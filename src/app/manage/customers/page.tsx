@@ -21,6 +21,7 @@ export default function CustomersPage() {
         isSubmitting,
         handleCreate,
         handleEdit,
+        handleDelete,
         handleModalSubmit,
     } = useCustomerManagement();
 
@@ -55,6 +56,7 @@ export default function CustomersPage() {
             <CustomerTable
                 customers={customers}
                 onEdit={handleEdit}
+                onDelete={handleDelete}
                 settings={settings}
             />
         </ManagementPageLayout>

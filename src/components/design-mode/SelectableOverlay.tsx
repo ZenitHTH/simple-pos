@@ -107,6 +107,7 @@ export default function SelectableOverlay({
         onDragEnd={() => setIsDragging(false)}
         whileHover={{ scale: 1.2, backgroundColor: "var(--primary)" }}
         whileTap={{ scale: 0.9 }}
+        data-handle-direction={direction}
         className={cn(
           "absolute h-6 w-6 rounded-full bg-primary border-4 border-background shadow-xl z-50 flex items-center justify-center transition-all",
           positionClasses[direction]

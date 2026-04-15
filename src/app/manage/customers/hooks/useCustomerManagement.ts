@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { customerApi } from "@/lib";
 import { Customer, NewCustomer } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
@@ -31,6 +31,25 @@ export function useCustomerManagement() {
     const handleEdit = (customer: Customer) => {
         setEditingCustomer(customer);
         setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!dbKey) return;
+        
+        const confirmed = await showAlert(
+            "Confirm Delete", 
+            "Are you sure you want to delete this customer? This action cannot be undone.",
+        );
+
+        if (confirmed === undefined || confirmed === false) return;
+
+        try {
+            await customerApi.delete(dbKey, id);
+            updateCache.customers(customers.filter(c => c.id !== id));
+        } catch (err) {
+            logger.error("Failed to delete customer:", err);
+            await showAlert("Delete Error", String(err));
+        }
     };
 
     const handleModalSubmit = async (
@@ -82,6 +101,7 @@ export function useCustomerManagement() {
         isSubmitting,
         handleCreate,
         handleEdit,
+        handleDelete,
         handleModalSubmit,
     };
 }

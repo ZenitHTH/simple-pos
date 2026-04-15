@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Material, scaledToFloat, UNIT_OPTIONS } from "@/lib";
+import { Material, MaterialFormData, scaledToFloat, UNIT_OPTIONS } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Controller } from "react-hook-form";
-
-interface MaterialFormData {
-  name: string;
-  type_: string;
-  volume: number;
-  quantity: number;
-  tags: string[];
-}
 
 interface MaterialModalProps {
   isOpen: boolean;

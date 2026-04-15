@@ -6,7 +6,7 @@ import { stockApi, productApi } from "@/lib";
 import { Stock, BackendProduct } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { useDataCache } from "@/context/DataContext";
 
 export function useStockManagement() {

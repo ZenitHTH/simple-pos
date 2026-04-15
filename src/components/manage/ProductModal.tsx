@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface ProductModalProps {
   isOpen: boolean;

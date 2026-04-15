@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import DateFilter from "@/components/history/DateFilter";
-import GlobalTable, { Column } from "@/components/ui/GlobalTable";
-import { receiptApi } from "@/lib/api/receipts";
-import { ProductAccumulation, MaterialAccumulation } from "@/lib/types/receipt";
-import { logger } from "@/lib/logger";
+import GlobalTable from "@/components/ui/GlobalTable";
+import { receiptApi, ProductAccumulation, MaterialAccumulation, Column } from "@/lib";
+import { logger } from "@/lib/utils/logger";
 import { useToast } from "@/context/ToastContext";
 import { useDatabase } from "@/context/DatabaseContext";
 

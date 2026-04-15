@@ -4,7 +4,7 @@ import { materialApi } from "@/lib";
 import { Material } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { useDataCache } from "@/context/DataContext";
 
 export function useMaterialManagement() {
@@ -133,5 +133,6 @@ export function useMaterialManagement() {
     handleEdit,
     handleDelete,
     handleModalSubmit,
-    refresh: fetchMaterials,
-  };}
+    refresh: refreshAll,
+  };
+}

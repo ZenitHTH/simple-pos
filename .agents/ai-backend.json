@@ -42,7 +42,8 @@
       "precision",
       "places",
       "rust-command"
-    ]
+    ],
+    "imports": []
   },
   {
     "name": "get_stock",
@@ -64,6 +65,16 @@
       "product_id",
       "returns",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -87,6 +98,16 @@
       "returns",
       "list",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -116,6 +137,16 @@
       "newly",
       "created",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -140,6 +171,16 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -163,6 +204,16 @@
       "deleted",
       "records",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -190,6 +241,16 @@
       "result",
       "success",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -231,6 +292,16 @@
       "number",
       "imported",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::stock",
+      "database::{NewStock, Stock}",
+      "export_lib::{ExportTable, CellValue}",
+      "std::path::PathBuf",
+      "diesel::Connection",
+      "tauri::Emitter"
     ]
   },
   {
@@ -250,6 +321,12 @@
       "object",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "settings_lib::{\r\n    get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,\r\n    save_settings as lib_save_settings, AppSettings, StorageInfo,\r\n}",
+      "std::path::PathBuf",
+      "tauri::{command, Manager}"
     ]
   },
   {
@@ -273,6 +350,12 @@
       "success",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "settings_lib::{\r\n    get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,\r\n    save_settings as lib_save_settings, AppSettings, StorageInfo,\r\n}",
+      "std::path::PathBuf",
+      "tauri::{command, Manager}"
     ]
   },
   {
@@ -300,6 +383,12 @@
       "images",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "settings_lib::{\r\n    get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,\r\n    save_settings as lib_save_settings, AppSettings, StorageInfo,\r\n}",
+      "std::path::PathBuf",
+      "tauri::{command, Manager}"
     ]
   },
   {
@@ -343,6 +432,12 @@
       "success",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "settings_lib::{\r\n    get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,\r\n    save_settings as lib_save_settings, AppSettings, StorageInfo,\r\n}",
+      "std::path::PathBuf",
+      "tauri::{command, Manager}"
     ]
   },
   {
@@ -370,6 +465,12 @@
       "newly",
       "metadata",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -397,6 +498,12 @@
       "optional",
       "exists",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -420,6 +527,12 @@
       "deleted",
       "records",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -457,6 +570,12 @@
       "returns",
       "newly",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -481,6 +600,12 @@
       "returns",
       "specified",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -510,6 +635,12 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -533,6 +664,12 @@
       "deleted",
       "records",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "crate::conn",
+      "database::recipe",
+      "database::{NewRecipeItem, RecipeItem, RecipeList}"
     ]
   },
   {
@@ -591,6 +728,18 @@
       "created",
       "metadata",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::receipt",
+      "database::stock",
+      "database::{NewReceipt, Receipt, ReceiptList}",
+      "diesel::Connection",
+      "serde::Serialize",
+      "database::product",
+      "database::recipe",
+      "database::schema::{material, product, receipt_item, receipt_item_material, receipt_list}",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -632,6 +781,18 @@
       "result",
       "success",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::receipt",
+      "database::stock",
+      "database::{NewReceipt, Receipt, ReceiptList}",
+      "diesel::Connection",
+      "serde::Serialize",
+      "database::product",
+      "database::recipe",
+      "database::schema::{material, product, receipt_item, receipt_item_material, receipt_list}",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -659,6 +820,18 @@
       "containing",
       "list",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::receipt",
+      "database::stock",
+      "database::{NewReceipt, Receipt, ReceiptList}",
+      "diesel::Connection",
+      "serde::Serialize",
+      "database::product",
+      "database::recipe",
+      "database::schema::{material, product, receipt_item, receipt_item_material, receipt_list}",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -694,6 +867,18 @@
       "headers",
       "specified",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::receipt",
+      "database::stock",
+      "database::{NewReceipt, Receipt, ReceiptList}",
+      "diesel::Connection",
+      "serde::Serialize",
+      "database::product",
+      "database::recipe",
+      "database::schema::{material, product, receipt_item, receipt_item_material, receipt_list}",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -731,6 +916,18 @@
       "material",
       "usage",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::receipt",
+      "database::stock",
+      "database::{NewReceipt, Receipt, ReceiptList}",
+      "diesel::Connection",
+      "serde::Serialize",
+      "database::product",
+      "database::recipe",
+      "database::schema::{material, product, receipt_item, receipt_item_material, receipt_list}",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -758,6 +955,14 @@
       "image",
       "metadata",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::product::model::ProductWithImage",
+      "database::{NewProduct, Product}",
+      "database::stock",
+      "database::stock"
     ]
   },
   {
@@ -804,6 +1009,14 @@
       "newly",
       "created",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::product::model::ProductWithImage",
+      "database::{NewProduct, Product}",
+      "database::stock",
+      "database::stock"
     ]
   },
   {
@@ -840,6 +1053,14 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::product::model::ProductWithImage",
+      "database::{NewProduct, Product}",
+      "database::stock",
+      "database::stock"
     ]
   },
   {
@@ -872,6 +1093,14 @@
       "number",
       "deleted",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::product::model::ProductWithImage",
+      "database::{NewProduct, Product}",
+      "database::stock",
+      "database::stock"
     ]
   },
   {
@@ -901,6 +1130,14 @@
       "result",
       "success",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product",
+      "database::product::model::ProductWithImage",
+      "database::{NewProduct, Product}",
+      "database::stock",
+      "database::stock"
     ]
   },
   {
@@ -923,6 +1160,12 @@
       "returns",
       "list",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "database::establish_connection",
+      "database::material",
+      "database::{Material, NewMaterial}"
     ]
   },
   {
@@ -965,6 +1208,12 @@
       "newly",
       "created",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "database::establish_connection",
+      "database::material",
+      "database::{Material, NewMaterial}"
     ]
   },
   {
@@ -997,6 +1246,12 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "database::establish_connection",
+      "database::material",
+      "database::{Material, NewMaterial}"
     ]
   },
   {
@@ -1019,6 +1274,12 @@
       "deleted",
       "records",
       "rust-command"
+    ],
+    "imports": [
+      "super::utils::float_to_scaled",
+      "database::establish_connection",
+      "database::material",
+      "database::{Material, NewMaterial}"
     ]
   },
   {
@@ -1052,6 +1313,13 @@
       "created",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1080,6 +1348,13 @@
       "record",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1107,6 +1382,13 @@
       "records",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1134,6 +1416,13 @@
       "records",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1159,6 +1448,13 @@
       "specified",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1183,6 +1479,13 @@
       "records",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1213,6 +1516,13 @@
       "success",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1240,6 +1550,13 @@
       "records",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1267,6 +1584,13 @@
       "records",
       "command",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::product_image::{\r\n    get_all_links as db_get_all_links, get_linked_images as db_get_images,\r\n    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,\r\n    unlink_product_image as db_unlink_image,\r\n}",
+      "image_lib::save_image as lib_save_image",
+      "settings_lib::get_settings",
+      "tauri::command"
     ]
   },
   {
@@ -1314,6 +1638,19 @@
       "message",
       "string",
       "rust-command"
+    ],
+    "imports": [
+      "chrono::{TimeZone, Utc}",
+      "database::customer",
+      "database::establish_connection",
+      "database::receipt::model::ReceiptList",
+      "settings_lib::get_settings",
+      "export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report}",
+      "std::path::PathBuf",
+      "tauri::command",
+      "database::schema::{receipt_item, receipt_list}",
+      "diesel::prelude::*",
+      "std::collections::BTreeMap"
     ]
   },
   {
@@ -1339,6 +1676,11 @@
       "result",
       "success",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::run_migrations",
+      "database::get_database_path"
     ]
   },
   {
@@ -1366,6 +1708,11 @@
       "false",
       "otherwise",
       "rust-command"
+    ],
+    "imports": [
+      "database::establish_connection",
+      "database::run_migrations",
+      "database::get_database_path"
     ]
   },
   {
@@ -1388,6 +1735,11 @@
       "returns",
       "list",
       "rust-command"
+    ],
+    "imports": [
+      "database::customer",
+      "database::establish_connection",
+      "database::{Customer, NewCustomer}"
     ]
   },
   {
@@ -1417,6 +1769,11 @@
       "newly",
       "created",
       "rust-command"
+    ],
+    "imports": [
+      "database::customer",
+      "database::establish_connection",
+      "database::{Customer, NewCustomer}"
     ]
   },
   {
@@ -1446,6 +1803,11 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "database::customer",
+      "database::establish_connection",
+      "database::{Customer, NewCustomer}"
     ]
   },
   {
@@ -1468,6 +1830,11 @@
       "returns",
       "list",
       "rust-command"
+    ],
+    "imports": [
+      "database::category",
+      "database::establish_connection",
+      "database::{Category, NewCategory}"
     ]
   },
   {
@@ -1495,6 +1862,11 @@
       "newly",
       "created",
       "rust-command"
+    ],
+    "imports": [
+      "database::category",
+      "database::establish_connection",
+      "database::{Category, NewCategory}"
     ]
   },
   {
@@ -1522,6 +1894,11 @@
       "returns",
       "updated",
       "rust-command"
+    ],
+    "imports": [
+      "database::category",
+      "database::establish_connection",
+      "database::{Category, NewCategory}"
     ]
   },
   {
@@ -1544,6 +1921,11 @@
       "deleted",
       "records",
       "rust-command"
+    ],
+    "imports": [
+      "database::category",
+      "database::establish_connection",
+      "database::{Category, NewCategory}"
     ]
   },
   {
@@ -1565,6 +1947,10 @@
       "runs",
       "pending",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations}"
     ]
   },
   {
@@ -1592,6 +1978,14 @@
       "data",
       "directory",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "diesel::sql_query",
+      "directories::ProjectDirs",
+      "serde_json",
+      "std::fs",
+      "std::path::{Path, PathBuf}"
     ]
   },
   {
@@ -1631,6 +2025,14 @@
       "encrypted",
       "soon",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "diesel::sql_query",
+      "directories::ProjectDirs",
+      "serde_json",
+      "std::fs",
+      "std::path::{Path, PathBuf}"
     ]
   },
   {
@@ -1651,6 +2053,15 @@
       "returns",
       "created",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1670,6 +2081,15 @@
       "specific",
       "product",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1688,6 +2108,15 @@
       "record",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1709,6 +2138,15 @@
       "from",
       "associated",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1728,6 +2166,15 @@
       "specific",
       "product",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1748,6 +2195,15 @@
       "records",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1769,6 +2225,15 @@
       "stored",
       "record",
       "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -1789,337 +2254,15 @@
       "from",
       "product",
       "rust-db"
-    ]
-  },
-  {
-    "name": "link_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Creates a link between a product and an image in the database.",
-    "signature": "pub fn link_product_image(",
-    "keywords": [
-      "link",
-      "product",
-      "image",
-      "link_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "creates",
-      "between",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_product_image",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Removes a specific link between a product and an image.",
-    "signature": "pub fn unlink_product_image(",
-    "keywords": [
-      "unlink",
-      "product",
-      "image",
-      "unlink_product_image",
-      "database",
-      "product_image",
-      "mod",
-      "removes",
-      "specific",
-      "link",
-      "between",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "unlink_all_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Removes all image links for a specific product.",
-    "signature": "pub fn unlink_all_product_images(",
-    "keywords": [
-      "unlink",
-      "all",
-      "product",
-      "images",
-      "unlink_all_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "removes",
-      "image",
-      "links",
-      "specific",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_linked_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Retrieves all `Image` records linked to a specific product.",
-    "signature": "pub fn get_linked_images(",
-    "keywords": [
-      "get",
-      "linked",
-      "images",
-      "get_linked_images",
-      "database",
-      "product_image",
-      "mod",
-      "retrieves",
-      "image",
-      "records",
-      "specific",
-      "product",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_product_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Retrieves all `ProductImage` link records for a specific product.",
-    "signature": "pub fn get_product_images(",
-    "keywords": [
-      "get",
-      "product",
-      "images",
-      "get_product_images",
-      "database",
-      "product_image",
-      "mod",
-      "retrieves",
-      "productimage",
-      "link",
-      "records",
-      "specific",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_links",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product_image/mod.rs",
-    "description": "Retrieves all product-image links in the database.",
-    "signature": "pub fn get_all_links(",
-    "keywords": [
-      "get",
-      "all",
-      "links",
-      "get_all_links",
-      "database",
-      "product_image",
-      "mod",
-      "retrieves",
-      "product",
-      "image",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "insert_product",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Inserts a new product into the database and returns the created record.",
-    "signature": "pub fn insert_product(conn: &mut SqliteConnection, newprod: &NewProduct) -> Result<Product, Error>",
-    "keywords": [
-      "insert",
-      "product",
-      "insert_product",
-      "database",
-      "mod",
-      "inserts",
-      "into",
-      "returns",
-      "created",
-      "record",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "remove_product",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Deletes a product from the database by its ID.",
-    "signature": "pub fn remove_product(conn: &mut SqliteConnection, id: i32) -> Result<usize, Error>",
-    "keywords": [
-      "remove",
-      "product",
-      "remove_product",
-      "database",
-      "mod",
-      "deletes",
-      "from",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "remove_product_images_link",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Removes all image associations for a specific product.",
-    "signature": "pub fn remove_product_images_link(",
-    "keywords": [
-      "remove",
-      "product",
-      "images",
-      "link",
-      "remove_product_images_link",
-      "database",
-      "mod",
-      "removes",
-      "image",
-      "associations",
-      "specific",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "check_product_dependencies",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Checks if a product has any dependencies (e.g., used in receipts) that would prevent deletion.",
-    "signature": "pub fn check_product_dependencies(",
-    "keywords": [
-      "check",
-      "product",
-      "dependencies",
-      "check_product_dependencies",
-      "database",
-      "mod",
-      "checks",
-      "used",
-      "receipts",
-      "that",
-      "would",
-      "prevent",
-      "deletion",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "find_product_by_title",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Finds a product by its title. Returns None if not found.",
-    "signature": "pub fn find_product_by_title(",
-    "keywords": [
-      "find",
-      "product",
-      "by",
-      "title",
-      "find_product_by_title",
-      "database",
-      "mod",
-      "finds",
-      "returns",
-      "none",
-      "found",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_products",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Retrieves all products from the database.",
-    "signature": "pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Error>",
-    "keywords": [
-      "get",
-      "all",
-      "products",
-      "get_all_products",
-      "database",
-      "product",
-      "mod",
-      "retrieves",
-      "from",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_product",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Updates an existing product record in the database.",
-    "signature": "pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error>",
-    "keywords": [
-      "update",
-      "product",
-      "update_product",
-      "database",
-      "mod",
-      "updates",
-      "existing",
-      "record",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "set_product_stock_mode",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Toggles whether a product should use recipe-based stock tracking.",
-    "signature": "pub fn set_product_stock_mode(",
-    "keywords": [
-      "set",
-      "product",
-      "stock",
-      "mode",
-      "set_product_stock_mode",
-      "database",
-      "mod",
-      "toggles",
-      "whether",
-      "should",
-      "recipe",
-      "based",
-      "tracking",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "find_product",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Retrieves a specific product from the database by its ID.",
-    "signature": "pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Product, Error>",
-    "keywords": [
-      "find",
-      "product",
-      "find_product",
-      "database",
-      "mod",
-      "retrieves",
-      "specific",
-      "from",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_products_with_images",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/product/mod.rs",
-    "description": "Retrieves all products along with their associated image paths.",
-    "signature": "pub fn get_all_products_with_images(",
-    "keywords": [
-      "get",
-      "all",
-      "products",
-      "with",
-      "images",
-      "get_all_products_with_images",
-      "database",
-      "product",
-      "mod",
-      "retrieves",
-      "along",
-      "their",
-      "associated",
-      "image",
-      "paths",
-      "rust-db"
+    ],
+    "imports": [
+      "crate::stock::model::{NewStock, Stock}",
+      "crate::stock::schema::stock as stock_schemata",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "stock_schemata::dsl::{product_id, quantity, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, stock as stock_dsl}",
+      "stock_schemata::dsl::{product_id, satang, stock as stock_dsl}"
     ]
   },
   {
@@ -2140,6 +2283,13 @@
       "specific",
       "product",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2163,6 +2313,13 @@
       "with",
       "specific",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2186,6 +2343,13 @@
       "manual",
       "cleanup",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2206,6 +2370,13 @@
       "existing",
       "list",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2230,6 +2401,13 @@
       "specific",
       "header",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2251,6 +2429,13 @@
       "precision",
       "specific",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2272,6 +2457,13 @@
       "from",
       "list",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2295,6 +2487,13 @@
       "sold",
       "receipt",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{recipe_item, recipe_list}",
+      "diesel::prelude::*",
+      "crate::material",
+      "crate::receipt",
+      "crate::NewReceiptItemMaterial"
     ]
   },
   {
@@ -2356,6 +2555,12 @@
       "timezone",
       "thailand",
       "rust-db"
+    ],
+    "imports": [
+      "crate::receipt::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::{DateTime, FixedOffset, NaiveDateTime}",
+      "diesel::prelude::*",
+      "serde::Serialize"
     ]
   },
   {
@@ -2384,6 +2589,11 @@
       "created",
       "receiptlist",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2403,6 +2613,11 @@
       "retrieves",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2429,6 +2644,11 @@
       "time",
       "sale",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2466,6 +2686,11 @@
       "stock",
       "tracking",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2489,6 +2714,11 @@
       "with",
       "specific",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2519,6 +2749,11 @@
       "newest",
       "first",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2543,6 +2778,552 @@
       "tuple",
       "receiptlist",
       "rust-db"
+    ],
+    "imports": [
+      "self::schema::{receipt_item, receipt_item_material, receipt_list}",
+      "chrono::Utc",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "link_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Creates a link between a product and an image in the database.",
+    "signature": "pub fn link_product_image(",
+    "keywords": [
+      "link",
+      "product",
+      "image",
+      "link_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "creates",
+      "between",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "unlink_product_image",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Removes a specific link between a product and an image.",
+    "signature": "pub fn unlink_product_image(",
+    "keywords": [
+      "unlink",
+      "product",
+      "image",
+      "unlink_product_image",
+      "database",
+      "product_image",
+      "mod",
+      "removes",
+      "specific",
+      "link",
+      "between",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "unlink_all_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Removes all image links for a specific product.",
+    "signature": "pub fn unlink_all_product_images(",
+    "keywords": [
+      "unlink",
+      "all",
+      "product",
+      "images",
+      "unlink_all_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "removes",
+      "image",
+      "links",
+      "specific",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "get_linked_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all `Image` records linked to a specific product.",
+    "signature": "pub fn get_linked_images(",
+    "keywords": [
+      "get",
+      "linked",
+      "images",
+      "get_linked_images",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "image",
+      "records",
+      "specific",
+      "product",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "get_product_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all `ProductImage` link records for a specific product.",
+    "signature": "pub fn get_product_images(",
+    "keywords": [
+      "get",
+      "product",
+      "images",
+      "get_product_images",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "productimage",
+      "link",
+      "records",
+      "specific",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "get_all_links",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product_image/mod.rs",
+    "description": "Retrieves all product-image links in the database.",
+    "signature": "pub fn get_all_links(",
+    "keywords": [
+      "get",
+      "all",
+      "links",
+      "get_all_links",
+      "database",
+      "product_image",
+      "mod",
+      "retrieves",
+      "product",
+      "image",
+      "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "crate::schema::product_images::dsl::*",
+      "crate::schema::product_images::dsl::*"
+    ]
+  },
+  {
+    "name": "insert_product",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Inserts a new product into the database and returns the created record.",
+    "signature": "pub fn insert_product(conn: &mut SqliteConnection, newprod: &NewProduct) -> Result<Product, Error>",
+    "keywords": [
+      "insert",
+      "product",
+      "insert_product",
+      "database",
+      "mod",
+      "inserts",
+      "into",
+      "returns",
+      "created",
+      "record",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "remove_product",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Deletes a product from the database by its ID.",
+    "signature": "pub fn remove_product(conn: &mut SqliteConnection, id: i32) -> Result<usize, Error>",
+    "keywords": [
+      "remove",
+      "product",
+      "remove_product",
+      "database",
+      "mod",
+      "deletes",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "remove_product_images_link",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Removes all image associations for a specific product.",
+    "signature": "pub fn remove_product_images_link(",
+    "keywords": [
+      "remove",
+      "product",
+      "images",
+      "link",
+      "remove_product_images_link",
+      "database",
+      "mod",
+      "removes",
+      "image",
+      "associations",
+      "specific",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "check_product_dependencies",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Checks if a product has any dependencies (e.g., used in receipts) that would prevent deletion.",
+    "signature": "pub fn check_product_dependencies(",
+    "keywords": [
+      "check",
+      "product",
+      "dependencies",
+      "check_product_dependencies",
+      "database",
+      "mod",
+      "checks",
+      "used",
+      "receipts",
+      "that",
+      "would",
+      "prevent",
+      "deletion",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "find_product_by_title",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Finds a product by its title. Returns None if not found.",
+    "signature": "pub fn find_product_by_title(",
+    "keywords": [
+      "find",
+      "product",
+      "by",
+      "title",
+      "find_product_by_title",
+      "database",
+      "mod",
+      "finds",
+      "returns",
+      "none",
+      "found",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "get_all_products",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Retrieves all products from the database.",
+    "signature": "pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Error>",
+    "keywords": [
+      "get",
+      "all",
+      "products",
+      "get_all_products",
+      "database",
+      "product",
+      "mod",
+      "retrieves",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "update_product",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Updates an existing product record in the database.",
+    "signature": "pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error>",
+    "keywords": [
+      "update",
+      "product",
+      "update_product",
+      "database",
+      "mod",
+      "updates",
+      "existing",
+      "record",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "set_product_stock_mode",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Toggles whether a product should use recipe-based stock tracking.",
+    "signature": "pub fn set_product_stock_mode(",
+    "keywords": [
+      "set",
+      "product",
+      "stock",
+      "mode",
+      "set_product_stock_mode",
+      "database",
+      "mod",
+      "toggles",
+      "whether",
+      "should",
+      "recipe",
+      "based",
+      "tracking",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "find_product",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Retrieves a specific product from the database by its ID.",
+    "signature": "pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Product, Error>",
+    "keywords": [
+      "find",
+      "product",
+      "find_product",
+      "database",
+      "mod",
+      "retrieves",
+      "specific",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
+    ]
+  },
+  {
+    "name": "get_all_products_with_images",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/product/mod.rs",
+    "description": "Retrieves all products along with their associated image paths.",
+    "signature": "pub fn get_all_products_with_images(",
+    "keywords": [
+      "get",
+      "all",
+      "products",
+      "with",
+      "images",
+      "get_all_products_with_images",
+      "database",
+      "product",
+      "mod",
+      "retrieves",
+      "along",
+      "their",
+      "associated",
+      "image",
+      "paths",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::product::model::{NewProduct, Product}",
+      "crate::schema::product as product_schema",
+      "diesel::prelude::*",
+      "diesel::result::Error",
+      "crate::schema::product_images::dsl::{product_id, product_images}",
+      "crate::schema::receipt_item::dsl::{product_id as receipt_pid, receipt_item}",
+      "product_schema::dsl::{product, title}",
+      "product_schema::dsl::{\r\n        category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,\r\n    }",
+      "product_schema::dsl::{product, use_recipe_stock}",
+      "crate::product::model::ProductWithImage",
+      "crate::schema::images",
+      "crate::schema::product_images",
+      "std::collections::BTreeMap"
     ]
   },
   {
@@ -2563,6 +3344,11 @@
       "records",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "crate::material::model::{Material, NewMaterial}",
+      "crate::material::schema::material::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2581,6 +3367,11 @@
       "record",
       "into",
       "rust-db"
+    ],
+    "imports": [
+      "crate::material::model::{Material, NewMaterial}",
+      "crate::material::schema::material::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2599,6 +3390,11 @@
       "existing",
       "record",
       "rust-db"
+    ],
+    "imports": [
+      "crate::material::model::{Material, NewMaterial}",
+      "crate::material::schema::material::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2617,6 +3413,11 @@
       "record",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "crate::material::model::{Material, NewMaterial}",
+      "crate::material::schema::material::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2634,6 +3435,11 @@
       "finds",
       "specific",
       "rust-db"
+    ],
+    "imports": [
+      "crate::material::model::{Material, NewMaterial}",
+      "crate::material::schema::material::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2652,6 +3458,16 @@
       "record",
       "into",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2670,6 +3486,16 @@
       "record",
       "unique",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2695,6 +3521,16 @@
       "that",
       "exists",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2718,6 +3554,16 @@
       "newest",
       "first",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2744,6 +3590,16 @@
       "handled",
       "separately",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2763,6 +3619,16 @@
       "stored",
       "file",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
     ]
   },
   {
@@ -2796,6 +3662,137 @@
       "ratio",
       "container",
       "rust-db"
+    ],
+    "imports": [
+      "diesel::prelude::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*",
+      "crate::schema::images::dsl::*"
+    ]
+  },
+  {
+    "name": "get_all_categories",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/category/mod.rs",
+    "description": "Retrieves all product categories from the database.",
+    "signature": "pub fn get_all_categories(conn: &mut SqliteConnection) -> QueryResult<Vec<Category>>",
+    "keywords": [
+      "get",
+      "all",
+      "categories",
+      "get_all_categories",
+      "database",
+      "category",
+      "mod",
+      "retrieves",
+      "product",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "self::model::{Category, NewCategory}",
+      "self::schema::category::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "insert_category",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/category/mod.rs",
+    "description": "Inserts a new category into the database and returns the created record.",
+    "signature": "pub fn insert_category(",
+    "keywords": [
+      "insert",
+      "category",
+      "insert_category",
+      "database",
+      "mod",
+      "inserts",
+      "into",
+      "returns",
+      "created",
+      "record",
+      "rust-db"
+    ],
+    "imports": [
+      "self::model::{Category, NewCategory}",
+      "self::schema::category::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "update_category",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/category/mod.rs",
+    "description": "Updates an existing category record in the database.",
+    "signature": "pub fn update_category(",
+    "keywords": [
+      "update",
+      "category",
+      "update_category",
+      "database",
+      "mod",
+      "updates",
+      "existing",
+      "record",
+      "rust-db"
+    ],
+    "imports": [
+      "self::model::{Category, NewCategory}",
+      "self::schema::category::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "remove_category",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/category/mod.rs",
+    "description": "Deletes a category from the database by its ID.",
+    "signature": "pub fn remove_category(conn: &mut SqliteConnection, category_id: i32) -> QueryResult<usize>",
+    "keywords": [
+      "remove",
+      "category",
+      "remove_category",
+      "database",
+      "mod",
+      "deletes",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "self::model::{Category, NewCategory}",
+      "self::schema::category::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "find_category_by_name",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/category/mod.rs",
+    "description": "Finds a category by its name. Returns None if not found.",
+    "signature": "pub fn find_category_by_name(",
+    "keywords": [
+      "find",
+      "category",
+      "by",
+      "name",
+      "find_category_by_name",
+      "database",
+      "mod",
+      "finds",
+      "returns",
+      "none",
+      "found",
+      "rust-db"
+    ],
+    "imports": [
+      "self::model::{Category, NewCategory}",
+      "self::schema::category::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2815,6 +3812,10 @@
       "retrieves",
       "from",
       "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2833,6 +3834,10 @@
       "record",
       "into",
       "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2859,102 +3864,10 @@
       "head",
       "office",
       "rust-db"
-    ]
-  },
-  {
-    "name": "get_all_categories",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/category/mod.rs",
-    "description": "Retrieves all product categories from the database.",
-    "signature": "pub fn get_all_categories(conn: &mut SqliteConnection) -> QueryResult<Vec<Category>>",
-    "keywords": [
-      "get",
-      "all",
-      "categories",
-      "get_all_categories",
-      "database",
-      "category",
-      "mod",
-      "retrieves",
-      "product",
-      "from",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "insert_category",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/category/mod.rs",
-    "description": "Inserts a new category into the database and returns the created record.",
-    "signature": "pub fn insert_category(",
-    "keywords": [
-      "insert",
-      "category",
-      "insert_category",
-      "database",
-      "mod",
-      "inserts",
-      "into",
-      "returns",
-      "created",
-      "record",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "update_category",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/category/mod.rs",
-    "description": "Updates an existing category record in the database.",
-    "signature": "pub fn update_category(",
-    "keywords": [
-      "update",
-      "category",
-      "update_category",
-      "database",
-      "mod",
-      "updates",
-      "existing",
-      "record",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "remove_category",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/category/mod.rs",
-    "description": "Deletes a category from the database by its ID.",
-    "signature": "pub fn remove_category(conn: &mut SqliteConnection, category_id: i32) -> QueryResult<usize>",
-    "keywords": [
-      "remove",
-      "category",
-      "remove_category",
-      "database",
-      "mod",
-      "deletes",
-      "from",
-      "rust-db"
-    ]
-  },
-  {
-    "name": "find_category_by_name",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/category/mod.rs",
-    "description": "Finds a category by its name. Returns None if not found.",
-    "signature": "pub fn find_category_by_name(",
-    "keywords": [
-      "find",
-      "category",
-      "by",
-      "name",
-      "find_category_by_name",
-      "database",
-      "mod",
-      "finds",
-      "returns",
-      "none",
-      "found",
-      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
     ]
   },
   {
@@ -2978,6 +3891,13 @@
       "path",
       "destination",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "rust_xlsxwriter::*",
+      "calamine::{Reader, Xlsx, open_workbook, Data}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3012,6 +3932,13 @@
       "destination",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "rust_xlsxwriter::*",
+      "calamine::{Reader, Xlsx, open_workbook, Data}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3039,6 +3966,13 @@
       "containing",
       "data",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "rust_xlsxwriter::*",
+      "calamine::{Reader, Xlsx, open_workbook, Data}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3116,6 +4050,10 @@
       "export",
       "xlsx",
       "rust-lib"
+    ],
+    "imports": [
+      "crate::{CellValue, ExportTable}",
+      "serde::{Deserialize, Serialize}"
     ]
   },
   {
@@ -3141,6 +4079,13 @@
       "path",
       "destination",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "spreadsheet_ods::{Sheet, WorkBook}",
+      "calamine::{Reader, Ods, open_workbook, Data}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3168,6 +4113,13 @@
       "containing",
       "data",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "spreadsheet_ods::{Sheet, WorkBook}",
+      "calamine::{Reader, Ods, open_workbook, Data}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3237,6 +4189,11 @@
       "returns",
       "sanitized",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3274,6 +4231,11 @@
       "with",
       "specified",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3291,6 +4253,11 @@
       "values",
       "table",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3314,6 +4281,11 @@
       "false",
       "otherwise",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3331,6 +4303,11 @@
       "table",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3348,6 +4325,11 @@
       "table",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3365,6 +4347,11 @@
       "table",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3383,6 +4370,11 @@
       "from",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3401,6 +4393,11 @@
       "from",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3419,6 +4416,11 @@
       "from",
       "file",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3449,6 +4451,11 @@
       "path",
       "destination",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}",
+      "std::error::Error",
+      "std::path::Path"
     ]
   },
   {
@@ -3472,6 +4479,12 @@
       "path",
       "destination",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "std::error::Error",
+      "std::path::Path",
+      "super::*"
     ]
   },
   {
@@ -3497,6 +4510,12 @@
       "containing",
       "data",
       "rust-lib"
+    ],
+    "imports": [
+      "super::{CellValue, ExportTable, sanitize_cell_text}",
+      "std::error::Error",
+      "std::path::Path",
+      "super::*"
     ]
   },
   {
@@ -3581,6 +4600,14 @@
       "created",
       "existing",
       "rust-lib"
+    ],
+    "imports": [
+      "atomic_write_file::AtomicWriteFile",
+      "database::{Image, NewImage, establish_connection, insert_image}",
+      "sha2::{Digest, Sha256}",
+      "std::io::Write",
+      "std::path::Path",
+      "thiserror::Error"
     ]
   },
   {
@@ -3611,6 +4638,14 @@
       "false",
       "otherwise",
       "rust-lib"
+    ],
+    "imports": [
+      "atomic_write_file::AtomicWriteFile",
+      "database::{Image, NewImage, establish_connection, insert_image}",
+      "sha2::{Digest, Sha256}",
+      "std::io::Write",
+      "std::path::Path",
+      "thiserror::Error"
     ]
   },
   {
@@ -3633,6 +4668,14 @@
       "absolute",
       "path",
       "rust-lib"
+    ],
+    "imports": [
+      "atomic_write_file::AtomicWriteFile",
+      "database::{Image, NewImage, establish_connection, insert_image}",
+      "sha2::{Digest, Sha256}",
+      "std::io::Write",
+      "std::path::Path",
+      "thiserror::Error"
     ]
   },
   {
@@ -3651,6 +4694,11 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "directories::ProjectDirs",
+      "std::fs",
+      "std::path::PathBuf"
     ]
   },
   {
@@ -3668,6 +4716,11 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "directories::ProjectDirs",
+      "std::fs",
+      "std::path::PathBuf"
     ]
   },
   {
@@ -3685,6 +4738,9 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "serde::{Deserialize, Serialize}"
     ]
   },
   {
@@ -3704,6 +4760,10 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "crate::models::AppSettings",
+      "serde::{Deserialize, Serialize}"
     ]
   },
   {
@@ -3721,6 +4781,12 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "crate::migration::{SettingsFormat, migrate_flat_to_nested}",
+      "crate::models::{AppSettings, StorageInfo}",
+      "crate::paths::{get_settings_path, validate_path}",
+      "std::fs"
     ]
   },
   {
@@ -3738,6 +4804,12 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "crate::migration::{SettingsFormat, migrate_flat_to_nested}",
+      "crate::models::{AppSettings, StorageInfo}",
+      "crate::paths::{get_settings_path, validate_path}",
+      "std::fs"
     ]
   },
   {
@@ -3756,6 +4828,12 @@
       "documentation",
       "provided",
       "rust-lib"
+    ],
+    "imports": [
+      "crate::migration::{SettingsFormat, migrate_flat_to_nested}",
+      "crate::models::{AppSettings, StorageInfo}",
+      "crate::paths::{get_settings_path, validate_path}",
+      "std::fs"
     ]
   }
 ]

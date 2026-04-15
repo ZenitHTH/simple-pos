@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Draggable from "react-draggable";
 import { FaLayerGroup, FaMagic, FaCheckCircle, FaTextHeight } from "react-icons/fa";
-import { useColorSampler } from "@/hooks/useColorSampler";
+import { useColorSampler } from "@/hooks/common/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { cn } from "@/lib";

@@ -9,8 +9,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-/** Supported types of toast notifications. */
-export type ToastType = "success" | "error" | "info";
+import { ToastType } from "@/lib/types/common";
 
 /**
  * Props for the Toast component.

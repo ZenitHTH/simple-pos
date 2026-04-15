@@ -9,7 +9,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Button } from "@/components/ui/Button";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface GeneralSettingsProps {
   imageStoragePath?: string;

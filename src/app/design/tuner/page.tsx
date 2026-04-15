@@ -11,7 +11,8 @@ import { SidebarTuner } from "@/components/design-tuner/tuners/SidebarTuner";
 import { HistoryTuner } from "@/components/design-tuner/tuners/HistoryTuner";
 import { NumpadTuner } from "@/components/design-tuner/tuners/NumpadTuner";
 import { GlobalTuner } from "@/components/design-tuner/tuners/GlobalTuner";
-import { TunerSidebar, TunerTab } from "@/components/design-tuner/core/TunerSidebar";
+import { TunerSidebar } from "@/components/design-tuner/core/TunerSidebar";
+import { TunerTab } from "@/lib";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { FaSave, FaUndo } from "react-icons/fa";
 

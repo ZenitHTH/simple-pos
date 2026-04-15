@@ -14,19 +14,8 @@ import {
   FaColumns,
 } from "react-icons/fa";
 import { NavButton } from "../ui/NavButton";
-import { AppSettings, DeepPartial } from "@/lib";
+import { AppSettings, DeepPartial, TunerTab } from "@/lib";
 import BaseSidebarLayout from "@/components/layout/BaseSidebarLayout";
-
-export type TunerTab =
-  | "global"
-  | "selector"
-  | "button"
-  | "typography"
-  | "cart"
-  | "grid"
-  | "sidebar"
-  | "history"
-  | "numpad";
 
 interface TunerSidebarProps {
   activeTab: TunerTab;

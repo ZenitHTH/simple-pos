@@ -13,18 +13,30 @@ const DEV_SERVER_PORT = 3000;
 const DEV_SERVER_HOST = '127.0.0.1';
 const skipBuild = process.argv.includes('--skip-build');
 
-const isWindows = os.platform() === 'win32';
+// Environment Detection
+const targetEnvArg = process.argv.find(arg => arg.startsWith('--target-env='));
+const targetEnv = targetEnvArg ? targetEnvArg.split('=')[1] : null;
+
+const isWindows = os.platform() === 'win32' || targetEnv === 'windows';
 const isMac = os.platform() === 'darwin';
+const isWSL = targetEnv === 'wsl';
+const isLinuxDesktop = targetEnv === 'linux' && !isWSL;
+
+console.log(`Target Environment: ${targetEnv || 'Auto-detect'}`);
+if (isWSL) console.log('WSL Mode: Explicitly setting DISPLAY=:0 and WAYLAND_DISPLAY=wayland-0');
 
 const appDataPath = isWindows 
-  ? path.join(process.env.APPDATA, 'simple-pos')
+  ? path.join(process.env.APPDATA || '', 'simple-pos')
   : isMac
     ? path.join(os.homedir(), 'Library', 'Application Support', 'com.simple-pos.app')
     : path.join(os.homedir(), '.local', 'share', 'simple-pos');
 
 let executablePath;
-if (isWindows) {
+if (isWindows && os.platform() === 'win32') {
   executablePath = 'src-tauri\\target\\debug\\app.exe';
+} else if (isWindows && os.platform() !== 'win32') {
+  console.error('Error: Cannot run Windows target on non-Windows host without cross-compilation/Wine (not supported).');
+  process.exit(1);
 } else if (isMac) {
   executablePath = 'src-tauri/target/debug/bundle/macos/app.app/Contents/MacOS/app';
 } else {
@@ -32,7 +44,7 @@ if (isWindows) {
 }
 
 // 0. Clear Database for a fresh test run
-const dbPath = path.join(appDataPath, 'simple-pos.db');
+const dbPath = path.join(appDataPath, 'database.db');
 
 console.log(`Cleaning database at: ${dbPath}`);
 try {
@@ -116,11 +128,25 @@ console.log('Proceeding to start Tauri app.\n');
 console.log(`Starting Tauri app from: ${executablePath}`);
 
 // 3. Start the Tauri app with remote debugging enabled
-const tauriProcess = spawn(executablePath, [], {
-  env: {
-    ...process.env,
-    WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
-  },
+const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
+const env = {
+  ...process.env,
+  VIBE_POS_IN_MEMORY: '1',
+  WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
+};
+
+if (isWSL) {
+  env.DISPLAY = ':0';
+  env.WAYLAND_DISPLAY = 'wayland-0';
+  env.WEBKIT_INSPECTOR_SERVER = `127.0.0.1:${DEBUG_PORT}`;
+}
+
+if (isLinuxDesktop) {
+  env.WEBKIT_INSPECTOR_SERVER = `127.0.0.1:${DEBUG_PORT}`;
+}
+
+const tauriProcess = spawn(executablePath, args, {
+  env,
   stdio: 'ignore',
   detached: !isWindows,
 });
@@ -169,7 +195,9 @@ if (!isPortOpen) {
 console.log('Debugging port is open! Starting Playwright tests...\n');
 
 // 4. Run Playwright tests
-const playwrightResult = spawnSync('npx', ['playwright', 'test'], { stdio: 'inherit', shell: true });
+// Forward any additional arguments (like --ui) to playwright
+const playwrightArgs = ['playwright', 'test', ...process.argv.slice(2).filter(arg => arg !== '--skip-build')];
+const playwrightResult = spawnSync('npx', playwrightArgs, { stdio: 'inherit', shell: true });
 
 console.log('\nPlaywright tests completed.');
 

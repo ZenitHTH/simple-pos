@@ -14,7 +14,7 @@ import {
   Stock 
 } from "@/lib";
 import { useDatabase } from "./DatabaseContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface DataContextType {
   products: BackendProduct[];
