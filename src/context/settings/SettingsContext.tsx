@@ -89,17 +89,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const updateSettings = (updates: DeepPartial<AppSettings>) => {
     setSettings((prev) => {
-      let next = deepMerge<AppSettings>(prev, updates);
-
+      let toApply = updates;
+      
       if (updates.theme?.theme_preset && updates.theme.theme_preset !== "custom") {
         const preset =
           THEME_PRESETS[updates.theme.theme_preset as keyof typeof THEME_PRESETS];
         if (preset) {
-          next = deepMerge<AppSettings>(next, preset);
+          // Merge preset first, then apply user overrides on top of it
+          toApply = deepMerge(preset, updates);
         }
       }
 
-      return next;
+      return deepMerge<AppSettings>(prev, toApply);
     });
   };
 
