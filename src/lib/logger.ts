@@ -19,10 +19,14 @@ export function sanitize(input: any, seen = new WeakSet()): any {
     let result = input.replace(/\b\d{13}\b/g, "[REDACTED-ID]");
     // Redact emails
     result = result.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[REDACTED-EMAIL]");
+    // Redact common PII labels followed by values (e.g. "Tax ID: 12345")
+    result = result.replace(/(tax[ _]?id|national[ _]?id|id[ _]?card|ssn)[: ]+([a-zA-Z0-9-]{5,})/gi, "$1: [REDACTED]");
     return result;
   }
 
-  if (typeof input === "object") {
+  // Only sanitize plain objects, arrays, and Errors.
+  // Other objects (Date, RegExp, etc.) should be returned as-is or handled specifically.
+  if (input !== null && typeof input === "object" && (input.constructor === Object || Array.isArray(input) || input instanceof Error)) {
     if (seen.has(input)) return "[Circular]";
     seen.add(input);
 
@@ -38,31 +42,18 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 
     for (const key of Object.keys(input)) {
       const lowerKey = key.toLowerCase();
-      if (
-        lowerKey.includes("tax") ||
-        lowerKey.includes("address") ||
-        lowerKey.includes("key") ||
-        lowerKey.includes("customer") ||
-        lowerKey.includes("email") ||
-        lowerKey.includes("phone") ||
-        lowerKey.includes("name") ||
-        lowerKey.includes("dob") ||
-        lowerKey.includes("birth") ||
-        lowerKey.includes("national_id") ||
-        lowerKey.includes("id_card") ||
-        lowerKey.includes("secret") ||
-        lowerKey.includes("password") ||
-        lowerKey.includes("sensitive") ||
-        lowerKey.includes("ssn") ||
-        lowerKey.includes("maiden") ||
-        lowerKey.includes("card") ||
-        lowerKey.includes("cvv") ||
-        lowerKey.includes("cvc") ||
-        lowerKey.includes("token") ||
-        lowerKey.includes("auth") ||
-        lowerKey.includes("zip") ||
-        lowerKey.includes("postcode")
-      ) {
+      // Refined patterns to avoid redacting non-sensitive data like "tax_rate" or "product.name"
+      const isSensitiveKey = (
+        (lowerKey === "key" || lowerKey === "secret" || lowerKey === "password" || lowerKey === "token" || lowerKey === "auth") ||
+        (lowerKey.includes("address") && !lowerKey.includes("mac")) ||
+        (lowerKey.includes("customer") && (lowerKey.includes("name") || lowerKey.includes("phone") || lowerKey.includes("email"))) ||
+        ((lowerKey.includes("tax") && lowerKey.includes("id")) && !lowerKey.includes("rate") && !lowerKey.includes("enabled")) ||
+        (lowerKey.includes("phone") || lowerKey.includes("email") || lowerKey.includes("dob") || lowerKey.includes("birth")) ||
+        (lowerKey.includes("national_id") || lowerKey.includes("id_card") || lowerKey.includes("ssn")) ||
+        (lowerKey.includes("card") && (lowerKey.includes("number") || lowerKey.includes("cvv") || lowerKey.includes("cvc")))
+      );
+
+      if (isSensitiveKey) {
         sanitized[key] = "[REDACTED]";
       } else {
         // Skip properties already handled for Error
