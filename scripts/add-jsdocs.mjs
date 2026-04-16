@@ -12,7 +12,13 @@ const targets = [
 ];
 
 const files = targets.flatMap(pattern => globSync(pattern, { absolute: true }));
-const jsdocTemplate = (name) => `/**\n * ${name} Component\n * \n * @param {Object} props - The properties object.\n * @returns {JSX.Element | null} The rendered component.\n */\n`;
+const jsdocTemplate = (name) => {
+    const isComponent = /^[A-Z]/.test(name);
+    if (isComponent) {
+        return `/**\n * ${name} Component\n * \n * @param {Object} props - The properties object.\n * @returns {JSX.Element | null} The rendered component.\n */\n`;
+    }
+    return `/**\n * ${name}\n */\n`;
+};
 
 files.forEach(file => {
     let content = fs.readFileSync(file, 'utf-8');
