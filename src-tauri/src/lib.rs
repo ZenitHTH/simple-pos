@@ -24,7 +24,15 @@ pub fn run() {
                 let _ = window.set_focus();
             }
         }))
-        .plugin(tauri_plugin_log::Builder::default().build())
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .filter(|metadata| {
+                    // Security: Prevent logging of IPC calls which contains raw arguments (like encryption keys)
+                    !metadata.target().starts_with("tauri::ipc")
+                        && !metadata.target().starts_with("tauri::runtime")
+                })
+                .build(),
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .setup(|app| {
