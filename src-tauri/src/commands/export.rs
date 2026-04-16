@@ -5,7 +5,6 @@ use database::receipt::model::ReceiptList;
 
 use settings_lib::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
-use std::path::PathBuf;
 use tauri::{command, Manager};
 
 #[command]

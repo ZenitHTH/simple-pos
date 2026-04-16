@@ -9,4 +9,4 @@ pub mod paths;
 pub use manager::{get_settings, get_storage_info, save_settings};
 pub use migration::{migrate_flat_to_nested, SettingsFormat};
 pub use models::*;
-pub use paths::{get_settings_path, validate_path};
+pub use paths::{get_settings_path, validate_path, validate_path_within};
