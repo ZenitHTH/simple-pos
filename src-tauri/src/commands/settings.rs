@@ -53,21 +53,8 @@ pub fn migrate_image_directory(
     key: String,
     new_path: String,
 ) -> Result<(), String> {
-    settings_lib::validate_path(&new_path)?;
-
-    // Security: Restrict migration to app-local data directory or user home to prevent arbitrary writes
-    let new_path_buf = PathBuf::from(&new_path);
-    let app_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| e.to_string())?;
-
-    // Allow migration to directories under app_local_data_dir or a dedicated "images" folder
-    if !new_path_buf.starts_with(&app_dir) {
-        // Also allow if it's explicitly allowed in tauri.conf.json or similar, 
-        // but here we enforce a strict app-local-data policy for simplicity and security.
-        return Err("Migration target must be within the application data directory.".to_string());
-    }
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    let new_path_buf = settings_lib::validate_path_within(&new_path, &app_dir)?;
 
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     let images = database::image::get_all_images(&mut conn).map_err(|e| e.to_string())?;
