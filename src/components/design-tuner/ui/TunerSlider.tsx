@@ -69,7 +69,7 @@ export function TunerSlider({
           max={max}
           step={step}
           onChange={onChange}
-          onPointerUp={() => commitHistory()}
+          onPointerDown={() => commitHistory()}
         />
       </div>
     </div>
