@@ -7592,58 +7592,6 @@
     ]
   },
   {
-    "name": "useStockManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/stock/hooks/useStockManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "stock",
-      "management",
-      "usestockmanagement",
-      "app",
-      "manage",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useEffect }"
-      },
-      {
-        "source": "next/navigation",
-        "items": "{ useSearchParams }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ stockApi, productApi }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Stock, BackendProduct }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      },
-      {
-        "source": "@/context/DataContext",
-        "items": "{ useDataCache }"
-      }
-    ]
-  },
-  {
     "name": "RecipeBuilderPage",
     "type": "page/hook",
     "path": "src/app/manage/material/recipe/page.tsx",
@@ -7701,15 +7649,15 @@
     ]
   },
   {
-    "name": "useMaterialManagement",
+    "name": "useStockManagement",
     "type": "page/hook",
-    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "path": "src/app/manage/stock/hooks/useStockManagement.ts",
     "description": "No description provided.",
     "keywords": [
       "use",
-      "material",
+      "stock",
       "management",
-      "usematerialmanagement",
+      "usestockmanagement",
       "app",
       "manage",
       "description",
@@ -7720,15 +7668,19 @@
     "imports": [
       {
         "source": "react",
-        "items": "{ useState, useMemo, useEffect }"
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useSearchParams }"
       },
       {
         "source": "@/lib",
-        "items": "{ materialApi }"
+        "items": "{ stockApi, productApi }"
       },
       {
         "source": "@/lib",
-        "items": "{ Material }"
+        "items": "{ Stock, BackendProduct }"
       },
       {
         "source": "@/context/DatabaseContext",
@@ -7790,6 +7742,54 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "useMaterialManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "material",
+      "management",
+      "usematerialmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useMemo, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ materialApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
       }
     ]
   },

@@ -5,8 +5,9 @@ import fs from 'fs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
+import { logger } from './logger.mjs';
 
-console.log('=== Vibe POS E2E Testing Setup ===\n');
+logger.log('=== Vibe POS E2E Testing Setup ===\n');
 
 const DEBUG_PORT = 9223;
 const DEV_SERVER_PORT = 3000;
@@ -145,9 +146,10 @@ if (isLinuxDesktop) {
   env.WEBKIT_INSPECTOR_SERVER = `127.0.0.1:${DEBUG_PORT}`;
 }
 
+const logFile = fs.openSync('tauri-app.log', 'w');
 const tauriProcess = spawn(executablePath, args, {
   env,
-  stdio: 'ignore',
+  stdio: ['ignore', logFile, logFile],
   detached: !isWindows,
 });
 
@@ -195,8 +197,14 @@ if (!isPortOpen) {
 console.log('Debugging port is open! Starting Playwright tests...\n');
 
 // 4. Run Playwright tests
-// Forward any additional arguments (like --ui) to playwright
-const playwrightArgs = ['playwright', 'test', ...process.argv.slice(2).filter(arg => arg !== '--skip-build')];
+// Forward any additional arguments (like --ui) to playwright, but filter out our own flags
+const playwrightArgs = [
+  'playwright', 
+  'test', 
+  ...process.argv.slice(2).filter(arg => 
+    arg !== '--skip-build' && !arg.startsWith('--target-env=')
+  )
+];
 const playwrightResult = spawnSync('npx', playwrightArgs, { stdio: 'inherit', shell: true });
 
 console.log('\nPlaywright tests completed.');

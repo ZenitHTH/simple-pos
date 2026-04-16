@@ -3677,81 +3677,6 @@
     ]
   },
   {
-    "name": "get_all_customers",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Retrieves all customers from the database.",
-    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
-    "keywords": [
-      "get",
-      "all",
-      "customers",
-      "get_all_customers",
-      "database",
-      "customer",
-      "mod",
-      "retrieves",
-      "from",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
-    "name": "insert_customer",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Inserts a new customer record into the database.",
-    "signature": "pub fn insert_customer(",
-    "keywords": [
-      "insert",
-      "customer",
-      "insert_customer",
-      "database",
-      "mod",
-      "inserts",
-      "record",
-      "into",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
-    "name": "update_customer_record",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Updates an existing customer record by their ID. If `update_data.branch` is not provided, it defaults to \"00000\" (Head Office).",
-    "signature": "pub fn update_customer_record(",
-    "keywords": [
-      "update",
-      "customer",
-      "record",
-      "update_customer_record",
-      "database",
-      "mod",
-      "updates",
-      "existing",
-      "their",
-      "update_data",
-      "branch",
-      "provided",
-      "defaults",
-      "00000",
-      "head",
-      "office",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
     "name": "get_all_categories",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
@@ -3869,6 +3794,81 @@
     "imports": [
       "self::model::{Category, NewCategory}",
       "self::schema::category::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "get_all_customers",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Retrieves all customers from the database.",
+    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
+    "keywords": [
+      "get",
+      "all",
+      "customers",
+      "get_all_customers",
+      "database",
+      "customer",
+      "mod",
+      "retrieves",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "insert_customer",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Inserts a new customer record into the database.",
+    "signature": "pub fn insert_customer(",
+    "keywords": [
+      "insert",
+      "customer",
+      "insert_customer",
+      "database",
+      "mod",
+      "inserts",
+      "record",
+      "into",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "update_customer_record",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Updates an existing customer record by their ID. If `update_data.branch` is not provided, it defaults to \"00000\" (Head Office).",
+    "signature": "pub fn update_customer_record(",
+    "keywords": [
+      "update",
+      "customer",
+      "record",
+      "update_customer_record",
+      "database",
+      "mod",
+      "updates",
+      "existing",
+      "their",
+      "update_data",
+      "branch",
+      "provided",
+      "defaults",
+      "00000",
+      "head",
+      "office",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
       "diesel::prelude::*"
     ]
   },
