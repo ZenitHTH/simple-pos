@@ -31,3 +31,30 @@ pub fn validate_path(path_str: &str) -> Result<(), String> {
     }
     Ok(())
 }
+
+/// Validates that a path is absolute, does not contain traversal components,
+/// and resides within the specified root directory.
+pub fn validate_path_within(path_str: &str, root: &std::path::Path) -> Result<PathBuf, String> {
+    let path = PathBuf::from(path_str);
+    if !path.is_absolute() {
+        return Err(format!("Path '{}' must be absolute", path_str));
+    }
+
+    if !path.starts_with(root) {
+        return Err(format!(
+            "Security Error: Path '{}' is outside the allowed directory.",
+            path_str
+        ));
+    }
+
+    if path
+        .components()
+        .any(|c| matches!(c, std::path::Component::ParentDir))
+    {
+        return Err(format!(
+            "Security Error: Path '{}' contains invalid traversal components.",
+            path_str
+        ));
+    }
+    Ok(path)
+}
