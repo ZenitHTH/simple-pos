@@ -6,7 +6,7 @@ use database::receipt::model::ReceiptList;
 use settings_lib::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
 use std::path::PathBuf;
-use tauri::command;
+use tauri::{command, Manager};
 
 #[command]
 /// Exports receipts within a specific date range to a file (CSV or XLSX).
@@ -16,6 +16,7 @@ use tauri::command;
 ///
 /// # Arguments
 ///
+/// * `app` - The Tauri application handle.
 /// * `key` - The database encryption key.
 /// * `export_path` - The absolute destination file path.
 /// * `format` - The export format ("csv" or "xlsx").
@@ -26,6 +27,7 @@ use tauri::command;
 ///
 /// A success message string.
 pub fn export_receipts(
+    app: tauri::AppHandle,
     key: String,
     export_path: String,
     format: String,
@@ -33,7 +35,10 @@ pub fn export_receipts(
     end_date: i64,
 ) -> Result<String, String> {
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
-    let path = validate_export_path(&export_path)?;
+    
+    // Security: Restrict export path to app-local data directory
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    let path = settings_lib::validate_path_within(&export_path, &app_dir)?;
 
     let all_data = fetch_export_data(&mut conn, start_date, end_date)?;
     let customers = customer::get_all_customers(&mut conn).unwrap_or_default();
@@ -49,20 +54,6 @@ pub fn export_receipts(
     }
 
     Ok("Export successful".to_string())
-}
-
-fn validate_export_path(export_path: &str) -> Result<PathBuf, String> {
-    let path = PathBuf::from(export_path);
-    if !path.is_absolute() {
-        return Err("Export path must be absolute".to_string());
-    }
-    if path
-        .components()
-        .any(|c| matches!(c, std::path::Component::ParentDir))
-    {
-        return Err("Export path cannot contain '..' components".to_string());
-    }
-    Ok(path)
 }
 
 fn fetch_export_data(

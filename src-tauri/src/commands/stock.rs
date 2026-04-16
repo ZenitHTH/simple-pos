@@ -2,10 +2,10 @@ use database::establish_connection;
 use database::product;
 use database::stock;
 use database::{NewStock, Stock};
-use export_lib::{ExportTable, CellValue};
+use export_lib::{CellValue, ExportTable};
 use std::path::PathBuf;
 use diesel::Connection;
-use tauri::Emitter;
+use tauri::{Emitter, Manager};
 
 /// Retrieves the stock record for a specific product.
 ///
@@ -108,11 +108,14 @@ pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
 /// An empty result on success.
 #[tauri::command]
 pub fn export_stock_data(
+    app: tauri::AppHandle,
     key: String,
     path: String,
-    format: String
+    format: String,
 ) -> Result<(), String> {
-    settings_lib::validate_path(&path)?;
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    settings_lib::validate_path_within(&path, &app_dir)?;
+
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     let stocks = stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())?;
     let products = product::get_all_products(&mut conn).map_err(|e| e.to_string())?;
@@ -124,7 +127,8 @@ pub fn export_stock_data(
     ]);
 
     for s in stocks {
-        let product_name = products.iter()
+        let product_name = products
+            .iter()
             .find(|p| p.product_id == s.product_id)
             .map(|p| p.title.clone())
             .unwrap_or_else(|| "Unknown".to_string());
@@ -138,9 +142,15 @@ pub fn export_stock_data(
 
     let path_buf = PathBuf::from(path);
     match format.to_lowercase().as_str() {
-        "csv" => table.export_csv(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
-        "xlsx" => table.export_xlsx(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
-        "ods" => table.export_ods(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "csv" => table
+            .export_csv(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "xlsx" => table
+            .export_xlsx(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "ods" => table
+            .export_ods(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
         _ => return Err("Unsupported format".to_string()),
     }
 
@@ -164,25 +174,42 @@ pub fn import_stock_data(
     app: tauri::AppHandle,
     key: String,
     path: String,
-    format: String
+    format: String,
 ) -> Result<usize, String> {
-    settings_lib::validate_path(&path)?;
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    settings_lib::validate_path_within(&path, &app_dir)?;
+
     let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
     let path_buf = PathBuf::from(path);
 
     let table = match format.to_lowercase().as_str() {
-        "csv" => ExportTable::import_csv(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
-        "xlsx" => ExportTable::import_xlsx(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
-        "ods" => ExportTable::import_ods(path_buf).map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "csv" => ExportTable::import_csv(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "xlsx" => ExportTable::import_xlsx(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
+        "ods" => ExportTable::import_ods(path_buf)
+            .map_err(|e: Box<dyn std::error::Error>| e.to_string())?,
         _ => return Err("Unsupported format".to_string()),
     };
 
     let total_rows = table.rows.len();
     // Find "Product ID" and "Quantity" columns
-    let id_col = table.headers.iter().position(|h: &String| h.to_lowercase().contains("product id") || h.to_lowercase() == "id")
+    let id_col = table
+        .headers
+        .iter()
+        .position(|h: &String| {
+            h.to_lowercase().contains("product id") || h.to_lowercase() == "id"
+        })
         .ok_or("Could not find 'Product ID' column")?;
-    let qty_col = table.headers.iter().position(|h: &String| h.to_lowercase().contains("quantity") || h.to_lowercase() == "qty")
+    let qty_col = table
+        .headers
+        .iter()
+        .position(|h: &String| h.to_lowercase().contains("quantity") || h.to_lowercase() == "qty")
         .ok_or("Could not find 'Quantity' column")?;
+
+    // Pre-fetch all products and stocks to fix N+1 performance issue
+    let all_products = product::get_all_products(&mut conn).map_err(|e| e.to_string())?;
+    let all_stocks = stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())?;
 
     conn.transaction(|conn| {
         let mut count = 0;
@@ -190,28 +217,35 @@ pub fn import_stock_data(
             let product_id = match row.get(id_col) {
                 Some(CellValue::Int(n)) => *n as i32,
                 Some(CellValue::Number(n)) => *n as i32,
-                Some(CellValue::Text(s)) => s.parse::<i32>().map_err(|_| {
-                    diesel::result::Error::RollbackTransaction
-                })?,
+                Some(CellValue::Text(s)) => match s.parse::<i32>() {
+                    Ok(val) => val,
+                    Err(_) => {
+                        log::warn!("Skipping row {}: invalid product ID format '{}'", idx, s);
+                        continue;
+                    }
+                },
                 _ => continue, // Skip rows with invalid ID
             };
 
             let quantity = match row.get(qty_col) {
                 Some(CellValue::Int(n)) => *n as i32,
                 Some(CellValue::Number(n)) => *n as i32,
-                Some(CellValue::Text(s)) => s.parse::<i32>().map_err(|_| {
-                    diesel::result::Error::RollbackTransaction
-                })?,
+                Some(CellValue::Text(s)) => s.parse::<i32>().unwrap_or(0),
                 _ => 0,
             };
 
-            // Fetch product info to ensure it exists and get satang
-            let product_info = product::find_product(conn, product_id)
-                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
-            
-            let existing_stock = stock::get_stock(conn, product_id);
-            
-            if existing_stock.is_ok() {
+            // Fetch product info from pre-fetched list
+            let product_info = match all_products.iter().find(|p| p.product_id == product_id) {
+                Some(p) => p,
+                None => {
+                    log::warn!("Skipping row {}: Product ID {} not found", idx, product_id);
+                    continue;
+                }
+            };
+
+            let existing_stock = all_stocks.iter().find(|s| s.product_id == product_id);
+
+            if existing_stock.is_some() {
                 stock::update_stock(conn, product_id, quantity)
                     .map_err(|_| diesel::result::Error::RollbackTransaction)?;
             } else {
@@ -223,13 +257,16 @@ pub fn import_stock_data(
                 stock::insert_stock(conn, &new_stock)
                     .map_err(|_| diesel::result::Error::RollbackTransaction)?;
             }
-            
-            // Emit progress event
-            let progress = ((idx + 1) as f32 / total_rows as f32 * 100.0) as u32;
-            app.emit("import-progress", progress).map_err(|_| diesel::result::Error::RollbackTransaction)?;
-            
+
+            // Emit progress event every 10% or at completion to reduce IPC overhead
+            if total_rows > 0 && (idx % (total_rows / 10 + 1) == 0 || idx == total_rows - 1) {
+                let progress = ((idx + 1) as f32 / total_rows as f32 * 100.0) as u32;
+                let _ = app.emit("import-progress", progress);
+            }
+
             count += 1;
         }
         Ok(count)
-    }).map_err(|e: diesel::result::Error| format!("Transaction failed: {}", e))
+    })
+    .map_err(|e: diesel::result::Error| format!("Transaction failed: {}", e))
 }
