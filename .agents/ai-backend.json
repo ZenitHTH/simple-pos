@@ -71,10 +71,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -104,10 +104,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -143,10 +143,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -177,10 +177,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -210,10 +210,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -247,10 +247,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -298,10 +298,10 @@
       "database::product",
       "database::stock",
       "database::{NewStock, Stock}",
-      "export_lib::{ExportTable, CellValue}",
+      "export_lib::{CellValue, ExportTable}",
       "std::path::PathBuf",
       "diesel::Connection",
-      "tauri::Emitter"
+      "tauri::{Emitter, Manager}"
     ]
   },
   {
@@ -1597,7 +1597,7 @@
     "name": "export_receipts",
     "type": "rust-command",
     "path": "src-tauri/src/commands/export.rs",
-    "description": "Exports receipts within a specific date range to a file (CSV or XLSX). The export generates a Thai sales tax report format, including VAT calculations based on the configured tax rate. # Arguments * `key` - The database encryption key. * `export_path` - The absolute destination file path. * `format` - The export format (\"csv\" or \"xlsx\"). * `start_date` - The start of the date range (Unix timestamp in seconds). * `end_date` - The end of the date range (Unix timestamp in seconds). # Returns A success message string.",
+    "description": "Exports receipts within a specific date range to a file (CSV or XLSX). The export generates a Thai sales tax report format, including VAT calculations based on the configured tax rate. # Arguments * `app` - The Tauri application handle. * `key` - The database encryption key. * `export_path` - The absolute destination file path. * `format` - The export format (\"csv\" or \"xlsx\"). * `start_date` - The start of the date range (Unix timestamp in seconds). * `end_date` - The end of the date range (Unix timestamp in seconds). # Returns A success message string.",
     "signature": "pub fn export_receipts(",
     "keywords": [
       "export",
@@ -1621,6 +1621,9 @@
       "configured",
       "rate",
       "arguments",
+      "tauri",
+      "application",
+      "handle",
       "database",
       "encryption",
       "export_path",
@@ -1646,8 +1649,7 @@
       "database::receipt::model::ReceiptList",
       "settings_lib::get_settings",
       "export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report}",
-      "std::path::PathBuf",
-      "tauri::command",
+      "tauri::{command, Manager}",
       "database::schema::{receipt_item, receipt_list}",
       "diesel::prelude::*",
       "std::collections::BTreeMap"
@@ -3675,6 +3677,81 @@
     ]
   },
   {
+    "name": "get_all_customers",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Retrieves all customers from the database.",
+    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
+    "keywords": [
+      "get",
+      "all",
+      "customers",
+      "get_all_customers",
+      "database",
+      "customer",
+      "mod",
+      "retrieves",
+      "from",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "insert_customer",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Inserts a new customer record into the database.",
+    "signature": "pub fn insert_customer(",
+    "keywords": [
+      "insert",
+      "customer",
+      "insert_customer",
+      "database",
+      "mod",
+      "inserts",
+      "record",
+      "into",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
+    "name": "update_customer_record",
+    "type": "rust-db",
+    "path": "src-tauri/database/src/customer/mod.rs",
+    "description": "Updates an existing customer record by their ID. If `update_data.branch` is not provided, it defaults to \"00000\" (Head Office).",
+    "signature": "pub fn update_customer_record(",
+    "keywords": [
+      "update",
+      "customer",
+      "record",
+      "update_customer_record",
+      "database",
+      "mod",
+      "updates",
+      "existing",
+      "their",
+      "update_data",
+      "branch",
+      "provided",
+      "defaults",
+      "00000",
+      "head",
+      "office",
+      "rust-db"
+    ],
+    "imports": [
+      "crate::schema::customer::dsl::*",
+      "diesel::prelude::*"
+    ]
+  },
+  {
     "name": "get_all_categories",
     "type": "rust-db",
     "path": "src-tauri/database/src/category/mod.rs",
@@ -3792,81 +3869,6 @@
     "imports": [
       "self::model::{Category, NewCategory}",
       "self::schema::category::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
-    "name": "get_all_customers",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Retrieves all customers from the database.",
-    "signature": "pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>>",
-    "keywords": [
-      "get",
-      "all",
-      "customers",
-      "get_all_customers",
-      "database",
-      "customer",
-      "mod",
-      "retrieves",
-      "from",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
-    "name": "insert_customer",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Inserts a new customer record into the database.",
-    "signature": "pub fn insert_customer(",
-    "keywords": [
-      "insert",
-      "customer",
-      "insert_customer",
-      "database",
-      "mod",
-      "inserts",
-      "record",
-      "into",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
-      "diesel::prelude::*"
-    ]
-  },
-  {
-    "name": "update_customer_record",
-    "type": "rust-db",
-    "path": "src-tauri/database/src/customer/mod.rs",
-    "description": "Updates an existing customer record by their ID. If `update_data.branch` is not provided, it defaults to \"00000\" (Head Office).",
-    "signature": "pub fn update_customer_record(",
-    "keywords": [
-      "update",
-      "customer",
-      "record",
-      "update_customer_record",
-      "database",
-      "mod",
-      "updates",
-      "existing",
-      "their",
-      "update_data",
-      "branch",
-      "provided",
-      "defaults",
-      "00000",
-      "head",
-      "office",
-      "rust-db"
-    ],
-    "imports": [
-      "crate::schema::customer::dsl::*",
       "diesel::prelude::*"
     ]
   },
@@ -4715,6 +4717,38 @@
       "paths",
       "documentation",
       "provided",
+      "rust-lib"
+    ],
+    "imports": [
+      "directories::ProjectDirs",
+      "std::fs",
+      "std::path::PathBuf"
+    ]
+  },
+  {
+    "name": "validate_path_within",
+    "type": "rust-lib",
+    "path": "src-tauri/settings_lib/src/paths.rs",
+    "description": "Validates that a path is absolute, does not contain traversal components, and resides within the specified root directory.",
+    "signature": "pub fn validate_path_within(path_str: &str, root: &std::path::Path) -> Result<PathBuf, String>",
+    "keywords": [
+      "validate",
+      "path",
+      "within",
+      "validate_path_within",
+      "settings_lib",
+      "paths",
+      "validates",
+      "that",
+      "absolute",
+      "does",
+      "contain",
+      "traversal",
+      "components",
+      "resides",
+      "specified",
+      "root",
+      "directory",
       "rust-lib"
     ],
     "imports": [

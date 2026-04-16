@@ -52,21 +52,13 @@
     "name": "Toast",
     "type": "component",
     "path": "src/components/ui/Toast.tsx",
-    "description": "Supported types of toast notifications. */ export type ToastType = \"success\" | \"error\" | \"info\"; /** Props for the Toast component. / export interface ToastProps { /** Unique identifier for the toast. */ id: string; /** The message to display. */ message: string; /** The type of notification. Defaults to \"info\". */ type?: ToastType; /** Auto-close duration in milliseconds. Defaults to 3000. */ duration?: number; /** Callback triggered when the toast is closed. */ onClose: (id: string) => void; } /** A notification component that slides in and auto-closes. Features different themes for success, error, and informational messages. @param props - The toast props. @returns A notification element.",
+    "description": "Props for the Toast component. / export interface ToastProps { /** Unique identifier for the toast. */ id: string; /** The message to display. */ message: string; /** The type of notification. Defaults to \"info\". */ type?: ToastType; /** Auto-close duration in milliseconds. Defaults to 3000. */ duration?: number; /** Callback triggered when the toast is closed. */ onClose: (id: string) => void; } /** A notification component that slides in and auto-closes. Features different themes for success, error, and informational messages. @param props - The toast props. @returns A notification element.",
     "keywords": [
       "toast",
       "ui",
-      "supported",
-      "types",
-      "notifications",
-      "export",
-      "type",
-      "toasttype",
-      "success",
-      "error",
-      "info",
       "props",
       "component",
+      "export",
       "interface",
       "toastprops",
       "unique",
@@ -74,8 +66,11 @@
       "string",
       "message",
       "display",
+      "type",
       "notification",
       "defaults",
+      "info",
+      "toasttype",
       "auto",
       "close",
       "duration",
@@ -94,6 +89,8 @@
       "features",
       "different",
       "themes",
+      "success",
+      "error",
       "informational",
       "messages",
       "param",
@@ -113,6 +110,10 @@
       {
         "source": "react-icons/fa",
         "items": "{ FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaTimes, }"
+      },
+      {
+        "source": "@/lib/types/common",
+        "items": "{ ToastType }"
       }
     ]
   },
@@ -282,36 +283,34 @@
     "name": "Select",
     "type": "component",
     "path": "src/components/ui/Select.tsx",
-    "description": "Represents an option in the Select component. / interface Option { /** The value of the option. */ value: string | number; /** The human-readable label for the option. */ label: string; } /** Props for the Select component. / interface SelectProps { /** Optional label to display above the select box. */ label?: string; /** The current selected value. */ value?: string | number; /** Callback function triggered when an option is selected. */ onChange: (value: string | number) => void; /** Array of options to display in the dropdown. */ options: Option[]; /** Optional placeholder text shown when no value is selected. Defaults to \"Select...\". */ placeholder?: string; /** Optional additional CSS classes for the container. */ className?: string; } /** A custom-styled dropdown select component. Features a searchable-like feel, custom popover, and smooth transitions. @param props - The select component props. @returns A custom dropdown select element.",
+    "description": "Props for the Select component. / interface SelectProps { /** Optional label to display above the select box. */ label?: string; /** The current selected value. */ value?: string | number; /** Callback function triggered when an option is selected. */ onChange: (value: string | number) => void; /** Array of options to display in the dropdown. */ options: SelectOption[]; /** Optional placeholder text shown when no value is selected. Defaults to \"Select...\". */ placeholder?: string; /** Optional additional CSS classes for the container. */ className?: string; } /** A custom-styled dropdown select component. Features a searchable-like feel, custom popover, and smooth transitions. @param props - The select component props. @returns A custom dropdown select element.",
     "keywords": [
       "select",
       "ui",
-      "represents",
-      "option",
+      "props",
       "component",
       "interface",
-      "value",
-      "string",
-      "number",
-      "human",
-      "readable",
-      "label",
-      "props",
       "selectprops",
       "optional",
+      "label",
       "display",
       "above",
+      "string",
       "current",
       "selected",
+      "value",
+      "number",
       "callback",
       "function",
       "triggered",
       "when",
+      "option",
       "onchange",
       "void",
       "array",
       "options",
       "dropdown",
+      "selectoption",
       "placeholder",
       "text",
       "shown",
@@ -346,6 +345,10 @@
       {
         "source": "@/lib",
         "items": "{ cn }"
+      },
+      {
+        "source": "@/lib/types/common",
+        "items": "{ SelectOption }"
       }
     ]
   },
@@ -389,6 +392,10 @@
       {
         "source": "@/lib",
         "items": "{ cn }"
+      },
+      {
+        "source": "@/lib/types/common",
+        "items": "{ SelectOption }"
       }
     ]
   },
@@ -929,25 +936,12 @@
     "name": "GlobalTable",
     "type": "component",
     "path": "src/components/ui/GlobalTable.tsx",
-    "description": "Definition for a table column in GlobalTable. / export interface Column<T> { header: string; accessor?: keyof T; render?: (item: T) => ReactNode; className?: string; headerClassName?: string; } /** Props for the GlobalTable component. @template T - The type of data being displayed in the table. / interface GlobalTableProps<T> { /** Array of column definitions. */ columns: Column<T>[]; /** The data array to display. */ data: T[]; /** The field name that serves as a unique key for each row. */ keyField: keyof T; /** Message to display when there is no data. Defaults to \"No items found\". */ emptyMessage?: string; /** Additional CSS classes. */ className?: string; } /** A highly reusable and configurable table component for displaying data. @param columns - Array of column definitions. @param data - The data array to display. @param keyField - The field name that serves as a unique key for each row. @param emptyMessage - Message to display when there is no data. @param className - Additional CSS classes.",
+    "description": "Props for the GlobalTable component. @template T - The type of data being displayed in the table. / interface GlobalTableProps<T> { /** Array of column definitions. */ columns: Column<T>[]; /** The data array to display. */ data: T[]; /** The field name that serves as a unique key for each row. */ keyField: keyof T; /** Message to display when there is no data. Defaults to \"No items found\". */ emptyMessage?: string; /** Additional CSS classes. */ className?: string; } /** A highly reusable and configurable table component for displaying data. @param columns - Array of column definitions. @param data - The data array to display. @param keyField - The field name that serves as a unique key for each row. @param emptyMessage - Message to display when there is no data. @param className - Additional CSS classes.",
     "keywords": [
       "global",
       "table",
       "globaltable",
       "ui",
-      "definition",
-      "column",
-      "export",
-      "interface",
-      "header",
-      "string",
-      "accessor",
-      "keyof",
-      "render",
-      "item",
-      "reactnode",
-      "classname",
-      "headerclassname",
       "props",
       "component",
       "template",
@@ -955,8 +949,10 @@
       "data",
       "being",
       "displayed",
+      "interface",
       "globaltableprops",
       "array",
+      "column",
       "definitions",
       "columns",
       "display",
@@ -967,6 +963,7 @@
       "unique",
       "each",
       "keyfield",
+      "keyof",
       "message",
       "when",
       "there",
@@ -974,8 +971,10 @@
       "items",
       "found",
       "emptymessage",
+      "string",
       "additional",
       "classes",
+      "classname",
       "highly",
       "reusable",
       "configurable",
@@ -995,6 +994,10 @@
       {
         "source": "@/components/ui/EmptyState",
         "items": "{ EmptyState }"
+      },
+      {
+        "source": "@/lib/types/common",
+        "items": "{ Column }"
       }
     ]
   },
@@ -2322,7 +2325,7 @@
       },
       {
         "source": "@/lib",
-        "items": "{ Material, scaledToFloat, UNIT_OPTIONS }"
+        "items": "{ Material, MaterialFormData, scaledToFloat, UNIT_OPTIONS }"
       },
       {
         "source": "@/components/ui/Modal",
@@ -2636,11 +2639,11 @@
       },
       {
         "source": "@/lib",
-        "items": "{ Customer, AppSettings }"
+        "items": "{ Customer, AppSettings, Column }"
       },
       {
         "source": "@/components/ui/GlobalTable",
-        "items": "GlobalTable, { Column }"
+        "items": "GlobalTable"
       },
       {
         "source": "@/components/ui/Button",
@@ -4074,15 +4077,15 @@
     "imports": [
       {
         "source": "@/lib",
-        "items": "{ BackendProduct, Material, formatVolume }"
+        "items": "{ BackendProduct, Material, formatVolume, Column }"
       },
       {
         "source": "@/lib/types/recipe",
-        "items": "{ RecipeItem, RecipeList }"
+        "items": "{ RecipeItem, RecipeList, RecipeRow }"
       },
       {
         "source": "@/components/ui/GlobalTable",
-        "items": "GlobalTable, { Column }"
+        "items": "GlobalTable"
       }
     ]
   },
@@ -5381,7 +5384,7 @@
       },
       {
         "source": "@/lib",
-        "items": "{ AppSettings, DeepPartial }"
+        "items": "{ AppSettings, DeepPartial, TunerTab }"
       },
       {
         "source": "@/components/layout/BaseSidebarLayout",
@@ -6852,15 +6855,11 @@
       },
       {
         "source": "@/components/ui/GlobalTable",
-        "items": "GlobalTable, { Column }"
+        "items": "GlobalTable"
       },
       {
-        "source": "@/lib/api/receipts",
-        "items": "{ receiptApi }"
-      },
-      {
-        "source": "@/lib/types/receipt",
-        "items": "{ ProductAccumulation, MaterialAccumulation }"
+        "source": "@/lib",
+        "items": "{ receiptApi, ProductAccumulation, MaterialAccumulation, Column }"
       },
       {
         "source": "@/lib/utils/logger",
@@ -7576,7 +7575,11 @@
       },
       {
         "source": "@/components/design-tuner/core/TunerSidebar",
-        "items": "{ TunerSidebar, TunerTab }"
+        "items": "{ TunerSidebar }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ TunerTab }"
       },
       {
         "source": "@/context/settings/SettingsContext",
@@ -7698,6 +7701,54 @@
     ]
   },
   {
+    "name": "useMaterialManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "material",
+      "management",
+      "usematerialmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useMemo, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ materialApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
     "name": "useImageManagement",
     "type": "page/hook",
     "path": "src/app/manage/images/hooks/useImageManagement.ts",
@@ -7743,17 +7794,18 @@
     ]
   },
   {
-    "name": "useMaterialManagement",
+    "name": "useCustomerManagement",
     "type": "page/hook",
-    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "path": "src/app/manage/customers/hooks/useCustomerManagement.ts",
     "description": "No description provided.",
     "keywords": [
       "use",
-      "material",
+      "customer",
       "management",
-      "usematerialmanagement",
+      "usecustomermanagement",
       "app",
       "manage",
+      "customers",
       "description",
       "provided",
       "page/hook"
@@ -7762,15 +7814,19 @@
     "imports": [
       {
         "source": "react",
-        "items": "{ useState, useMemo, useEffect }"
+        "items": "{ useState, useEffect }"
       },
       {
         "source": "@/lib",
-        "items": "{ materialApi }"
+        "items": "{ customerApi }"
       },
       {
         "source": "@/lib",
-        "items": "{ Material }"
+        "items": "{ Customer, NewCustomer }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
       },
       {
         "source": "@/context/DatabaseContext",
@@ -7779,10 +7835,6 @@
       {
         "source": "@/context/AlertContext",
         "items": "{ useAlert }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
       },
       {
         "source": "@/context/DataContext",
@@ -7840,55 +7892,6 @@
     ]
   },
   {
-    "name": "useCustomerManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/customers/hooks/useCustomerManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "customer",
-      "management",
-      "usecustomermanagement",
-      "app",
-      "manage",
-      "customers",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useEffect }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ customerApi }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Customer, NewCustomer }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/context/DataContext",
-        "items": "{ useDataCache }"
-      }
-    ]
-  },
-  {
     "name": "useSimpleRecipe",
     "type": "page/hook",
     "path": "src/app/manage/material/recipe/hooks/useSimpleRecipe.ts",
@@ -7922,6 +7925,10 @@
       {
         "source": "@/context/DatabaseContext",
         "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/lib/types/recipe",
+        "items": "{ SimpleRecipeItem }"
       }
     ]
   },
@@ -7954,7 +7961,7 @@
       },
       {
         "source": "@/lib/types/recipe",
-        "items": "{ RecipeItem, RecipeList }"
+        "items": "{ RecipeItem, RecipeList, RecipeRow }"
       },
       {
         "source": "@/context/DatabaseContext",
