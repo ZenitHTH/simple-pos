@@ -12,6 +12,8 @@
     "test:e2e:windows": "node scripts/run-e2e.mjs --target-env=windows",
     "test:e2e:wsl": "node scripts/run-e2e.mjs --target-env=wsl",
     "test:e2e:linux": "node scripts/run-e2e.mjs --target-env=linux",
+    "test:e2e:arch": "node scripts/run-e2e.mjs --target-env=arch",
+    "test:e2e:fedora": "node scripts/run-e2e.mjs --target-env=fedora",
     "registry": "node scripts/generate-registry.mjs"
   },
   "dependencies": {

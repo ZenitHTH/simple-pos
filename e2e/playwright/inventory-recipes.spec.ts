@@ -7,10 +7,9 @@ test.describe('Priority A - Inventory & Recipes', () => {
   let page: Page;
 
   test.beforeAll(async () => {
-    logger.info("Connecting to Tauri via CDP...");
+    logger.info("Connecting to Tauri...");
     try {
-      const cdpUrl = await getCDPUrl('http://127.0.0.1:9223');
-      browser = await chromium.connectOverCDP(cdpUrl, { timeout: 30000 });
+      browser = await connectToApp(chromium, 9223);
       page = await getMainPage(browser);
       await performLogin(page);
     } catch (err) {

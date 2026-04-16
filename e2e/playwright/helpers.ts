@@ -3,14 +3,33 @@ import { logger } from './logger';
 import http from 'http';
 
 /**
+ * Robustly connects to the Tauri application based on the platform.
+ * Windows/macOS: connectOverCDP (Chromium)
+ * Linux: connect via WebDriver (WebKitGTK)
+ */
+export async function connectToApp(browserType: any, port: number = 9223): Promise<any> {
+  const isLinux = process.platform === 'linux';
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  if (isLinux) {
+    logger.info(`Linux detected: Connecting via WebDriver to ${baseUrl}...`);
+    // WebDriver endpoint for tauri-driver
+    return await browserType.connect({
+      wsEndpoint: `ws://127.0.0.1:${port}`,
+    });
+  }
+
+  logger.info(`Non-Linux detected: Connecting via CDP to ${baseUrl}...`);
+  const cdpUrl = await getCDPUrl(baseUrl);
+  return await browserType.connectOverCDP(cdpUrl, { timeout: 30000 });
+}
+
+/**
  * Finds the correct CDP URL, especially important for Linux/WebKit environments.
  */
 export async function getCDPUrl(baseUrl: string = 'http://127.0.0.1:9223', retries: number = 5): Promise<string> {
   logger.info(`Discovering CDP URL from ${baseUrl} (Remaining retries: ${retries})...`);
   
-  // Give the inspector a moment to stabilize
-  await new Promise(r => setTimeout(r, 2000));
-
   return new Promise((resolve) => {
     const req = http.get(`${baseUrl}/json`, (res) => {
       let data = '';
@@ -19,6 +38,7 @@ export async function getCDPUrl(baseUrl: string = 'http://127.0.0.1:9223', retri
         try {
           const targets = JSON.parse(data);
           if (Array.isArray(targets) && targets.length > 0) {
+            // Prefer 'page' type, fallback to first target
             const target = targets.find((t: any) => t.type === 'page') || targets[0];
             if (target.webSocketDebuggerUrl) {
               logger.info(`Found WebSocket URL: ${target.webSocketDebuggerUrl}`);
@@ -31,21 +51,15 @@ export async function getCDPUrl(baseUrl: string = 'http://127.0.0.1:9223', retri
         }
         resolve(baseUrl);
       });
-    });
-
-    req.on('error', async (err) => {
+    }).on('error', async (err) => {
       if (retries > 0) {
         logger.info(`CDP discovery failed (${err.message}), retrying...`);
+        await new Promise(r => setTimeout(r, 2000));
         resolve(await getCDPUrl(baseUrl, retries - 1));
       } else {
         logger.warn(`CDP discovery failed: ${err.message}. Using base URL.`);
         resolve(baseUrl);
       }
-    });
-
-    req.setTimeout(5000, () => {
-        req.destroy();
-        // Timeout will trigger 'error' or we resolve here
     });
   });
 }
@@ -143,11 +157,16 @@ export async function performLogin(page: Page) {
     logger.info("Detected Welcome/Setup screen");
     
     // 1. Welcome Screen
-    const startBtn = page.getByRole('button', { name: /Start Setup/i });
-    if (await startBtn.isVisible()) {
-      logger.info("Clicking Start Setup...");
-      await startBtn.click();
-      await page.waitForTimeout(1000);
+    // Use a more robust locator and force click
+    const startBtn = page.locator('button').filter({ hasText: /Start Setup/i }).first();
+    try {
+        await startBtn.waitFor({ state: 'visible', timeout: 5000 });
+        logger.info("Clicking Start Setup...");
+        await startBtn.click({ force: true });
+        await page.waitForTimeout(1500);
+    } catch (e) {
+        logger.info("Start Setup button not visible, attempting direct click...");
+        await startBtn.click({ force: true }).catch(() => logger.info("Direct click failed too"));
     }
 
     // 2. Password Setup Screen

@@ -21,10 +21,19 @@ const targetEnv = targetEnvArg ? targetEnvArg.split('=')[1] : null;
 const isWindows = os.platform() === 'win32' || targetEnv === 'windows';
 const isMac = os.platform() === 'darwin';
 const isWSL = targetEnv === 'wsl';
-const isLinuxDesktop = targetEnv === 'linux' && !isWSL;
+const isArch = targetEnv === 'arch';
+const isFedora = targetEnv === 'fedora';
+const isLinuxDesktop = (targetEnv === 'linux' || isArch || isFedora) && !isWSL;
 
 logger.info(`Target Environment: ${targetEnv || 'Auto-detect'}`);
 if (isWSL) logger.info('WSL Mode: Explicitly setting DISPLAY=:0 and WAYLAND_DISPLAY=wayland-0');
+
+// Distro-specific help messages
+const getDistroHelp = () => {
+  if (isArch) return "sudo pacman -S webkitgtk-6.0";
+  if (isFedora) return "sudo dnf install webkit2gtk6.0-devel"; // Or appropriate webkitgtk package for Fedora
+  return "Please install the WebKit WebDriver for your distribution.";
+};
 
 const appDataPath = isWindows 
   ? path.join(process.env.APPDATA || '', 'simple-pos')
@@ -126,33 +135,44 @@ logger.info('Dev server is ready! Waiting 5s for stability...');
 await new Promise(r => setTimeout(r, 5000));
 logger.info('Proceeding to start Tauri app.\n');
 
-logger.info(`Starting Tauri app from: ${executablePath}`);
-
-// 3. Start the Tauri app with remote debugging enabled
-const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
-const env = {
-  ...process.env,
-  VIBE_POS_IN_MEMORY: '1',
-  RUST_LOG: 'debug',
-  WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
-};
-
-if (isWSL) {
-  env.DISPLAY = ':0';
-  env.WAYLAND_DISPLAY = 'wayland-0';
-  env.WEBKIT_INSPECTOR_SERVER = `127.0.0.1:${DEBUG_PORT}`;
-}
-
-if (isLinuxDesktop) {
-  env.WEBKIT_INSPECTOR_SERVER = `127.0.0.1:${DEBUG_PORT}`;
-}
-
+// 3. Start the application or driver
+let tauriProcess;
 const logFile = fs.openSync('tauri-app.log', 'w');
-const tauriProcess = spawn(executablePath, args, {
-  env,
-  stdio: ['ignore', logFile, logFile],
-  detached: !isWindows,
-});
+
+if (isLinuxDesktop || isWSL) {
+  // Check for WebKitWebDriver availability
+  try {
+    execSync('which WebKitWebDriver', { stdio: 'ignore' });
+  } catch (e) {
+    logger.error("Error: 'WebKitWebDriver' not found in PATH.");
+    logger.info(`To fix this on your distribution, run: ${getDistroHelp()}`);
+    process.exit(1);
+  }
+
+  logger.info("Linux detected: Starting tauri-driver for WebDriver support...");
+  // On Linux, we don't start the app directly; tauri-driver will do it
+  tauriProcess = spawn('tauri-driver', [], {
+    env: { ...process.env, TAURI_DRIVER_PORT: DEBUG_PORT.toString() },
+    stdio: ['ignore', logFile, logFile],
+    detached: true,
+  });
+}
+ else {
+  logger.info(`Starting Tauri app from: ${executablePath}`);
+  const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
+  const env = {
+    ...process.env,
+    VIBE_POS_IN_MEMORY: '1',
+    RUST_LOG: 'debug',
+    WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
+  };
+
+  tauriProcess = spawn(executablePath, args, {
+    env,
+    stdio: ['ignore', logFile, logFile],
+    detached: !isWindows,
+  });
+}
 
 if (isWindows) {
     process.on('SIGINT', () => {
@@ -213,10 +233,12 @@ logger.info('\nPlaywright tests completed.');
 // 5. Cleanup
 logger.info('Closing Tauri application...');
 try {
-  if (isWindows) {
-      execSync(`taskkill /pid ${tauriProcess.pid} /T /F`, { stdio: 'ignore' });
-  } else {
-      process.kill(-tauriProcess.pid);
+  if (tauriProcess && tauriProcess.pid) {
+    if (isWindows) {
+        execSync(`taskkill /pid ${tauriProcess.pid} /T /F`, { stdio: 'ignore' });
+    } else {
+        process.kill(-tauriProcess.pid);
+    }
   }
 } catch (e) {}
 
