@@ -45,9 +45,9 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 }
 
 export const logger = {
-  info: (message: string, ...args: any[]) => console.info("[INFO]", sanitize(message), ...args.map(sanitize)),
-  error: (message: string, ...args: any[]) => console.error("[ERROR]", sanitize(message), ...args.map(sanitize)),
-  warn: (message: string, ...args: any[]) => console.warn("[WARN]", sanitize(message), ...args.map(sanitize)),
-  debug: (message: string, ...args: any[]) => console.debug("[DEBUG]", sanitize(message), ...args.map(sanitize)),
-  log: (message: string, ...args: any[]) => console.log(sanitize(message), ...args.map(sanitize)),
+  info: (message: string, ...args: any[]) => console.info("[INFO]", sanitize(message), ...args.map(arg => sanitize(arg))),
+  error: (message: string, ...args: any[]) => console.error("[ERROR]", sanitize(message), ...args.map(arg => sanitize(arg))),
+  warn: (message: string, ...args: any[]) => console.warn("[WARN]", sanitize(message), ...args.map(arg => sanitize(arg))),
+  debug: (message: string, ...args: any[]) => console.debug("[DEBUG]", sanitize(message), ...args.map(arg => sanitize(arg))),
+  log: (message: string, ...args: any[]) => console.log(sanitize(message), ...args.map(arg => sanitize(arg))),
 };
