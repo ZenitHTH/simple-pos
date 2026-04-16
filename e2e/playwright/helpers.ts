@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+import { logger } from './logger';
 
 /**
  * Sets an input value and ensures React handles the change event.
@@ -28,13 +29,13 @@ export async function clickElement(page: Page, selector: string | any) {
     await page.waitForTimeout(300);
     
     await locator.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {
-        console.log("Note: scrollIntoViewIfNeeded failed or timed out, proceeding anyway");
+        logger.info("Note: scrollIntoViewIfNeeded failed or timed out, proceeding anyway");
     });
 
-    console.log("Executing click via dispatchEvent...");
+    logger.info("Executing click via dispatchEvent...");
     await locator.dispatchEvent('click');
   } catch (err) {
-    console.error(`Failed to click element: ${(err as Error).message}`);
+    logger.error(`Failed to click element: ${(err as Error).message}`);
     throw err;
   }
 }
@@ -75,7 +76,7 @@ export async function performLogin(page: Page) {
   await heading.waitFor({ state: 'attached', timeout: 30000 });
   
   let titleText = await heading.innerText();
-  console.log(`Current screen title: "${titleText}"`);
+  logger.info(`Current screen title: "${titleText}"`);
 
   // Check if we are already at the POS (the main app screen)
   // We check for "History" or "Cart" buttons which are unique to the POS
@@ -83,19 +84,19 @@ export async function performLogin(page: Page) {
   const cartBtn = page.getByRole('button', { name: /Cart/i });
   
   if (await historyBtn.isVisible() || await cartBtn.isVisible()) {
-    console.log("Already at POS screen (History/Cart visible), skipping login/setup");
+    logger.info("Already at POS screen (History/Cart visible), skipping login/setup");
     return;
   }
 
-  console.log("Not at POS screen yet, proceeding with setup/login flow...");
+  logger.info("Not at POS screen yet, proceeding with setup/login flow...");
 
   if (titleText.includes('Welcome') || titleText.includes('Simple POS') || titleText.includes('Setup')) {
-    console.log("Detected Welcome/Setup screen");
+    logger.info("Detected Welcome/Setup screen");
     
     // 1. Welcome Screen
     const startBtn = page.getByRole('button', { name: /Start Setup/i });
     if (await startBtn.isVisible()) {
-      console.log("Clicking Start Setup...");
+      logger.info("Clicking Start Setup...");
       await startBtn.click();
       await page.waitForTimeout(1000);
     }
@@ -103,46 +104,46 @@ export async function performLogin(page: Page) {
     // 2. Password Setup Screen
     const passwordInput = page.locator('input[placeholder="Enter a strong password"]');
     try {
-        console.log("Waiting for Password screen...");
+        logger.info("Waiting for Password screen...");
         await passwordInput.waitFor({ state: 'visible', timeout: 10000 });
-        console.log("Entering password...");
+        logger.info("Entering password...");
         await passwordInput.fill('Runner01');
         await page.locator('input[placeholder="Repeat your password"]').fill('Runner01');
 
         const nextBtn = page.getByRole('button', { name: /Next/i });
-        console.log("Clicking Next...");
+        logger.info("Clicking Next...");
         await nextBtn.click();
         await page.waitForTimeout(2000);
     } catch (e) {
-        console.log("Password screen not found or already passed");
+        logger.info("Password screen not found or already passed");
     }
 
     // 3. Settings Setup Screen
-    console.log("Checking for Settings Setup/Finish button...");
+    logger.info("Checking for Settings Setup/Finish button...");
     const finishSetupBtn = page.getByRole('button', { name: /Finish Setup|Complete|Finish/i });
     try {
         await finishSetupBtn.waitFor({ state: 'visible', timeout: 10000 });
-        console.log("Finishing setup...");
+        logger.info("Finishing setup...");
         await finishSetupBtn.click({ force: true });
         // Wait for the transition to the POS
-        console.log("Waiting for setup screens to hide...");
+        logger.info("Waiting for setup screens to hide...");
         await finishSetupBtn.waitFor({ state: 'hidden', timeout: 20000 });
     } catch (e) {
-        console.log("Finish Setup button not found or already passed. Current title: " + await page.locator('h1').first().innerText().catch(() => "unknown"));
+        logger.info("Finish Setup button not found or already passed. Current title: " + await page.locator('h1').first().innerText().catch(() => "unknown"));
     }
   } else if (titleText.includes('Login')) {
-    console.log("Detected Login screen");
+    logger.info("Detected Login screen");
     // Login Screen
     await setInputValue(page, 'input[placeholder="Enter password"]', 'Runner01');
     const loginBtn = page.getByRole('button', { name: /Login/i });
-    console.log("Clicking Login...");
+    logger.info("Clicking Login...");
     await loginBtn.click();
     
     // Wait for login to finish - we wait for the login button to disappear
     await loginBtn.waitFor({ state: 'hidden', timeout: 15000 });
   }
 
-  console.log("Waiting for overlays to clear...");
+  logger.info("Waiting for overlays to clear...");
   // Final wait for the main POS screen (Product Grid)
   // Ensure ANY full-screen fixed overlays (login, setup, modals) are gone
   await page.waitForFunction(() => {
@@ -165,11 +166,11 @@ export async function performLogin(page: Page) {
             pointerEvents: window.getComputedStyle(o).pointerEvents
         }));
     });
-    console.log(`Warning: Overlays might still be present: ${JSON.stringify(info)}`);
+    logger.info(`Warning: Overlays might still be present: ${JSON.stringify(info)}`);
   });
   
   await page.waitForTimeout(2000);
-  console.log("performLogin completed");
+  logger.info("performLogin completed");
 }
 
 /**

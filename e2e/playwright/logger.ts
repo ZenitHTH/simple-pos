@@ -1,39 +1,25 @@
 /**
- * Ported from src/lib/utils/logger.ts for use in Node.js scripts (E2E runner).
- * Provides consistent PII redaction.
+ * E2E Logger with PII Redaction.
+ * Synchronized with src/lib/utils/logger.ts
  */
-
-/**
- * Basic PII Redaction with Circular Reference protection
- * Redacts sensitive patterns and masks sensitive object keys.
- */
-export function sanitize(input, seen = new WeakSet()) {
+export function sanitize(input: any, seen = new WeakSet()): any {
   if (input === null || input === undefined) return input;
-
   if (typeof input === "string") {
-    // Redact 13-digit numbers (likely IDs)
     let result = input.replace(/\b\d{13}\b/g, "[REDACTED-ID]");
-    // Redact emails
     result = result.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[REDACTED-EMAIL]");
-    // Redact common PII labels followed by values (e.g. "Tax ID: 12345")
     result = result.replace(/(tax[ _]?id|national[ _]?id|id[ _]?card|ssn)[: ]+([a-zA-Z0-9-]{5,})/gi, "$1: [REDACTED]");
     return result;
   }
-
-  // Only sanitize plain objects, arrays, and Errors.
   if (input !== null && typeof input === "object" && (input.constructor === Object || Array.isArray(input) || input instanceof Error)) {
     if (seen.has(input)) return "[Circular]";
     seen.add(input);
-
     const isError = input instanceof Error;
-    const sanitized = Array.isArray(input) ? [] : {};
-
+    const sanitized: any = Array.isArray(input) ? [] : {};
     if (isError) {
       sanitized.name = input.name;
       sanitized.message = sanitize(input.message, seen);
       sanitized.stack = sanitize(input.stack, seen);
     }
-
     for (const key of Object.keys(input)) {
       const lowerKey = key.toLowerCase();
       const isSensitiveKey = (
@@ -46,7 +32,6 @@ export function sanitize(input, seen = new WeakSet()) {
         (lowerKey.includes("card") && (lowerKey.includes("number") || lowerKey.includes("cvv") || lowerKey.includes("cvc"))) ||
         lowerKey.includes("sensitive") || lowerKey.includes("maiden") || lowerKey.includes("zip") || lowerKey.includes("postcode")
       );
-
       if (isSensitiveKey) {
         sanitized[key] = "[REDACTED]";
       } else {
@@ -60,29 +45,9 @@ export function sanitize(input, seen = new WeakSet()) {
 }
 
 export const logger = {
-  info: (message, ...args) => {
-    const sMsg = sanitize(message);
-    const sArgs = args.map((a) => sanitize(a));
-    console.info("[INFO]", sMsg, ...sArgs);
-  },
-  error: (message, ...args) => {
-    const sMsg = sanitize(message);
-    const sArgs = args.map((a) => sanitize(a));
-    console.error("[ERROR]", sMsg, ...sArgs);
-  },
-  warn: (message, ...args) => {
-    const sMsg = sanitize(message);
-    const sArgs = args.map((a) => sanitize(a));
-    console.warn("[WARN]", sMsg, ...sArgs);
-  },
-  debug: (message, ...args) => {
-    const sMsg = sanitize(message);
-    const sArgs = args.map((a) => sanitize(a));
-    console.debug("[DEBUG]", sMsg, ...sArgs);
-  },
-  log: (message, ...args) => {
-    const sMsg = sanitize(message);
-    const sArgs = args.map((a) => sanitize(a));
-    console.log(sMsg, ...sArgs);
-  }
+  info: (message: string, ...args: any[]) => console.info("[INFO]", sanitize(message), ...args.map(sanitize)),
+  error: (message: string, ...args: any[]) => console.error("[ERROR]", sanitize(message), ...args.map(sanitize)),
+  warn: (message: string, ...args: any[]) => console.warn("[WARN]", sanitize(message), ...args.map(sanitize)),
+  debug: (message: string, ...args: any[]) => console.debug("[DEBUG]", sanitize(message), ...args.map(sanitize)),
+  log: (message: string, ...args: any[]) => console.log(sanitize(message), ...args.map(sanitize)),
 };

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { logger } from './logger';
 import { getMainPage, performLogin, navigateTo } from './helpers';
 
 test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
@@ -11,7 +12,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
 
   test('TEST-B1: Scaling via Drag Handles', async () => {
     // 1. Enable Design Mode
-    console.log("Navigating to General Settings...");
+    logger.info("Navigating to General Settings...");
     await navigateTo(appWindow, 'System Setting', 'General');
     
     const designModeSwitch = appWindow.locator('button[role="switch"]').filter({ hasText: /Design Mode/i });
@@ -19,7 +20,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     // Check if already checked
     const isChecked = await designModeSwitch.getAttribute('aria-checked');
     if (isChecked !== 'true') {
-      console.log("Enabling Design Mode...");
+      logger.info("Enabling Design Mode...");
       await designModeSwitch.click();
       await appWindow.waitForTimeout(1000);
     }
@@ -27,13 +28,13 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     await expect(designModeSwitch).toHaveAttribute('aria-checked', 'true');
 
     // 2. Go back to POS and select Product Grid
-    console.log("Navigating to Main Page...");
+    logger.info("Navigating to Main Page...");
     await navigateTo(appWindow, null, 'Main Page');
     
     const gridOverlay = appWindow.locator('[data-selectable-id="grid_scale"]');
     await expect(gridOverlay).toBeVisible({ timeout: 15000 });
     
-    console.log("Selecting Product Grid...");
+    logger.info("Selecting Product Grid...");
     await gridOverlay.click();
     await expect(gridOverlay).toHaveClass(/border-primary/);
 
@@ -44,7 +45,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     const initialBox = await gridOverlay.boundingBox();
     if (!initialBox) throw new Error("Could not get bounding box for grid overlay");
 
-    console.log(`Initial box: ${JSON.stringify(initialBox)}`);
+    logger.info(`Initial box: ${JSON.stringify(initialBox)}`);
     
     // Drag SE handle down-right to increase scale
     // We need to move the mouse precisely
@@ -63,7 +64,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     
     const tunerValue = miniTuner.locator('span.font-mono').first();
     const scaleText = await tunerValue.innerText();
-    console.log(`Current scale text: ${scaleText}`);
+    logger.info(`Current scale text: ${scaleText}`);
     expect(parseInt(scaleText)).toBeGreaterThan(100);
 
     // 5. Verify BottomControlPanel isolation
@@ -73,7 +74,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
 
   test('TEST-B2: Mini-Tuner Style Updates', async () => {
     // Assuming Design Mode is still enabled
-    console.log("Selecting Product Grid for Mini-Tuner test...");
+    logger.info("Selecting Product Grid for Mini-Tuner test...");
     const gridOverlay = appWindow.locator('[data-selectable-id="grid_scale"]');
     await gridOverlay.click();
 
@@ -82,14 +83,14 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     await expect(miniTuner).toBeVisible();
 
     // 2. Change a style (like Corner Radius)
-    console.log("Changing Corner Radius via Mini-Tuner slider...");
+    logger.info("Changing Corner Radius via Mini-Tuner slider...");
     // Find the Corner Radius slider
     const radiusSliderContainer = miniTuner.locator('div:has-text("Corner Radius")').last();
     const radiusSlider = radiusSliderContainer.locator('input[type="range"]');
     
     // Get initial value
     const initialRadius = await radiusSlider.inputValue();
-    console.log(`Initial radius: ${initialRadius}`);
+    logger.info(`Initial radius: ${initialRadius}`);
     
     // Fill with a new value
     await radiusSlider.fill('45');
@@ -99,6 +100,7 @@ test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
     const radiusDisplay = radiusSliderContainer.locator('span.font-mono');
     await expect(radiusDisplay).toHaveText('45px');
     
-    console.log("Style update verified in Mini-Tuner display");
+    logger.info("Style update verified in Mini-Tuner display");
   });
 });
+

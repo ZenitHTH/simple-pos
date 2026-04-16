@@ -1,4 +1,5 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import { logger } from './logger';
 import { performLogin, navigateTo, setInputValue, getMainPage, clickElement } from './helpers';
 
 test.describe('Vibe POS Comprehensive E2E', () => {
@@ -6,97 +7,97 @@ test.describe('Vibe POS Comprehensive E2E', () => {
   let page: Page;
 
   test.beforeAll(async () => {
-    console.log("Connecting to Tauri via CDP...");
+    logger.info("Connecting to Tauri via CDP...");
     try {
       browser = await chromium.connectOverCDP('http://127.0.0.1:9223', { timeout: 30000 });
       page = await getMainPage(browser);
-      console.log("Connected! Starting initial setup/login...");
+      logger.info("Connected! Starting initial setup/login...");
       
       // Perform initial setup/login
       await performLogin(page);
-      console.log("Initial setup/login complete.");
+      logger.info("Initial setup/login complete.");
     } catch (err) {
-      console.error("Failed to initialize test context:", err);
+      logger.error("Failed to initialize test context:", err);
       throw err;
     }
   });
 
   test.afterAll(async () => {
     if (browser) {
-      console.log("Cleaning up browser connection...");
+      logger.info("Cleaning up browser connection...");
       // We don't close the browser here to let the runner handle process termination
     }
   });
 
   test('Step 1: Verify Application Launch', async () => {
-    console.log("Verifying app title...");
+    logger.info("Verifying app title...");
     await expect(page).toHaveTitle('Simple POS', { timeout: 10000 });
   });
 
   test('Step 2: Full POS Workflow (Category -> Product -> Sale)', async () => {
-    console.log("Starting POS Workflow...");
+    logger.info("Starting POS Workflow...");
 
     // 1. Create Category
-    console.log("Navigating to Categories...");
+    logger.info("Navigating to Categories...");
     await navigateTo(page, 'Management', 'Categories');
     
-    console.log("Creating new category...");
+    logger.info("Creating new category...");
     await clickElement(page, page.getByRole('button', { name: /New Category/i }));
     await page.locator('div:has(> label:text-is("Category Name")) input').fill('Beverages');
     await clickElement(page, page.getByRole('button', { name: /Save Category/i }));
     
     // Verify category exists in table
     await expect(page.locator('table')).toContainText('Beverages', { timeout: 10000 });
-    console.log("Category created successfully.");
+    logger.info("Category created successfully.");
 
     // 2. Create Product
-    console.log("Navigating to Product Management...");
+    logger.info("Navigating to Product Management...");
     await navigateTo(page, 'Management', 'Product Management');
     
-    console.log("Creating new product...");
+    logger.info("Creating new product...");
     await clickElement(page, page.getByRole('button', { name: /New Product/i }));
     
     // Wait for modal transition
     await page.waitForTimeout(1000);
     
-    console.log("Entering product details...");
+    logger.info("Entering product details...");
     await page.getByLabel('Title').fill('Espresso');
     
     // Select Category (Custom Select component)
-    console.log("Selecting category...");
+    logger.info("Selecting category...");
     // Find the select trigger next to the Category label
     const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
     await clickElement(page, categoryTrigger);
     
     // Wait for popover and select "Beverages"
-    console.log("Waiting for Beverages option...");
+    logger.info("Waiting for Beverages option...");
     const option = page.locator('div.bg-popover').getByText('Beverages', { exact: true });
     await clickElement(page, option);
     
     // Set Price (Satang) - 5000 satang = 50.00
-    console.log("Setting price...");
+    logger.info("Setting price...");
     await page.getByLabel('Price (Satang)').fill('5000');
     
-    console.log("Saving product...");
+    logger.info("Saving product...");
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
     
     // Verify product exists in table
     await expect(page.locator('table')).toContainText('Espresso', { timeout: 15000 });
-    console.log("Product created successfully.");
+    logger.info("Product created successfully.");
 
     // 3. Complete Sale in POS
-    console.log("Navigating to Main Page...");
+    logger.info("Navigating to Main Page...");
     await navigateTo(page, null, 'Main Page');
     
     // Wait for the grid to be visible and stable
-    console.log("Waiting for product grid...");
+    logger.info("Waiting for product grid...");
     const grid = page.locator('.grid.relative');
     await grid.waitFor({ state: 'visible', timeout: 20000 });
 
     // Find and click the Espresso product card
     const productCard = page.locator('.tuner-card').filter({ hasText: 'Espresso' });
     await productCard.waitFor({ state: 'visible', timeout: 20000 });
-    console.log("Adding Espresso to cart...");
+    logger.info("Adding Espresso to cart...");
     await clickElement(page, productCard);
     
     // Verify it's in the cart
@@ -105,38 +106,38 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await expect(cart).toContainText('Espresso', { timeout: 10000 });
     
     // Click Checkout/Charge
-    console.log("Checking out...");
+    logger.info("Checking out...");
     await clickElement(page, page.getByRole('button', { name: /Charge|Checkout/i }));
     
     // Payment Modal
-    console.log("Waiting for Payment Modal...");
+    logger.info("Waiting for Payment Modal...");
     const paymentModal = page.locator('div.bg-card').filter({ hasText: 'Cash Payment' }).first();
     await expect(paymentModal).toBeVisible({ timeout: 10000 });
     
     // Click first quick amount button (e.g., $100)
-    console.log("Selecting quick amount...");
+    logger.info("Selecting quick amount...");
     const quickAmountBtn = page.locator('button.bg-primary\\/10').first();
     await clickElement(page, quickAmountBtn);
     
     // Confirm Payment
-    console.log("Confirming payment...");
+    logger.info("Confirming payment...");
     await clickElement(page, page.getByRole('button', { name: /Confirm Payment/i }));
     
     // Modal should close
-    console.log("Waiting for payment modal to close...");
+    logger.info("Waiting for payment modal to close...");
     await expect(paymentModal).toBeHidden({ timeout: 15000 });
     
     // Cart should be empty
-    console.log("Verifying cart is empty...");
+    logger.info("Verifying cart is empty...");
     await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
-    console.log("Workflow completed successfully!");
+    logger.info("Workflow completed successfully!");
   });
 
   test('Step 3: Verify Duplicate Product Name Alert', async () => {
-    console.log("Navigating to Product Management for duplicate check...");
+    logger.info("Navigating to Product Management for duplicate check...");
     await navigateTo(page, 'Management', 'Product Management');
     
-    console.log("Attempting to create duplicate product 'Espresso'...");
+    logger.info("Attempting to create duplicate product 'Espresso'...");
     await clickElement(page, page.getByRole('button', { name: /New Product/i }));
     await page.waitForTimeout(500);
     
@@ -150,24 +151,24 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     
     await page.getByLabel('Price (Satang)').fill('1000');
     
-    console.log("Saving duplicate product...");
+    logger.info("Saving duplicate product...");
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
     
     // Verify AlertDialog appears
-    console.log("Verifying AlertDialog notification...");
+    logger.info("Verifying AlertDialog notification...");
     const alertDialog = page.getByRole('alertdialog');
     await expect(alertDialog).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole('heading', { name: /Product Error/i })).toBeVisible();
     await expect(alertDialog.getByText(/exists/i)).toBeVisible();
     
     // Click OK on AlertDialog
-    console.log("Closing AlertDialog...");
+    logger.info("Closing AlertDialog...");
     const okBtn = alertDialog.getByRole('button', { name: /OK/i });
     await clickElement(page, okBtn);
     
     // Verify AlertDialog is hidden
     await expect(alertDialog).toBeHidden({ timeout: 5000 });
-    console.log("AlertDialog closed successfully.");
+    logger.info("AlertDialog closed successfully.");
     
     // Close modal
     await clickElement(page, page.getByRole('button', { name: /Cancel/i }));

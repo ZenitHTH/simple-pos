@@ -1,4 +1,5 @@
 import { test, expect, chromium } from '@playwright/test';
+import { logger } from './logger';
 import { performLogin, navigateTo, getMainPage, clickElement, setInputValue } from './helpers';
 
 /**
@@ -10,12 +11,15 @@ test.describe('Reporting & History (Priority D)', () => {
   let page: any;
 
   test.beforeAll(async () => {
+    logger.info("Connecting to Tauri via CDP...");
     browser = await chromium.connectOverCDP('http://127.0.0.1:9223');
     page = await getMainPage(browser);
     await performLogin(page);
+    logger.info("Connected and logged in.");
   });
 
   test('TEST-D1: Report Export', async () => {
+    logger.info("Starting TEST-D1: Report Export...");
     // Navigate to the Export Settings page
     // Note: Research showed that Export UI is located in /setting/export
     await navigateTo(page, "System Setting", "Export");
@@ -29,19 +33,24 @@ test.describe('Reporting & History (Priority D)', () => {
     await expect(exportBtn).toBeVisible();
     
     // Click export.
+    logger.info("Clicking export button...");
     await clickElement(page, exportBtn);
     
     // Verify success state (the app uses Toast/AlertContext)
     // We look for a success indicator or toast
+    logger.info("Waiting for export success message...");
     await expect(page.getByText(/Exported|Successful|Ready/i)).toBeVisible({ timeout: 15000 });
+    logger.info("Export completed successfully.");
   });
 
   test('TEST-D2: Search for past receipt by ID', async () => {
+    logger.info("Starting TEST-D2: Search for past receipt by ID...");
     // Return to Main POS page
     await navigateTo(page, null, "Main Page");
     
     // Open History modal/page
     const historyBtn = page.getByRole('button', { name: /History/i });
+    logger.info("Opening History view...");
     await clickElement(page, historyBtn);
     
     // Verify header in history view
@@ -51,6 +60,7 @@ test.describe('Reporting & History (Priority D)', () => {
     // In mockup/new DB, we might need to create a sale first or use a known ID
     const searchInput = page.getByPlaceholder(/Search by ID/i);
     if (await searchInput.isVisible()) {
+        logger.info("Searching for receipt ID 1001...");
         await setInputValue(page, 'input[placeholder*="Search by ID"]', '1001');
         const searchBtn = page.locator('button').filter({ hasText: /Search/i });
         await clickElement(page, searchBtn);
@@ -60,8 +70,12 @@ test.describe('Reporting & History (Priority D)', () => {
         const modalHeader = page.locator('h2').filter({ hasText: /Receipt/i });
         await expect(modalHeader).toBeVisible();
         
+        logger.info("Receipt detail visible, closing...");
         const closeBtn = page.getByRole('button', { name: /Close/i });
         await clickElement(page, closeBtn);
+    } else {
+      logger.info("Search input not visible, skipping search part of TEST-D2");
     }
+    logger.info("TEST-D2 completed.");
   });
 });

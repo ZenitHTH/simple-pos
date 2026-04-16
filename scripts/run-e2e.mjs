@@ -23,8 +23,8 @@ const isMac = os.platform() === 'darwin';
 const isWSL = targetEnv === 'wsl';
 const isLinuxDesktop = targetEnv === 'linux' && !isWSL;
 
-console.log(`Target Environment: ${targetEnv || 'Auto-detect'}`);
-if (isWSL) console.log('WSL Mode: Explicitly setting DISPLAY=:0 and WAYLAND_DISPLAY=wayland-0');
+logger.info(`Target Environment: ${targetEnv || 'Auto-detect'}`);
+if (isWSL) logger.info('WSL Mode: Explicitly setting DISPLAY=:0 and WAYLAND_DISPLAY=wayland-0');
 
 const appDataPath = isWindows 
   ? path.join(process.env.APPDATA || '', 'simple-pos')
@@ -36,7 +36,7 @@ let executablePath;
 if (isWindows && os.platform() === 'win32') {
   executablePath = 'src-tauri\\target\\debug\\app.exe';
 } else if (isWindows && os.platform() !== 'win32') {
-  console.error('Error: Cannot run Windows target on non-Windows host without cross-compilation/Wine (not supported).');
+  logger.error('Error: Cannot run Windows target on non-Windows host without cross-compilation/Wine (not supported).');
   process.exit(1);
 } else if (isMac) {
   executablePath = 'src-tauri/target/debug/bundle/macos/app.app/Contents/MacOS/app';
@@ -47,40 +47,40 @@ if (isWindows && os.platform() === 'win32') {
 // 0. Clear Database for a fresh test run
 const dbPath = path.join(appDataPath, 'database.db');
 
-console.log(`Cleaning database at: ${dbPath}`);
+logger.info(`Cleaning database at: ${dbPath}`);
 try {
   if (fs.existsSync(dbPath)) {
     fs.unlinkSync(dbPath);
-    console.log('Database cleared successfully.');
+    logger.info('Database cleared successfully.');
   }
 } catch (err) {
-  console.warn(`Warning: Could not clear database: ${err.message}`);
+  logger.warn(`Warning: Could not clear database: ${err.message}`);
 }
 
 // 1. Build the Tauri app in debug mode FIRST
 // This ensures that any changes to the Rust core are captured.
 if (!skipBuild) {
-  console.log('Building Frontend...');
+  logger.info('Building Frontend...');
   const frontendBuildResult = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
   if (frontendBuildResult.status !== 0) {
-    console.error('Failed to build Frontend.');
+    logger.error('Failed to build Frontend.');
     process.exit(1);
   }
 
-  console.log('Building Tauri app in debug mode...');
+  logger.info('Building Tauri app in debug mode...');
   const buildResult = spawnSync('npm', ['run', 'tauri', 'build', '--', '--debug', '--no-bundle'], { stdio: 'inherit', shell: true });
 
   if (buildResult.status !== 0) {
-    console.error('Failed to build Tauri app.');
+    logger.error('Failed to build Tauri app.');
     process.exit(1);
   }
-  console.log('Tauri app build successful!\n');
+  logger.info('Tauri app build successful!\n');
 } else {
-  console.log('Skipping build phase as requested.\n');
+  logger.info('Skipping build phase as requested.\n');
 }
 
 // 2. Start the Next.js dev server in the background
-console.log('Starting Next.js dev server...');
+logger.info('Starting Next.js dev server...');
 const devServer = spawn('npm', ['run', 'dev'], { 
   stdio: 'ignore', 
   shell: true,
@@ -90,7 +90,7 @@ const devServer = spawn('npm', ['run', 'dev'], {
 // Helper to wait for a port to be open AND responding with 200 OK
 async function waitForDevServer(port, host, timeout = 60000) {
   const start = Date.now();
-  console.log(`Waiting for dev server on http://${host}:${port}...`);
+  logger.info(`Waiting for dev server on http://${host}:${port}...`);
   
   while (Date.now() - start < timeout) {
     try {
@@ -119,14 +119,14 @@ async function waitForDevServer(port, host, timeout = 60000) {
 const isDevServerReady = await waitForDevServer(DEV_SERVER_PORT, DEV_SERVER_HOST);
 
 if (!isDevServerReady) {
-  console.error('Timeout waiting for Next.js dev server to be ready (200 OK).');
+  logger.error('Timeout waiting for Next.js dev server to be ready (200 OK).');
   process.exit(1);
 }
-console.log('Dev server is ready! Waiting 5s for stability...');
+logger.info('Dev server is ready! Waiting 5s for stability...');
 await new Promise(r => setTimeout(r, 5000));
-console.log('Proceeding to start Tauri app.\n');
+logger.info('Proceeding to start Tauri app.\n');
 
-console.log(`Starting Tauri app from: ${executablePath}`);
+logger.info(`Starting Tauri app from: ${executablePath}`);
 
 // 3. Start the Tauri app with remote debugging enabled
 const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
@@ -181,11 +181,11 @@ async function waitForPort(port, host, timeout = 30000) {
   return false;
 }
 
-console.log(`Waiting for debugging port ${DEBUG_PORT}...`);
+logger.info(`Waiting for debugging port ${DEBUG_PORT}...`);
 const isPortOpen = await waitForPort(DEBUG_PORT, '127.0.0.1');
 
 if (!isPortOpen) {
-  console.error(`Timeout waiting for remote debugging port ${DEBUG_PORT} to open.`);
+  logger.error(`Timeout waiting for remote debugging port ${DEBUG_PORT} to open.`);
   if (isWindows) {
       try { execSync(`taskkill /pid ${tauriProcess.pid} /T /F`); } catch (e) {}
   } else {
@@ -194,7 +194,7 @@ if (!isPortOpen) {
   process.exit(1);
 }
 
-console.log('Debugging port is open! Starting Playwright tests...\n');
+logger.info('Debugging port is open! Starting Playwright tests...\n');
 
 // 4. Run Playwright tests
 // Forward any additional arguments (like --ui) to playwright, but filter out our own flags
@@ -207,10 +207,10 @@ const playwrightArgs = [
 ];
 const playwrightResult = spawnSync('npx', playwrightArgs, { stdio: 'inherit', shell: true });
 
-console.log('\nPlaywright tests completed.');
+logger.info('\nPlaywright tests completed.');
 
 // 5. Cleanup
-console.log('Closing Tauri application...');
+logger.info('Closing Tauri application...');
 try {
   if (isWindows) {
       execSync(`taskkill /pid ${tauriProcess.pid} /T /F`, { stdio: 'ignore' });

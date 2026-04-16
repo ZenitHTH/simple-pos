@@ -44,7 +44,7 @@ export function sanitize(input: any, seen = new WeakSet()): any {
       const lowerKey = key.toLowerCase();
       // Refined patterns to avoid redacting non-sensitive data like "tax_rate" or "product.name"
       const isSensitiveKey = (
-        (lowerKey === "key" || lowerKey === "secret" || lowerKey === "password" || lowerKey === "token" || lowerKey === "auth") ||
+        (lowerKey === "key" || lowerKey === "dbkey" || lowerKey === "secret" || lowerKey === "password" || lowerKey === "token" || lowerKey === "auth") ||
         (lowerKey.includes("address") && !lowerKey.includes("mac")) ||
         (lowerKey.includes("customer") && (lowerKey.includes("name") || lowerKey.includes("phone") || lowerKey.includes("email"))) ||
         ((lowerKey.includes("tax") && lowerKey.includes("id")) && !lowerKey.includes("rate") && !lowerKey.includes("enabled")) ||
@@ -103,6 +103,16 @@ export const logger = {
       await debug(sMsg, ...sArgs);
     } else {
       console.debug("[DEBUG]", sMsg, ...sArgs);
+    }
+  },
+  log: async (message: string, ...args: any[]) => {
+    const sMsg = sanitize(message);
+    const sArgs = args.map((a) => sanitize(a));
+    if (isTauri()) {
+      // @ts-ignore
+      await info(sMsg, ...sArgs);
+    } else {
+      console.log(sMsg, ...sArgs);
     }
   },
 };
