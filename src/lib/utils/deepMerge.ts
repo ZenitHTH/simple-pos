@@ -16,9 +16,10 @@ export function deepMerge<T>(target: any, source: any): T {
       result[key] = deepMerge(target[key], source[key]);
     } else {
       // If source[key] is an object but doesn't exist in target, clone it
+      // Ensure arrays are cloned to prevent shared state
       result[key] = (source[key] && typeof source[key] === "object" && !Array.isArray(source[key]))
         ? deepMerge({}, source[key])
-        : source[key];
+        : Array.isArray(source[key]) ? [...source[key]] : source[key];
     }
   }
   return result as T;
