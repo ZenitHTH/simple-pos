@@ -1,5 +1,54 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, chromium } from '@playwright/test';
 import { logger } from './logger';
+import http from 'http';
+
+/**
+ * Finds the correct CDP URL, especially important for Linux/WebKit environments.
+ */
+export async function getCDPUrl(baseUrl: string = 'http://127.0.0.1:9223', retries: number = 5): Promise<string> {
+  logger.info(`Discovering CDP URL from ${baseUrl} (Remaining retries: ${retries})...`);
+  
+  // Give the inspector a moment to stabilize
+  await new Promise(r => setTimeout(r, 2000));
+
+  return new Promise((resolve) => {
+    const req = http.get(`${baseUrl}/json`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        try {
+          const targets = JSON.parse(data);
+          if (Array.isArray(targets) && targets.length > 0) {
+            const target = targets.find((t: any) => t.type === 'page') || targets[0];
+            if (target.webSocketDebuggerUrl) {
+              logger.info(`Found WebSocket URL: ${target.webSocketDebuggerUrl}`);
+              resolve(target.webSocketDebuggerUrl);
+              return;
+            }
+          }
+        } catch (e) {
+          logger.warn("Failed to parse CDP JSON response");
+        }
+        resolve(baseUrl);
+      });
+    });
+
+    req.on('error', async (err) => {
+      if (retries > 0) {
+        logger.info(`CDP discovery failed (${err.message}), retrying...`);
+        resolve(await getCDPUrl(baseUrl, retries - 1));
+      } else {
+        logger.warn(`CDP discovery failed: ${err.message}. Using base URL.`);
+        resolve(baseUrl);
+      }
+    });
+
+    req.setTimeout(5000, () => {
+        req.destroy();
+        // Timeout will trigger 'error' or we resolve here
+    });
+  });
+}
 
 /**
  * Sets an input value and ensures React handles the change event.

@@ -1,6 +1,6 @@
 import { test, expect, chromium, Page } from '@playwright/test';
 import { logger } from './logger';
-import { performLogin, navigateTo, setInputValue, getMainPage, clickElement } from './helpers';
+import { performLogin, navigateTo, setInputValue, getMainPage, clickElement, getCDPUrl } from './helpers';
 
 test.describe('Vibe POS Comprehensive E2E', () => {
   let browser: any;
@@ -9,7 +9,8 @@ test.describe('Vibe POS Comprehensive E2E', () => {
   test.beforeAll(async () => {
     logger.info("Connecting to Tauri via CDP...");
     try {
-      browser = await chromium.connectOverCDP('http://127.0.0.1:9223', { timeout: 30000 });
+      const cdpUrl = await getCDPUrl('http://localhost:9223');
+      browser = await chromium.connectOverCDP(cdpUrl, { timeout: 30000 });
       page = await getMainPage(browser);
       logger.info("Connected! Starting initial setup/login...");
       

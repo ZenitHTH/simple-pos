@@ -1,6 +1,6 @@
 import { test, expect, chromium } from '@playwright/test';
 import { logger } from './logger';
-import { performLogin, navigateTo, getMainPage, clickElement } from './helpers';
+import { performLogin, navigateTo, getMainPage, clickElement, getCDPUrl } from './helpers';
 
 test.describe('Advanced Management (Priority C)', () => {
   let browser: any;
@@ -8,10 +8,16 @@ test.describe('Advanced Management (Priority C)', () => {
 
   test.beforeAll(async () => {
     logger.info("Connecting to Tauri via CDP...");
-    browser = await chromium.connectOverCDP('http://127.0.0.1:9223');
-    page = await getMainPage(browser);
-    await performLogin(page);
-    logger.info("Connected and logged in.");
+    try {
+      const cdpUrl = await getCDPUrl('http://127.0.0.1:9223');
+      browser = await chromium.connectOverCDP(cdpUrl, { timeout: 30000 });
+      page = await getMainPage(browser);
+      await performLogin(page);
+      logger.info("Connected and logged in.");
+    } catch (err) {
+      logger.error("Failed to initialize test context:", err);
+      throw err;
+    }
   });
 
   test('TEST-C1: Material Tagging & Filtering', async () => {

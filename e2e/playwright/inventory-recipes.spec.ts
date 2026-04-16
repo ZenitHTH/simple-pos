@@ -1,6 +1,6 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import { performLogin, navigateTo, clickElement, getMainPage, getCDPUrl } from './helpers';
 import { logger } from './logger';
-import { performLogin, navigateTo, clickElement, getMainPage } from './helpers';
 
 test.describe('Priority A - Inventory & Recipes', () => {
   let browser: any;
@@ -9,7 +9,8 @@ test.describe('Priority A - Inventory & Recipes', () => {
   test.beforeAll(async () => {
     logger.info("Connecting to Tauri via CDP...");
     try {
-      browser = await chromium.connectOverCDP('http://127.0.0.1:9223', { timeout: 30000 });
+      const cdpUrl = await getCDPUrl('http://127.0.0.1:9223');
+      browser = await chromium.connectOverCDP(cdpUrl, { timeout: 30000 });
       page = await getMainPage(browser);
       await performLogin(page);
     } catch (err) {
@@ -17,6 +18,7 @@ test.describe('Priority A - Inventory & Recipes', () => {
       throw err;
     }
   });
+
 
   test('TEST-A1: Golden Path - Recipe & Inventory Deduction', async () => {
     logger.info("Starting TEST-A1...");

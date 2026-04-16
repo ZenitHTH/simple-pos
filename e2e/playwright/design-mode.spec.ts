@@ -1,13 +1,22 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
 import { logger } from './logger';
-import { getMainPage, performLogin, navigateTo } from './helpers';
+import { getMainPage, performLogin, navigateTo, getCDPUrl } from './helpers';
 
 test.describe('Priority B - Design Mode (TEST-B1 & TEST-B2)', () => {
   let appWindow: any;
+  let browser: any;
 
-  test.beforeAll(async ({ browser }) => {
-    appWindow = await getMainPage(browser);
-    await performLogin(appWindow);
+  test.beforeAll(async () => {
+    logger.info("Connecting to Tauri via CDP...");
+    try {
+      const cdpUrl = await getCDPUrl('http://127.0.0.1:9223');
+      browser = await chromium.connectOverCDP(cdpUrl, { timeout: 30000 });
+      appWindow = await getMainPage(browser);
+      await performLogin(appWindow);
+    } catch (err) {
+      logger.error("Failed to initialize test context:", err);
+      throw err;
+    }
   });
 
   test('TEST-B1: Scaling via Drag Handles', async () => {

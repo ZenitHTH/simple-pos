@@ -133,6 +133,7 @@ const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
 const env = {
   ...process.env,
   VIBE_POS_IN_MEMORY: '1',
+  RUST_LOG: 'debug',
   WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
 };
 
