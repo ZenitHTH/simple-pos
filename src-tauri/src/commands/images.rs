@@ -77,6 +77,7 @@ pub fn move_product_image(key: String, image_id: i32, new_product_id: i32) -> Re
 
     conn.transaction(|c| {
         db_unlink_image_from_all(c, image_id)?;
+        db_clear_product_images(c, new_product_id)?;
         db_link_image(c, new_product_id, image_id)?;
         Ok(())
     })

@@ -84,8 +84,12 @@ export const imageApi = {
   moveProductImage: async (
     key: string,
     imageId: number,
-    productId: number,
+    newProductId: number,
   ): Promise<void> => {
-    return await invoke("move_product_image", { key, imageId, productId });
+    return await invoke("move_product_image", {
+      key,
+      imageId,
+      newProductId,
+    });
   },
 };
