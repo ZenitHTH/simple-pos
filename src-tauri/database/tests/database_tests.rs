@@ -166,13 +166,23 @@ fn test_image_linking_exclusivity() {
         .expect("Link should exist");
     assert_eq!(link.product_id, prod1.product_id);
 
-    // Test unlink from all products
-    database::product_image::unlink_image_from_all_products(&mut conn, img.id).unwrap();
-    let link_after = database::product_image::get_image_link(&mut conn, img.id).unwrap();
-    assert!(link_after.is_none());
+    // Verify exclusivity: Simulate the command check for ALREADY_LINKED
+    let existing_link = database::product_image::get_image_link(&mut conn, img.id).unwrap();
+    assert!(existing_link.is_some());
+    if let Some(link) = existing_link {
+        let product = database::product::find_product(&mut conn, link.product_id).unwrap();
+        assert_eq!(product.title, "Apple");
+        // In the command, this would return Err("ALREADY_LINKED: Apple")
+    }
 
-    // Link to product 2
-    database::product_image::link_product_image(&mut conn, prod2.product_id, img.id).unwrap();
+    // Test move image (simulate move_product_image command transaction)
+    conn.transaction::<_, diesel::result::Error, _>(|c| {
+        database::product_image::unlink_image_from_all_products(c, img.id)?;
+        database::product_image::link_product_image(c, prod2.product_id, img.id)?;
+        Ok(())
+    })
+    .unwrap();
+
     let link2 = database::product_image::get_image_link(&mut conn, img.id)
         .unwrap()
         .expect("Link should exist");
