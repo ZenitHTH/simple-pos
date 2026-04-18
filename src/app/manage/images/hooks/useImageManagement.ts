@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
-import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
+import { Image, ProductImage, BackendProduct, productApi, imageApi } from "@/lib";
 import { logger } from "@/lib/utils/logger";
 
 export function useImageManagement() {
@@ -18,6 +18,13 @@ export function useImageManagement() {
   const [isPositionModalOpen, setIsPositionModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [productSearch, setProductSearch] = useState("");
+
+  // Move Confirmation State
+  const [isMoveConfirmOpen, setIsMoveConfirmOpen] = useState(false);
+  const [moveProductInfo, setMoveProductInfo] = useState<{
+    targetProductId: number;
+    currentProductName: string;
+  } | null>(null);
 
   const fetchData = useCallback(async () => {
     if (!dbKey) return;
@@ -196,8 +203,50 @@ export function useImageManagement() {
         // Auto-close modal after selection as per "click only one" requirement
         setIsLinkModalOpen(false);
       }
+    } catch (err: any) {
+      const errMsg = String(err);
+      if (errMsg.startsWith("ALREADY_LINKED: ")) {
+        const currentProductName = errMsg.replace("ALREADY_LINKED: ", "");
+        setMoveProductInfo({
+          targetProductId: productId,
+          currentProductName,
+        });
+        setIsMoveConfirmOpen(true);
+      } else {
+        logger.error("Failed to toggle link", err);
+      }
+    }
+  };
+
+  const handleMoveImage = async () => {
+    if (!dbKey || !selectedImage || !moveProductInfo) return;
+
+    try {
+      await imageApi.moveProductImage(
+        dbKey,
+        selectedImage.id,
+        moveProductInfo.targetProductId,
+      );
+
+      // Update local state:
+      // 1. Remove the image from its OLD product(s)
+      // 2. Remove any other images linked to the TARGET product
+      // 3. Add the link to the TARGET product
+      setLinks((prev) => [
+        ...prev.filter(
+          (l) =>
+            l.image_id !== selectedImage.id &&
+            l.product_id !== moveProductInfo.targetProductId,
+        ),
+        { product_id: moveProductInfo.targetProductId, image_id: selectedImage.id },
+      ]);
+
+      setIsMoveConfirmOpen(false);
+      setMoveProductInfo(null);
+      setIsLinkModalOpen(false);
     } catch (err) {
-      logger.error("Failed to toggle link", err);
+      logger.error("Failed to move image", err);
+      await showAlert("Move Error", "Failed to move image: " + err);
     }
   };
 
@@ -221,6 +270,9 @@ export function useImageManagement() {
     setIsLinkModalOpen,
     isPositionModalOpen,
     setIsPositionModalOpen,
+    isMoveConfirmOpen,
+    setIsMoveConfirmOpen,
+    moveProductInfo,
     selectedImage,
     productSearch,
     setProductSearch,
@@ -231,6 +283,7 @@ export function useImageManagement() {
     openPositionModal,
     handleUpdatePosition,
     toggleLink,
+    handleMoveImage,
     getProductUsage,
     filteredProductsToLink,
   };
