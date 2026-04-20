@@ -32,6 +32,26 @@ export const receiptHandlers = {
     state.receipts.push(newItem);
     return newItem;
   },
+  add_invoice_items: ({
+    receiptId,
+    items,
+  }: {
+    receiptId: number;
+    items: [number, number][];
+  }) => {
+    for (const [productId, quantity] of items) {
+      const product = state.products.find((p) => p.product_id === productId);
+      const newItem: Receipt = {
+        id: Math.max(0, ...state.receipts.map((r) => r.id)) + 1,
+        receipt_id: receiptId,
+        product_id: productId,
+        quantity,
+        satang_at_sale: product ? product.satang : 0,
+      };
+      state.receipts.push(newItem);
+    }
+    return null;
+  },
   get_invoice_detail: ({ receiptId }: { receiptId: number }) => {
     const list = state.receiptLists.find((r) => r.receipt_id === receiptId);
     const items = state.receipts.filter((r) => r.receipt_id === receiptId);

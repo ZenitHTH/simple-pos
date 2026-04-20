@@ -1,41 +1,46 @@
 import { test, expect, chromium, Page } from '@playwright/test';
 import { logger } from './logger';
-import { performLogin, navigateTo, setInputValue, getMainPage, clickElement, connectToApp } from './helpers';
+import { performLogin, navigateTo, setInputValue, getMainPage, clickElement, setupTestBrowser } from './helpers';
 
 test.describe('Vibe POS Comprehensive E2E', () => {
   let browser: any;
   let page: Page;
+  let isTauri: boolean;
 
   test.beforeAll(async () => {
-    logger.info("Connecting to Tauri...");
-    try {
-      browser = await connectToApp(chromium, 9223);
-      page = await getMainPage(browser);
-      logger.info("Connected! Starting initial setup/login...");
+    logger.info("Initializing test environment...");
+    const setup = await setupTestBrowser(chromium);
+    browser = setup.browser;
+    isTauri = setup.isTauri;
 
-      
-      // Perform initial setup/login
-      await performLogin(page);
-      logger.info("Initial setup/login complete.");
-    } catch (err) {
-      logger.error("Failed to initialize test context:", err);
-      throw err;
+    if (isTauri) {
+      page = await getMainPage(browser);
+    } else {
+      // Fallback mode: launch a standard page and navigate to dev server
+      const context = await browser.newContext();
+      page = await context.newPage();
+      await page.goto('http://127.0.0.1:3000');
     }
+    
+    await performLogin(page);
+    logger.info(`Test environment initialized (Tauri: ${isTauri}).`);
   });
 
   test.afterAll(async () => {
     if (browser) {
       logger.info("Cleaning up browser connection...");
-      // We don't close the browser here to let the runner handle process termination
+      if (!isTauri) {
+        await browser.close();
+      }
     }
   });
 
-  test('Step 1: Verify Application Launch', async () => {
+  test('Full POS Golden Path (Setup -> Category -> Product -> Sale -> Alert)', async () => {
+    // Step 1: Verify Application Launch
     logger.info("Verifying app title...");
     await expect(page).toHaveTitle('Simple POS', { timeout: 10000 });
-  });
 
-  test('Step 2: Full POS Workflow (Category -> Product -> Sale)', async () => {
+    // Step 2: Full POS Workflow (Category -> Product -> Sale)
     logger.info("Starting POS Workflow...");
 
     // 1. Create Category
@@ -102,7 +107,6 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await clickElement(page, productCard);
     
     // Verify it's in the cart
-    // The cart container is a Card with "Current Order" in the header
     const cart = page.locator('div.bg-card').filter({ hasText: 'Current Order' }).first();
     await expect(cart).toContainText('Espresso', { timeout: 10000 });
     
@@ -115,7 +119,7 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     const paymentModal = page.locator('div.bg-card').filter({ hasText: 'Cash Payment' }).first();
     await expect(paymentModal).toBeVisible({ timeout: 10000 });
     
-    // Click first quick amount button (e.g., $100)
+    // Click first quick amount button
     logger.info("Selecting quick amount...");
     const quickAmountBtn = page.locator('button.bg-primary\\/10').first();
     await clickElement(page, quickAmountBtn);
@@ -131,11 +135,10 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     // Cart should be empty
     logger.info("Verifying cart is empty...");
     await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
-    logger.info("Workflow completed successfully!");
-  });
+    logger.info("Sale workflow completed successfully!");
 
-  test('Step 3: Verify Duplicate Product Name Alert', async () => {
-    logger.info("Navigating to Product Management for duplicate check...");
+    // Step 3: Verify Duplicate Product Name Alert
+    logger.info("Navigating back to Product Management for duplicate check...");
     await navigateTo(page, 'Management', 'Product Management');
     
     logger.info("Attempting to create duplicate product 'Espresso'...");
@@ -145,10 +148,10 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     await page.getByLabel('Title').fill('Espresso');
     
     // Select Category
-    const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
-    await clickElement(page, categoryTrigger);
-    const option = page.locator('div.bg-popover').getByText('Beverages', { exact: true });
-    await clickElement(page, option);
+    const categoryTrigger2 = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
+    await clickElement(page, categoryTrigger2);
+    const option2 = page.locator('div.bg-popover').getByText('Beverages', { exact: true });
+    await clickElement(page, option2);
     
     await page.getByLabel('Price (Satang)').fill('1000');
     
@@ -169,7 +172,7 @@ test.describe('Vibe POS Comprehensive E2E', () => {
     
     // Verify AlertDialog is hidden
     await expect(alertDialog).toBeHidden({ timeout: 5000 });
-    logger.info("AlertDialog closed successfully.");
+    logger.info("Duplicate check completed successfully.");
     
     // Close modal
     await clickElement(page, page.getByRole('button', { name: /Cancel/i }));

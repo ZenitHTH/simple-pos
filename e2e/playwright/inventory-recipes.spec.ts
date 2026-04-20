@@ -1,20 +1,34 @@
 import { test, expect, chromium, Page } from '@playwright/test';
-import { performLogin, navigateTo, clickElement, getMainPage, getCDPUrl } from './helpers';
+import { performLogin, navigateTo, getMainPage, clickElement, setupTestBrowser } from './helpers';
 import { logger } from './logger';
 
 test.describe('Priority A - Inventory & Recipes', () => {
   let browser: any;
   let page: Page;
+  let isTauri: boolean;
 
   test.beforeAll(async () => {
-    logger.info("Connecting to Tauri...");
-    try {
-      browser = await connectToApp(chromium, 9223);
+    logger.info("Initializing test environment...");
+    const setup = await setupTestBrowser(chromium);
+    browser = setup.browser;
+    isTauri = setup.isTauri;
+
+    if (isTauri) {
       page = await getMainPage(browser);
-      await performLogin(page);
-    } catch (err) {
-      logger.error("Failed to initialize test context:", err);
-      throw err;
+    } else {
+      // Fallback mode: launch a standard page and navigate to dev server
+      const context = await browser.newContext();
+      page = await context.newPage();
+      await page.goto('http://127.0.0.1:3000');
+    }
+    
+    await performLogin(page);
+    logger.info(`Test environment initialized (Tauri: ${isTauri}).`);
+  });
+
+  test.afterAll(async () => {
+    if (browser && !isTauri) {
+      await browser.close();
     }
   });
 

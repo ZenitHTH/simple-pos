@@ -12,6 +12,12 @@ export const productHandlers = {
     categoryId: number;
     satang: number;
   }) => {
+    // Check for duplicate name (case-insensitive)
+    const existing = state.products.find(p => p.title.toLowerCase() === title.toLowerCase());
+    if (existing) {
+      throw new Error(`A product with the name "${title}" already exists.`);
+    }
+
     const newId = Math.max(0, ...state.products.map((p) => p.product_id)) + 1;
     const newProduct: BackendProduct = {
       product_id: newId,

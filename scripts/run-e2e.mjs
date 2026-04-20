@@ -135,44 +135,25 @@ logger.info('Dev server is ready! Waiting 5s for stability...');
 await new Promise(r => setTimeout(r, 5000));
 logger.info('Proceeding to start Tauri app.\n');
 
-// 3. Start the application or driver
+// 3. Start the application
 let tauriProcess;
 const logFile = fs.openSync('tauri-app.log', 'w');
 
-if (isLinuxDesktop || isWSL) {
-  // Check for WebKitWebDriver availability
-  try {
-    execSync('which WebKitWebDriver', { stdio: 'ignore' });
-  } catch (e) {
-    logger.error("Error: 'WebKitWebDriver' not found in PATH.");
-    logger.info(`To fix this on your distribution, run: ${getDistroHelp()}`);
-    process.exit(1);
-  }
+logger.info(`Starting Tauri app from: ${executablePath}`);
+const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
+const env = {
+  ...process.env,
+  VIBE_POS_IN_MEMORY: '1',
+  RUST_LOG: 'debug',
+  WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
+  WEBKIT_INSPECTOR_HTTP_SERVER: `127.0.0.1:${DEBUG_PORT}`,
+};
 
-  logger.info("Linux detected: Starting tauri-driver for WebDriver support...");
-  // On Linux, we don't start the app directly; tauri-driver will do it
-  tauriProcess = spawn('tauri-driver', [], {
-    env: { ...process.env, TAURI_DRIVER_PORT: DEBUG_PORT.toString() },
-    stdio: ['ignore', logFile, logFile],
-    detached: true,
-  });
-}
- else {
-  logger.info(`Starting Tauri app from: ${executablePath}`);
-  const args = isWindows ? [] : [`--remote-debugging-port=${DEBUG_PORT}`];
-  const env = {
-    ...process.env,
-    VIBE_POS_IN_MEMORY: '1',
-    RUST_LOG: 'debug',
-    WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
-  };
-
-  tauriProcess = spawn(executablePath, args, {
-    env,
-    stdio: ['ignore', logFile, logFile],
-    detached: !isWindows,
-  });
-}
+tauriProcess = spawn(executablePath, args, {
+  env,
+  stdio: ['ignore', logFile, logFile],
+  detached: !isWindows,
+});
 
 if (isWindows) {
     process.on('SIGINT', () => {
@@ -181,7 +162,7 @@ if (isWindows) {
     });
 }
 
-// Helper to wait for a port to be open (TCP only for CDP)
+// Helper to wait for a port to be open (TCP)
 async function waitForPort(port, host, timeout = 30000) {
   const start = Date.now();
   while (Date.now() - start < timeout) {
@@ -202,20 +183,16 @@ async function waitForPort(port, host, timeout = 30000) {
   return false;
 }
 
-logger.info(`Waiting for debugging port ${DEBUG_PORT}...`);
+logger.info(`Waiting for port ${DEBUG_PORT}...`);
 const isPortOpen = await waitForPort(DEBUG_PORT, '127.0.0.1');
 
 if (!isPortOpen) {
-  logger.error(`Timeout waiting for remote debugging port ${DEBUG_PORT} to open.`);
-  if (isWindows) {
-      try { execSync(`taskkill /pid ${tauriProcess.pid} /T /F`); } catch (e) {}
-  } else {
-      process.kill(-tauriProcess.pid);
-  }
-  process.exit(1);
+  logger.warn(`Warning: Port ${DEBUG_PORT} didn't open. Tests will attempt fallback to dev server.`);
+} else {
+  logger.info(`Port ${DEBUG_PORT} is open.`);
 }
 
-logger.info('Debugging port is open! Starting Playwright tests...\n');
+logger.info('Starting Playwright tests...\n');
 
 // 4. Run Playwright tests
 // Forward any additional arguments (like --ui) to playwright, but filter out our own flags

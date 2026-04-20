@@ -69,48 +69,48 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 }
 
 export const logger = {
-  info: async (message: string, ...args: any[]) => {
+  info: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
-      await info(sMsg, ...sArgs);
+      info(sMsg, ...sArgs).catch(() => {});
     } else {
       console.info("[INFO]", sMsg, ...sArgs);
     }
   },
-  error: async (message: string, ...args: any[]) => {
+  error: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
-      await error(sMsg, ...sArgs);
+      error(sMsg, ...sArgs).catch(() => {});
     } else {
       console.error("[ERROR]", sMsg, ...sArgs);
     }
   },
-  warn: async (message: string, ...args: any[]) => {
+  warn: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
-      await warn(sMsg, ...sArgs);
+      warn(sMsg, ...sArgs).catch(() => {});
     } else {
       console.warn("[WARN]", sMsg, ...sArgs);
     }
   },
-  debug: async (message: string, ...args: any[]) => {
+  debug: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
-      await debug(sMsg, ...sArgs);
+      debug(sMsg, ...sArgs).catch(() => {});
     } else {
       console.debug("[DEBUG]", sMsg, ...sArgs);
     }
   },
-  log: async (message: string, ...args: any[]) => {
+  log: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));
     if (isTauri()) {
       // @ts-ignore
-      await info(sMsg, ...sArgs);
+      info(sMsg, ...sArgs).catch(() => {});
     } else {
       console.log(sMsg, ...sArgs);
     }

@@ -1,2 +1,73 @@
-can not find binary WebKitWebDriver in the PATH. This is currently required.You can also pass a custom path with --native-driver
-CannotFindBinaryPath
+[2m2026-04-20T10:55:40.198565Z[0m [34mDEBUG[0m [2mglycin::gobject[0m[2m:[0m Initialized logging
+[2m2026-04-20T10:55:40.199315Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Testing bwrap availability with: "bwrap" "--unshare-all" "--die-with-parent" "--chdir" "/" "--ro-bind" "/usr" "/usr" "--dev" "/dev" "--ro-bind-try" "/etc/ld.so.cache" "/etc/ld.so.cache" "--ro-bind-try" "/nix/store" "/nix/store" "--tmpfs" "/tmp-home" "--tmpfs" "/tmp-run" "--clearenv" "--setenv" "HOME" "/tmp-home" "--setenv" "XDG_RUNTIME_DIR" "/tmp-run" "--setenv" "RUST_LOG" "debug" "--setenv" "XDG_RUNTIME_DIR" "/run/user/1000" "--symlink" "/usr/lib" "/lib" "--symlink" "/usr/lib64" "/lib64" "--seccomp" "25" "/usr/bin/true"
+[2m2026-04-20T10:55:40.204551Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m bwrap availability test returned: Output { status: ExitStatus(unix_wait_status(0)), stdout: "", stderr: "Setting process memory limit\n" } (Signal: None, Code: Some(0))
+[2m2026-04-20T10:55:40.204582Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m bwrap sandboxing available: true
+[2m2026-04-20T10:55:40.204588Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m No existing loader/editor in pool. Spawning new one.
+[2m2026-04-20T10:55:40.204909Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Couldn't canonicalize path "/home/zenithth/.fontconfig": No such file or directory (os error 2)
+[2m2026-04-20T10:55:40.204920Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Couldn't canonicalize path "/home/zenithth/.fonts": No such file or directory (os error 2)
+[2m2026-04-20T10:55:40.204926Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Couldn't canonicalize path "/home/zenithth/.local/share/flatpak/exports/share/fonts": No such file or directory (os error 2)
+[2m2026-04-20T10:55:40.204931Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Couldn't canonicalize path "/home/zenithth/.local/share/fonts": No such file or directory (os error 2)
+[2m2026-04-20T10:55:40.204944Z[0m [34mDEBUG[0m [2mglycin::sandbox[0m[2m:[0m Couldn't canonicalize path "/var/lib/flatpak/exports/share/fonts": No such file or directory (os error 2)
+[2m2026-04-20T10:55:40.205074Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Spawning loader/editor:
+    "bwrap" "--unshare-all" "--die-with-parent" "--chdir" "/" "--ro-bind" "/usr" "/usr" "--dev" "/dev" "--ro-bind-try" "/etc/ld.so.cache" "/etc/ld.so.cache" "--ro-bind-try" "/nix/store" "/nix/store" "--tmpfs" "/tmp-home" "--tmpfs" "/tmp-run" "--clearenv" "--setenv" "HOME" "/tmp-home" "--setenv" "XDG_RUNTIME_DIR" "/tmp-run" "--setenv" "RUST_LOG" "debug" "--setenv" "XDG_RUNTIME_DIR" "/run/user/1000" "--symlink" "/usr/lib" "/lib" "--symlink" "/usr/lib64" "/lib64" "--ro-bind-try" "/etc/fonts/conf.d" "/etc/fonts/conf.d" "--ro-bind-try" "/etc/fonts/fonts.conf" "/etc/fonts/fonts.conf" "--ro-bind-try" "/home/zenithth/.cache/fontconfig" "/home/zenithth/.cache/fontconfig" "--ro-bind-try" "/usr/lib/fontconfig/cache" "/usr/lib/fontconfig/cache" "--bind-try" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "--setenv" "XDG_CACHE_HOME" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "--seccomp" "26" "/usr/libexec/glycin-loaders/2+/glycin-svg" "--dbus-fd" "25"
+[2m2026-04-20T10:55:40.206446Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: Setting process memory limit
+[2m2026-04-20T10:55:40.213435Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.213Z INFO  glycin_utils::instruction_handler] Loader glycin-svg v2.0.4 startup
+[2m2026-04-20T10:55:40.213460Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.213Z DEBUG glycin_utils::instruction_handler] Creating zbus connection to glycin
+[2m2026-04-20T10:55:40.214218Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.214Z DEBUG glycin_utils::instruction_handler] D-Bus connection to glycin created
+[2m2026-04-20T10:55:40.216096Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.216718Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 598.519µs
+[2m2026-04-20T10:55:40.217007Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.217Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/1
+[2m2026-04-20T10:55:40.217015Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.217Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/1
+[2m2026-04-20T10:55:40.217804Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.218240Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.218594Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 344.181µs
+[2m2026-04-20T10:55:40.218683Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.218Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/2
+[2m2026-04-20T10:55:40.218687Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.218Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/2
+[2m2026-04-20T10:55:40.219067Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.219515Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.220076Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 549.776µs
+[2m2026-04-20T10:55:40.220155Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.220Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/3
+[2m2026-04-20T10:55:40.220159Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.220Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/3
+[2m2026-04-20T10:55:40.220677Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.220986Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.221310Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 317.181µs
+[2m2026-04-20T10:55:40.221394Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.221Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/4
+[2m2026-04-20T10:55:40.221403Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.221Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/4
+[2m2026-04-20T10:55:40.221710Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.222076Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.222405Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 322.178µs
+[2m2026-04-20T10:55:40.222485Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.222Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/5
+[2m2026-04-20T10:55:40.222495Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.222Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/5
+[2m2026-04-20T10:55:40.222799Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.223225Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.223569Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 331.144µs
+[2m2026-04-20T10:55:40.223643Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.223Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/6
+[2m2026-04-20T10:55:40.223650Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.223Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/6
+[2m2026-04-20T10:55:40.224044Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.224419Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.224757Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 330.419µs
+[2m2026-04-20T10:55:40.224834Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.224Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/7
+[2m2026-04-20T10:55:40.224843Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.224Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/7
+[2m2026-04-20T10:55:40.225130Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.225464Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.225788Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 316.38µs
+[2m2026-04-20T10:55:40.225859Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.225Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/8
+[2m2026-04-20T10:55:40.225863Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.225Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/8
+[2m2026-04-20T10:55:40.226201Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Using existing loader from pool.
+[2m2026-04-20T10:55:40.226594Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Starting to transform image format from B8g8r8a8Premultiplied to R8g8b8a8
+[2m2026-04-20T10:55:40.226919Z[0m [34mDEBUG[0m [2mglycin_utils::editing::change_memory_format[0m[2m:[0m Transformation completed after 315.856µs
+[2m2026-04-20T10:55:40.226984Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.226Z DEBUG glycin_utils::dbus_loader_api] Disconnecting /org/gnome/glycin/image/9
+[2m2026-04-20T10:55:40.226987Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Loader stderr: [2026-04-20T10:55:40.226Z DEBUG glycin_utils::dbus_loader_api] Removed /org/gnome/glycin/image/9
+
+** (app:74676): WARNING **: 17:55:41.985: Failed to load inspector resource /org/webkit/inspector/UserInterface/json: The resource at “/org/webkit/inspector/UserInterface/json” does not exist
+
+** (app:74676): WARNING **: 17:55:41.990: Failed to load inspector resource /org/webkit/inspector/UserInterface/json/version/: The resource at “/org/webkit/inspector/UserInterface/json/version/” does not exist
+[2m2026-04-20T10:56:10.227046Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Cleaning up loaders
+[2m2026-04-20T10:56:10.227091Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Loader "/usr/libexec/glycin-loaders/2+/glycin-svg": drop true users 0 (max 18446744073709551615), idle 30.000129525s (max 30s)
+[2m2026-04-20T10:56:10.227096Z[0m [34mDEBUG[0m [2mglycin::pool[0m[2m:[0m Dropping loader "/usr/libexec/glycin-loaders/2+/glycin-svg" 1
+[2m2026-04-20T10:56:10.227103Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Winding down process
+[2m2026-04-20T10:56:10.227114Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Killing process due to cancellation (late): "bwrap" "--unshare-all" "--die-with-parent" "--chdir" "/" "--ro-bind" "/usr" "/usr" "--dev" "/dev" "--ro-bind-try" "/etc/ld.so.cache" "/etc/ld.so.cache" "--ro-bind-try" "/nix/store" "/nix/store" "--tmpfs" "/tmp-home" "--tmpfs" "/tmp-run" "--clearenv" "--setenv" "HOME" "/tmp-home" "--setenv" "XDG_RUNTIME_DIR" "/tmp-run" "--setenv" "RUST_LOG" "debug" "--setenv" "XDG_RUNTIME_DIR" "/run/user/1000" "--symlink" "/usr/lib" "/lib" "--symlink" "/usr/lib64" "/lib64" "--ro-bind-try" "/etc/fonts/conf.d" "/etc/fonts/conf.d" "--ro-bind-try" "/etc/fonts/fonts.conf" "/etc/fonts/fonts.conf" "--ro-bind-try" "/home/zenithth/.cache/fontconfig" "/home/zenithth/.cache/fontconfig" "--ro-bind-try" "/usr/lib/fontconfig/cache" "/usr/lib/fontconfig/cache" "--bind-try" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "--setenv" "XDG_CACHE_HOME" "/home/zenithth/.cache/glycin/usr/libexec/glycin-loaders/2+/glycin-svg" "--seccomp" "26" "/usr/libexec/glycin-loaders/2+/glycin-svg" "--dbus-fd" "25"
+[2m2026-04-20T10:56:10.227385Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Process exited: Some(None) Ok(ExitStatus(unix_wait_status(9)))
+[2m2026-04-20T10:56:10.227400Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m Failed to send process return value to coordinating thread: Ok(ExitStatus(unix_wait_status(9)))
+[2m2026-04-20T10:56:10.228820Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m stderr disconnected without error
+[2m2026-04-20T10:56:10.228830Z[0m [34mDEBUG[0m [2mglycin::dbus[0m[2m:[0m stdout disconnected without error
