@@ -1,0 +1,4 @@
+- [ ] Task 1: Environment & Infrastructure Hardening
+- [ ] Task 2: API & State Backdoor Exposure
+- [ ] Task 3: Action Marker System (The Synchronization Layer)
+- [ ] Task 4: Unified "Guide of Truth" Spec Implementation
