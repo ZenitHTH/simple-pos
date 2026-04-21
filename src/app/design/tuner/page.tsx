@@ -42,7 +42,7 @@ export default function DesignTunerPage() {
   };
 
   return (
-    <div className="bg-zinc-950 text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/30">
+    <div className="bg-background text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/30 transition-colors duration-300">
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[120px]" />
@@ -60,10 +60,14 @@ export default function DesignTunerPage() {
       {/* Main Content */}
       <div className="relative flex-1 overflow-hidden flex flex-col z-10">
         <div
-          className="bg-zinc-900/50 flex-1 overflow-y-auto p-8 custom-scrollbar backdrop-blur-3xl"
+          className="bg-card/50 flex-1 overflow-y-auto p-8 custom-scrollbar backdrop-blur-md"
           data-lenis-prevent
           style={{
-            zoom: previewZoom / 16,
+            transform: `scale(${previewZoom / 16})`,
+            transformOrigin: "top left",
+            width: `calc(100% / (${previewZoom / 16}))`,
+            height: `calc(100% / (${previewZoom / 16}))`,
+            willChange: "transform",
           }}
         >
           <div className="mx-auto max-w-4xl pb-24">
