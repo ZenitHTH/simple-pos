@@ -61,9 +61,11 @@ Key patterns:
 
 ## Performance & Optimization
 
+Adhere to the high-performance standards in **`docs/PERFORMANCE.md`**.
 - **Connection Pooling**: Uses `r2d2` with `SqlCipherCustomizer`. Connections are borrowed from `tauri::State<'_, AppState>`.
 - **Atomic Commands**: Consolidate multi-step DB operations into single Rust commands to minimize IPC and SQLCipher overhead.
 - **React 19 Transitions**: Heavy async operations (like checkout) use `useTransition` to keep the UI responsive.
+- **Hardware Acceleration**: Use `transform: scale()` instead of `zoom`. Avoid `transition: all`.
 - **Build**: Next.js 16 with **Turbopack** and **React Compiler** enabled for maximum build and runtime speed.
 
 ## Database Schema Highlights

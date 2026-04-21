@@ -76,21 +76,13 @@ Styles are not hardcoded. They are derived from `AppSettings`.
 
 ## ⚡ 5. High-Performance Standards (2026)
 
-To maintain the "Instant-Feel" required for a retail POS, adhere to these architectural mandates:
+To maintain the "Instant-Feel" required for a retail POS, adhere to the architectural mandates in **`docs/PERFORMANCE.md`**.
 
-### 1. Atomic IPC Commands
-Reduce round-trips between Frontend and Rust.
-- **Rule**: Consolidate multi-step database writes into a single Tauri command wrapped in a `conn.transaction(|conn| { ... })`.
-- **Example**: See `complete_checkout` in `src-tauri/src/commands/receipt.rs`.
-
-### 2. React 19 Transitions & Optimism
-- **Transitions**: Wrap all async backend calls in `useTransition`. Use the native `isPending` state to provide UI feedback.
-- **Optimistic UI**: Use `useOptimistic` for high-frequency actions (Cart updates, list clearing). The UI should feel zero-latency, with background persistence handling errors gracefully.
-- **React Compiler**: Do not manually add `useMemo` or `useCallback` unless specifically required for complex dependency management; let the compiler handle it.
-
-### 3. Turbopack & Caching
-- **Dev Speed**: Turbopack file-system caching is enabled. Ensure new configs don't break the artifact cache.
-- **Explicit Caching**: Favor Next.js 16's `"use cache"` directive for expensive server-side calculations.
+### Core Performance Checklist:
+1. **Atomic IPC**: Consolidate multi-step DB writes into single Rust commands.
+2. **Connection Pooling**: Always borrow from `state.pool`; never use `establish_connection`.
+3. **React 19 Transitions**: Wrap async logic in `useTransition` and `useOptimistic`.
+4. **GPU Acceleration**: Use `transform: scale()` instead of `zoom`. Explicitly define transitions (no `transition: all`).
 
 ---
 
