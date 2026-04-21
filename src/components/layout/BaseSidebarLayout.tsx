@@ -18,6 +18,7 @@ interface BaseSidebarLayoutProps {
   scale?: number;
   fontScale?: number;
   className?: string;
+  style?: React.CSSProperties;
   side?: "left" | "right";
   showMobileClose?: boolean;
 }
@@ -37,6 +38,7 @@ export default function BaseSidebarLayout({
   scale = 100,
   fontScale = 100,
   className = "",
+  style: extraStyle,
   side = "left",
   showMobileClose = true,
 }: BaseSidebarLayoutProps) {
@@ -51,7 +53,8 @@ export default function BaseSidebarLayout({
     <aside
       style={{ 
         width: dynamicWidth,
-        "--sidebar-button-scale": buttonScale
+        "--sidebar-button-scale": buttonScale,
+        ...extraStyle
       } as any}
       className={cn(
         "fixed inset-y-0 z-50 lg:static flex flex-col transition-all duration-300 ease-in-out",

@@ -47,7 +47,8 @@ export function TunerSidebar({
       headerIcon={FaPalette}
       scale={settings.scaling.components.sidebar}
       fontScale={settings.scaling.fonts.sidebar}
-      className="backdrop-blur-xl bg-card/60"
+      className="backdrop-blur-md bg-card/60"
+      style={{ transform: "translateZ(0)" } as any}
     >
       <div className="px-6 pb-6">
         {/* Navigation Group */}
