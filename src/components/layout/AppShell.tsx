@@ -80,7 +80,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       */}
       <div 
         className="relative flex flex-1 overflow-hidden" 
-        style={{ zoom: displayScale } as React.CSSProperties}
+        style={{ 
+          transform: `scale(${displayScale})`,
+          transformOrigin: 'top left',
+          width: `calc(100% / ${displayScale})`,
+          height: `calc(100% / ${displayScale})`,
+          willChange: 'transform'
+        } as React.CSSProperties}
       >
         <Sidebar />
         <main className="relative flex flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
