@@ -47,16 +47,16 @@ Vibe POS is a **Local-First, Privacy-First, High-Customization** Point of Sale s
 
 ## 🔒 3. Security & Safety Mandates
 
-### 🔑 The `dbKey` Protocol
-Most backend commands require a `dbKey` (the decryption key).
-- In the frontend, this is managed by `DatabaseContext`.
-- **Never** log or hardcode this key.
-- Commands often look like: `invoke("my_command", { dbKey, ...args })`.
+### 🔑 The `AppState` & `dbKey` Protocol
+Database security is managed via Tauri's global state and SQLCipher.
+- **Connection Pool**: We use `r2d2` to pool authenticated connections. **Never** call `establish_connection` manually in a command.
+- **Access**: Commands MUST take `state: tauri::State<'_, crate::AppState>` and borrow from `state.pool`.
+- **Decryption**: The `dbKey` is provided once at login and handled by a custom `SqlCipherCustomizer`.
 
 ### 🛡️ Path Validation (VULN-001)
-We enforce strict path boundaries. All file operations (exports, image saves) must happen within the platform-specific app data directory.
+We enforce strict path boundaries. All file operations (exports, custom DB paths, image saves) must happen within the platform-specific app data directory.
 - **Tool**: Use `settings_lib::paths::validate_path_within` in Rust.
-- **Rule**: If a user provides a path, it **must** be validated before use.
+- **Rule**: If a user or the frontend provides a path, it **must** be validated against the app data root before use.
 
 ### 🧼 Privacy Logging (VULN-003)
 Our `logger.ts` and Rust logging (`lib.rs`) filter out sensitive keywords.
@@ -74,7 +74,27 @@ Styles are not hardcoded. They are derived from `AppSettings`.
 
 ---
 
-## 🚀 5. Project Meta-Documentation & Registries
+## ⚡ 5. High-Performance Standards (2026)
+
+To maintain the "Instant-Feel" required for a retail POS, adhere to these architectural mandates:
+
+### 1. Atomic IPC Commands
+Reduce round-trips between Frontend and Rust.
+- **Rule**: Consolidate multi-step database writes into a single Tauri command wrapped in a `conn.transaction(|conn| { ... })`.
+- **Example**: See `complete_checkout` in `src-tauri/src/commands/receipt.rs`.
+
+### 2. React 19 Transitions & Optimism
+- **Transitions**: Wrap all async backend calls in `useTransition`. Use the native `isPending` state to provide UI feedback.
+- **Optimistic UI**: Use `useOptimistic` for high-frequency actions (Cart updates, list clearing). The UI should feel zero-latency, with background persistence handling errors gracefully.
+- **React Compiler**: Do not manually add `useMemo` or `useCallback` unless specifically required for complex dependency management; let the compiler handle it.
+
+### 3. Turbopack & Caching
+- **Dev Speed**: Turbopack file-system caching is enabled. Ensure new configs don't break the artifact cache.
+- **Explicit Caching**: Favor Next.js 16's `"use cache"` directive for expensive server-side calculations.
+
+---
+
+## 🚀 6. Project Meta-Documentation & Registries
 
 To work effectively, you MUST consult these "Source of Truth" files. They are designed to give you a 360-degree view of the project without scanning the entire codebase.
 

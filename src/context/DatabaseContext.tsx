@@ -61,8 +61,14 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const logout = () => {
-    setDbKey(null);
+  const logout = async () => {
+    try {
+      await invoke("logout_database");
+    } catch (err) {
+      logger.error("Failed to clear backend database pool:", err);
+    } finally {
+      setDbKey(null);
+    }
   };
 
   return (

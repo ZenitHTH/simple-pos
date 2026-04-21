@@ -53,10 +53,18 @@ Key patterns:
 
 ### Data Flow
 
-1. User logs in with database key → `DatabaseProvider` initializes encrypted connection
-2. Settings loaded from disk → `SettingsProvider` applies scales via CSS custom properties
-3. POS page: Products fetched → Cart managed via `usePOSLogic` → Payment creates invoice with stock deduction
-4. Stock deduction: Normal mode decrements product stock; Recipe mode deducts from materials
+1. User logs in with database key → `DatabaseProvider` initializes encrypted connection pool via `initialize_database` command.
+2. Settings loaded from disk → `SettingsProvider` applies scales via CSS custom properties.
+3. POS page: Products fetched → Cart managed via `usePOSLogic` with `useOptimistic` for instant feedback.
+4. Payment: Uses a **single atomic transaction** (`complete_checkout`) to create invoice and deduct stock in one IPC round-trip.
+5. Stock deduction: Normal mode decrements product stock; Recipe mode deducts from materials.
+
+## Performance & Optimization
+
+- **Connection Pooling**: Uses `r2d2` with `SqlCipherCustomizer`. Connections are borrowed from `tauri::State<'_, AppState>`.
+- **Atomic Commands**: Consolidate multi-step DB operations into single Rust commands to minimize IPC and SQLCipher overhead.
+- **React 19 Transitions**: Heavy async operations (like checkout) use `useTransition` to keep the UI responsive.
+- **Build**: Next.js 16 with **Turbopack** and **React Compiler** enabled for maximum build and runtime speed.
 
 ## Database Schema Highlights
 

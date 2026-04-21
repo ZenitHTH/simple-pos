@@ -32,3 +32,11 @@ pub fn check_database_exists(_app: tauri::AppHandle) -> Result<bool, String> {
     let db_path = get_database_path().map_err(|e| e.to_string())?;
     Ok(db_path.exists())
 }
+
+/// Clears the authenticated database connection pool.
+/// This ensures that the database is no longer accessible after logout.
+#[tauri::command]
+pub fn logout_database(state: tauri::State<'_, crate::AppState>) -> Result<(), String> {
+    *state.pool.write().map_err(|_| "Failed to lock pool state")? = None;
+    Ok(())
+}

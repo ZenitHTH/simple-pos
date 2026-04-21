@@ -89,6 +89,7 @@ pub fn run() {
             // Database Commands
             initialize_database,
             check_database_exists,
+            logout_database,
             // Image Commands
             save_image,
             link_product_image,

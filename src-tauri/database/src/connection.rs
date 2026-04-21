@@ -44,11 +44,16 @@ pub fn get_database_path() -> Result<PathBuf, String> {
 
     // Check for custom database path in settings
     if let Some(custom_path) = read_custom_db_storage_path(data_dir) {
-        if !custom_path.exists() {
-            fs::create_dir_all(&custom_path)
+        let validated_path = settings_lib::paths::validate_path_within(
+            custom_path.to_str().unwrap_or(""),
+            data_dir
+        )?;
+        
+        if !validated_path.exists() {
+            fs::create_dir_all(&validated_path)
                 .map_err(|e| format!("Error creating custom database directory: {}", e))?;
         }
-        return Ok(custom_path.join("database.db"));
+        return Ok(validated_path.join("database.db"));
     }
 
     Ok(data_dir.join("database.db"))
