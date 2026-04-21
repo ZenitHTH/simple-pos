@@ -44,6 +44,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
     customers,
     selectedCustomerId,
     setSelectedCustomerId,
+    isPending,
   } = usePOSLogic(initialProducts);
 
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -111,6 +112,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         onClose={() => setIsPaymentModalOpen(false)}
         total={cartTotal}
         onConfirm={handleConfirmPayment}
+        isPending={isPending}
         currency={currency}
       />
 

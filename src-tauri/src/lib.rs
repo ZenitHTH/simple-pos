@@ -15,10 +15,16 @@ use commands::material::*;
 use commands::recipe::*;
 use commands::settings::*; // Settings Commands
 use tauri::Manager;
+use std::sync::RwLock;
+
+pub struct AppState {
+    pub pool: RwLock<Option<database::connection::DbPool>>,
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(AppState { pool: RwLock::new(None) })
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             if let Some(window) = app.get_webview_window("main") {
                 let _ = window.set_focus();
@@ -58,6 +64,7 @@ pub fn run() {
             update_stock,
             remove_stock,
             // Receipt Commands
+            complete_checkout,
             create_invoice,
             add_invoice_items,
             get_invoice_detail,

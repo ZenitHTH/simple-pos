@@ -14,7 +14,8 @@ interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   total: number;
-  onConfirm: (cashReceived: number) => Promise<void>;
+  onConfirm: (cashReceived: number) => void;
+  isPending?: boolean;
   currency?: string;
 }
 
@@ -29,18 +30,17 @@ export default function PaymentModal({
   onClose,
   total,
   onConfirm,
+  isPending = false,
   currency = "$",
 }: PaymentModalProps) {
   const { settings } = useSettings();
   const [cashReceived, setCashReceived] = useState<string>("");
-  const [isProcessing, setIsProcessing] = useState(false);
 
   // Reset state when modal opens
   useEffect(() => {
     logger.info("PaymentModal: isOpen changed to", isOpen);
     if (isOpen) {
       setCashReceived("");
-      setIsProcessing(false);
     }
   }, [isOpen]);
 
@@ -62,16 +62,9 @@ export default function PaymentModal({
       .sort((a, b) => a - b);
   }, [total]);
 
-  const handleConfirm = async () => {
-    if (!isValid || isProcessing) return;
-
-    setIsProcessing(true);
-    try {
-      await onConfirm(cashValue);
-    } catch (error) {
-      logger.error("Payment failed:", error);
-      setIsProcessing(false);
-    }
+  const handleConfirm = () => {
+    if (!isValid || isPending) return;
+    onConfirm(cashValue);
   };
 
   if (!isOpen) return null;
@@ -132,7 +125,7 @@ export default function PaymentModal({
 
       <PaymentFooter
         isValid={isValid}
-        isProcessing={isProcessing}
+        isProcessing={isPending}
         onConfirm={handleConfirm}
       />
     </Modal>

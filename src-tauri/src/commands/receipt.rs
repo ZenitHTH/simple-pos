@@ -29,6 +29,71 @@ pub struct MaterialAccumulation {
     pub precision: i32,
 }
 
+/// Creates a new receipt header, adds all items, and deducts stock in a single atomic transaction.
+/// This reduces IPC overhead and ensures database consistency during the checkout process.
+///
+/// # Arguments
+/// * `state` - The Tauri application state containing the database connection pool.
+/// * `customer_id` - The ID of the customer associated with the receipt, if any.
+/// * `items` - A list of product IDs and their respective quantities to be purchased.
+///
+/// # Returns
+/// The newly created receipt header on success, or an error message on failure.
+#[tauri::command]
+pub async fn complete_checkout(
+    state: tauri::State<'_, crate::AppState>,
+    customer_id: Option<i32>,
+    items: Vec<(i32, i32)>, // Vec<(product_id, quantity)>
+) -> Result<ReceiptList, String> {
+    let pool_lock = state.pool.read().map_err(|_| "Failed to read pool state")?;
+    let pool = pool_lock.as_ref().ok_or("Database not initialized")?;
+    let mut conn = pool.get().map_err(|e| e.to_string())?;
+
+    conn.transaction(|conn| {
+        use database::product;
+        use database::recipe;
+
+        // 1. Create Receipt Header
+        let receipt_header = receipt::create_receipt_header(conn, None, customer_id)
+            .map_err(|_e| diesel::result::Error::RollbackTransaction)?;
+        let receipt_id = receipt_header.receipt_id;
+
+        // 2. Add Items and Deduct Stock
+        for (product_id, quantity) in items {
+            // Validate quantity
+            if quantity <= 0 || quantity > 10_000 {
+                return Err(diesel::result::Error::RollbackTransaction);
+            }
+
+            // Fetch product info to get price and stock mode
+            let product_info = product::find_product(conn, product_id)
+                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+
+            // Record item in the receipt
+            let item = NewReceipt {
+                receipt_id,
+                product_id,
+                quantity,
+                satang_at_sale: product_info.satang,
+            };
+            let saved_item = receipt::add_item(conn, &item)
+                .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+
+            // Deduct stock levels (handle recipe-based or direct stock)
+            if product_info.use_recipe_stock {
+                recipe::deduct_stock_from_recipe(conn, product_id, quantity, saved_item.id)
+                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+            } else {
+                stock::deduct_stock(conn, product_id, quantity)
+                    .map_err(|_| diesel::result::Error::RollbackTransaction)?;
+            }
+        }
+
+        Ok(receipt_header)
+    })
+    .map_err(|e| e.to_string())
+}
+
 /// Creates a new invoice (receipt header) for an optional customer.
 ///
 /// # Arguments

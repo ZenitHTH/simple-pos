@@ -1,9 +1,32 @@
 use diesel::prelude::*;
 use diesel::sql_query;
+use diesel::r2d2::{ConnectionManager, CustomizeConnection, Pool};
 use directories::ProjectDirs;
 use serde_json;
 use std::fs;
 use std::path::{Path, PathBuf};
+
+pub type DbPool = Pool<ConnectionManager<SqliteConnection>>;
+
+#[derive(Debug)]
+pub struct SqlCipherCustomizer {
+    hex_key: String,
+}
+
+impl CustomizeConnection<SqliteConnection, diesel::r2d2::Error> for SqlCipherCustomizer {
+    fn on_acquire(&self, conn: &mut SqliteConnection) -> Result<(), diesel::r2d2::Error> {
+        apply_encryption_key(conn, &self.hex_key)
+            .map_err(|e| diesel::r2d2::Error::QueryError(diesel::result::Error::DatabaseError(
+                diesel::result::DatabaseErrorKind::Unknown,
+                Box::new(e),
+            )))?;
+            
+        sql_query("PRAGMA journal_mode = WAL;").execute(conn).map_err(|e| diesel::r2d2::Error::QueryError(e))?;
+        sql_query("PRAGMA synchronous = NORMAL;").execute(conn).map_err(|e| diesel::r2d2::Error::QueryError(e))?;
+        
+        Ok(())
+    }
+}
 
 /// Gets the absolute path to the SQLite database file.
 /// Checks for a custom path override in `settings.json` within the app data directory.
@@ -42,6 +65,7 @@ fn read_custom_db_storage_path(data_dir: &Path) -> Option<PathBuf> {
         .map(PathBuf::from)
 }
 
+/// DEPRECATED: Use create_pool instead for thread-safe access.
 /// Establishes a connection to the encrypted (or soon-to-be encrypted) database.
 pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
     if key.len() < 8 {
@@ -70,6 +94,17 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
 
     // 3. Both attempts failed (wrong key or file is corrupted)
     Err("Invalid encryption key or corrupted database".to_string())
+}
+
+pub fn create_pool(key: &str) -> Result<DbPool, String> {
+    let database_url = get_database_url()?;
+    let manager = ConnectionManager::<SqliteConnection>::new(database_url);
+    let hex_key = hex::encode(key);
+    
+    Pool::builder()
+        .connection_customizer(Box::new(SqlCipherCustomizer { hex_key }))
+        .build(manager)
+        .map_err(|e| format!("Failed to create pool: {}", e))
 }
 
 fn get_database_url() -> Result<String, String> {

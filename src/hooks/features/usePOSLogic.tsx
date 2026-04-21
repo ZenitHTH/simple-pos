@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useTransition, useOptimistic } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
 import { categoryApi, receiptApi, customerApi } from "@/lib";
@@ -26,6 +26,9 @@ export function usePOSLogic(initialProducts: Product[]) {
   const { currency } = useCurrency();
   const { taxRate } = useTax();
 
+  // React 19 Transition for payment confirmation
+  const [isPending, startTransition] = useTransition();
+
   // Determine which products to use
   const productsSource = isMockupMode ? exampleProducts : initialProducts;
 
@@ -37,6 +40,16 @@ export function usePOSLogic(initialProducts: Product[]) {
   const [cartItems, setCartItems] = useState<CartItem[]>(
     isMockupMode ? exampleCartItems : []
   );
+
+  // React 19 Optimistic UI for Cart
+  const [optimisticCart, addOptimisticCart] = useOptimistic(
+    cartItems,
+    (state, action: { type: "clear" }) => {
+      if (action.type === "clear") return [];
+      return state;
+    }
+  );
+
   const [categories, setCategories] = useState<string[]>(["All"]);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(
     isMockupMode && mockupView === "payment"
@@ -145,50 +158,50 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, [cartItems.length]);
 
   const cartTotal = useMemo(() => {
-    const totalSatang = cartItems.reduce((sum, item) => {
+    const totalSatang = optimisticCart.reduce((sum, item) => {
       const itemSatang = item.satang ?? Math.round(item.price * 100);
       return sum + itemSatang * item.quantity;
     }, 0);
     return (totalSatang * (1 + taxRate)) / 100;
-  }, [cartItems, taxRate]);
+  }, [optimisticCart, taxRate]);
 
   const handleConfirmPayment = useCallback(
-    async (cashReceived: number) => {
+    (cashReceived: number) => {
       if (!dbKey) return;
-      try {
-        // 1. Create Invoice Header
-        const receiptList = await receiptApi.createInvoice(
-          dbKey,
-          selectedCustomerId,
-        );
+      
+      startTransition(async () => {
+        // Optimistically clear the cart
+        addOptimisticCart({ type: "clear" });
+        
+        try {
+          // New consolidated API call in a single atomic operation
+          const receiptList = await receiptApi.completeCheckout(dbKey, {
+            customerId: selectedCustomerId,
+            items: cartItems.map((item) => ({
+              productId: item.id,
+              quantity: item.quantity,
+            })),
+          });
 
-        // 2. Add Items in bulk for atomicity
-        await receiptApi.addInvoiceItems(
-          dbKey,
-          receiptList.receipt_id,
-          cartItems.map((item) => ({
-            productId: item.id,
-            quantity: item.quantity,
-          })),
-        );
+          // Success Feedback
+          const change = cashReceived - cartTotal;
+          showToast(
+            `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
+            "success",
+          );
+          logger.action("payment_confirmed", { receiptId: receiptList.receipt_id });
 
-        // 3. Success Feedback
-        const change = cashReceived - cartTotal;
-        showToast(
-          `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
-          "success",
-        );
-
-        // 4. Reset
-        setCartItems([]);
-        setSelectedCustomerId(undefined);
-        setIsPaymentModalOpen(false);
-      } catch (error) {
-        logger.error("Payment failed:", error);
-        showToast("Payment failed. Please try again.", "error");
-      }
+          // Reset real state
+          setCartItems([]);
+          setSelectedCustomerId(undefined);
+          setIsPaymentModalOpen(false);
+        } catch (error) {
+          logger.error("Payment failed:", error);
+          showToast("Payment failed. Please try again.", "error");
+        }
+      });
     },
-    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast],
+    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast, addOptimisticCart],
   );
 
   const handleSetIsPaymentModalOpen = useCallback(
@@ -208,7 +221,7 @@ export function usePOSLogic(initialProducts: Product[]) {
     handleCategoryChange,
     searchQuery,
     handleSearchChange,
-    cartItems,
+    cartItems: optimisticCart, // Use optimistic cart in UI
     handleAddToCart,
     handleUpdateQuantity,
     handleRemove,
@@ -221,5 +234,6 @@ export function usePOSLogic(initialProducts: Product[]) {
     customers,
     selectedCustomerId,
     setSelectedCustomerId,
+    isPending,
   };
 }
