@@ -1,4 +1,3 @@
-use database::establish_connection;
 use database::run_migrations;
 
 /// Initializes the database using the provided encryption key.
@@ -10,9 +9,13 @@ use database::run_migrations;
 /// # Returns
 /// An empty result on success.
 #[tauri::command]
-pub fn initialize_database(key: String) -> Result<(), String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
-    run_migrations(&mut conn).map_err(|e| e.to_string())?;
+pub fn initialize_database(key: String, state: tauri::State<'_, crate::AppState>) -> Result<(), String> {
+    let pool = database::connection::create_pool(&key)?;
+    {
+        let mut conn = pool.get().map_err(|e| e.to_string())?;
+        run_migrations(&mut conn).map_err(|e| e.to_string())?;
+    }
+    *state.pool.write().map_err(|_| "Failed to lock pool state")? = Some(pool);
     Ok(())
 }
 
