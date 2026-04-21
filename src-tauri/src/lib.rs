@@ -64,6 +64,7 @@ pub fn run() {
             update_stock,
             remove_stock,
             // Receipt Commands
+            complete_checkout,
             create_invoice,
             add_invoice_items,
             get_invoice_detail,

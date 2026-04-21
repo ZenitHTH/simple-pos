@@ -29,6 +29,21 @@ export const receiptApi = {
     });
   },
 
+  /** Creates a new invoice, adds items, and deducts stock in a single atomic operation. */
+  completeCheckout: async (
+    key: string,
+    data: {
+      customerId?: number;
+      items: { productId: number; quantity: number }[];
+    },
+  ): Promise<ReceiptList> => {
+    return await invoke("complete_checkout", {
+      key,
+      customerId: data.customerId ? Number(data.customerId) : undefined,
+      items: data.items.map((i) => [Number(i.productId), Number(i.quantity)]),
+    });
+  },
+
   /** Retrieves full details for a specific invoice, including its items. */
   getInvoiceDetail: async (
     key: string,
