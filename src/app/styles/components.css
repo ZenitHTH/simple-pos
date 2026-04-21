@@ -6,7 +6,11 @@
     border-width: var(--grid-item-border-width);
     background-color: color-mix(in srgb, var(--card), transparent calc(100% - var(--grid-item-bg-opacity) * 100%));
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / var(--grid-item-shadow-opacity)), 0 4px 6px -4px rgb(0 0 0 / var(--grid-item-shadow-opacity));
-    transition: all var(--button-transition-speed) ease-out;
+    transition: transform var(--button-transition-speed) ease-out,
+                box-shadow var(--button-transition-speed) ease-out,
+                background-color var(--button-transition-speed) ease-out,
+                opacity var(--button-transition-speed) ease-out;
+    will-change: transform, box-shadow;
   }
   
   .tuner-card:hover {
@@ -17,7 +21,8 @@
   .tuner-sidebar-item {
     margin-bottom: var(--sidebar-item-spacing);
     border-radius: var(--sidebar-item-radius);
-    transition: all var(--button-transition-speed) ease-out;
+    transition: transform var(--button-transition-speed) ease-out,
+                background-color var(--button-transition-speed) ease-out;
   }
 
   .tuner-sidebar-icon {
@@ -28,7 +33,9 @@
 
   .tuner-button {
     border-radius: var(--button-radius);
-    transition: all var(--button-transition-speed) ease-out;
+    transition: transform var(--button-transition-speed) ease-out,
+                box-shadow var(--button-transition-speed) ease-out,
+                background-color var(--button-transition-speed) ease-out;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / var(--button-shadow-intensity)), 0 2px 4px -2px rgb(0 0 0 / var(--button-shadow-intensity));
   }
 
@@ -36,7 +43,8 @@
     gap: var(--cart-item-gap);
     border-style: var(--cart-item-border-style);
     background-color: color-mix(in srgb, var(--card), transparent calc(100% - var(--cart-item-bg-opacity) * 100%));
-    transition: all var(--button-transition-speed) ease-out;
+    transition: transform var(--button-transition-speed) ease-out,
+                background-color var(--button-transition-speed) ease-out;
   }
 
   /* Scrollbar Styling */
@@ -44,6 +52,8 @@
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+    will-change: transform;
+    content-visibility: auto;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
