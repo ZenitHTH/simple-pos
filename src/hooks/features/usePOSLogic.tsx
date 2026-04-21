@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useTransition } from "react";
+import { useState, useEffect, useCallback, useMemo, useTransition, useOptimistic } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
 import { categoryApi, receiptApi, customerApi } from "@/lib";
@@ -40,6 +40,16 @@ export function usePOSLogic(initialProducts: Product[]) {
   const [cartItems, setCartItems] = useState<CartItem[]>(
     isMockupMode ? exampleCartItems : []
   );
+
+  // React 19 Optimistic UI for Cart
+  const [optimisticCart, addOptimisticCart] = useOptimistic(
+    cartItems,
+    (state, action: { type: "clear" }) => {
+      if (action.type === "clear") return [];
+      return state;
+    }
+  );
+
   const [categories, setCategories] = useState<string[]>(["All"]);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(
     isMockupMode && mockupView === "payment"
@@ -148,18 +158,21 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, [cartItems.length]);
 
   const cartTotal = useMemo(() => {
-    const totalSatang = cartItems.reduce((sum, item) => {
+    const totalSatang = optimisticCart.reduce((sum, item) => {
       const itemSatang = item.satang ?? Math.round(item.price * 100);
       return sum + itemSatang * item.quantity;
     }, 0);
     return (totalSatang * (1 + taxRate)) / 100;
-  }, [cartItems, taxRate]);
+  }, [optimisticCart, taxRate]);
 
   const handleConfirmPayment = useCallback(
     (cashReceived: number) => {
       if (!dbKey) return;
       
       startTransition(async () => {
+        // Optimistically clear the cart
+        addOptimisticCart({ type: "clear" });
+        
         try {
           // New consolidated API call in a single atomic operation
           const receiptList = await receiptApi.completeCheckout(dbKey, {
@@ -178,7 +191,7 @@ export function usePOSLogic(initialProducts: Product[]) {
           );
           logger.action("payment_confirmed", { receiptId: receiptList.receipt_id });
 
-          // Reset
+          // Reset real state
           setCartItems([]);
           setSelectedCustomerId(undefined);
           setIsPaymentModalOpen(false);
@@ -188,7 +201,7 @@ export function usePOSLogic(initialProducts: Product[]) {
         }
       });
     },
-    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast],
+    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast, addOptimisticCart],
   );
 
   const handleSetIsPaymentModalOpen = useCallback(
@@ -208,7 +221,7 @@ export function usePOSLogic(initialProducts: Product[]) {
     handleCategoryChange,
     searchQuery,
     handleSearchChange,
-    cartItems,
+    cartItems: optimisticCart, // Use optimistic cart in UI
     handleAddToCart,
     handleUpdateQuantity,
     handleRemove,
@@ -224,4 +237,3 @@ export function usePOSLogic(initialProducts: Product[]) {
     isPending,
   };
 }
-
