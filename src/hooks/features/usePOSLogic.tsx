@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
 import { categoryApi, receiptApi, customerApi } from "@/lib";
@@ -25,6 +25,9 @@ export function usePOSLogic(initialProducts: Product[]) {
   const searchParams = useSearchParams();
   const { currency } = useCurrency();
   const { taxRate } = useTax();
+
+  // React 19 Transition for payment confirmation
+  const [isPending, startTransition] = useTransition();
 
   // Determine which products to use
   const productsSource = isMockupMode ? exampleProducts : initialProducts;
@@ -153,40 +156,37 @@ export function usePOSLogic(initialProducts: Product[]) {
   }, [cartItems, taxRate]);
 
   const handleConfirmPayment = useCallback(
-    async (cashReceived: number) => {
+    (cashReceived: number) => {
       if (!dbKey) return;
-      try {
-        // 1. Create Invoice Header
-        const receiptList = await receiptApi.createInvoice(
-          dbKey,
-          selectedCustomerId,
-        );
+      
+      startTransition(async () => {
+        try {
+          // New consolidated API call in a single atomic operation
+          const receiptList = await receiptApi.completeCheckout(dbKey, {
+            customerId: selectedCustomerId,
+            items: cartItems.map((item) => ({
+              productId: item.id,
+              quantity: item.quantity,
+            })),
+          });
 
-        // 2. Add Items in bulk for atomicity
-        await receiptApi.addInvoiceItems(
-          dbKey,
-          receiptList.receipt_id,
-          cartItems.map((item) => ({
-            productId: item.id,
-            quantity: item.quantity,
-          })),
-        );
+          // Success Feedback
+          const change = cashReceived - cartTotal;
+          showToast(
+            `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
+            "success",
+          );
+          logger.action("payment_confirmed", { receiptId: receiptList.receipt_id });
 
-        // 3. Success Feedback
-        const change = cashReceived - cartTotal;
-        showToast(
-          `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
-          "success",
-        );
-
-        // 4. Reset
-        setCartItems([]);
-        setSelectedCustomerId(undefined);
-        setIsPaymentModalOpen(false);
-      } catch (error) {
-        logger.error("Payment failed:", error);
-        showToast("Payment failed. Please try again.", "error");
-      }
+          // Reset
+          setCartItems([]);
+          setSelectedCustomerId(undefined);
+          setIsPaymentModalOpen(false);
+        } catch (error) {
+          logger.error("Payment failed:", error);
+          showToast("Payment failed. Please try again.", "error");
+        }
+      });
     },
     [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast],
   );
@@ -221,5 +221,7 @@ export function usePOSLogic(initialProducts: Product[]) {
     customers,
     selectedCustomerId,
     setSelectedCustomerId,
+    isPending,
   };
 }
+
