@@ -122,6 +122,8 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
                         product={product as any} 
                         onAdd={() => {}} 
                         currency="฿" 
+                        titleFontSizeScale={settings.styling.grid.item_title_font_size || 100}
+                        priceFontSizeScale={settings.styling.grid.item_price_font_size || 100}
                     />
                 ))}
              </div>

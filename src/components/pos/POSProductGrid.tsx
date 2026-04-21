@@ -97,6 +97,8 @@ const POSProductGrid = memo(function POSProductGrid({
               product={product}
               onAdd={onAddToCart}
               currency={currency}
+              titleFontSizeScale={settings?.styling.grid.item_title_font_size ?? 100}
+              priceFontSizeScale={settings?.styling.grid.item_price_font_size ?? 100}
             />
           ))}
           <SelectableOverlay id="grid_scale" />
