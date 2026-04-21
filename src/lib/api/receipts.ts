@@ -95,3 +95,8 @@ export const receiptApi = {
     });
   },
 };
+
+// Expose globally for E2E testing
+if (typeof window !== 'undefined') {
+  (window as any).receiptApi = receiptApi;
+}

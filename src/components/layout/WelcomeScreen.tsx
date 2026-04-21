@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FaPlay } from "react-icons/fa";
+import { logger } from "@/lib/utils/logger";
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -14,6 +15,11 @@ interface WelcomeScreenProps {
  * @returns {JSX.Element | null} The rendered component.
  */
 export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
+  const handleStart = () => {
+    logger.action("welcome_start_clicked");
+    onStart();
+  };
+
   return (
     <div className="page-container">
       <div className="card-container">
@@ -30,7 +36,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           and simplicity.
         </p>
 
-        <button onClick={onStart} className="btn-hero">
+        <button onClick={handleStart} className="btn-hero">
           <div className="from-primary absolute inset-0 h-full w-full bg-gradient-to-r to-cyan-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           <span className="relative flex items-center justify-center gap-3">
             Start Setup

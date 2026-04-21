@@ -61,10 +61,12 @@ export function useProductManagement() {
         });
         result = updated;
         updateCache.products(products.map(p => p.product_id === result.product_id ? result : p));
+        logger.action("product_updated", { id: result.product_id });
       } else {
         const created = await productApi.create(dbKey, data);
         result = created;
         updateCache.products([...products, result]);
+        logger.action("product_created", { id: result.product_id });
       }
 
       if (afterSubmit) {

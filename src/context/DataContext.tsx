@@ -83,6 +83,21 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
   }, [dbKey, refreshAll]);
 
+  const updateCache = {
+    products: setProducts,
+    categories: setCategories,
+    customers: setCustomers,
+    materials: setMaterials,
+    stocks: setStocks,
+  };
+
+  // Expose for E2E testing
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).updateCache = updateCache;
+    }
+  }, [setProducts, setCategories, setCustomers, setMaterials, setStocks]);
+
   const value = {
     products,
     categories,
@@ -92,13 +107,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     loading,
     error,
     refreshAll,
-    updateCache: {
-      products: setProducts,
-      categories: setCategories,
-      customers: setCustomers,
-      materials: setMaterials,
-      stocks: setStocks,
-    }
+    updateCache
   };
 
   return <DataContext value={value}>{children}</DataContext>;

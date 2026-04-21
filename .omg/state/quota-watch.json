@@ -1,19 +1,19 @@
 {
-  "turn_count": 3,
-  "last_session_id": "dd2fbb2b-f27b-457c-a106-f6f5f3c2321b",
-  "last_event_key": "dd2fbb2b-f27b-457c-a106-f6f5f3c2321b:transcript:1a3311a1eccc6cb9b523ef75716e6030784cdd8d89bdfd938bc03ee540b77f8c",
-  "last_transcript_hash": "1a3311a1eccc6cb9b523ef75716e6030784cdd8d89bdfd938bc03ee540b77f8c",
+  "turn_count": 5,
+  "last_session_id": "7e304590-daeb-48b6-9be7-db623cd051aa",
+  "last_event_key": "7e304590-daeb-48b6-9be7-db623cd051aa:transcript:27b2142eeb6745935b60095f2eb16c3c12e52e6467aa3362d9549cc430abb139",
+  "last_transcript_hash": "27b2142eeb6745935b60095f2eb16c3c12e52e6467aa3362d9549cc430abb139",
   "last_model": "gemini-3-flash-preview",
   "last_provider": "gemini",
-  "last_turn_total_tokens": 159045,
-  "last_session_total_tokens": 16319996,
+  "last_turn_total_tokens": 100323,
+  "last_session_total_tokens": 993329,
   "session_totals_by_model": {
-    "gemini-3-flash-preview": 16319996
+    "gemini-3-flash-preview": 993329
   },
   "session_totals_by_provider": {
-    "gemini": 16319996
+    "gemini": 993329
   },
   "cwd_mode": "parent-leaf",
   "last_cwd_label": "git/vibe-pos",
-  "updated_at": "2026-04-20T10:46:16.959Z"
+  "updated_at": "2026-04-21T08:17:43.895Z"
 }

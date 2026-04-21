@@ -55,9 +55,11 @@ export function useCategoryManagement() {
         updateCache.categories(
           categories.map((c) => (c.id === updated.id ? updated : c)),
         );
+        logger.action("category_updated", { id: updated.id });
       } else {
         const created = await categoryApi.create(dbKey, name);
         updateCache.categories([...categories, created]);
+        logger.action("category_created", { id: created.id });
       }
       setIsModalOpen(false);
     } catch (err) {

@@ -8,6 +8,7 @@ import GoBackButton from "@/components/ui/GoBackButton";
 import MiniTuner from "@/components/design-mode/MiniTuner";
 
 import { useMotionValue, animate } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 /**
  * AppShell handles the core layout and scaling isolation.
@@ -22,6 +23,14 @@ import { useMotionValue, animate } from "framer-motion";
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { settings, undo, redo } = useSettings();
+  const router = useRouter();
+
+  // Expose router for E2E testing
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).router = router;
+    }
+  }, [router]);
 
   // Keyboard Shortcuts for Undo/Redo
   useEffect(() => {

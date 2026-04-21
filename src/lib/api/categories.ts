@@ -29,3 +29,8 @@ export const categoryApi = {
     await invoke("delete_category", { key, id });
   },
 };
+
+// Expose globally for E2E testing
+if (typeof window !== 'undefined') {
+  (window as any).categoryApi = categoryApi;
+}

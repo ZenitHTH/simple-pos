@@ -20,6 +20,11 @@ export const settingsApi = {
     return await invoke("get_storage_info");
   },
 
+  /** Retrieves the full database state (Backdoor for E2E Truth verification). */
+  getDbTruth: async (): Promise<any> => {
+    return await invoke("get_db_truth");
+  },
+
   /** Moves the image storage directory to a new location. */
   migrateImageDirectory: async (
     key: string,
@@ -29,3 +34,8 @@ export const settingsApi = {
   },
 };
 
+// Expose globally for E2E testing
+if (typeof window !== 'undefined') {
+  (window as any).settingsApi = settingsApi;
+  // We'll also allow components to attach the router here
+}

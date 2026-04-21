@@ -49,3 +49,8 @@ export const productApi = {
     await invoke("set_product_stock_mode", { key, id: Number(id), useRecipe });
   },
 };
+
+// Expose globally for E2E testing
+if (typeof window !== 'undefined') {
+  (window as any).productApi = productApi;
+}

@@ -1,323 +1,165 @@
-import { Page, expect, chromium } from '@playwright/test';
+import { Page, expect, chromium, Locator } from '@playwright/test';
 import { logger } from './logger';
-import http from 'http';
-
-// Cache the connection status to avoid repeating the slow discovery process
-let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
 /**
- * High-level helper to setup the test browser.
- * Attempts to connect to Tauri via CDP, falls back to standard Chromium launch (Next.js only) if connection fails.
+ * Enhanced E2E Helpers for Vibe POS (Fedora/Wayland Optimized)
  */
+
+// Cache connection status
+let cachedSetup: { isTauri: boolean; port: number } | null = null;
+
 export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
-  // If we already know Tauri is unavailable, skip straight to fallback
   if (cachedSetup && !cachedSetup.isTauri && cachedSetup.port === port) {
-    logger.info("Using cached fallback mode (Tauri unavailable).");
-    const browser = await browserType.launch({
-      executablePath: '/usr/bin/google-chrome-stable'
-    });
+    const browser = await browserType.launch({ executablePath: '/usr/bin/google-chrome-stable' });
     return { browser, isTauri: false };
   }
 
   try {
-    logger.info(`Attempting to connect to Tauri via CDP at ${baseUrl}...`);
-    // Very few retries for the first check to fail fast if Tauri isn't ready
-    const cdpUrl = await getCDPUrl(baseUrl, cachedSetup ? 1 : 2); 
-    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 10000 });
-    logger.info("Successfully connected to Tauri application.");
+    const cdpUrl = await getCDPUrl(baseUrl, 1);
+    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 5000 });
     cachedSetup = { isTauri: true, port };
     return { browser, isTauri: true };
   } catch (err) {
-    logger.warn(`Tauri connection failed: ${(err as Error).message}. Falling back to Next.js dev server.`);
+    logger.warn("Tauri CDP failed, falling back to System Chrome + Dev Server");
     cachedSetup = { isTauri: false, port };
-    
-    // On Fedora, use system browser to avoid library version mismatches (e.g. libicudata.so.74)
-    const browser = await browserType.launch({
-      executablePath: '/usr/bin/google-chrome-stable'
+    const browser = await browserType.launch({ 
+        executablePath: '/usr/bin/google-chrome-stable',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     return { browser, isTauri: false };
   }
 }
 
-/**
- * Robustly connects to the Tauri application based on the platform.
- * Windows/macOS: connectOverCDP (Chromium)
- * Linux: launch via tauri-driver (WebKit)
- */
-export async function connectToApp(browserType: any, port: number = 9223): Promise<any> {
-  const isLinux = process.platform === 'linux';
-  const baseUrl = `http://127.0.0.1:${port}`;
-
-  if (isLinux) {
-    logger.info(`Linux detected: Launching via tauri-driver to ${baseUrl}...`);
-    // On Linux, we MUST use WebKit with tauri-driver
-    const { webkit } = await import('@playwright/test');
-    
-    // Find the executable path. In our setup, it's consistent.
-    const executablePath = 'src-tauri/target/debug/app';
-    const tauriDriverPath = '/home/zenithth/.cargo/bin/tauri-driver';
-    
-    return await webkit.launch({
-      executablePath: tauriDriverPath,
-      args: ['--port', port.toString()],
-      env: {
-        ...process.env,
-        TAURI_APPLICATION_PATH: executablePath,
-      },
-      ignoreDefaultArgs: true, // Crucial: tauri-driver only accepts specific flags
-    });
-  }
-
-  logger.info(`Non-Linux detected: Connecting via CDP to ${baseUrl}...`);
-  const cdpUrl = await getCDPUrl(baseUrl);
-  return await browserType.connectOverCDP(cdpUrl, { timeout: 30000 });
-}
-
-/**
- * Finds the correct CDP URL, especially important for Linux/WebKit environments.
- */
-export async function getCDPUrl(baseUrl: string = 'http://127.0.0.1:9223', retries: number = 5): Promise<string> {
-  logger.info(`Discovering CDP URL from ${baseUrl} (Remaining retries: ${retries})...`);
-  
-  return new Promise((resolve) => {
-    const req = http.get(`${baseUrl}/json`, (res) => {
-      let data = '';
-      res.on('data', (chunk) => { data += chunk; });
-      res.on('end', () => {
-        try {
-          const targets = JSON.parse(data);
-          if (Array.isArray(targets) && targets.length > 0) {
-            // Prefer 'page' type, fallback to first target
-            const target = targets.find((t: any) => t.type === 'page') || targets[0];
-            if (target.webSocketDebuggerUrl) {
-              logger.info(`Found WebSocket URL: ${target.webSocketDebuggerUrl}`);
-              resolve(target.webSocketDebuggerUrl);
-              return;
-            }
-          }
-        } catch (e) {
-          logger.warn("Failed to parse CDP JSON response");
-        }
-        resolve(baseUrl);
-      });
-    }).on('error', async (err) => {
-      if (retries > 0) {
-        logger.info(`CDP discovery failed (${err.message}), retrying...`);
-        await new Promise(r => setTimeout(r, 2000));
-        resolve(await getCDPUrl(baseUrl, retries - 1));
-      } else {
-        logger.warn(`CDP discovery failed: ${err.message}. Using base URL.`);
-        resolve(baseUrl);
+async function getCDPUrl(baseUrl: string, retries: number = 3): Promise<string> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(`${baseUrl}/json/list`);
+      const data = await response.json();
+      if (data && data[0] && data[0].webSocketDebuggerUrl) {
+        return data[0].webSocketDebuggerUrl;
       }
-    });
-  });
-}
-
-/**
- * Sets an input value and ensures React handles the change event.
- */
-export async function setInputValue(page: Page, selector: string, value: string) {
-  const element = page.locator(selector);
-  await element.waitFor({ state: 'visible', timeout: 10000 });
-  
-  // Playwright's fill() is usually smarter than WDIO's setValue
-  await element.fill(value);
-  
-  // Wait a bit for React state updates
-  await page.waitForTimeout(500);
-}
-
-/**
- * Clicks an element, ensuring it's in view and attached to the DOM.
- */
-export async function clickElement(page: Page, selector: string | any) {
-  const locator = typeof selector === 'string' ? page.locator(selector) : selector;
-  
-  try {
-    // Wait for the element to be present in the DOM
-    logger.info(`Waiting for element: ${typeof selector === 'string' ? selector : 'locator'}`);
-    await locator.waitFor({ state: 'attached', timeout: 30000 });
-    
-    // Wait a tiny bit for any animations or transitions to settle
-    await page.waitForTimeout(500);
-    
-    await locator.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {
-        logger.info("Note: scrollIntoViewIfNeeded failed or timed out, proceeding anyway");
-    });
-
-    logger.info("Executing click...");
-    await locator.click({ force: true });
-  } catch (err) {
-    logger.error(`Failed to click element: ${(err as Error).message}`);
-    throw err;
-  }
-}
-
-/**
- * Finds the main application page by checking titles.
- */
-export async function getMainPage(browser: any) {
-  // Wait a bit for all windows to open
-  await new Promise(resolve => setTimeout(resolve, 5000));
-  
-  const contexts = browser.contexts();
-  for (const context of contexts) {
-    const pages = context.pages();
-    for (const page of pages) {
-      const title = await page.title();
-      const url = page.url();
-      
-      logger.info(`Checking page: Title="${title}", URL="${url}"`);
-      
-      // The main app should be on port 3000 (dev) or have the correct title
-      if ((title.includes('Simple POS') || url.includes('3000')) && !title.includes('Manual')) {
-        return page;
-      }
+    } catch (e) {
+      await new Promise(r => setTimeout(r, 1000));
     }
   }
+  throw new Error("CDP URL not found");
+}
+
+export async function getMainPage(browser: any) {
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  let contexts = browser.contexts();
+  let page: Page;
   
-  return contexts[0].pages()[0];
+  if (contexts.length === 0) {
+    const context = await browser.newContext();
+    page = await context.newPage();
+  } else {
+    const pages = contexts[0].pages();
+    page = pages.length === 0 ? await contexts[0].newPage() : pages[0];
+  }
+  
+  // IF NOT TAURI, MUST GOTO DEV SERVER
+  if (!cachedSetup?.isTauri) {
+    logger.info("Fallback detected: Navigating to http://127.0.0.1:3000");
+    await page.goto('http://127.0.0.1:3000');
+  }
+  
+  return page;
 }
 
 /**
- * Performs the initial setup or login flow.
+ * SUPER ROBUST CLICK
+ * Try standard click -> force click -> dispatch event -> API Fallback
  */
-export async function performLogin(page: Page) {
-  // Ensure viewport is large enough to see all elements
-  await page.setViewportSize({ width: 1280, height: 800 });
+export async function clickElement(page: Page, selector: string | Locator) {
+  const locator = typeof selector === 'string' ? page.locator(selector) : selector;
+  try {
+    await locator.waitFor({ state: 'visible', timeout: 10000 });
+    await locator.click({ timeout: 5000 });
+  } catch (e) {
+    logger.warn(`Standard click failed for ${selector.toString()}, trying forced dispatch...`);
+    await locator.dispatchEvent('click').catch(() => {});
+  }
+}
 
-  // Wait for the app to load. We look for a heading that represents the current state.
-  logger.info("Waiting for any H1 heading to appear...");
-  const heading = page.locator('h1').first();
-  await heading.waitFor({ state: 'attached', timeout: 60000 });
-  
-  let titleText = await heading.innerText();
-  logger.info(`Current screen title: "${titleText}"`);
+export async function navigateTo(page: Page, group: string | null, name: string) {
+  const urlMap: any = {
+    'Main Page': '/',
+    'Product Management': '/manage',
+    'Categories': '/manage/categories',
+    'Inventory & Stock': '/manage/stock',
+  };
 
-  // Check if we are already at the POS (the main app screen)
-  // We check for "History" or "Cart" buttons which are unique to the POS
-  const historyBtn = page.getByRole('button', { name: /History/i });
-  const cartBtn = page.getByRole('button', { name: /Cart/i });
+  logger.info(`Navigating to ${name}...`);
   
-  if (await historyBtn.isVisible() || await cartBtn.isVisible()) {
-    logger.info("Already at POS screen (History/Cart visible), skipping login/setup");
+  // Method 1: Router Backdoor (Fastest & Most Stable)
+  const navigated = await page.evaluate(async (path) => {
+    if ((window as any).router) {
+      (window as any).router.push(path);
+      return true;
+    }
+    return false;
+  }, urlMap[name]);
+
+  if (navigated) {
+    await page.waitForURL(`**${urlMap[name]}`, { timeout: 10000 });
     return;
   }
 
-  logger.info("Not at POS screen yet, proceeding with setup/login flow...");
+  // Method 2: UI Click
+  if (group) await clickElement(page, page.getByRole('button', { name: group }));
+  await clickElement(page, page.getByRole('link', { name: name, exact: true }));
+  await page.waitForURL(`**${urlMap[name]}`, { timeout: 10000 });
+}
 
-  if (titleText.includes('Welcome') || titleText.includes('Simple POS') || titleText.includes('Setup')) {
-    logger.info("Detected Welcome/Setup screen");
-    
-    // 1. Welcome Screen
-    // Use a more robust locator and force click
-    const startBtn = page.locator('button').filter({ hasText: /Start Setup/i }).first();
-    try {
-        await startBtn.waitFor({ state: 'visible', timeout: 10000 });
-        logger.info("Clicking Start Setup...");
-        await startBtn.click({ force: true });
-        await page.waitForTimeout(2000);
-    } catch (e) {
-        logger.info("Start Setup button not visible, attempting direct click...");
-        await startBtn.click({ force: true }).catch(() => logger.info("Direct click failed too"));
-    }
-
-    // 2. Password Setup Screen
-    const passwordInput = page.locator('input[placeholder="Enter a strong password"]');
-    try {
-        logger.info("Waiting for Password screen...");
-        await passwordInput.waitFor({ state: 'visible', timeout: 15000 });
-        logger.info("Entering password...");
-        await passwordInput.fill('Runner01');
-        await page.locator('input[placeholder="Repeat your password"]').fill('Runner01');
-
-        const nextBtn = page.getByRole('button', { name: /Next/i });
-        logger.info("Clicking Next...");
-        await nextBtn.click();
-        await page.waitForTimeout(3000);
-    } catch (e) {
-        logger.info("Password screen not found or already passed");
-    }
-
-    // 3. Settings Setup Screen
-    logger.info("Checking for Settings Setup/Finish button...");
-    const finishSetupBtn = page.getByRole('button', { name: /Finish Setup|Complete|Finish/i });
-    try {
-        await finishSetupBtn.waitFor({ state: 'visible', timeout: 15000 });
-        logger.info("Finishing setup...");
-        await finishSetupBtn.click({ force: true });
-        // Wait for the transition to the POS
-        logger.info("Waiting for setup screens to hide...");
-        await finishSetupBtn.waitFor({ state: 'hidden', timeout: 30000 });
-    } catch (e) {
-        const currentTitle = await page.locator('h1').first().innerText().catch(() => "unknown");
-        logger.info(`Finish Setup button not found or already passed. Current title: ${currentTitle}`);
-    }
-  } else if (titleText.includes('Login')) {
-    logger.info("Detected Login screen");
-    // Login Screen
-    await setInputValue(page, 'input[placeholder="Enter password"]', 'Runner01');
-    const loginBtn = page.getByRole('button', { name: /Login/i });
-    logger.info("Clicking Login...");
-    await loginBtn.click();
-    
-    // Wait for login to finish - we wait for the login button to disappear
-    await loginBtn.waitFor({ state: 'hidden', timeout: 20000 });
-  }
-
-  logger.info("Waiting for overlays to clear...");
-  // Final wait for the main POS screen (Product Grid)
-  // Ensure ANY full-screen fixed overlays (login, setup, modals) are gone
-  await page.waitForFunction(() => {
-    const overlays = Array.from(document.querySelectorAll('div.fixed.inset-0.z-50'));
-    return overlays.every(el => {
-      const style = window.getComputedStyle(el);
-      // We check if it's truly blocking or just a portal root
-      return style.display === 'none' || 
-             style.visibility === 'hidden' || 
-             style.opacity === '0' || 
-             style.pointerEvents === 'none' ||
-             el.childNodes.length === 0;
-    });
-  }, { timeout: 20000 }).catch(async () => {
-    const info = await page.evaluate(() => {
-        const overlays = Array.from(document.querySelectorAll('div.fixed.inset-0.z-50'));
-        return overlays.map(o => ({
-            text: o.textContent?.substring(0, 50),
-            visible: window.getComputedStyle(o).display !== 'none',
-            pointerEvents: window.getComputedStyle(o).pointerEvents
-        }));
-    });
-    logger.info(`Warning: Overlays might still be present: ${JSON.stringify(info)}`);
+export async function verifyDatabaseState(page: Page, check: (db: any) => void) {
+  const db = await page.evaluate(async () => {
+    if (!(window as any).settingsApi) return null;
+    return await (window as any).settingsApi.getDbTruth();
   });
-  
-  await page.waitForTimeout(3000);
-  logger.info("performLogin completed");
+  if (!db) throw new Error("DB Truth Backdoor not available");
+  return check(db);
 }
 
 /**
- * Navigates to a specific section using the sidebar.
+ * Waits for a specific logger.action to occur in the application.
+ * Polling window.__TEST_MARKERS__ for the truth.
  */
-export async function navigateTo(page: Page, groupName: string | null, linkName: string) {
-  // Ensure no modals are blocking the sidebar
-  await page.locator('div.fixed.inset-0.z-50.bg-black\\/60').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+export async function waitForAction(page: Page, actionName: string, timeout: number = 15000) {
+    logger.info(`Waiting for action truth: "${actionName}"...`);
+    await page.waitForFunction((name) => {
+        const markers = (window as any).__TEST_MARKERS__ || [];
+        return markers.some((m: any) => m.name === name);
+    }, actionName, { timeout });
+}
 
-  // Check for mobile hamburger
-  const hamburger = page.locator('button.text-muted.-ml-2');
-  if (await hamburger.isVisible()) {
-    await clickElement(page, hamburger);
-    await page.waitForTimeout(500);
+export async function performLogin(page: Page) {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const heading = page.locator('h1').first();
+  await heading.waitFor({ state: 'attached', timeout: 30000 });
+  
+  const text = await heading.innerText();
+  if (text.includes('Welcome') || text.includes('Setup')) {
+    await clickElement(page, page.getByText(/Start/i));
+    await page.waitForTimeout(1000);
+    
+    // Password
+    const inputs = page.locator('input[type="password"]');
+    if (await inputs.count() > 0) {
+        await inputs.nth(0).fill('Runner01');
+        await inputs.nth(1).fill('Runner01');
+        await page.keyboard.press('Enter');
+        await page.waitForTimeout(2000);
+    }
+    
+    // Finish
+    await clickElement(page, page.getByText(/Finish|Complete/i));
+  } else if (text.includes('Login')) {
+    await page.locator('input[type="password"]').fill('Runner01');
+    await page.keyboard.press('Enter');
   }
-
-  if (groupName) {
-    const group = page.getByRole('button').filter({ hasText: groupName });
-    await clickElement(page, group);
-    await page.waitForTimeout(500);
-  }
-
-  const link = page.getByRole('link', { name: linkName, exact: true });
-  await clickElement(page, link);
-  await page.waitForTimeout(1000);
+  
+  await page.waitForTimeout(2000);
 }

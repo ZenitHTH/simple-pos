@@ -69,6 +69,34 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 }
 
 export const logger = {
+  /**
+   * Logs a high-level UI action or lifecycle event.
+   * Essential for E2E tests to synchronize without arbitrary timeouts.
+   */
+  action: (name: string, data?: any) => {
+    const sMsg = `[ACTION] ${name}`;
+    const sData = data ? sanitize(data) : undefined;
+
+    // Standard logging
+    logger.info(sMsg, sData);
+
+    // E2E Truth Tracking
+    if (typeof window !== "undefined") {
+      const win = window as any;
+      if (!win.__TEST_MARKERS__) win.__TEST_MARKERS__ = [];
+      win.__TEST_MARKERS__.push({
+        name,
+        data: sData,
+        timestamp: Date.now(),
+      });
+
+      // Dispatch event for real-time listeners
+      win.dispatchEvent(
+        new CustomEvent("app:action", { detail: { name, data: sData } })
+      );
+    }
+  },
+
   info: (message: string, ...args: any[]) => {
     const sMsg = sanitize(message);
     const sArgs = args.map((a) => sanitize(a));

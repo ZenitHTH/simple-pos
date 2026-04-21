@@ -147,8 +147,10 @@ const env = {
   RUST_LOG: 'debug',
   WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${DEBUG_PORT}`,
   WEBKIT_INSPECTOR_HTTP_SERVER: `127.0.0.1:${DEBUG_PORT}`,
+  // Fedora 43 / WebKitGTK / Wayland fixes
+  WEBKIT_DISABLE_DMABUF_RENDERER: '1',
+  GDK_BACKEND: 'x11', // Often more stable for automation than pure wayland
 };
-
 tauriProcess = spawn(executablePath, args, {
   env,
   stdio: ['ignore', logFile, logFile],
