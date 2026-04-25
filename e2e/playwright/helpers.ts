@@ -16,7 +16,7 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
   if (cachedSetup && !cachedSetup.isTauri && cachedSetup.port === port) {
-    const browser = await browserType.launch({ executablePath: '/usr/bin/google-chrome-stable' });
+    const browser = await browserType.launch({ executablePath: '/usr/bin/brave-browser' });
     return { browser, isTauri: false };
   }
 
@@ -33,7 +33,7 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
     
     cachedSetup = { isTauri: false, port };
     const browser = await browserType.launch({ 
-        executablePath: '/usr/bin/google-chrome-stable',
+        executablePath: '/usr/bin/brave-browser',
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     return { browser, isTauri: false };
