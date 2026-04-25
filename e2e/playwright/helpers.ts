@@ -1,7 +1,6 @@
 import { Page, expect, chromium, Locator } from '@playwright/test';
 import { logger } from './logger';
 
-// Cache connection status
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
 export async function setupTestBrowser(browserType: any, port: number = 9223) {
@@ -24,8 +23,11 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
     console.log("Falling back to Next.js dev server (mock mode)...");
     
     cachedSetup = { isTauri: false, port };
-    // Just return the browserType (which is the chromium object)
-    return { browser: browserType, isTauri: false };
+    const browser = await browserType.launch({ 
+        executablePath: '/usr/bin/brave-browser',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    });
+    return { browser, isTauri: false };
   }
 }
 
@@ -48,22 +50,17 @@ export async function getMainPage(browser: any) {
   await new Promise(resolve => setTimeout(resolve, 2000));
   let page: Page;
   
-  // If we are in fallback, the browser might be the chromium object, not a browser instance
-  if (browser.contexts) {
-      let contexts = browser.contexts();
-      if (contexts.length === 0) {
-        const context = await browser.newContext();
-        page = await context.newPage();
-      } else {
-        const pages = contexts[0].pages();
-        page = pages.length === 0 ? await contexts[0].newPage() : pages[0];
-      }
+  // Ensure we get a context and then a page from it
+  const contexts = browser.contexts();
+  let context;
+  if (contexts.length === 0) {
+    context = await browser.newContext();
   } else {
-      // Fallback: browser is likely the chromium object
-      const b = await browser.launch({ executablePath: '/usr/bin/brave-browser' });
-      const context = await b.newContext();
-      page = await context.newPage();
+    context = contexts[0];
   }
+  
+  const pages = context.pages();
+  page = pages.length === 0 ? await context.newPage() : pages[0];
   
   // IF NOT TAURI, MUST GOTO DEV SERVER
   if (!cachedSetup?.isTauri) {
