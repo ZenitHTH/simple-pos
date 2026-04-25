@@ -1,17 +1,9 @@
 import { Page, expect, chromium, Locator } from '@playwright/test';
 import { logger } from './logger';
 
-/**
- * Enhanced E2E Helpers for Vibe POS (Fedora/Wayland Optimized)
- * Merged Upstream CDP logic with Local Robustness
- */
-
 // Cache connection status
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
-/**
- * Sets up the test browser by connecting to Tauri via CDP or falling back to Next.js dev server.
- */
 export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
@@ -32,11 +24,8 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
     console.log("Falling back to Next.js dev server (mock mode)...");
     
     cachedSetup = { isTauri: false, port };
-    const browser = await browserType.launch({ 
-        executablePath: '/usr/bin/brave-browser',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-    });
-    return { browser, isTauri: false };
+    // Just return the browserType (which is the chromium object)
+    return { browser: browserType, isTauri: false };
   }
 }
 
@@ -57,15 +46,23 @@ async function getCDPUrl(baseUrl: string, retries: number = 3): Promise<string> 
 
 export async function getMainPage(browser: any) {
   await new Promise(resolve => setTimeout(resolve, 2000));
-  let contexts = browser.contexts();
   let page: Page;
   
-  if (contexts.length === 0) {
-    const context = await browser.newContext();
-    page = await context.newPage();
+  // If we are in fallback, the browser might be the chromium object, not a browser instance
+  if (browser.contexts) {
+      let contexts = browser.contexts();
+      if (contexts.length === 0) {
+        const context = await browser.newContext();
+        page = await context.newPage();
+      } else {
+        const pages = contexts[0].pages();
+        page = pages.length === 0 ? await contexts[0].newPage() : pages[0];
+      }
   } else {
-    const pages = contexts[0].pages();
-    page = pages.length === 0 ? await contexts[0].newPage() : pages[0];
+      // Fallback: browser is likely the chromium object
+      const b = await browser.launch({ executablePath: '/usr/bin/brave-browser' });
+      const context = await b.newContext();
+      page = await context.newPage();
   }
   
   // IF NOT TAURI, MUST GOTO DEV SERVER
@@ -77,10 +74,6 @@ export async function getMainPage(browser: any) {
   return page;
 }
 
-/**
- * SUPER ROBUST CLICK
- * Try standard click -> force click -> dispatch event -> API Fallback
- */
 export async function clickElement(page: Page, selector: string | Locator) {
   const locator = typeof selector === 'string' ? page.locator(selector) : selector;
   try {
@@ -136,10 +129,6 @@ export async function verifyDatabaseState(page: Page, check: (db: any) => void) 
   return check(db);
 }
 
-/**
- * Waits for a specific logger.action to occur in the application.
- * Polling window.__TEST_MARKERS__ for the truth.
- */
 export async function waitForAction(page: Page, actionName: string, timeout: number = 15000) {
     logger.info(`Waiting for action truth: "${actionName}"...`);
     await page.waitForFunction((name) => {
