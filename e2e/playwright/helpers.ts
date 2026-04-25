@@ -3,25 +3,25 @@ import { logger } from './logger';
 
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
-export async function setupTestBrowser(browser: any, port: number = 9223) {
+export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
-  if (cachedSetup && !cachedSetup.isTauri && cachedSetup.port === port) {
-    return { browser, isTauri: false };
-  }
-
-  console.log("Connecting to Tauri via CDP...");
+  // Try connecting to CDP first
   try {
     const cdpUrl = await getCDPUrl(baseUrl, 1);
-    const connection = await browser.connectOverCDP(cdpUrl, { timeout: 15000 });
+    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 15000 });
     console.log("Connected to Tauri via CDP successfully.");
     cachedSetup = { isTauri: true, port };
-    return { browser: connection, isTauri: true };
+    return { browser, isTauri: true };
   } catch (err) {
     logger.warn(`Failed to connect to Tauri via CDP: ${(err as Error).message}`);
-    console.log("Falling back to Next.js dev server (mock mode)...");
+    console.log("Falling back to standard browser launch...");
     
     cachedSetup = { isTauri: false, port };
+    const browser = await browserType.launch({ 
+        executablePath: '/usr/bin/brave-browser',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+    });
     return { browser, isTauri: false };
   }
 }
@@ -43,9 +43,7 @@ async function getCDPUrl(baseUrl: string, retries: number = 3): Promise<string> 
 
 export async function getMainPage(browser: any) {
   await new Promise(resolve => setTimeout(resolve, 2000));
-  let page: Page;
   
-  // Ensure we get a context and then a page from it
   const contexts = browser.contexts();
   let context;
   if (contexts.length === 0) {
@@ -55,7 +53,7 @@ export async function getMainPage(browser: any) {
   }
   
   const pages = context.pages();
-  page = pages.length === 0 ? await context.newPage() : pages[0];
+  let page = pages.length === 0 ? await context.newPage() : pages[0];
   
   // IF NOT TAURI, MUST GOTO DEV SERVER
   if (!cachedSetup?.isTauri) {
