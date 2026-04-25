@@ -3,30 +3,25 @@ import { logger } from './logger';
 
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
-export async function setupTestBrowser(browserType: any, port: number = 9223) {
+export async function setupTestBrowser(browser: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
   if (cachedSetup && !cachedSetup.isTauri && cachedSetup.port === port) {
-    const browser = await browserType.launch({ executablePath: '/usr/bin/brave-browser' });
     return { browser, isTauri: false };
   }
 
   console.log("Connecting to Tauri via CDP...");
   try {
     const cdpUrl = await getCDPUrl(baseUrl, 1);
-    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 15000 });
+    const connection = await browser.connectOverCDP(cdpUrl, { timeout: 15000 });
     console.log("Connected to Tauri via CDP successfully.");
     cachedSetup = { isTauri: true, port };
-    return { browser, isTauri: true };
+    return { browser: connection, isTauri: true };
   } catch (err) {
     logger.warn(`Failed to connect to Tauri via CDP: ${(err as Error).message}`);
     console.log("Falling back to Next.js dev server (mock mode)...");
     
     cachedSetup = { isTauri: false, port };
-    const browser = await browserType.launch({ 
-        executablePath: '/usr/bin/brave-browser',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-    });
     return { browser, isTauri: false };
   }
 }
