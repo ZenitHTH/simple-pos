@@ -1,4 +1,11 @@
 {
+<<<<<<< Updated upstream
   "status": "interrupted",
   "failedTests": []
+=======
+  "status": "failed",
+  "failedTests": [
+    "33f6e1fcc3de8e90e083-3f36f5196b4b611c38a3"
+  ]
+>>>>>>> Stashed changes
 }

@@ -37,3 +37,25 @@
     - [x] Add a toggle to show/hide lines for a cleaner look when not needed.
 - [x] **Inline Stock Updates**: Perform stress tests on rapid quantity adjustments to ensure database integrity and UI sync.
 - [x] **Final Integration**: Merge `feature/recipe-stock-enhancements` branch into `dev` and remove the worktree.
+
+## 🧪 E2E Testing & Image Linking Fixes (Session 2026-04-18)
+
+### ✅ Completed
+- [x] **Image Linking Exclusivity**: Enforced 1:1 image-product relationship in backend and added "Move Image" UI flow.
+- [x] **E2E Infrastructure**:
+    - Added `setupTestBrowser` helper with CDP-to-Mock fallback.
+    - Added `data-testid` support to `Input` and `Select` components.
+    - Added diagnostic logging and breakout loops to `helpers.ts`.
+- [x] **Selector Hardening**: Refactored `inventory-recipes.spec.ts` to use `getByTestId` and `getByRole('combobox')`.
+
+### ⏳ Pending / Next Steps
+- [ ] **Fix TEST-A1/TEST-A2 Failure**: The final `expect(page.getByText(/Payment Successful/i)).toBeVisible()` is failing in mock mode.
+    - *Investigation*: Check if the toast message or the modal close animation is interfering with the visibility check.
+    - *Potential Fix*: Use `page.waitForSelector` with a longer timeout or check for database stock updates directly in the mock state.
+- [ ] **Refactor Remaining Specs**: Update the following files to use the new `setupTestBrowser` and `data-testid` pattern:
+    - `e2e/playwright/advanced-management.spec.ts`
+    - `e2e/playwright/design-mode.spec.ts`
+    - `e2e/playwright/reporting-history.spec.ts`
+    - `e2e/playwright/vibe-pos.spec.ts`
+- [ ] **Clean up Visual Companion**: Close the brainstorm server and remove temporary mockup files.
+

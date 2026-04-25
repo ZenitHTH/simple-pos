@@ -19,6 +19,7 @@ export function MaterialSourceItem({
     <div
       draggable
       onDragStart={(e) => onDragStart(e, material)}
+      data-testid={`material-source-${material.id}`}
       className="bg-muted/30 border-border hover:border-primary/50 hover:bg-muted/50 group flex cursor-grab items-center justify-between rounded-xl border p-4 transition-all active:cursor-grabbing"
     >
       <div className="flex items-center gap-3">
@@ -34,6 +35,7 @@ export function MaterialSourceItem({
       </div>
       <button
         onClick={() => onAdd(material)}
+        data-testid={`add-material-btn-${material.id}`}
         className="bg-primary/5 text-primary hover:bg-primary/20 rounded-xl p-3 transition-colors"
       >
         <FaPlus className="text-sm" />
@@ -54,6 +56,7 @@ export function ProductSelectionItem({
   return (
     <button
       onClick={() => onSelect(product)}
+      data-testid={`product-select-${product.product_id}`}
       className="bg-muted/30 border-border hover:border-primary/50 hover:bg-muted/50 flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all"
     >
       <div className="bg-secondary/10 text-secondary-foreground rounded-lg p-3 text-lg">
@@ -80,6 +83,8 @@ export function RecipeTargetItem({
   onUpdate,
   onRemove,
 }: RecipeTargetItemProps) {
+  const volumeInputId = `recipe-item-volume-${item.material_id}`;
+
   return (
     <div className="bg-muted/30 border-border animate-in zoom-in-95 grid grid-cols-[1fr_120px_160px_44px] items-center gap-x-4 rounded-2xl border px-5 py-4 shadow-sm">
       {/* Name */}
@@ -92,10 +97,14 @@ export function RecipeTargetItem({
 
       {/* Volume */}
       <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+        <label 
+          htmlFor={volumeInputId}
+          className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase"
+        >
           Volume
         </label>
         <Input
+          id={volumeInputId}
           type="number"
           min="0.0000"
           step="0.25"

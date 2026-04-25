@@ -95,6 +95,8 @@ export default function MaterialModal({
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
+          id="material-name"
+          data-testid="material-name-input"
           label="Material Name"
           error={errors.name?.message}
           {...register("name", {
@@ -106,6 +108,8 @@ export default function MaterialModal({
 
         <div className="grid grid-cols-2 gap-4">
           <Input
+            id="material-volume"
+            data-testid="material-volume-input"
             label="Volume"
             type="number"
             min="0.0001"
@@ -117,6 +121,8 @@ export default function MaterialModal({
             })}
           />
           <Input
+            id="material-quantity"
+            data-testid="material-quantity-input"
             label="Quantity"
             type="number"
             min="0"
@@ -135,6 +141,8 @@ export default function MaterialModal({
             rules={{ required: true }}
             render={({ field }) => (
               <Select
+                id="material-type"
+                data-testid="material-type-select"
                 label="Type / Unit"
                 value={field.value}
                 onChange={field.onChange}

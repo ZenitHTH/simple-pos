@@ -7,6 +7,8 @@ import { SelectOption } from "@/lib/types/common";
  * Props for the Select component.
  */
 interface SelectProps {
+  /** Optional ID for the select element. */
+  id?: string;
   /** Optional label to display above the select box. */
   label?: string;
   /** The current selected value. */
@@ -19,6 +21,8 @@ interface SelectProps {
   placeholder?: string;
   /** Optional additional CSS classes for the container. */
   className?: string;
+  /** Optional test ID for E2E testing. */
+  "data-testid"?: string;
 }
 
 /**
@@ -29,12 +33,14 @@ interface SelectProps {
  * @returns A custom dropdown select element.
  */
 export function Select({
+  id,
   label,
   value,
   onChange,
   options,
   placeholder = "Select...",
   className = "",
+  "data-testid": testId,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,15 +65,27 @@ export function Select({
     setIsOpen(false);
   };
 
+  const labelId = id ? `${id}-label` : undefined;
+
   return (
     <div className={cn("w-full", className)} ref={containerRef}>
       {label && (
-        <label className="text-foreground mb-1.5 block text-sm font-semibold">
+        <label 
+          id={labelId}
+          htmlFor={id}
+          className="text-foreground mb-1.5 block text-sm font-semibold"
+        >
           {label}
         </label>
       )}
       <div className="relative">
         <div
+          id={id}
+          data-testid={testId}
+          role="combobox"
+          aria-labelledby={labelId}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
           className={cn(
             "border-border bg-card text-foreground flex h-11 w-full cursor-pointer items-center justify-between rounded-xl border px-3 py-2 text-sm transition-all duration-150",
             isOpen

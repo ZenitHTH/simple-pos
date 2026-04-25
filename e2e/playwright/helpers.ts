@@ -3,11 +3,15 @@ import { logger } from './logger';
 
 /**
  * Enhanced E2E Helpers for Vibe POS (Fedora/Wayland Optimized)
+ * Merged Upstream CDP logic with Local Robustness
  */
 
 // Cache connection status
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
+/**
+ * Sets up the test browser by connecting to Tauri via CDP or falling back to Next.js dev server.
+ */
 export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
@@ -16,13 +20,17 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
     return { browser, isTauri: false };
   }
 
+  console.log("Connecting to Tauri via CDP...");
   try {
     const cdpUrl = await getCDPUrl(baseUrl, 1);
-    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 5000 });
+    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 15000 });
+    console.log("Connected to Tauri via CDP successfully.");
     cachedSetup = { isTauri: true, port };
     return { browser, isTauri: true };
   } catch (err) {
-    logger.warn("Tauri CDP failed, falling back to System Chrome + Dev Server");
+    logger.warn(`Failed to connect to Tauri via CDP: ${(err as Error).message}`);
+    console.log("Falling back to Next.js dev server (mock mode)...");
+    
     cachedSetup = { isTauri: false, port };
     const browser = await browserType.launch({ 
         executablePath: '/usr/bin/google-chrome-stable',
@@ -76,11 +84,16 @@ export async function getMainPage(browser: any) {
 export async function clickElement(page: Page, selector: string | Locator) {
   const locator = typeof selector === 'string' ? page.locator(selector) : selector;
   try {
-    await locator.waitFor({ state: 'visible', timeout: 10000 });
+    await locator.waitFor({ state: 'attached', timeout: 10000 });
+    await page.waitForTimeout(300);
+    await locator.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
     await locator.click({ timeout: 5000 });
   } catch (e) {
     logger.warn(`Standard click failed for ${selector.toString()}, trying forced dispatch...`);
-    await locator.dispatchEvent('click').catch(() => {});
+    await locator.dispatchEvent('click').catch((err) => {
+        console.error(`Failed to click element: ${(err as Error).message}`);
+        throw err;
+    });
   }
 }
 
