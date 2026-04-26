@@ -63,8 +63,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [targetScale, scaleMV]);
 
   const transformTemplate = useMotionTemplate`scale(${scaleMV})`;
-  const widthTemplate = useMotionTemplate`calc(100% / ${scaleMV})`;
-  const heightTemplate = useMotionTemplate`calc(100% / ${scaleMV})`;
+  const widthTemplate = useMotionTemplate`calc(100vw / ${scaleMV})`;
+  const heightTemplate = useMotionTemplate`calc(100vh / ${scaleMV})`;
 
   return (
     <div className="bg-background text-foreground relative flex h-screen w-full flex-col overflow-hidden antialiased">
