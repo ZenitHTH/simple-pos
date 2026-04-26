@@ -7,7 +7,7 @@ import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";
 import MiniTuner from "@/components/design-mode/MiniTuner";
 
-import { useMotionValue, animate } from "framer-motion";
+import { useMotionValue, animate, motion, useMotionTemplate } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 /**
@@ -50,7 +50,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   
   // Use a motion value to animate the scale (Animated Scaling)
   const scaleMV = useMotionValue(targetScale);
-  const [displayScale, setDisplayScale] = useState(targetScale);
 
   // Sync motion value with settings changes
   useEffect(() => {
@@ -63,36 +62,32 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return () => controls.stop();
   }, [targetScale, scaleMV]);
 
-  // Update local state for CSS zoom (since zoom isn't a motion prop)
-  useEffect(() => {
-    return scaleMV.on("change", (latest) => {
-      setDisplayScale(latest);
-    });
-  }, [scaleMV]);
+  const transformTemplate = useMotionTemplate`scale(${scaleMV})`;
+  const widthTemplate = useMotionTemplate`calc(100% / ${scaleMV})`;
+  const heightTemplate = useMotionTemplate`calc(100% / ${scaleMV})`;
 
   return (
     <div className="bg-background text-foreground relative flex h-screen w-full flex-col overflow-hidden antialiased">
       {/* 
         This container handles the global display scaling.
-        Using 'zoom' ensures that all 'rem' units (spacing, sizes, fonts) 
-        within the app UI are scaled correctly without affecting 
-        the fixed control panels outside this container.
+        Using a motion.div prevents React from re-rendering the entire app 
+        tree 60 times a second during scale animations.
       */}
-      <div 
-        className="relative flex flex-1 overflow-hidden" 
+      <motion.div 
+        className="relative flex overflow-hidden shrink-0" 
         style={{ 
-          transform: `scale(${displayScale})`,
+          transform: transformTemplate,
           transformOrigin: 'top left',
-          width: `calc(100% / ${displayScale})`,
-          height: `calc(100% / ${displayScale})`,
+          width: widthTemplate,
+          height: heightTemplate,
           willChange: 'transform'
-        } as React.CSSProperties}
+        }}
       >
         <Sidebar />
         <main className="relative flex flex-1 flex-col overflow-hidden pt-16 lg:pt-0">
           {children}
         </main>
-      </div>
+      </motion.div>
 
       {/* 
         These elements stay outside the zoomed container to maintain 
