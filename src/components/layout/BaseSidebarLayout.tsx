@@ -58,7 +58,7 @@ export default function BaseSidebarLayout({
         ...extraStyle
       } as any}
       className={cn(
-        "fixed inset-y-0 z-50 lg:static flex flex-col transition-transform duration-300 ease-in-out transform-gpu",
+        "fixed inset-y-0 z-50 lg:static flex flex-col transition-transform duration-300 ease-in-out h-full transform-gpu",
         "bg-card text-card-foreground border-border border-r shadow-2xl lg:shadow-none",
         side === "left" ? "left-0" : "right-0 border-l border-r-0",
         isOpen ? "translate-x-0" : (side === "left" ? "-translate-x-full lg:translate-x-0" : "translate-x-full lg:translate-x-0"),
@@ -70,7 +70,7 @@ export default function BaseSidebarLayout({
           width: dynamicWidth,
           fontSize: `${fontScale}%`,
         }}
-        className="group relative flex h-full flex-col"
+        className="group relative flex flex-1 flex-col overflow-hidden"
       >
         <div className="flex items-center justify-between p-6 lg:block">
           <GlobalHeader
