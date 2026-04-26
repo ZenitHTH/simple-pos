@@ -10,7 +10,7 @@ import {
   waitForAction
 } from './helpers';
 
-test.describe('Vibe POS: The Unified Guide of Truth', () => {
+test.describe.serial('Vibe POS: The Unified Guide of Truth', () => {
   let browser: any;
   let page: Page;
 
@@ -25,16 +25,16 @@ test.describe('Vibe POS: The Unified Guide of Truth', () => {
     if (browser) await browser.close();
   });
 
-  test('Truth Verification: Welcome -> DB -> Category -> Product -> Sale -> Final Receipt', async () => {
-    // --- 1. WELCOME & DB INITIALIZATION ---
+  test('Step 1: Initializing Database & Welcome', async () => {
     logger.info("Step 1: Initializing Database...");
     await performLogin(page);
     
     await verifyDatabaseState(page, (db) => {
       expect(db.mockSettings, "Backend must have settings initialized").toBeDefined();
     });
+  });
 
-    // --- 2. CATEGORY CREATION ---
+  test('Step 2: Creating Category "Beverages"', async () => {
     logger.info("Step 2: Creating Category 'Beverages'...");
     await navigateTo(page, 'Management', 'Categories');
     
@@ -69,8 +69,9 @@ test.describe('Vibe POS: The Unified Guide of Truth', () => {
       const exists = db.categories.some((c: any) => c.name === 'Beverages');
       expect(exists, "Category 'Beverages' must be in physical database state").toBeTruthy();
     });
+  });
 
-    // --- 3. PRODUCT CREATION ---
+  test('Step 3: Creating Product "Espresso"', async () => {
     logger.info("Step 3: Creating Product 'Espresso'...");
     await navigateTo(page, 'Management', 'Product Management');
     
@@ -90,6 +91,7 @@ test.describe('Vibe POS: The Unified Guide of Truth', () => {
         await page.evaluate(async () => {
             // @ts-ignore
             const dbKey = window.dbKey || 'dummy';
+            // @ts-ignore
             const categories = await window.categoryApi.getAll(dbKey);
             const beverages = categories.find((c: any) => c.name === 'Beverages');
             // @ts-ignore
@@ -112,8 +114,9 @@ test.describe('Vibe POS: The Unified Guide of Truth', () => {
       const exists = db.products.some((p: any) => p.title === 'Espresso');
       expect(exists, "Product 'Espresso' must be in physical database state").toBeTruthy();
     });
+  });
 
-    // --- 4. SALE WORKFLOW ---
+  test('Step 4: Performing Sale (UI + Backdoor Hybrid)', async () => {
     logger.info("Step 4: Performing Sale (UI + Backdoor Hybrid)...");
     await navigateTo(page, null, 'Main Page');
     // Root check
@@ -152,8 +155,9 @@ test.describe('Vibe POS: The Unified Guide of Truth', () => {
         });
         await waitForAction(page, 'payment_confirmed');
     }
+  });
 
-    // --- 5. FINAL TRUTH VERIFICATION ---
+  test('Step 5: Final Truth Verification (Transactions & Receipts)', async () => {
     logger.info("Step 5: Final Truth Verification (Transactions & Receipts)...");
     await verifyDatabaseState(page, (db) => {
       const lastReceipt = db.receiptLists[db.receiptLists.length - 1];
