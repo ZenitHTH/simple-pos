@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { cn } from "@/lib";
 
 /**
@@ -39,10 +38,7 @@ export default function NumberStepper({
   formatValue,
   className,
 }: NumberStepperProps) {
-  const displayValue = useMemo(() => {
-    if (formatValue) return formatValue(value);
-    return value.toString();
-  }, [value, formatValue]);
+  const displayValue = formatValue ? formatValue(value) : value.toString();
 
   const handleDecrement = () => onChange(Math.max(min, value - step));
   const handleIncrement = () => onChange(Math.min(max, value + step));
@@ -51,7 +47,7 @@ export default function NumberStepper({
     <div className={cn("flex items-center gap-2", className)}>
       <button
         onClick={handleDecrement}
-        className="bg-secondary hover:bg-secondary/80 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-secondary hover:bg-secondary/80 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold transition-[background-color,transform,opacity] duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 will-change-transform"
         disabled={value <= min}
       >
         −
@@ -61,7 +57,7 @@ export default function NumberStepper({
       </div>
       <button
         onClick={handleIncrement}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold shadow-md transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-bold shadow-md transition-[background-color,transform,opacity,box-shadow] duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 will-change-transform"
         disabled={value >= max}
       >
         +

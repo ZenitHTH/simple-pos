@@ -76,7 +76,7 @@ const CartItem = memo(function CartItem({
         {/* Delete — extra large touch target */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-muted/40 hover:text-destructive active:text-white hover:bg-destructive/10 active:bg-destructive flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all active:scale-90"
+          className="text-muted/40 hover:text-destructive active:text-white hover:bg-destructive/10 active:bg-destructive flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-[color,background-color,transform] duration-200 active:scale-90 will-change-transform"
         >
           <FaTrash size={16} />
         </button>

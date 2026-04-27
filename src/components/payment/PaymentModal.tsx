@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import AmountSummary from "./AmountSummary";
 import CashInput from "./CashInput";
 import ChangeDisplay from "./ChangeDisplay";
@@ -49,8 +49,7 @@ export default function PaymentModal({
   const change = cashValue - total;
   const isValid = cashValue >= total;
 
-  // Memoize quick amounts to avoid recalculating on every render
-  const quickAmounts = useMemo(() => {
+  const quickAmounts = (() => {
     const candidates = [
       Math.ceil(total / 100) * 100,
       Math.ceil(total / 500) * 500,
@@ -60,7 +59,7 @@ export default function PaymentModal({
     return Array.from(new Set(candidates))
       .filter((val) => val >= total)
       .sort((a, b) => a - b);
-  }, [total]);
+  })();
 
   const handleConfirm = () => {
     if (!isValid || isPending) return;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, memo } from "react";
+import { memo } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "@/components/filters/ProductFilter";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
@@ -45,16 +45,14 @@ const POSProductGrid = memo(function POSProductGrid({
   onAddToCart,
   currency,
 }: POSProductGridProps) {
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const matchesCategory =
-        selectedCategory === "All" || product.category === selectedCategory;
-      const matchesSearch = product.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [products, selectedCategory, searchQuery]);
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory === "All" || product.category === selectedCategory;
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   // Calculate Grid Layout based on scale (Detailed adjustment)
   const gridScale = settings?.scaling.components.grid || 100;
