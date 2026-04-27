@@ -7,9 +7,11 @@ import POSHeader from "./POSHeader";
 import POSProductGrid from "./POSProductGrid";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import Cart from "@/components/cart/Cart";
-import PaymentModal from "@/components/payment/PaymentModal";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Drawer } from "@/components/ui/Drawer";
+
+const PaymentModal = dynamic(() => import("@/components/payment/PaymentModal"), { ssr: false });
 
 interface POSClientProps {
   initialProducts?: Product[];
@@ -84,7 +86,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
       {/* Right Side: Cart Sidebar */}
       <div
-        className={`relative hidden h-full shrink-0 transition-all duration-500 md:block ${
+        className={`relative hidden h-full shrink-0 transition-[width,opacity] duration-500 md:block will-change-[width,opacity] ${
           isCartVisible ? "opacity-100" : "w-0 overflow-hidden opacity-0 pointer-events-none"
         }`}
         style={{

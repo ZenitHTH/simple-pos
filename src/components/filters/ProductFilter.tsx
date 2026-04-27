@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { Input } from "@/components/ui/Input";
 
@@ -17,6 +17,24 @@ const ProductFilter = memo(function ProductFilter({
   selectedCategory,
   onCategoryChange,
 }: ProductFilterProps) {
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localSearch, onSearchChange, searchQuery]);
+
   return (
     <div className="flex flex-col gap-5">
       {/* Categories Row - One tap access */}
@@ -44,12 +62,12 @@ const ProductFilter = memo(function ProductFilter({
             type="text"
             placeholder="Search items..."
             className="h-[70px] rounded-2xl pl-12 pr-14 text-xl"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
           />
-          {searchQuery && (
+          {localSearch && (
             <button
-              onClick={() => onSearchChange("")}
+              onClick={() => { setLocalSearch(""); onSearchChange(""); }}
               className="text-muted-foreground hover:text-foreground absolute top-1/2 right-4 -translate-y-1/2 p-2 transition-colors rounded-full hover:bg-muted z-10"
             >
               <FaTimes size={22} />

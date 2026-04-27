@@ -1755,8 +1755,8 @@
         "items": "Cart"
       },
       {
-        "source": "@/components/payment/PaymentModal",
-        "items": "PaymentModal"
+        "source": "next/dynamic",
+        "items": "dynamic"
       },
       {
         "source": "react",
@@ -2874,6 +2874,10 @@
       {
         "source": "react-icons/fa",
         "items": "{ FaPlay }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
       }
     ]
   },
@@ -3098,7 +3102,11 @@
       },
       {
         "source": "framer-motion",
-        "items": "{ useMotionValue, animate }"
+        "items": "{ useMotionValue, animate, motion, useMotionTemplate }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useRouter }"
       }
     ]
   },
@@ -3894,6 +3902,38 @@
     ]
   },
   {
+    "name": "ThemeLibraryModal",
+    "type": "component",
+    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "library",
+      "modal",
+      "themelibrarymodal",
+      "manage",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemeLibraryModalProps",
+    "imports": [
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/design-tuner/panels/ThemePresetsPanel",
+        "items": "{ ThemePresetsPanel }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
+      }
+    ]
+  },
+  {
     "name": "ImportExportControls",
     "type": "component",
     "path": "src/components/manage/stock/ImportExportControls.tsx",
@@ -3942,38 +3982,6 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
-      }
-    ]
-  },
-  {
-    "name": "ThemeLibraryModal",
-    "type": "component",
-    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "theme",
-      "library",
-      "modal",
-      "themelibrarymodal",
-      "manage",
-      "settings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ThemeLibraryModalProps",
-    "imports": [
-      {
-        "source": "@/components/ui/Modal",
-        "items": "{ Modal }"
-      },
-      {
-        "source": "@/components/design-tuner/panels/ThemePresetsPanel",
-        "items": "{ ThemePresetsPanel }"
-      },
-      {
-        "source": "@/lib/types",
-        "items": "{ AppSettings, DeepPartial }"
       }
     ]
   },
@@ -4443,72 +4451,6 @@
     ]
   },
   {
-    "name": "TunerSlider",
-    "type": "component",
-    "path": "src/components/design-tuner/ui/TunerSlider.tsx",
-    "description": "TunerSlider Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "tuner",
-      "slider",
-      "tunerslider",
-      "design-tuner",
-      "ui",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "TunerSliderProps",
-    "imports": [
-      {
-        "source": "@/components/ui/RangeSlider",
-        "items": "RangeSlider"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ cn }"
-      },
-      {
-        "source": "@/context/settings/SettingsContext",
-        "items": "{ useSettings }"
-      }
-    ]
-  },
-  {
-    "name": "NavButton",
-    "type": "component",
-    "path": "src/components/design-tuner/ui/NavButton.tsx",
-    "description": "NavButton Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "nav",
-      "button",
-      "navbutton",
-      "design-tuner",
-      "ui",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "React"
-      }
-    ]
-  },
-  {
     "name": "TypographyTuner",
     "type": "component",
     "path": "src/components/design-tuner/tuners/TypographyTuner.tsx",
@@ -4919,16 +4861,16 @@
     ]
   },
   {
-    "name": "TypographyPreview",
+    "name": "TunerSlider",
     "type": "component",
-    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
-    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "path": "src/components/design-tuner/ui/TunerSlider.tsx",
+    "description": "TunerSlider Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
     "keywords": [
-      "typography",
-      "preview",
-      "typographypreview",
+      "tuner",
+      "slider",
+      "tunerslider",
       "design-tuner",
-      "previews",
+      "ui",
       "component",
       "param",
       "object",
@@ -4939,48 +4881,48 @@
       "null",
       "rendered"
     ],
-    "props": "TypographyPreviewProps",
+    "props": "TunerSliderProps",
     "imports": [
       {
-        "source": "@/lib/constants/typography",
-        "items": "{ FONT_FAMILIES }"
-      }
-    ]
-  },
-  {
-    "name": "ThemeCard",
-    "type": "component",
-    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
-    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "theme",
-      "card",
-      "themecard",
-      "design-tuner",
-      "previews",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "ThemeCardProps",
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ memo }"
-      },
-      {
-        "source": "framer-motion",
-        "items": "{ motion }"
+        "source": "@/components/ui/RangeSlider",
+        "items": "RangeSlider"
       },
       {
         "source": "@/lib",
         "items": "{ cn }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
+  },
+  {
+    "name": "NavButton",
+    "type": "component",
+    "path": "src/components/design-tuner/ui/NavButton.tsx",
+    "description": "NavButton Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "nav",
+      "button",
+      "navbutton",
+      "design-tuner",
+      "ui",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
       }
     ]
   },
@@ -5348,6 +5290,72 @@
     ]
   },
   {
+    "name": "TypographyPreview",
+    "type": "component",
+    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
+    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "typography",
+      "preview",
+      "typographypreview",
+      "design-tuner",
+      "previews",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "TypographyPreviewProps",
+    "imports": [
+      {
+        "source": "@/lib/constants/typography",
+        "items": "{ FONT_FAMILIES }"
+      }
+    ]
+  },
+  {
+    "name": "ThemeCard",
+    "type": "component",
+    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
+    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "theme",
+      "card",
+      "themecard",
+      "design-tuner",
+      "previews",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "ThemeCardProps",
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ memo }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      }
+    ]
+  },
+  {
     "name": "TunerSidebar",
     "type": "component",
     "path": "src/components/design-tuner/core/TunerSidebar.tsx",
@@ -5578,7 +5586,7 @@
     "imports": [
       {
         "source": "react",
-        "items": "{ useState, useEffect, useCallback, useMemo }"
+        "items": "{ useState, useEffect, useCallback, useMemo, useTransition, useOptimistic }"
       },
       {
         "source": "next/navigation",
@@ -7592,6 +7600,106 @@
     ]
   },
   {
+    "name": "useStockManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/stock/hooks/useStockManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "stock",
+      "management",
+      "usestockmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "next/navigation",
+        "items": "{ useSearchParams }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ stockApi, productApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Stock, BackendProduct }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "useMaterialManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "material",
+      "management",
+      "usematerialmanagement",
+      "app",
+      "manage",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useMemo, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ materialApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Material }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
     "name": "RecipeBuilderPage",
     "type": "page/hook",
     "path": "src/app/manage/material/recipe/page.tsx",
@@ -7649,58 +7757,6 @@
     ]
   },
   {
-    "name": "useStockManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/stock/hooks/useStockManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "stock",
-      "management",
-      "usestockmanagement",
-      "app",
-      "manage",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useEffect }"
-      },
-      {
-        "source": "next/navigation",
-        "items": "{ useSearchParams }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ stockApi, productApi }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Stock, BackendProduct }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      },
-      {
-        "source": "@/context/DataContext",
-        "items": "{ useDataCache }"
-      }
-    ]
-  },
-  {
     "name": "useImageManagement",
     "type": "page/hook",
     "path": "src/app/manage/images/hooks/useImageManagement.ts",
@@ -7742,54 +7798,6 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
-      }
-    ]
-  },
-  {
-    "name": "useMaterialManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "material",
-      "management",
-      "usematerialmanagement",
-      "app",
-      "manage",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useMemo, useEffect }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ materialApi }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Material }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      },
-      {
-        "source": "@/context/DataContext",
-        "items": "{ useDataCache }"
       }
     ]
   },

@@ -37,7 +37,8 @@ const ProductCard = memo(function ProductCard({
   return (
     <div
       onClick={() => onAdd(product)}
-      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation"
+      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation will-change-transform transition-[transform,filter,box-shadow] duration-200"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "200px" }}
     >
       {/* Image Container */}
       <div
@@ -50,7 +51,7 @@ const ProductCard = memo(function ProductCard({
           <img
             src={imageSrc}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-active:scale-105"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-active:scale-105 will-change-transform"
             style={parseImageStyle(product.image_object_position)}
             onError={() => setImageError(true)}
           />
@@ -61,8 +62,8 @@ const ProductCard = memo(function ProductCard({
         )}
 
         {/* Hover/Tap Overlay with Icon */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-primary-muted group-active:bg-primary-glow">
-          <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-primary-muted group-active:bg-primary-glow">
+          <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-[transform,opacity] duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110 will-change-transform">
             <FaPlus size={24} />
           </div>
         </div>
@@ -93,7 +94,7 @@ const ProductCard = memo(function ProductCard({
               {product.price.toFixed(2)}
             </span>
           </div>
-          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-all shadow-sm group-active:scale-110 active:shadow-md">
+          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-[color,background-color,transform,box-shadow] duration-200 shadow-sm group-active:scale-110 active:shadow-md will-change-transform">
             ADD
           </div>
         </div>

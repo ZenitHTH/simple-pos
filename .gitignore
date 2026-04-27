@@ -83,3 +83,5 @@ skills-lock.json
 test_product.js
 
 .worktrees/
+.agents/ai-backend.json
+tauri-app.log

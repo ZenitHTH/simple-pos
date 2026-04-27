@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useTransition, useOptimistic } from "react";
+import { useState, useEffect, useTransition, useOptimistic } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
 import { categoryApi, receiptApi, customerApi } from "@/lib";
@@ -41,12 +41,46 @@ export function usePOSLogic(initialProducts: Product[]) {
     isMockupMode ? exampleCartItems : []
   );
 
+  type OptimisticAction = 
+    | { type: "clear" }
+    | { type: "add"; product: Product }
+    | { type: "update"; id: number; delta: number }
+    | { type: "remove"; id: number };
+
   // React 19 Optimistic UI for Cart
-  const [optimisticCart, addOptimisticCart] = useOptimistic(
+  const [optimisticCart, addOptimisticCart] = useOptimistic<CartItem[], OptimisticAction>(
     cartItems,
-    (state, action: { type: "clear" }) => {
-      if (action.type === "clear") return [];
-      return state;
+    (state, action) => {
+      switch (action.type) {
+        case "clear":
+          return [];
+        case "add": {
+          const existing = state.find((item) => item.id === action.product.id);
+          if (existing) {
+            return state.map((item) =>
+              item.id === action.product.id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            );
+          }
+          return [...state, { ...action.product, quantity: 1 }];
+        }
+        case "update": {
+          return state
+            .map((item) => {
+              if (item.id === action.id) {
+                const newQuantity = Math.max(0, item.quantity + action.delta);
+                return { ...item, quantity: newQuantity };
+              }
+              return item;
+            })
+            .filter((item) => item.quantity > 0);
+        }
+        case "remove":
+          return state.filter((item) => item.id !== action.id);
+        default:
+          return state;
+      }
     }
   );
 
@@ -91,128 +125,122 @@ export function usePOSLogic(initialProducts: Product[]) {
       });
   }, [dbKey]);
 
-  const updateURL = useCallback(
-    (key: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "All") {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-      router.push(`?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
+  const updateURL = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value && value !== "All") {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
 
-  const handleCategoryChange = useCallback(
-    (category: string) => {
-      updateURL("category", category);
-    },
-    [updateURL],
-  );
+  const handleCategoryChange = (category: string) => {
+    updateURL("category", category);
+  };
 
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      updateURL("search", query);
-    },
-    [updateURL],
-  );
+  const handleSearchChange = (query: string) => {
+    updateURL("search", query);
+  };
 
-  const handleAddToCart = useCallback((product: Product) => {
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
+  const handleAddToCart = (product: Product) => {
+    startTransition(() => {
+      addOptimisticCart({ type: "add", product });
+      setCartItems((prev) => {
+        const existing = prev.find((item) => item.id === product.id);
+        if (existing) {
+          return prev.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item,
+          );
+        }
+        return [...prev, { ...product, quantity: 1 }];
+      });
     });
-  }, []);
+  };
 
-  const handleUpdateQuantity = useCallback((id: number, delta: number) => {
-    setCartItems((prev) => {
-      return prev
-        .map((item) => {
-          if (item.id === id) {
-            const newQuantity = Math.max(0, item.quantity + delta);
-            return { ...item, quantity: newQuantity };
-          }
-          return item;
-        })
-        .filter((item) => item.quantity > 0);
+  const handleUpdateQuantity = (id: number, delta: number) => {
+    startTransition(() => {
+      addOptimisticCart({ type: "update", id, delta });
+      setCartItems((prev) => {
+        return prev
+          .map((item) => {
+            if (item.id === id) {
+              const newQuantity = Math.max(0, item.quantity + delta);
+              return { ...item, quantity: newQuantity };
+            }
+            return item;
+          })
+          .filter((item) => item.quantity > 0);
+      });
     });
-  }, []);
+  };
 
-  const handleRemove = useCallback((id: number) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+  const handleRemove = (id: number) => {
+    startTransition(() => {
+      addOptimisticCart({ type: "remove", id });
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+    });
+  };
 
-  const handleCheckout = useCallback(() => {
+  const handleCheckout = () => {
     logger.info("usePOSLogic: handleCheckout called, cart length =", cartItems.length);
     if (cartItems.length === 0) return;
     logger.info("usePOSLogic: setting isPaymentModalOpen to true");
     setIsPaymentModalOpen(true);
-  }, [cartItems.length]);
+  };
 
-  const cartTotal = useMemo(() => {
+  const cartTotal = (() => {
     const totalSatang = optimisticCart.reduce((sum, item) => {
       const itemSatang = item.satang ?? Math.round(item.price * 100);
       return sum + itemSatang * item.quantity;
     }, 0);
     return (totalSatang * (1 + taxRate)) / 100;
-  }, [optimisticCart, taxRate]);
+  })();
 
-  const handleConfirmPayment = useCallback(
-    (cashReceived: number) => {
-      if (!dbKey) return;
+  const handleConfirmPayment = (cashReceived: number) => {
+    if (!dbKey) return;
+    
+    startTransition(async () => {
+      // Optimistically clear the cart
+      addOptimisticCart({ type: "clear" });
       
-      startTransition(async () => {
-        // Optimistically clear the cart
-        addOptimisticCart({ type: "clear" });
-        
-        try {
-          // New consolidated API call in a single atomic operation
-          const receiptList = await receiptApi.completeCheckout(dbKey, {
-            customerId: selectedCustomerId,
-            items: cartItems.map((item) => ({
-              productId: item.id,
-              quantity: item.quantity,
-            })),
-          });
+      try {
+        // New consolidated API call in a single atomic operation
+        const receiptList = await receiptApi.completeCheckout(dbKey, {
+          customerId: selectedCustomerId,
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            quantity: item.quantity,
+          })),
+        });
 
-          // Success Feedback
-          const change = cashReceived - cartTotal;
-          showToast(
-            `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
-            "success",
-          );
-          logger.action("payment_confirmed", { receiptId: receiptList.receipt_id });
+        // Success Feedback
+        const change = cashReceived - cartTotal;
+        showToast(
+          `Payment Successful!\nChange: ${currency}${change.toFixed(2)}`,
+          "success",
+        );
+        logger.action("payment_confirmed", { receiptId: receiptList.receipt_id });
 
-          // Reset real state
-          setCartItems([]);
-          setSelectedCustomerId(undefined);
-          setIsPaymentModalOpen(false);
-        } catch (error) {
-          logger.error("Payment failed:", error);
-          showToast("Payment failed. Please try again.", "error");
-        }
-      });
-    },
-    [dbKey, cartItems, cartTotal, currency, selectedCustomerId, showToast, addOptimisticCart],
-  );
-
-  const handleSetIsPaymentModalOpen = useCallback(
-    (isOpen: boolean) => {
-      setIsPaymentModalOpen(isOpen);
-      if (!isOpen && isMockupMode) {
-        setMockupView("default");
+        // Reset real state
+        setCartItems([]);
+        setSelectedCustomerId(undefined);
+        setIsPaymentModalOpen(false);
+      } catch (error) {
+        logger.error("Payment failed:", error);
+        showToast("Payment failed. Please try again.", "error");
       }
-    },
-    [isMockupMode, setMockupView],
-  );
+    });
+  };
+
+  const handleSetIsPaymentModalOpen = (isOpen: boolean) => {
+    setIsPaymentModalOpen(isOpen);
+    if (!isOpen && isMockupMode) {
+      setMockupView("default");
+    }
+  };
 
   return {
     productsSource,

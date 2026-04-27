@@ -7,17 +7,14 @@ export function deepMerge<T>(target: any, source: any): T {
   const result = { ...target };
   for (const key of Object.keys(source)) {
     if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
-    if (
-      source[key] &&
-      typeof source[key] === "object" &&
-      !Array.isArray(source[key]) &&
-      target[key]
-    ) {
+    const isPlainObject = (obj: any) => obj && typeof obj === "object" && obj.constructor === Object;
+
+    if (isPlainObject(source[key]) && isPlainObject(target[key])) {
       result[key] = deepMerge(target[key], source[key]);
     } else {
       // If source[key] is an object but doesn't exist in target, clone it
       // Ensure arrays are cloned to prevent shared state
-      result[key] = (source[key] && typeof source[key] === "object" && !Array.isArray(source[key]))
+      result[key] = isPlainObject(source[key])
         ? deepMerge({}, source[key])
         : Array.isArray(source[key]) ? [...source[key]] : source[key];
     }

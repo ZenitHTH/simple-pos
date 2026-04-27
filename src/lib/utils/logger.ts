@@ -16,7 +16,8 @@ export function sanitize(input: any, seen = new WeakSet()): any {
 
   if (typeof input === "string") {
     // Redact 13-digit numbers (likely IDs)
-    let result = input.replace(/\b\d{13}\b/g, "[REDACTED-ID]");
+    // Using a negative lookahead to ignore common Unix timestamps starting with 16, 17, 18
+    let result = input.replace(/\b(?!1[678]\d{10})\d{13}\b/g, "[REDACTED-ID]");
     // Redact emails
     result = result.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[REDACTED-EMAIL]");
     // Redact common PII labels followed by values (e.g. "Tax ID: 12345")
@@ -77,8 +78,8 @@ export const logger = {
     const sMsg = `[ACTION] ${name}`;
     const sData = data ? sanitize(data) : undefined;
 
-    // Standard logging
-    logger.info(sMsg, sData);
+    // Standard logging (pass data directly to avoid double sanitization)
+    logger.info(sMsg, data);
 
     // E2E Truth Tracking
     if (typeof window !== "undefined") {
