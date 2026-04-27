@@ -1,4 +1,3 @@
-use database::establish_connection;
 use database::receipt;
 use database::stock;
 use database::{NewReceipt, Receipt, ReceiptList};
@@ -103,8 +102,8 @@ pub async fn complete_checkout(
 /// # Returns
 /// The newly created invoice header metadata.
 #[tauri::command]
-pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptList, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn create_invoice(state: tauri::State<'_, crate::AppState>, customer_id: Option<i32>) -> Result<ReceiptList, String> {
+    let mut conn = crate::conn!(state);
     // Create a new header with "Now" timestamp (None)
     receipt::create_receipt_header(&mut conn, None, customer_id).map_err(|e| e.to_string())
 }
@@ -121,11 +120,11 @@ pub fn create_invoice(key: String, customer_id: Option<i32>) -> Result<ReceiptLi
 /// An empty result on success.
 #[tauri::command]
 pub fn add_invoice_items(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     receipt_id: i32,
     items: Vec<(i32, i32)>, // Vec<(product_id, quantity)>
 ) -> Result<(), String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     conn.transaction(|conn| {
         use database::product;
@@ -172,10 +171,10 @@ pub fn add_invoice_items(
 /// A tuple containing the invoice header and a list of items in the invoice.
 #[tauri::command]
 pub fn get_invoice_detail(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     receipt_id: i32,
 ) -> Result<(ReceiptList, Vec<Receipt>), String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     receipt::get_full_receipt(&mut conn, receipt_id).map_err(|e| e.to_string())
 }
 
@@ -190,11 +189,11 @@ pub fn get_invoice_detail(
 /// A list of invoice headers within the specified date range.
 #[tauri::command]
 pub fn get_invoices_by_date(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     start_unix: i64,
     end_unix: i64,
 ) -> Result<Vec<ReceiptList>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     receipt::find_headers_by_date_range(&mut conn, start_unix, end_unix).map_err(|e| e.to_string())
 }
 
@@ -209,14 +208,14 @@ pub fn get_invoices_by_date(
 /// An accumulated report containing summarized product sales and material usage.
 #[tauri::command]
 pub fn get_accumulated_report(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     start_unix: i64,
     end_unix: i64,
 ) -> Result<AccumulatedReport, String> {
     use database::schema::{material, product, receipt_item, receipt_item_material, receipt_list};
     use diesel::prelude::*;
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     // 1. Get products accumulation using SQL aggregation
     let product_stats = receipt_list::table

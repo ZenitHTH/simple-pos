@@ -1,4 +1,3 @@
-use database::establish_connection;
 use database::product_image::{
     get_all_links as db_get_all_links, get_linked_images as db_get_images,
     link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,
@@ -19,10 +18,11 @@ use tauri::command;
 /// # Returns
 /// The newly created image record in the database.
 #[command]
-pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
+pub fn save_image(state: tauri::State<'_, crate::AppState>, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
+    let mut conn = crate::conn!(state);
     let settings = get_settings().map_err(|e| e.to_string())?;
     let target_dir = settings.storage.image_storage_path.map(std::path::PathBuf::from);
-    lib_save_image(&data, &filename, target_dir.as_deref(), &key).map_err(|e| e.to_string())
+    lib_save_image(&data, &filename, target_dir.as_deref(), &mut conn).map_err(|e| e.to_string())
 }
 
 /// Links an existing image to a product.
@@ -36,11 +36,11 @@ pub fn save_image(key: String, data: Vec<u8>, filename: String) -> Result<databa
 /// The newly created product-image association record.
 #[command]
 pub fn link_product_image(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     product_id: i32,
     image_id: i32,
 ) -> Result<database::product_image::model::ProductImage, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     // Validate existence
     database::product::find_product(&mut conn, product_id)
@@ -61,8 +61,8 @@ pub fn link_product_image(
 /// # Returns
 /// The number of deleted records.
 #[command]
-pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn unlink_product_image(state: tauri::State<'_, crate::AppState>, product_id: i32, image_id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
 
     // Validate existence (Optional but good for security report compliance)
     database::product::find_product(&mut conn, product_id)
@@ -82,8 +82,8 @@ pub fn unlink_product_image(key: String, product_id: i32, image_id: i32) -> Resu
 /// # Returns
 /// The number of deleted records.
 #[command]
-pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn clear_product_images(state: tauri::State<'_, crate::AppState>, product_id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
 
     // Validate existence
     database::product::find_product(&mut conn, product_id)
@@ -102,10 +102,10 @@ pub fn clear_product_images(key: String, product_id: i32) -> Result<usize, Strin
 /// A list of images linked to the specified product.
 #[command]
 pub fn get_product_images(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     product_id: i32,
 ) -> Result<Vec<database::image::model::Image>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     db_get_images(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
@@ -117,8 +117,8 @@ pub fn get_product_images(
 /// # Returns
 /// A list of all image records.
 #[command]
-pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_all_images(state: tauri::State<'_, crate::AppState>) -> Result<Vec<database::image::model::Image>, String> {
+    let mut conn = crate::conn!(state);
     database::image::get_all_images(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -131,9 +131,9 @@ pub fn get_all_images(key: String) -> Result<Vec<database::image::model::Image>,
 /// # Returns
 /// An empty result on success.
 #[command]
-pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
+pub fn delete_image(state: tauri::State<'_, crate::AppState>, image_id: i32) -> Result<(), String> {
     // 1. Get image info to find the file path
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let image = database::image::get_image(&mut conn, image_id).map_err(|e| e.to_string())?;
 
     // 2. Delete from DB
@@ -162,9 +162,9 @@ pub fn delete_image(key: String, image_id: i32) -> Result<(), String> {
 /// A list of all product-image association records.
 #[command]
 pub fn get_all_image_links(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
 ) -> Result<Vec<database::product_image::model::ProductImage>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     db_get_all_links(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -179,11 +179,11 @@ pub fn get_all_image_links(
 /// The number of updated records.
 #[command]
 pub fn update_image_position(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     image_id: i32,
     position: String,
 ) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     database::image::update_image_position(&mut conn, image_id, &position)
         .map_err(|e| e.to_string())
 }

@@ -1,6 +1,5 @@
 use chrono::{TimeZone, Utc};
 use database::customer;
-use database::establish_connection;
 use database::receipt::model::ReceiptList;
 
 use settings_lib::get_settings;
@@ -27,13 +26,13 @@ use tauri::{command, Manager};
 /// A success message string.
 pub fn export_receipts(
     app: tauri::AppHandle,
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     export_path: String,
     format: String,
     start_date: i64,
     end_date: i64,
 ) -> Result<String, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     
     // Security: Restrict export path to app-local data directory
     let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;

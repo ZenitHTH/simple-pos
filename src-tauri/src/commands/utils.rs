@@ -1,8 +1,10 @@
 #[macro_export]
 macro_rules! conn {
-    ($key:expr) => {
-        database::establish_connection(&$key).map_err(|e| e.to_string())?
-    };
+    ($state:expr) => {{
+        let pool_lock = $state.pool.read().map_err(|_| "Failed to read pool state")?;
+        let pool = pool_lock.as_ref().ok_or("Database not initialized")?;
+        pool.get().map_err(|e| e.to_string())?
+    }};
 }
 
 /// Converts a floating-point number to a scaled integer representation.

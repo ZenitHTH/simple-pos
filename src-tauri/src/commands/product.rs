@@ -1,4 +1,3 @@
-use database::establish_connection;
 use database::product;
 use database::product::model::ProductWithImage;
 use database::{NewProduct, Product};
@@ -11,8 +10,8 @@ use database::{NewProduct, Product};
 /// # Returns
 /// A list of products with their associated image metadata.
 #[tauri::command]
-pub fn get_products(key: String) -> Result<Vec<ProductWithImage>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_products(state: tauri::State<'_, crate::AppState>) -> Result<Vec<ProductWithImage>, String> {
+    let mut conn = crate::conn!(state);
     product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -30,13 +29,13 @@ pub fn get_products(key: String) -> Result<Vec<ProductWithImage>, String> {
 /// The newly created product.
 #[tauri::command]
 pub fn create_product(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     title: String,
     category_id: i32,
     satang: i32,
     use_recipe: bool,
 ) -> Result<Product, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     let trimmed_title = title.trim();
     if trimmed_title.is_empty() {
@@ -82,13 +81,13 @@ pub fn create_product(
 /// The updated product.
 #[tauri::command]
 pub fn update_product(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     id: i32,
     title: String,
     category_id: i32,
     satang: i32,
 ) -> Result<Product, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     let trimmed_title = title.trim();
     if trimmed_title.is_empty() {
@@ -143,8 +142,8 @@ pub fn update_product(
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn delete_product(state: tauri::State<'_, crate::AppState>, id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
 
     // Check if the product is used in past receipts
     let has_deps = product::check_product_dependencies(&mut conn, id).map_err(|e| e.to_string())?;
@@ -175,7 +174,7 @@ pub fn delete_product(key: String, id: i32) -> Result<usize, String> {
 /// # Returns
 /// An empty result on success.
 #[tauri::command]
-pub fn set_product_stock_mode(key: String, id: i32, use_recipe: bool) -> Result<(), String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn set_product_stock_mode(state: tauri::State<'_, crate::AppState>, id: i32, use_recipe: bool) -> Result<(), String> {
+    let mut conn = crate::conn!(state);
     product::set_product_stock_mode(&mut conn, id, use_recipe).map_err(|e| e.to_string())
 }

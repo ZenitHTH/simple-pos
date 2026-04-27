@@ -1,5 +1,4 @@
 use super::utils::float_to_scaled;
-use crate::conn;
 use database::recipe;
 use database::{NewRecipeItem, RecipeItem, RecipeList};
 
@@ -12,8 +11,8 @@ use database::{NewRecipeItem, RecipeItem, RecipeList};
 /// # Returns
 /// The newly created recipe list metadata.
 #[tauri::command]
-pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, String> {
-    let mut conn = conn!(key);
+pub fn create_recipe_list(state: tauri::State<'_, crate::AppState>, product_id: i32) -> Result<RecipeList, String> {
+    let mut conn = crate::conn!(state);
     recipe::create_recipe_list(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
@@ -27,10 +26,10 @@ pub fn create_recipe_list(key: String, product_id: i32) -> Result<RecipeList, St
 /// An optional recipe list if one exists for the product.
 #[tauri::command]
 pub fn get_recipe_list_by_product(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     product_id: i32,
 ) -> Result<Option<RecipeList>, String> {
-    let mut conn = conn!(key);
+    let mut conn = crate::conn!(state);
     recipe::get_recipe_list_by_product(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
@@ -43,8 +42,8 @@ pub fn get_recipe_list_by_product(
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
-    let mut conn = conn!(key);
+pub fn delete_recipe_list(state: tauri::State<'_, crate::AppState>, list_id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
     recipe::delete_recipe_list(&mut conn, list_id).map_err(|e| e.to_string())
 }
 
@@ -62,13 +61,13 @@ pub fn delete_recipe_list(key: String, list_id: i32) -> Result<usize, String> {
 /// The newly added recipe item.
 #[tauri::command]
 pub fn add_recipe_item(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     recipe_list_id: i32,
     material_id: i32,
     volume_use: f64,
     unit: String,
 ) -> Result<RecipeItem, String> {
-    let mut conn = conn!(key);
+    let mut conn = crate::conn!(state);
 
     let (val, prec) = float_to_scaled(volume_use);
 
@@ -91,8 +90,8 @@ pub fn add_recipe_item(
 /// # Returns
 /// A list of all items in the specified recipe.
 #[tauri::command]
-pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeItem>, String> {
-    let mut conn = conn!(key);
+pub fn get_recipe_items(state: tauri::State<'_, crate::AppState>, recipe_list_id: i32) -> Result<Vec<RecipeItem>, String> {
+    let mut conn = crate::conn!(state);
     recipe::get_items_by_recipe_list_id(&mut conn, recipe_list_id).map_err(|e| e.to_string())
 }
 
@@ -108,12 +107,12 @@ pub fn get_recipe_items(key: String, recipe_list_id: i32) -> Result<Vec<RecipeIt
 /// The updated recipe item.
 #[tauri::command]
 pub fn update_recipe_item(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     item_id: i32,
     volume_use: f64,
     unit: String,
 ) -> Result<RecipeItem, String> {
-    let mut conn = conn!(key);
+    let mut conn = crate::conn!(state);
 
     let (val, prec) = float_to_scaled(volume_use);
 
@@ -129,7 +128,7 @@ pub fn update_recipe_item(
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn delete_recipe_item(key: String, item_id: i32) -> Result<usize, String> {
-    let mut conn = conn!(key);
+pub fn delete_recipe_item(state: tauri::State<'_, crate::AppState>, item_id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
     recipe::remove_recipe_item(&mut conn, item_id).map_err(|e| e.to_string())
 }

@@ -1,4 +1,3 @@
-use database::establish_connection;
 use database::product;
 use database::stock;
 use database::{NewStock, Stock};
@@ -16,8 +15,8 @@ use tauri::{Emitter, Manager};
 /// # Returns
 /// The stock record for the product.
 #[tauri::command]
-pub fn get_stock(key: String, product_id: i32) -> Result<Stock, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_stock(state: tauri::State<'_, crate::AppState>, product_id: i32) -> Result<Stock, String> {
+    let mut conn = crate::conn!(state);
     stock::get_stock(&mut conn, product_id).map_err(|e| e.to_string())
 }
 
@@ -29,8 +28,8 @@ pub fn get_stock(key: String, product_id: i32) -> Result<Stock, String> {
 /// # Returns
 /// A list of all stock records.
 #[tauri::command]
-pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_all_stocks(state: tauri::State<'_, crate::AppState>) -> Result<Vec<Stock>, String> {
+    let mut conn = crate::conn!(state);
     stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -45,12 +44,12 @@ pub fn get_all_stocks(key: String) -> Result<Vec<Stock>, String> {
 /// # Returns
 /// The newly created stock record.
 #[tauri::command]
-pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
+pub fn insert_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, quantity: i32) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     // Fetch product details first
     let product_info = product::find_product(&mut conn, product_id).map_err(|e| e.to_string())?;
@@ -73,12 +72,12 @@ pub fn insert_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock
 /// # Returns
 /// The updated stock record.
 #[tauri::command]
-pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock, String> {
+pub fn update_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, quantity: i32) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     // Pass product_id directly to the DB function
     stock::update_stock(&mut conn, product_id, quantity).map_err(|e| e.to_string())
 }
@@ -92,8 +91,8 @@ pub fn update_stock(key: String, product_id: i32, quantity: i32) -> Result<Stock
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn remove_stock(state: tauri::State<'_, crate::AppState>, stock_id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
     stock::remove_stock(&mut conn, stock_id).map_err(|e| e.to_string())
 }
 
@@ -109,14 +108,14 @@ pub fn remove_stock(key: String, stock_id: i32) -> Result<usize, String> {
 #[tauri::command]
 pub fn export_stock_data(
     app: tauri::AppHandle,
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     path: String,
     format: String,
 ) -> Result<(), String> {
     let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
     settings_lib::validate_path_within(&path, &app_dir)?;
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let stocks = stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())?;
     let products = product::get_all_products(&mut conn).map_err(|e| e.to_string())?;
 
@@ -172,14 +171,14 @@ pub fn export_stock_data(
 #[tauri::command]
 pub fn import_stock_data(
     app: tauri::AppHandle,
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     path: String,
     format: String,
 ) -> Result<usize, String> {
     let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
     settings_lib::validate_path_within(&path, &app_dir)?;
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let path_buf = PathBuf::from(path);
 
     let table = match format.to_lowercase().as_str() {

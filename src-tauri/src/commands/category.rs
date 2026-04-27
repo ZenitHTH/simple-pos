@@ -1,5 +1,4 @@
 use database::category;
-use database::establish_connection;
 use database::{Category, NewCategory};
 
 /// Retrieves all product categories from the database.
@@ -10,8 +9,8 @@ use database::{Category, NewCategory};
 /// # Returns
 /// A list of product categories.
 #[tauri::command]
-pub fn get_categories(key: String) -> Result<Vec<Category>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_categories(state: tauri::State<'_, crate::AppState>) -> Result<Vec<Category>, String> {
+    let mut conn = crate::conn!(state);
     category::get_all_categories(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -25,8 +24,8 @@ pub fn get_categories(key: String) -> Result<Vec<Category>, String> {
 /// # Returns
 /// The newly created category.
 #[tauri::command]
-pub fn create_category(key: String, name: String) -> Result<Category, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn create_category(state: tauri::State<'_, crate::AppState>, name: String) -> Result<Category, String> {
+    let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
     if trimmed_name.is_empty() {
@@ -55,8 +54,8 @@ pub fn create_category(key: String, name: String) -> Result<Category, String> {
 /// # Returns
 /// The updated category.
 #[tauri::command]
-pub fn update_category(key: String, id: i32, name: String) -> Result<Category, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn update_category(state: tauri::State<'_, crate::AppState>, id: i32, name: String) -> Result<Category, String> {
+    let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
     if trimmed_name.is_empty() {
@@ -88,8 +87,8 @@ pub fn update_category(key: String, id: i32, name: String) -> Result<Category, S
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn delete_category(key: String, id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn delete_category(state: tauri::State<'_, crate::AppState>, id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
     category::remove_category(&mut conn, id).map_err(|e| e.to_string())
 }
 

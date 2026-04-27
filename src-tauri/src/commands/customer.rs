@@ -1,5 +1,4 @@
 use database::customer;
-use database::establish_connection;
 use database::{Customer, NewCustomer};
 
 /// Retrieves all customer records from the database.
@@ -10,8 +9,8 @@ use database::{Customer, NewCustomer};
 /// # Returns
 /// A list of all customer records.
 #[tauri::command]
-pub fn get_customers(key: String) -> Result<Vec<Customer>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_customers(state: tauri::State<'_, crate::AppState>) -> Result<Vec<Customer>, String> {
+    let mut conn = crate::conn!(state);
     customer::get_all_customers(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -28,13 +27,13 @@ pub fn get_customers(key: String) -> Result<Vec<Customer>, String> {
 /// The newly created customer record.
 #[tauri::command]
 pub fn create_customer(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     name: String,
     tax_id: Option<String>,
     address: Option<String>,
     branch: Option<String>,
 ) -> Result<Customer, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let new_customer = NewCustomer {
         name,
         tax_id,
@@ -58,14 +57,14 @@ pub fn create_customer(
 /// The updated customer record.
 #[tauri::command]
 pub fn update_customer(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     id: i32,
     name: String,
     tax_id: Option<String>,
     address: Option<String>,
     branch: Option<String>,
 ) -> Result<Customer, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let update_data = NewCustomer {
         name,
         tax_id,

@@ -1,4 +1,3 @@
-use database::establish_connection;
 use settings_lib::{
     get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,
     save_settings as lib_save_settings, AppSettings, StorageInfo,
@@ -50,13 +49,13 @@ pub fn get_storage_info() -> Result<StorageInfo, String> {
 #[command]
 pub fn migrate_image_directory(
     app: tauri::AppHandle,
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     new_path: String,
 ) -> Result<(), String> {
     let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
     let new_path_buf = settings_lib::validate_path_within(&new_path, &app_dir)?;
 
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
     let images = database::image::get_all_images(&mut conn).map_err(|e| e.to_string())?;
 
     if !new_path_buf.exists() {

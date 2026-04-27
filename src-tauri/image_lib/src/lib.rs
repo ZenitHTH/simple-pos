@@ -1,5 +1,5 @@
 use atomic_write_file::AtomicWriteFile;
-use database::{Image, NewImage, establish_connection, insert_image};
+use database::{Image, NewImage, insert_image};
 use sha2::{Digest, Sha256};
 use std::io::Write;
 use std::path::Path;
@@ -40,7 +40,7 @@ const ALLOWED_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "webp"];
 /// * `data` - The raw image byte data.
 /// * `filename` - The original filename of the image.
 /// * `target_dir` - Optional custom directory to save the image. Defaults to `images/` next to the DB.
-/// * `key` - The database encryption key.
+/// * `conn` - The active database connection.
 ///
 /// # Returns
 ///
@@ -49,7 +49,7 @@ pub fn save_image(
     data: &[u8],
     filename: &str,
     target_dir: Option<&Path>,
-    key: &str,
+    conn: &mut diesel::SqliteConnection,
 ) -> Result<Image, ImageError> {
     // 0. Sanitize filename to prevent path traversal
     if filename.contains('/') || filename.contains('\\') || filename.contains("..") {
@@ -64,10 +64,9 @@ pub fn save_image(
     // 2. Check if image already exists in DB
     let db_path =
         database::get_database_path().map_err(|e| ImageError::Connection(e.to_string()))?;
-    let mut conn = establish_connection(key).map_err(|e| ImageError::Connection(e.to_string()))?;
 
     // Check if hash exists
-    if let Ok(Some(existing_image)) = database::image::get_image_by_hash(&mut conn, &hash) {
+    if let Ok(Some(existing_image)) = database::image::get_image_by_hash(conn, &hash) {
         if Path::new(&existing_image.file_path).exists() {
             return Ok(existing_image);
         }
@@ -122,7 +121,7 @@ pub fn save_image(
         image_object_position: None,
     };
 
-    let saved_image = insert_image(&mut conn, &new_image).map_err(ImageError::Database)?;
+    let saved_image = insert_image(conn, &new_image).map_err(ImageError::Database)?;
     Ok(saved_image)
 }
 
@@ -131,15 +130,13 @@ pub fn save_image(
 /// # Arguments
 ///
 /// * `image_id` - The ID of the image to verify.
-/// * `key` - The database encryption key.
+/// * `conn` - The active database connection.
 ///
 /// # Returns
 ///
 /// `true` if the image is valid and matches the hash, `false` otherwise.
-pub fn verify_image(image_id: i32, key: &str) -> Result<bool, ImageError> {
-    let mut conn = establish_connection(key).map_err(|e| ImageError::Connection(e.to_string()))?;
-
-    let img = database::image::get_image(&mut conn, image_id).map_err(ImageError::Database)?;
+pub fn verify_image(image_id: i32, conn: &mut diesel::SqliteConnection) -> Result<bool, ImageError> {
+    let img = database::image::get_image(conn, image_id).map_err(ImageError::Database)?;
     let path = Path::new(&img.file_path);
 
     if !path.exists() {

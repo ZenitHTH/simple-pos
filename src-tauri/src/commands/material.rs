@@ -1,5 +1,4 @@
 use super::utils::float_to_scaled;
-use database::establish_connection;
 use database::material;
 use database::{Material, NewMaterial};
 
@@ -13,8 +12,8 @@ use database::{Material, NewMaterial};
 ///
 /// A list of all material records.
 #[tauri::command]
-pub fn get_materials(key: String) -> Result<Vec<Material>, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn get_materials(state: tauri::State<'_, crate::AppState>) -> Result<Vec<Material>, String> {
+    let mut conn = crate::conn!(state);
     material::get_all_materials(&mut conn).map_err(|e| e.to_string())
 }
 
@@ -37,14 +36,14 @@ pub fn get_materials(key: String) -> Result<Vec<Material>, String> {
 /// The newly created material record.
 #[tauri::command]
 pub fn create_material(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     name: String,
     r#type: String,
     volume: f64,
     quantity: i32,
     tags: Vec<String>,
 ) -> Result<Material, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
     if trimmed_name.is_empty() {
@@ -93,7 +92,7 @@ pub fn create_material(
 /// The updated material record.
 #[tauri::command]
 pub fn update_material(
-    key: String,
+    state: tauri::State<'_, crate::AppState>,
     id: i32,
     name: String,
     r#type: String,
@@ -101,7 +100,7 @@ pub fn update_material(
     quantity: i32,
     tags: Vec<String>,
 ) -> Result<Material, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+    let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
     if trimmed_name.is_empty() {
@@ -142,7 +141,7 @@ pub fn update_material(
 ///
 /// The number of deleted records.
 #[tauri::command]
-pub fn delete_material(key: String, id: i32) -> Result<usize, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn delete_material(state: tauri::State<'_, crate::AppState>, id: i32) -> Result<usize, String> {
+    let mut conn = crate::conn!(state);
     material::remove_material(&mut conn, id).map_err(|e| e.to_string())
 }
