@@ -39,14 +39,18 @@ This document establishes the architectural mandates for maintaining the "Instan
 
 ---
 
-## 4. CSS: Hardware Acceleration & Layout Stability
-**Mandate**: Avoid layout-triggering properties and favor the GPU compositor.
+## 4. CSS: Tauri Rendering Engines (WebView2 & WebKitGTK)
+**Mandate**: Optimize for Chromium (Windows) VRAM and WebKitGTK (Linux) main-thread CPU. Never treat Tauri WebViews like a standard Chrome browser.
 
-*   **Scaling**: Use `transform: scale()` instead of the expensive `zoom` property.
-    *   *Note*: When using scale, compensate dimensions with `width: calc(100% / scale)`.
-*   **Transitions**: NEVER use `transition: all`. Explicitly define properties (e.g., `transition: transform 0.2s, opacity 0.2s`).
-*   **GPU Promotion**: Use `will-change: transform` on high-frequency scroll containers and elements with hover effects (e.g., `.tuner-card`).
-*   **Virtualization**: Use `content-visibility: auto` on long lists to enable browser-native virtualization.
+*   **Avoid "Layer Explosions" (WebView2)**: Chromium aggressively allocates GPU layers for elements marked with `will-change`. Applying `will-change: transform` or `box-shadow` to repeating elements (e.g., 50+ `ProductCard`s) will exhaust VRAM and cause severe scroll stuttering.
+    *   *Fix*: Rely on explicit `transition-[transform,...]` utility classes. The GPU will still accelerate the transition without pre-allocating hundreds of idle layers.
+*   **Virtualization Constraints (`content-visibility`)**: 
+    *   *Fix*: Apply `content-visibility: auto` **only** to the children *inside* a long list. Applying it to the scrollable parent container itself causes massive layout thrashing in Chromium as the off-screen bounding boxes pop in and out of existence.
+    *   Add `contain-intrinsic-size` to elements with `content-visibility` to prevent scrollbar jumping.
+*   **The `transition: all` Killer**: 
+    *   *Fix*: **NEVER** use `transition: all`. It forces WebKitGTK to monitor and recalculate every inherited CSS property, destroying Linux scrolling performance. Explicitly define exactly what changes (e.g., `transition-[background-color,color,transform,box-shadow] duration-200`).
+*   **Hardware Acceleration & Scaling**: 
+    *   *Fix*: Use `transform: scale()` instead of the expensive `zoom` property, as `zoom` triggers full CPU layout recalculations on every frame. When using scale, compensate container dimensions with `width: calc(100% / scale)`.
 
 ---
 
