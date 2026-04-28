@@ -59,3 +59,7 @@
     - `e2e/playwright/vibe-pos.spec.ts`
 - [ ] **Clean up Visual Companion**: Close the brainstorm server and remove temporary mockup files.
 
+## ⚡ Performance (WebView2 / WebKitGTK)
+- [ ] **Fix Later**: Conduct a full codebase audit to remove any remaining `transition-all` and `will-change` properties that cause Chromium layer explosion (VRAM exhaustion) in WebView2.
+- [ ] **Fix Later**: Ensure `content-visibility: auto` is only applied to children *inside* scrolling containers, not on the scrollable parent itself, to prevent layout thrashing.
+
