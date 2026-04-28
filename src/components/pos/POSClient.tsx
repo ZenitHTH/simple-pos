@@ -86,7 +86,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
       {/* Right Side: Cart Sidebar */}
       <div
-        className={`relative hidden h-full shrink-0 transition-[width,opacity] duration-500 md:block will-change-[width,opacity] ${
+        className={`relative hidden h-full shrink-0 transition-[width,opacity] duration-500 md:block ${
           isCartVisible ? "opacity-100" : "w-0 overflow-hidden opacity-0 pointer-events-none"
         }`}
         style={{

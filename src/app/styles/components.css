@@ -10,7 +10,6 @@
                 box-shadow var(--button-transition-speed) ease-out,
                 background-color var(--button-transition-speed) ease-out,
                 opacity var(--button-transition-speed) ease-out;
-    will-change: transform, box-shadow;
   }
   
   .tuner-card:hover {
@@ -52,8 +51,6 @@
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
-    will-change: transform;
-    content-visibility: auto;
   }
 
   .custom-scrollbar::-webkit-scrollbar {

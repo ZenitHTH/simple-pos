@@ -37,7 +37,7 @@ const ProductCard = memo(function ProductCard({
   return (
     <div
       onClick={() => onAdd(product)}
-      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation will-change-transform transition-[transform,filter,box-shadow] duration-200"
+      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation transition-[transform,filter,box-shadow] duration-200"
       style={{ contentVisibility: "auto", containIntrinsicSize: "200px" }}
     >
       {/* Image Container */}
@@ -51,7 +51,7 @@ const ProductCard = memo(function ProductCard({
           <img
             src={imageSrc}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-active:scale-105 will-change-transform"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-active:scale-105"
             style={parseImageStyle(product.image_object_position)}
             onError={() => setImageError(true)}
           />
@@ -63,7 +63,7 @@ const ProductCard = memo(function ProductCard({
 
         {/* Hover/Tap Overlay with Icon */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-primary-muted group-active:bg-primary-glow">
-          <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-[transform,opacity] duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110 will-change-transform">
+          <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-[transform,opacity] duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110">
             <FaPlus size={24} />
           </div>
         </div>
