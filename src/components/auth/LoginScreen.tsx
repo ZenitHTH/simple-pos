@@ -33,7 +33,17 @@ export default function LoginScreen() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
+            onKeyDown={(e) => {
+              // Only allow English letters, numbers, standard special characters, and control keys
+              // Thai Unicode range is \u0E00-\u0E7F. We use a positive regex for allowed ASCII.
+              if (
+                e.key.length === 1 && 
+                !/^[\x20-\x7E]+$/.test(e.key)
+              ) {
+                e.preventDefault();
+              }
+            }}
+            placeholder="Enter password (English/Numbers/Special chars only)"
             autoFocus
             error={error || undefined}
           />
