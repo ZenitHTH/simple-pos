@@ -56,5 +56,18 @@ This document establishes the architectural mandates for maintaining the "Instan
 
 ---
 
-**Last Audit**: April 21, 2026.
+## 6. Tauri + Next.js 16 Performance Considerations
+**Mandate**: Mitigate the "Serialization Tax" and strict React 19 hydration rules.
+
+*   **IPC Latency (The Serialization Tax)**: JSON-RPC serialization between JS and Rust is expensive for large payloads.
+    *   **Fix**: Never use "chatty" IPC. Consolidate operations (see Section 2). For binary data (like images), use Tauri v2's Zero-Copy IPC (`Uint8Array`) instead of Base64 strings.
+*   **Hydration Mismatches**: React 19 treats hydration mismatches as critical failures, causing visible UI flicker or resets.
+    *   **Fix**: Never render local-first or environment-dependent data (e.g., local storage paths, `window` objects) during the initial server-side render. Use the `mounted` state pattern (e.g., `useEffect(() => setMounted(true), [])`) to defer rendering client-specific UI.
+*   **WebView Render Blocking**: Heavy React renders on the main thread will lock up the Tauri window (preventing drag/resize).
+    *   **Fix**: Always wrap heavy state updates or list renderings in `useTransition` to lower their render priority and keep the OS-level UI responsive.
+*   **Dev Server Overhead**: If Hot Module Replacement (HMR) feels slow in Turbopack, it is usually due to "Hook Pollution" (Section 5) causing massive component tree re-evaluations.
+
+---
+
+**Last Audit**: April 28, 2026.
 *Do not revert to manual connections or broad transitions.*

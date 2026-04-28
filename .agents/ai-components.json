@@ -283,7 +283,7 @@
     "name": "Select",
     "type": "component",
     "path": "src/components/ui/Select.tsx",
-    "description": "Props for the Select component. / interface SelectProps { /** Optional label to display above the select box. */ label?: string; /** The current selected value. */ value?: string | number; /** Callback function triggered when an option is selected. */ onChange: (value: string | number) => void; /** Array of options to display in the dropdown. */ options: SelectOption[]; /** Optional placeholder text shown when no value is selected. Defaults to \"Select...\". */ placeholder?: string; /** Optional additional CSS classes for the container. */ className?: string; } /** A custom-styled dropdown select component. Features a searchable-like feel, custom popover, and smooth transitions. @param props - The select component props. @returns A custom dropdown select element.",
+    "description": "Props for the Select component. / interface SelectProps { /** Optional ID for the select element. */ id?: string; /** Optional label to display above the select box. */ label?: string; /** The current selected value. */ value?: string | number; /** Callback function triggered when an option is selected. */ onChange: (value: string | number) => void; /** Array of options to display in the dropdown. */ options: SelectOption[]; /** Optional placeholder text shown when no value is selected. Defaults to \"Select...\". */ placeholder?: string; /** Optional additional CSS classes for the container. */ className?: string; /** Optional test ID for E2E testing. */ \"data-testid\"?: string; } /** A custom-styled dropdown select component. Features a searchable-like feel, custom popover, and smooth transitions. @param props - The select component props. @returns A custom dropdown select element.",
     "keywords": [
       "select",
       "ui",
@@ -292,10 +292,11 @@
       "interface",
       "selectprops",
       "optional",
+      "element",
+      "string",
       "label",
       "display",
       "above",
-      "string",
       "current",
       "selected",
       "value",
@@ -319,6 +320,10 @@
       "classes",
       "container",
       "classname",
+      "test",
+      "testing",
+      "data",
+      "testid",
       "custom",
       "styled",
       "features",
@@ -329,8 +334,7 @@
       "smooth",
       "transitions",
       "param",
-      "returns",
-      "element"
+      "returns"
     ],
     "props": "SelectProps",
     "imports": [
@@ -708,10 +712,6 @@
     "props": "NumberStepperProps",
     "imports": [
       {
-        "source": "react",
-        "items": "{ useMemo }"
-      },
-      {
         "source": "@/lib",
         "items": "{ cn }"
       }
@@ -856,7 +856,7 @@
     "name": "Input",
     "type": "component",
     "path": "src/components/ui/Input.tsx",
-    "description": "Props for the Input component. @interface InputProps @extends {React.InputHTMLAttributes<HTMLInputElement>} / export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> { /** Optional label text to display above the input. */ label?: string; /** Optional error message to display below the input. */ error?: string; } /** Standard text input component with support for labels and error messages. Styled to match the application's design system.",
+    "description": "Props for the Input component. @interface InputProps @extends {React.InputHTMLAttributes<HTMLInputElement>} / export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> { /** Optional label text to display above the input. */ label?: string; /** Optional error message to display below the input. */ error?: string; /** Optional test ID for E2E testing. */ \"data-testid\"?: string; } /** Standard text input component with support for labels and error messages. Styled to match the application's design system.",
     "keywords": [
       "input",
       "ui",
@@ -878,6 +878,10 @@
       "error",
       "message",
       "below",
+      "test",
+      "testing",
+      "data",
+      "testid",
       "standard",
       "with",
       "support",
@@ -1448,49 +1452,6 @@
     ]
   },
   {
-    "name": "ThemeSettings",
-    "type": "component",
-    "path": "src/components/settings/ThemeSettings.tsx",
-    "description": "ThemeSettings Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "theme",
-      "settings",
-      "themesettings",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "next-themes",
-        "items": "{ useTheme }"
-      },
-      {
-        "source": "react-icons/fa",
-        "items": "{ FaPalette, FaSun, FaMoon, FaDesktop }"
-      },
-      {
-        "source": "@/components/ui/Button",
-        "items": "{ Button }"
-      },
-      {
-        "source": "@/components/ui/SettingsSection",
-        "items": "SettingsSection"
-      },
-      {
-        "source": "react",
-        "items": "{ useEffect, useState }"
-      }
-    ]
-  },
-  {
     "name": "SettingsSetup",
     "type": "component",
     "path": "src/components/settings/SettingsSetup.tsx",
@@ -1791,7 +1752,7 @@
     "imports": [
       {
         "source": "react",
-        "items": "{ useState, useEffect, useMemo }"
+        "items": "{ useState, useEffect }"
       },
       {
         "source": "./AmountSummary",
@@ -2195,6 +2156,38 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "MoveImageConfirmationModal",
+    "type": "component",
+    "path": "src/components/manage/MoveImageConfirmationModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "move",
+      "image",
+      "confirmation",
+      "modal",
+      "moveimageconfirmationmodal",
+      "manage",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "MoveImageConfirmationModalProps",
+    "imports": [
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/ui/Button",
+        "items": "{ Button }"
+      },
+      {
+        "source": "react-icons/fa",
+        "items": "{ FaExclamationTriangle }"
       }
     ]
   },
@@ -3902,38 +3895,6 @@
     ]
   },
   {
-    "name": "ThemeLibraryModal",
-    "type": "component",
-    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
-    "description": "No description provided.",
-    "keywords": [
-      "theme",
-      "library",
-      "modal",
-      "themelibrarymodal",
-      "manage",
-      "settings",
-      "description",
-      "provided",
-      "component"
-    ],
-    "props": "ThemeLibraryModalProps",
-    "imports": [
-      {
-        "source": "@/components/ui/Modal",
-        "items": "{ Modal }"
-      },
-      {
-        "source": "@/components/design-tuner/panels/ThemePresetsPanel",
-        "items": "{ ThemePresetsPanel }"
-      },
-      {
-        "source": "@/lib/types",
-        "items": "{ AppSettings, DeepPartial }"
-      }
-    ]
-  },
-  {
     "name": "ImportExportControls",
     "type": "component",
     "path": "src/components/manage/stock/ImportExportControls.tsx",
@@ -3982,6 +3943,38 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
+      }
+    ]
+  },
+  {
+    "name": "ThemeLibraryModal",
+    "type": "component",
+    "path": "src/components/manage/settings/ThemeLibraryModal.tsx",
+    "description": "No description provided.",
+    "keywords": [
+      "theme",
+      "library",
+      "modal",
+      "themelibrarymodal",
+      "manage",
+      "settings",
+      "description",
+      "provided",
+      "component"
+    ],
+    "props": "ThemeLibraryModalProps",
+    "imports": [
+      {
+        "source": "@/components/ui/Modal",
+        "items": "{ Modal }"
+      },
+      {
+        "source": "@/components/design-tuner/panels/ThemePresetsPanel",
+        "items": "{ ThemePresetsPanel }"
+      },
+      {
+        "source": "@/lib/types",
+        "items": "{ AppSettings, DeepPartial }"
       }
     ]
   },
@@ -4451,6 +4444,72 @@
     ]
   },
   {
+    "name": "TunerSlider",
+    "type": "component",
+    "path": "src/components/design-tuner/ui/TunerSlider.tsx",
+    "description": "TunerSlider Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "tuner",
+      "slider",
+      "tunerslider",
+      "design-tuner",
+      "ui",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": "TunerSliderProps",
+    "imports": [
+      {
+        "source": "@/components/ui/RangeSlider",
+        "items": "RangeSlider"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
+      },
+      {
+        "source": "@/context/settings/SettingsContext",
+        "items": "{ useSettings }"
+      }
+    ]
+  },
+  {
+    "name": "NavButton",
+    "type": "component",
+    "path": "src/components/design-tuner/ui/NavButton.tsx",
+    "description": "NavButton Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "keywords": [
+      "nav",
+      "button",
+      "navbutton",
+      "design-tuner",
+      "ui",
+      "component",
+      "param",
+      "object",
+      "props",
+      "properties",
+      "returns",
+      "element",
+      "null",
+      "rendered"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "React"
+      }
+    ]
+  },
+  {
     "name": "TypographyTuner",
     "type": "component",
     "path": "src/components/design-tuner/tuners/TypographyTuner.tsx",
@@ -4861,16 +4920,16 @@
     ]
   },
   {
-    "name": "TunerSlider",
+    "name": "TypographyPreview",
     "type": "component",
-    "path": "src/components/design-tuner/ui/TunerSlider.tsx",
-    "description": "TunerSlider Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
+    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
     "keywords": [
-      "tuner",
-      "slider",
-      "tunerslider",
+      "typography",
+      "preview",
+      "typographypreview",
       "design-tuner",
-      "ui",
+      "previews",
       "component",
       "param",
       "object",
@@ -4881,33 +4940,25 @@
       "null",
       "rendered"
     ],
-    "props": "TunerSliderProps",
+    "props": "TypographyPreviewProps",
     "imports": [
       {
-        "source": "@/components/ui/RangeSlider",
-        "items": "RangeSlider"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ cn }"
-      },
-      {
-        "source": "@/context/settings/SettingsContext",
-        "items": "{ useSettings }"
+        "source": "@/lib/constants/typography",
+        "items": "{ FONT_FAMILIES }"
       }
     ]
   },
   {
-    "name": "NavButton",
+    "name": "ThemeCard",
     "type": "component",
-    "path": "src/components/design-tuner/ui/NavButton.tsx",
-    "description": "NavButton Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
+    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
+    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
     "keywords": [
-      "nav",
-      "button",
-      "navbutton",
+      "theme",
+      "card",
+      "themecard",
       "design-tuner",
-      "ui",
+      "previews",
       "component",
       "param",
       "object",
@@ -4918,11 +4969,19 @@
       "null",
       "rendered"
     ],
-    "props": null,
+    "props": "ThemeCardProps",
     "imports": [
       {
         "source": "react",
-        "items": "React"
+        "items": "{ memo }"
+      },
+      {
+        "source": "framer-motion",
+        "items": "{ motion }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ cn }"
       }
     ]
   },
@@ -5290,72 +5349,6 @@
     ]
   },
   {
-    "name": "TypographyPreview",
-    "type": "component",
-    "path": "src/components/design-tuner/previews/TypographyPreview.tsx",
-    "description": "TypographyPreview Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "typography",
-      "preview",
-      "typographypreview",
-      "design-tuner",
-      "previews",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "TypographyPreviewProps",
-    "imports": [
-      {
-        "source": "@/lib/constants/typography",
-        "items": "{ FONT_FAMILIES }"
-      }
-    ]
-  },
-  {
-    "name": "ThemeCard",
-    "type": "component",
-    "path": "src/components/design-tuner/previews/ThemeCard.tsx",
-    "description": "ThemeCard Component @param {Object} props - The properties object. @returns {JSX.Element | null} The rendered component.",
-    "keywords": [
-      "theme",
-      "card",
-      "themecard",
-      "design-tuner",
-      "previews",
-      "component",
-      "param",
-      "object",
-      "props",
-      "properties",
-      "returns",
-      "element",
-      "null",
-      "rendered"
-    ],
-    "props": "ThemeCardProps",
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ memo }"
-      },
-      {
-        "source": "framer-motion",
-        "items": "{ motion }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ cn }"
-      }
-    ]
-  },
-  {
     "name": "TunerSidebar",
     "type": "component",
     "path": "src/components/design-tuner/core/TunerSidebar.tsx",
@@ -5586,7 +5579,7 @@
     "imports": [
       {
         "source": "react",
-        "items": "{ useState, useEffect, useCallback, useMemo, useTransition, useOptimistic }"
+        "items": "{ useState, useEffect, useTransition, useOptimistic }"
       },
       {
         "source": "next/navigation",
@@ -7383,6 +7376,10 @@
       {
         "source": "@/components/manage/ImagePositionModal",
         "items": "ImagePositionModal"
+      },
+      {
+        "source": "@/components/manage/MoveImageConfirmationModal",
+        "items": "MoveImageConfirmationModal"
       }
     ]
   },
@@ -7652,6 +7649,51 @@
     ]
   },
   {
+    "name": "useImageManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/images/hooks/useImageManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "image",
+      "management",
+      "useimagemanagement",
+      "app",
+      "manage",
+      "images",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect, useCallback }"
+      },
+      {
+        "source": "@/lib/api/invoke",
+        "items": "{ invoke }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Image, ProductImage, BackendProduct, productApi, imageApi }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      }
+    ]
+  },
+  {
     "name": "useMaterialManagement",
     "type": "page/hook",
     "path": "src/app/manage/material/hooks/useMaterialManagement.ts",
@@ -7692,6 +7734,55 @@
       {
         "source": "@/lib/utils/logger",
         "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DataContext",
+        "items": "{ useDataCache }"
+      }
+    ]
+  },
+  {
+    "name": "useCustomerManagement",
+    "type": "page/hook",
+    "path": "src/app/manage/customers/hooks/useCustomerManagement.ts",
+    "description": "No description provided.",
+    "keywords": [
+      "use",
+      "customer",
+      "management",
+      "usecustomermanagement",
+      "app",
+      "manage",
+      "customers",
+      "description",
+      "provided",
+      "page/hook"
+    ],
+    "props": null,
+    "imports": [
+      {
+        "source": "react",
+        "items": "{ useState, useEffect }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ customerApi }"
+      },
+      {
+        "source": "@/lib",
+        "items": "{ Customer, NewCustomer }"
+      },
+      {
+        "source": "@/lib/utils/logger",
+        "items": "{ logger }"
+      },
+      {
+        "source": "@/context/DatabaseContext",
+        "items": "{ useDatabase }"
+      },
+      {
+        "source": "@/context/AlertContext",
+        "items": "{ useAlert }"
       },
       {
         "source": "@/context/DataContext",
@@ -7753,100 +7844,6 @@
       {
         "source": "@/context/MockupContext",
         "items": "{ useMockup }"
-      }
-    ]
-  },
-  {
-    "name": "useImageManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/images/hooks/useImageManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "image",
-      "management",
-      "useimagemanagement",
-      "app",
-      "manage",
-      "images",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useEffect, useCallback }"
-      },
-      {
-        "source": "@/lib/api/invoke",
-        "items": "{ invoke }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Image, ProductImage, BackendProduct, productApi }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      }
-    ]
-  },
-  {
-    "name": "useCustomerManagement",
-    "type": "page/hook",
-    "path": "src/app/manage/customers/hooks/useCustomerManagement.ts",
-    "description": "No description provided.",
-    "keywords": [
-      "use",
-      "customer",
-      "management",
-      "usecustomermanagement",
-      "app",
-      "manage",
-      "customers",
-      "description",
-      "provided",
-      "page/hook"
-    ],
-    "props": null,
-    "imports": [
-      {
-        "source": "react",
-        "items": "{ useState, useEffect }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ customerApi }"
-      },
-      {
-        "source": "@/lib",
-        "items": "{ Customer, NewCustomer }"
-      },
-      {
-        "source": "@/lib/utils/logger",
-        "items": "{ logger }"
-      },
-      {
-        "source": "@/context/DatabaseContext",
-        "items": "{ useDatabase }"
-      },
-      {
-        "source": "@/context/AlertContext",
-        "items": "{ useAlert }"
-      },
-      {
-        "source": "@/context/DataContext",
-        "items": "{ useDataCache }"
       }
     ]
   },

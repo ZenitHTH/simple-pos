@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "@/components/filters/ProductFilter";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
@@ -34,7 +34,7 @@ interface POSProductGridProps {
  * @param {(product: Product) => void} props.onAddToCart - Callback when a product is added to the cart.
  * @param {string} props.currency - The currency symbol to display.
  */
-const POSProductGrid = memo(function POSProductGrid({
+export default function POSProductGrid({
   products,
   categories,
   selectedCategory,
@@ -45,6 +45,17 @@ const POSProductGrid = memo(function POSProductGrid({
   onAddToCart,
   currency,
 }: POSProductGridProps) {
+  const [baseWidth, setBaseWidth] = useState(240);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setBaseWidth(window.innerWidth < 768 ? 160 : 240);
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
@@ -59,7 +70,6 @@ const POSProductGrid = memo(function POSProductGrid({
   
   // Base item width at 100% scale (M)
   // We use a responsive base that gets smaller on mobile
-  const baseWidth = typeof window !== 'undefined' && window.innerWidth < 768 ? 160 : 240;
   const itemMinWidth = baseWidth * (gridScale / 100);
 
   const gridStyle = {
@@ -104,6 +114,4 @@ const POSProductGrid = memo(function POSProductGrid({
       </div>
     </>
   );
-});
-
-export default POSProductGrid;
+}

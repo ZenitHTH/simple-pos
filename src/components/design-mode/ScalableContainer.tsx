@@ -62,9 +62,9 @@ export default function ScalableContainer({
   return (
     <motion.div
       className={`group relative origin-top ${className}`}
+      initial={false}
       animate={{
         scale: scale / 100,
-        marginBottom: `${(scale - 100) * 0.5}%`,
       }}
       transition={{
         type: "spring",
@@ -74,6 +74,8 @@ export default function ScalableContainer({
       }}
       style={{
         fontSize: `${fontScale}%`,
+        marginBottom: `${(scale - 100) * 0.5}%`,
+        willChange: "transform",
       }}
     >
       <SelectableOverlay id={String(settingKey)} />

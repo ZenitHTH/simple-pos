@@ -72,8 +72,12 @@ pub fn link_product_image(
 /// # Returns
 /// An empty result on success.
 #[command]
-pub fn move_product_image(key: String, image_id: i32, new_product_id: i32) -> Result<(), String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
+pub fn move_product_image(
+    state: tauri::State<'_, crate::AppState>,
+    image_id: i32,
+    new_product_id: i32,
+) -> Result<(), String> {
+    let mut conn = crate::conn!(state);
 
     conn.transaction(|c| {
         db_unlink_image_from_all(c, image_id)?;

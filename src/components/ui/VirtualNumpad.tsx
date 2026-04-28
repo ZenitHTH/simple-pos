@@ -1,6 +1,4 @@
-import { memo } from "react";
 import { FaBackspace } from "react-icons/fa";
-import { useSettings } from "@/context/settings/SettingsContext";
 
 /**
  * Props for the VirtualNumpad component.
@@ -14,6 +12,12 @@ interface VirtualNumpadProps {
   onBackspace: () => void;
   /** Optional explicit height for the numpad in pixels. */
   height?: number;
+  /** Optional gap between buttons in pixels. */
+  gap?: number;
+  /** Optional explicit height for each button in pixels. */
+  buttonHeight?: number;
+  /** Optional font scale percentage. */
+  fontScale?: number;
 }
 
 /**
@@ -24,72 +28,68 @@ interface VirtualNumpadProps {
  * @param props - The virtual numpad props.
  * @returns A touch-optimized numeric keypad.
  */
-const VirtualNumpad = memo(
-  ({ onPress, onClear, onBackspace, height }: VirtualNumpadProps) => {
-    const { settings } = useSettings();
-    const keys = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "00", "0", "."];
+export default function VirtualNumpad({
+  onPress,
+  onClear,
+  onBackspace,
+  height,
+  gap = 12,
+  buttonHeight = 80,
+  fontScale = 100,
+}: VirtualNumpadProps) {
+  const keys = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "00", "0", "."];
 
-    const { styling } = settings;
-    const gap = styling.payment.numpad_gap ?? 12;
-    const buttonHeight = styling.payment.numpad_button_height ?? 80;
-    const fontScale = styling.payment.numpad_font_scale ?? 100;
-
-    return (
+  return (
+    <div
+      className={`grid grid-cols-4 select-none ${!height ? "h-full" : ""}`}
+      style={{
+        height: height ? `${height}px` : undefined,
+        gap: `${gap}px`,
+        fontSize: `${fontScale}%`,
+      }}
+    >
+      {/* Numbers Section (3 cols) */}
       <div
-        className={`grid grid-cols-4 select-none ${!height ? "h-full" : ""}`}
-        style={{
-          height: height ? `${height}px` : undefined,
-          gap: `${gap}px`,
-          fontSize: `${fontScale}%`,
-        }}
+        className="col-span-3 grid grid-cols-3"
+        style={{ gap: `${gap}px` }}
       >
-        {/* Numbers Section (3 cols) */}
-        <div
-          className="col-span-3 grid grid-cols-3"
-          style={{ gap: `${gap}px` }}
-        >
-          {keys.map((key) => (
-            <button
-              key={key}
-              onClick={() => onPress(key)}
-              className="bg-card text-foreground border-border active:bg-primary active:text-primary-foreground focus:ring-primary/40 flex items-center justify-center rounded-2xl border text-4xl font-black shadow-sm transition-all outline-none focus:ring-4 active:scale-92 active:shadow-inner touch-manipulation"
-              style={{ height: `${buttonHeight}px` }}
-              type="button"
-            >
-              {key}
-            </button>
-          ))}
-        </div>
-
-        {/* Actions Section (1 col) */}
-        <div
-          className="col-span-1 grid grid-cols-1"
-          style={{ gap: `${gap}px` }}
-        >
+        {keys.map((key) => (
           <button
-            onClick={onBackspace}
-            className="flex items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10 text-destructive transition-all active:bg-destructive active:text-white active:scale-92 active:shadow-inner touch-manipulation"
+            key={key}
+            onClick={() => onPress(key)}
+            className="bg-card text-foreground border-border active:bg-primary active:text-primary-foreground focus:ring-primary/40 flex items-center justify-center rounded-2xl border text-4xl font-black shadow-sm transition-[background-color,color,transform,box-shadow,border-color] duration-200 outline-none focus:ring-4 active:scale-92 active:shadow-inner touch-manipulation"
             style={{ height: `${buttonHeight}px` }}
             type="button"
-            aria-label="Backspace"
           >
-            <FaBackspace size={32} />
+            {key}
           </button>
-          <button
-            onClick={onClear}
-            className="bg-muted/20 text-muted-foreground border-border hover:bg-muted/30 active:bg-foreground active:text-background flex items-center justify-center rounded-2xl border text-xl font-black transition-all active:scale-92 active:shadow-inner touch-manipulation"
-            style={{ height: `${buttonHeight}px` }}
-            type="button"
-            aria-label="Clear All"
-          >
-            CLEAR
-          </button>
-        </div>
+        ))}
       </div>
-    );
-  },
-);
 
-VirtualNumpad.displayName = "VirtualNumpad";
-
-export default VirtualNumpad;
+      {/* Actions Section (1 col) */}
+      <div
+        className="col-span-1 grid grid-cols-1"
+        style={{ gap: `${gap}px` }}
+      >
+        <button
+          onClick={onBackspace}
+          className="flex items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10 text-destructive transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:bg-destructive active:text-white active:scale-92 active:shadow-inner touch-manipulation"
+          style={{ height: `${buttonHeight}px` }}
+          type="button"
+          aria-label="Backspace"
+        >
+          <FaBackspace size={32} />
+        </button>
+        <button
+          onClick={onClear}
+          className="bg-muted/20 text-muted-foreground border-border hover:bg-muted/30 active:bg-foreground active:text-background flex items-center justify-center rounded-2xl border text-xl font-black transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:scale-92 active:shadow-inner touch-manipulation"
+          style={{ height: `${buttonHeight}px` }}
+          type="button"
+          aria-label="Clear All"
+        >
+          CLEAR
+        </button>
+      </div>
+    </div>
+  );
+}
