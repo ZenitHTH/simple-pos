@@ -62,4 +62,8 @@
 ## ⚡ Performance (WebView2 / WebKitGTK)
 - [ ] **Fix Later**: Conduct a full codebase audit to remove any remaining `transition-all` and `will-change` properties that cause Chromium layer explosion (VRAM exhaustion) in WebView2.
 - [ ] **Fix Later**: Ensure `content-visibility: auto` is only applied to children *inside* scrolling containers, not on the scrollable parent itself, to prevent layout thrashing.
+- [ ] **Implement Engine-Specific CSS**:
+    - **Backend**: Add a Rust IPC command (`get_os_target`) to safely detect the OS (Windows vs Linux) during the Database Password screen.
+    - **Frontend**: Fetch the OS via IPC on mount and inject `data-engine="webview2"` or `data-engine="webkitgtk"` onto the `<html>` tag.
+    - **CSS**: Split engine-specific optimizations into `webview2.css` (omit `will-change`) and `webkitgtk.css` (force `will-change` for GPU promotion) to maximize hardware acceleration on both targets without FOUC.
 
