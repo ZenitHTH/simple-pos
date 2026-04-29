@@ -4,69 +4,92 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Simple POS is a desktop Point of Sale application built with Tauri (Rust backend) and Next.js (frontend). The app features a SQLite database with SQLCipher encryption, product/inventory management, recipe-based stock deduction, customer management, and comprehensive settings for UI customization.
+Vibe POS is a **Local-First, Privacy-First** Point of Sale system built with Tauri (Rust backend) and Next.js (frontend). Features include SQLite database with SQLCipher encryption, product/inventory management, recipe-based stock deduction, customer management, and a real-time Design Tuner for UI customization.
 
 ## Tech Stack
 
-- **Backend**: Tauri 2.x with Rust, Diesel ORM, SQLite with SQLCipher encryption
-- **Frontend**: Next.js 16 with React 19, TypeScript, Tailwind CSS v4
-- **Build**: Next.js Dev Server (with Turbopack), Tauri CLI for desktop builds
+- **Backend**: Tauri 2.x with Rust 2024, Diesel ORM, SQLite with SQLCipher (AES-256)
+- **Frontend**: Next.js 16 (App Router, Turbopack), React 19, TypeScript 2025, Tailwind CSS v4
+- **E2E Testing**: Playwright with `tauri-driver` via Chrome DevTools Protocol
 
 ## Key Commands
 
 | Command | Description |
 | ------- | ----------- |
-| `npm run dev` | Start Next.js dev server with Turbopack |
-| `npm run build` | Build the Next.js app for production |
-| `npm start` | Start the Next.js production server |
+| `npm run tauri dev` | Start dev server (Turbopack) + Tauri window |
+| `npm run tauri build` | Build production executable |
 | `npm run lint` | Run ESLint |
-| `npm run tauri [cmd]` | Run Tauri CLI commands (build, dev, etc.) |
-| `npm run test:e2e` | Run WebdriverIO E2E tests |
+| `npm run test:e2e` | Run Playwright E2E tests |
+| `node scripts/run-e2e.mjs --skip-build` | Run tests only (if already built) |
+| `npm run registry` | Update AI component registry (`.agents/ai-components.json`) |
 
 ## Architecture
 
 ![Architecture Diagram](./mermaid-diagram-2026-02-11-181614.svg)
 
-### Database Layer (Rust - `src-tauri/database/`)
+### Backend Structure (`src-tauri/`)
 
-The database uses Diesel ORM with SQLite and SQLCipher encryption. Key models:
+- **`src/commands/`**: Tauri commands organized by domain (`stock.rs`, `receipt.rs`, `product.rs`)
+- **`database/`**: Local crate for Diesel models, schemas, SQLCipher migrations
+- **`settings_lib/`**: App configuration and **security path validation**
+- **`export_lib/`**: CSV/XLSX/ODS generation with Thai accounting support
+- **`image_lib/`**: Content-addressable image storage (SHA-256)
 
-- **Product**: Products with title, category, price (in satang), and `use_recipe_stock` flag
-- **Stock**: Product inventory with quantity and price at last update
-- **Material**: Ingredients/components with type (volume/weight), quantity, and precision
-- **Recipe**: Link products to materials with precise volume use (scaled by precision)
-- **Receipt/ReceiptList**: Invoice headers (with customer reference) and line items
-- **Category**: Product categories
-- **Customer**: Customer info with optional tax ID and address
-- **Image**: Binary images stored on disk, tracked via hash in database
+### Frontend Structure (`src/`)
 
-Database path is configurable via `db_storage_path` setting; defaults to platform-specific app data directory.
-
-### Frontend Layer (Next.js - `src/`)
-
-Key patterns:
-
-- **Context Providers**: `DatabaseContext` (auth/db connection), `SettingsContext` (UI/app config), `ToastContext` (notifications), `MockupContext` (demo mode)
-- **API Layer**: `src/lib/api/` wraps Tauri commands; all API calls require `dbKey` from DatabaseContext
-- **Hooks**: `usePOSLogic`, `useCurrency`, `useTax`, custom management hooks
-- **Components**: Design-mode components with scale controls, tuner for UI customization
+- **`app/`**: Next.js App Router pages
+- **`components/`**: 
+  - `ui/` - Atomic components (Button, Input, Table)
+  - `pos/` - Core register interface
+  - `design-mode/` - On-canvas editing tools
+  - `design-tuner/` - UI token editors
+- **`context/`**: `SettingsContext`, `DatabaseContext`, `ToastContext`, `AlertContext`, `MockupContext`
+- **`hooks/`**: Grouped by purpose (`common/`, `features/`, `settings/`)
+- **`lib/`**: `api/` (Tauri wrappers), `types/` (centralized definitions), `utils/` (helpers)
 
 ### Data Flow
 
-1. User logs in with database key → `DatabaseProvider` initializes encrypted connection pool via `initialize_database` command.
-2. Settings loaded from disk → `SettingsProvider` applies scales via CSS custom properties.
-3. POS page: Products fetched → Cart managed via `usePOSLogic` with `useOptimistic` for instant feedback.
-4. Payment: Uses a **single atomic transaction** (`complete_checkout`) to create invoice and deduct stock in one IPC round-trip.
-5. Stock deduction: Normal mode decrements product stock; Recipe mode deducts from materials.
+1. **Login**: User provides `dbKey` → `DatabaseContext` initializes encrypted connection pool
+2. **Settings Load**: `SettingsContext` injects CSS variables (`--primary`, `--numpad-height`) into `:root`
+3. **POS Flow**: Products fetched → `usePOSLogic` manages cart with `useOptimistic` for instant UI
+4. **Checkout**: **Single atomic command** (`complete_checkout`) creates receipt + deducts stock in one transaction
+5. **Stock Deduction**: Normal mode decrements product stock; Recipe mode deducts from materials
 
-## Performance & Optimization
+### Design Tuner System
 
-Adhere to the high-performance standards in **`docs/PERFORMANCE.md`**.
-- **Connection Pooling**: Uses `r2d2` with `SqlCipherCustomizer`. Connections are borrowed from `tauri::State<'_, AppState>`.
-- **Atomic Commands**: Consolidate multi-step DB operations into single Rust commands to minimize IPC and SQLCipher overhead.
-- **React 19 Transitions**: Heavy async operations (like checkout) use `useTransition` to keep the UI responsive.
-- **Hardware Acceleration**: Use `transform: scale()` instead of `zoom`. Avoid `transition: all`.
-- **Build**: Next.js 16 with **Turbopack** and **React Compiler** enabled for maximum build and runtime speed.
+Styles are dynamic, not hardcoded. Flow: `SettingsContext` → CSS variables on `:root` → Tailwind classes → Components.
+
+Users adjust via `/design/tuner` page with `SelectableOverlay` components and sliders. GPU-accelerated with `transform: scale()`.
+
+## Security & Performance Mandates
+
+### Database Access Pattern (CRITICAL)
+
+Never establish manual connections. Always use the global connection pool:
+
+```rust
+#[tauri::command]
+pub async fn my_command(state: tauri::State<'_, crate::AppState>) -> Result<Data, String> {
+    let pool_lock = state.pool.read().map_err(|_| "Lock error")?;
+    let pool = pool_lock.as_ref().ok_or("DB Not Initialized")?;
+    let mut conn = pool.get().map_err(|e| e.to_string())?;
+    // Execute business logic...
+}
+```
+
+### Atomic Command Rule
+
+**Minimize IPC round-trips.** Consolidate multi-step DB operations into single Rust commands using `conn.transaction(|conn| { ... })`. Example: `complete_checkout` in `src-tauri/src/commands/receipt.rs`.
+
+### Path Validation (VULN-001)
+
+All file operations (exports, custom DB paths, image saves) must use `settings_lib::paths::validate_path_within` to enforce boundaries within the platform-specific app data directory.
+
+### Frontend Performance
+
+- **React 19**: Use `useTransition` for async operations, `useOptimistic` for instant UI feedback. No manual `useMemo`/`useCallback` (React Compiler handles it).
+- **CSS**: Use `transform: scale()` not `zoom`. Never use `transition: all` (causes WebKitGTK layout thrashing).
+- **IPC**: Avoid chatty calls. Batch operations. Use zero-copy `Uint8Array` for binary data.
 
 ## Database Schema Highlights
 
@@ -84,28 +107,43 @@ Adhere to the high-performance standards in **`docs/PERFORMANCE.md`**.
 | `images` | id, file_name, file_hash, file_path, created_at |
 | `product_images` | product_id, image_id (junction) |
 
+## AI Component Registries (Yellowpages)
+
+Consult these before implementing to ensure consistency and discover existing patterns:
+
+| Registry | Purpose |
+| -------- | ------- |
+| `.agents/tech-docs.json` | Master architectural map, data flow integrity rules |
+| `.agents/ai-components.json` | Frontend components, hooks, API wrappers (run `npm run registry` to update) |
+| `.agents/ai-backend.json` | Tauri commands, Rust function signatures, DB models |
+
 ## Common Tasks
 
-### Adding a New Feature
+### Adding a Feature
 
-1. Backend: Add Diesel model/schema in `src-tauri/database/src/`, implement CRUD in module, add Tauri command in `src-tauri/src/commands/`
-2. Frontend: Add API wrapper in `src/lib/api/`, TypeScript types in `src/lib/types/`, UI components as needed
-3. Update exports in `src/lib/api/index.ts` and `src/lib/types/index.ts`
+1. **Backend**: Add Diesel model in `src-tauri/database/src/`, implement CRUD, add Tauri command in `src-tauri/src/commands/`
+2. **Frontend**: Add API wrapper in `src/lib/api/`, types in `src/lib/types/`, UI components
+3. **Update exports** in `src/lib/api/index.ts` and `src/lib/types/index.ts`
+4. **Run registry**: `npm run registry` to update component index
 
 ### Database Migrations
 
-Use Diesel CLI: `diesel migration generate <name>`, then implement in `src-tauri/database/migrations/`
+```bash
+diesel migration generate <name>  # Run inside src-tauri/database/
+```
+
+Edit `up.sql` and `down.sql`. Migrations run automatically on app start.
 
 ### Debugging
 
-- Backend: Add `log::info!()` statements, run with `RUST_LOG=debug npm run tauri dev`
-- Frontend: Use React DevTools, Next.js console output
+- **Backend**: Add `log::info!()` statements, run with `RUST_LOG=debug npm run tauri dev`
+- **Frontend**: React DevTools, Next.js console
 
 ## Design System
 
-- **Typography**: 18+ Google Fonts available (Inter, Prompt, Sarabun, Kanit, etc.)
-- **Scaling**: UI scales via CSS custom properties applied by SettingsContext
-- **Design Mode**: Toggle via URL `/design/tuner`, enables drag-to-scale overlay
+- **Typography**: 18+ Google Fonts (Inter, Prompt, Sarabun, Kanit, etc.)
+- **Scaling**: CSS custom properties injected by `SettingsContext`
+- **Design Mode**: `/design/tuner` enables on-canvas editing with `SelectableOverlay`
 
 ## E2E Testing
 

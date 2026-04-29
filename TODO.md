@@ -48,7 +48,7 @@
     - Added diagnostic logging and breakout loops to `helpers.ts`.
 - [x] **Selector Hardening**: Refactored `inventory-recipes.spec.ts` to use `getByTestId` and `getByRole('combobox')`.
 
-### ⏳ Pending / Next Steps
+### ⏳ Pending / Next Steps --> from Human still broken from source don't do for now , we are waiting until that problem has been fixed.
 - [ ] **Fix TEST-A1/TEST-A2 Failure**: The final `expect(page.getByText(/Payment Successful/i)).toBeVisible()` is failing in mock mode.
     - *Investigation*: Check if the toast message or the modal close animation is interfering with the visibility check.
     - *Potential Fix*: Use `page.waitForSelector` with a longer timeout or check for database stock updates directly in the mock state.

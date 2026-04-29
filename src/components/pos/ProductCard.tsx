@@ -38,7 +38,6 @@ const ProductCard = memo(function ProductCard({
     <div
       onClick={() => onAdd(product)}
       className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation transition-[transform,filter,box-shadow] duration-200"
-      style={{ contentVisibility: "auto", containIntrinsicSize: "200px" }}
     >
       {/* Image Container */}
       <div
@@ -94,7 +93,7 @@ const ProductCard = memo(function ProductCard({
               {product.price.toFixed(2)}
             </span>
           </div>
-          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-[color,background-color,transform,box-shadow] duration-200 shadow-sm group-active:scale-110 active:shadow-md will-change-transform">
+          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-[color,background-color,transform,box-shadow] duration-200 shadow-sm group-active:scale-110 active:shadow-md">
             ADD
           </div>
         </div>
