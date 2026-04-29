@@ -1,0 +1,20 @@
+/* WebView2 (Windows): Chromium-based optimization */
+
+/* Disable will-change to prevent Chromium layer explosion/VRAM exhaustion */
+[data-engine="webview2"] * {
+  will-change: auto !important;
+}
+
+/* Ensure smooth transitions without 'all' for complex components */
+[data-engine="webview2"] .tuner-card,
+[data-engine="webview2"] .card-container,
+[data-engine="webview2"] .btn-hero,
+[data-engine="webview2"] .btn-primary-lg {
+  transition-property: transform, filter, box-shadow, background-color, opacity, color;
+  transition-duration: 200ms;
+}
+
+/* Specific fix for layout shifts in WebView2 */
+[data-engine="webview2"] .custom-scrollbar {
+  contain: paint;
+}

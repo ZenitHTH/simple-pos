@@ -37,3 +37,16 @@ pub fn float_to_scaled(val: f64) -> (i32, i32) {
     let significand_str = format!("{}{}", parts[0], parts[1]);
     (significand_str.parse().unwrap_or(0), precision)
 }
+
+#[tauri::command]
+pub fn get_rendering_engine() -> Result<String, String> {
+    #[cfg(target_os = "windows")]
+    return Ok("webview2".to_string());
+    #[cfg(target_os = "linux")]
+    return Ok("webkitgtk".to_string());
+    #[cfg(target_os = "macos")]
+    return Ok("webkit".to_string());
+    
+    #[cfg(not(any(target_os = "windows", target_os = "linux", target_os = "macos")))]
+    Ok("unknown".to_string())
+}

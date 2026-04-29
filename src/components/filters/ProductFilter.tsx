@@ -43,7 +43,7 @@ const ProductFilter = memo(function ProductFilter({
           <button
             key={cat}
             onClick={() => onCategoryChange(cat)}
-            className={`snap-start rounded-xl px-7 py-3.5 text-base font-bold whitespace-nowrap transition-all active:scale-90 touch-manipulation shadow-sm ${
+            className={`snap-start rounded-xl px-7 py-3.5 text-base font-bold whitespace-nowrap transition-[background-color,color,border-color,transform,box-shadow] active:scale-90 touch-manipulation shadow-sm ${
               selectedCategory === cat
                 ? "bg-primary text-primary-foreground shadow-primary/30 shadow-lg scale-105"
                 : "bg-card text-muted-foreground border-border hover:bg-accent hover:text-accent-foreground border"
@@ -75,7 +75,7 @@ const ProductFilter = memo(function ProductFilter({
           )}
         </div>
         <button
-          className="bg-accent text-accent-foreground hover:bg-primary hover:text-primary-foreground border-border flex h-[70px] flex-col items-center justify-center gap-1 rounded-2xl border px-6 transition-all active:scale-95 active:shadow-inner"
+          className="bg-accent text-accent-foreground hover:bg-primary hover:text-primary-foreground border-border flex h-[70px] flex-col items-center justify-center gap-1 rounded-2xl border px-6 transition-[background-color,color,border-color,transform,box-shadow] active:scale-95 active:shadow-inner"
           title="Scan Barcode"
         >
           <div className="flex gap-0.5">

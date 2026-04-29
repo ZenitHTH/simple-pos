@@ -1,0 +1,20 @@
+/* WebKitGTK (Linux): CPU-based layout optimization */
+
+/* Force GPU promotion for smooth animations as Linux often lags without it */
+[data-engine="webkitgtk"] .tuner-card,
+[data-engine="webkitgtk"] .tuner-button,
+[data-engine="webkitgtk"] .btn-hero,
+[data-engine="webkitgtk"] .btn-primary-lg {
+  will-change: transform;
+}
+
+/* Optimize transition properties to minimize layout thrashing */
+[data-engine="webkitgtk"] * {
+  transition-property: background-color, color, border-color, transform, box-shadow, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fix for scrolling performance in WebKitGTK */
+[data-engine="webkitgtk"] .custom-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}

@@ -75,7 +75,7 @@ const CartSummary = memo(function CartSummary({
           logger.info("CartSummary: Checkout Now clicked");
           onCheckout();
         }}
-        className="bg-primary text-primary-foreground shadow-primary/40 hover:bg-primary/95 flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-[1.3em] font-black shadow-xl transition-[transform,background-color,box-shadow,filter] duration-200 active:scale-95 active:brightness-90 touch-manipulation will-change-transform"
+        className="bg-primary text-primary-foreground shadow-primary/40 hover:bg-primary/95 flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-[1.3em] font-black shadow-xl transition-[transform,background-color,box-shadow,filter] duration-200 active:scale-95 active:brightness-90 touch-manipulation"
       >
         CHECKOUT NOW
       </button>

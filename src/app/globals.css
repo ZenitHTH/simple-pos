@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
 @import "./styles/components.css";
+@import "./styles/webview2.css";
+@import "./styles/webkitgtk.css";
 
 @theme inline {
   --color-background: var(--background);

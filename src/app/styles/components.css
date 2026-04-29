@@ -10,7 +10,6 @@
                 box-shadow var(--button-transition-speed) ease-out,
                 background-color var(--button-transition-speed) ease-out,
                 opacity var(--button-transition-speed) ease-out;
-    will-change: transform, box-shadow;
   }
   
   .tuner-card:hover {
@@ -52,8 +51,6 @@
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
-    will-change: transform;
-    content-visibility: auto;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
@@ -100,7 +97,7 @@
   border: 1px solid var(--border);
   text-align: center;
   transform: translate(0);
-  transition: all 0.5s;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, opacity 0.2s;
 }
 
 .card-container:hover {
@@ -140,7 +137,7 @@
   font-weight: 700;
   font-size: 1.125rem;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
@@ -156,7 +153,7 @@
   padding: 1rem 2.5rem;
   border-radius: 1rem;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+  transition: background-color 0.2s, transform 0.2s, filter 0.2s, box-shadow 0.2s;
   display: flex;
   align-items: center;
   gap: 0.75rem;

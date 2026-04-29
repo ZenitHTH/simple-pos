@@ -69,7 +69,7 @@ export function Select({
       <div className="relative">
         <div
           className={cn(
-            "border-border bg-card text-foreground flex h-11 w-full cursor-pointer items-center justify-between rounded-xl border px-3 py-2 text-sm transition-all duration-150",
+            "border-border bg-card text-foreground flex h-11 w-full cursor-pointer items-center justify-between rounded-xl border px-3 py-2 text-sm transition-[border-color,box-shadow,background-color,color,transform] duration-150",
             isOpen
               ? "border-primary/50 ring-primary/30 ring-2"
               : "hover:bg-muted/30 hover:border-border/80",

@@ -64,7 +64,7 @@ export function Modal({
     >
       <div
         className={cn(
-          "bg-card text-card-foreground border-border flex max-h-[90vh] w-full max-w-md transform flex-col rounded-2xl border shadow-2xl ring-1 ring-black/10 transition-all duration-200 dark:ring-white/10",
+          "bg-card text-card-foreground border-border flex max-h-[90vh] w-full max-w-md transform flex-col rounded-2xl border shadow-2xl ring-1 ring-black/10 transition-[transform,opacity,box-shadow] duration-200 dark:ring-white/10",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0",
           className,
         )}
@@ -75,7 +75,7 @@ export function Modal({
           <h2 className="text-lg font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl p-2 transition-all"
+            className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl p-2 transition-[background-color,color]"
           >
             <FaTimes size={14} />
           </button>

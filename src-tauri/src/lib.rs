@@ -14,6 +14,7 @@ use commands::images::*;
 use commands::material::*;
 use commands::recipe::*;
 use commands::settings::*; // Settings Commands
+use commands::utils::get_rendering_engine;
 use tauri::Manager;
 use std::sync::RwLock;
 
@@ -112,7 +113,9 @@ pub fn run() {
             add_recipe_item,
             get_recipe_items,
             update_recipe_item,
-            delete_recipe_item
+            delete_recipe_item,
+            // Utils Commands
+            get_rendering_engine
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
