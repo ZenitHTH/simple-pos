@@ -1,8 +1,20 @@
 /* WebView2 (Windows): Chromium-based optimization */
 
-/* Disable will-change to prevent Chromium layer explosion/VRAM exhaustion */
+/* 
+ * Disable will-change to prevent Chromium layer explosion/VRAM exhaustion.
+ * Chromium is smart enough to optimize most transforms automatically.
+ */
 [data-engine="webview2"] * {
   will-change: auto !important;
+}
+
+/* 
+ * Force hardware acceleration only on core containers to ensure 
+ * they stay on the compositor thread without over-allocating layers.
+ */
+[data-engine="webview2"] .tuner-card,
+[data-engine="webview2"] .card-container {
+  transform: translateZ(0);
 }
 
 /* Ensure smooth transitions without 'all' for complex components */
@@ -14,7 +26,19 @@
   transition-duration: 200ms;
 }
 
-/* Specific fix for layout shifts in WebView2 */
+/* 
+ * Specific fix for layout shifts in WebView2.
+ * contain: paint prevents the browser from recalculating the whole page 
+ * when only the scrollable area changes.
+ */
 [data-engine="webview2"] .custom-scrollbar {
   contain: paint;
+}
+
+/* 
+ * Optimize backdrop-filter for WebView2.
+ * While supported, it can be heavy. We ensure it's handled correctly.
+ */
+[data-engine="webview2"] .backdrop-blur-md {
+  transform: translateZ(0); /* Force compositor for blur */
 }

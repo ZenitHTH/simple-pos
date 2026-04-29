@@ -19,7 +19,6 @@ import { ToastProvider } from "@/context/ToastContext";
 import { AlertProvider } from "@/context/AlertContext";
 import { DataProvider } from "@/context/DataContext";
 import AppShell from "@/components/layout/AppShell";
-import EngineProvider from "@/components/EngineProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -77,21 +76,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SettingsProvider>
-              <EngineProvider>
-                <AlertProvider>
-                  <ToastProvider>
-                    <DatabaseProvider>
-                      <DataProvider>
-                        <MockupProvider>
-                          <DatabaseGuard>
-                            <AppShell>{children}</AppShell>
-                          </DatabaseGuard>
-                        </MockupProvider>
-                      </DataProvider>
-                    </DatabaseProvider>
-                  </ToastProvider>
-                </AlertProvider>
-              </EngineProvider>
+              <AlertProvider>
+                <ToastProvider>
+                  <DatabaseProvider>
+                    <DataProvider>
+                      <MockupProvider>
+                        <DatabaseGuard>
+                          <AppShell>{children}</AppShell>
+                        </DatabaseGuard>
+                      </MockupProvider>
+                    </DataProvider>
+                  </DatabaseProvider>
+                </ToastProvider>
+              </AlertProvider>
             </SettingsProvider>
           </ThemeProvider>
         </SmoothScroll>

@@ -44,7 +44,7 @@ export default function Cart({
   }
 
   return (
-    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-2xl transition-[background-color,color,border-color,transform,box-shadow] duration-300">
+    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-2xl transition-all duration-300">
       <CardHeader className="bg-card/80 z-20 border-b backdrop-blur-md">
         <CardTitle className="flex items-center justify-between gap-3 text-[1.5em] font-black">
           <div className="flex items-center gap-2">

@@ -1,20 +1,39 @@
 /* WebKitGTK (Linux): CPU-based layout optimization */
 
-/* Force GPU promotion for smooth animations as Linux often lags without it */
+/* 
+ * Force GPU promotion for smooth animations. 
+ * On WebKitGTK, translateZ(0) is often more reliable than will-change 
+ * for triggering Accelerated Compositing (AC) without memory overhead.
+ */
 [data-engine="webkitgtk"] .tuner-card,
 [data-engine="webkitgtk"] .tuner-button,
 [data-engine="webkitgtk"] .btn-hero,
-[data-engine="webkitgtk"] .btn-primary-lg {
-  will-change: transform;
+[data-engine="webkitgtk"] .btn-primary-lg,
+[data-engine="webkitgtk"] .cart-item {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+/* 
+ * WebKitGTK struggles with backdrop-filter. 
+ * We simplify or remove it to prevent severe frame drops.
+ */
+[data-engine="webkitgtk"] .backdrop-blur-sm,
+[data-engine="webkitgtk"] .backdrop-blur-md,
+[data-engine="webkitgtk"] .backdrop-blur-lg {
+  backdrop-filter: none !important;
+  background-color: rgba(var(--background), 0.95) !important;
 }
 
 /* Optimize transition properties to minimize layout thrashing */
 [data-engine="webkitgtk"] * {
-  transition-property: background-color, color, border-color, transform, box-shadow, opacity;
+  transition-property: background-color, color, border-color, transform, opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Fix for scrolling performance in WebKitGTK */
 [data-engine="webkitgtk"] .custom-scrollbar {
   -webkit-overflow-scrolling: touch;
+  contain: paint;
 }
