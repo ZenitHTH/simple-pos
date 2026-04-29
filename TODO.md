@@ -60,10 +60,10 @@
 - [ ] **Clean up Visual Companion**: Close the brainstorm server and remove temporary mockup files.
 
 ## ⚡ Performance (WebView2 / WebKitGTK)
-- [ ] **Fix Later**: Conduct a full codebase audit to remove any remaining `transition-all` and `will-change` properties that cause Chromium layer explosion (VRAM exhaustion) in WebView2.
-- [ ] **Fix Later**: Ensure `content-visibility: auto` is only applied to children *inside* scrolling containers, not on the scrollable parent itself, to prevent layout thrashing.
-- [ ] **Implement Engine-Specific CSS**:
-    - **Backend**: Add a Rust IPC command (`get_os_target`) to safely detect the OS (Windows vs Linux) during the Database Password screen.
-    - **Frontend**: Fetch the OS via IPC on mount and inject `data-engine="webview2"` or `data-engine="webkitgtk"` onto the `<html>` tag.
-    - **CSS**: Split engine-specific optimizations into `webview2.css` (omit `will-change`) and `webkitgtk.css` (force `will-change` for GPU promotion) to maximize hardware acceleration on both targets without FOUC.
+- [x] **Optimize Layering/Transitions**: Completed codebase audit and removal of `transition-all` and `will-change`.
+- [x] **Engine-Specific CSS**: Implemented platform-specific optimizations for WebView2 (no `will-change`) and WebKitGTK (forced GPU promotion) via `data-engine` injection.
+- [ ] **Performance Deep Audit (Next Steps)**:
+    - [ ] **React-induced Style Thrashing**: Eliminate global state updates in Design Tuner from triggering full-app re-renders by switching to direct-to-DOM CSS variable injection.
+    - [ ] **usePOSLogic Optimization**: Refactor state management to prevent redundant top-down re-renders during high-frequency cart updates.
+    - [ ] **Next.js Hydration/Overhead**: Investigate App Router layout thrashing in Tauri environment.
 

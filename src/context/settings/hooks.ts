@@ -1,6 +1,16 @@
 import { useEffect } from "react";
 import { AppSettings } from "@/lib";
 
+/**
+ * Directly updates CSS variables on the document root to bypass React re-renders
+ * for high-frequency updates (e.g., during slider dragging in Design Mode).
+ */
+export const updateStyleVariable = (name: string, value: string) => {
+  if (typeof document !== "undefined") {
+    document.documentElement.style.setProperty(name, value);
+  }
+};
+
 export function useApplySettings(settings: AppSettings) {
   useEffect(() => {
     const root = document.documentElement;
