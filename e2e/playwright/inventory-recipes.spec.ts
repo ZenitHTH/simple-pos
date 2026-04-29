@@ -1,37 +1,24 @@
-import { test, expect, chromium, Page } from '@playwright/test';
-import { performLogin, navigateTo, getMainPage, clickElement, setupTestBrowser } from './helpers';
+import { test, expect, Page } from '@playwright/test';
+import { performLogin, navigateTo, clickElement, setupTestBrowser } from './helpers';
 import { logger } from './logger';
 
 test.describe('Priority A - Inventory & Recipes', () => {
   let browser: any;
   let page: Page;
-  let isTauri: boolean;
 
   test.beforeAll(async () => {
     logger.info("Initializing test environment...");
-    const setup = await setupTestBrowser(chromium);
+    const setup = await setupTestBrowser(test.info().project.use.browserName as any);
     browser = setup.browser;
-    isTauri = setup.isTauri;
-
-    if (isTauri) {
-      page = await getMainPage(browser);
-    } else {
-      // Fallback mode: launch a standard page and navigate to dev server
-      const context = await browser.newContext();
-      page = await context.newPage();
-      await page.goto('http://127.0.0.1:3000');
-    }
+    page = await (setup as any).page || await (setup as any).browser.contexts()[0].pages()[0];
     
     await performLogin(page);
-    logger.info(`Test environment initialized (Tauri: ${isTauri}).`);
+    logger.info("Test environment initialized.");
   });
 
   test.afterAll(async () => {
-    if (browser && !isTauri) {
-      await browser.close();
-    }
+    if (browser) await browser.close();
   });
-
 
   test('TEST-A1: Golden Path - Recipe & Inventory Deduction', async () => {
     logger.info("Starting TEST-A1...");
@@ -46,43 +33,26 @@ test.describe('Priority A - Inventory & Recipes', () => {
     logger.info("Creating new material: Coffee Beans...");
     await clickElement(page, page.getByRole('button', { name: /Add Raw Material/i }));
     
-    await page.getByLabel('Material Name').fill('Coffee Beans');
-    await page.getByLabel('Volume').fill('1000');
-    await page.getByLabel('Quantity').fill('1');
+    await page.getByTestId('material-name-input').fill('Coffee Beans');
+    await page.getByTestId('material-volume-input').fill('1000');
+    await page.getByTestId('material-quantity-input').fill('1');
     
-    // Select Type: Weight (g)
-    const typeTrigger = page.locator('div:has(> label:text-is("Type / Unit"))').locator('.relative > div').first();
-    await clickElement(page, typeTrigger);
-    await clickElement(page, page.locator('div.bg-popover').getByText('Weight (g)', { exact: true }));
+    await clickElement(page, page.getByTestId('material-type-select'));
+    await clickElement(page, page.locator('div.bg-popover').getByText('Gram', { exact: true }));
     
     await clickElement(page, page.getByRole('button', { name: /Save Material/i }));
-    
-    // Verify material exists
     await expect(page.locator('table')).toContainText('Coffee Beans', { timeout: 10000 });
     logger.info("Material 'Coffee Beans' created.");
 
     // 2. Create Product "Double Espresso"
-    // First we need a category if it doesn't exist (from previous tests it might, but let's be safe)
-    await navigateTo(page, 'Management', 'Categories');
-    if (!(await page.locator('table').getByText('Beverages').isVisible())) {
-      await clickElement(page, page.getByRole('button', { name: /New Category/i }));
-      await page.locator('div:has(> label:text-is("Category Name")) input').fill('Beverages');
-      await clickElement(page, page.getByRole('button', { name: /Save Category/i }));
-    }
-
     await navigateTo(page, 'Management', 'Product Management');
     logger.info("Creating new product: Double Espresso...");
     await clickElement(page, page.getByRole('button', { name: /New Product/i }));
     
-    await page.getByLabel('Title').fill('Double Espresso');
-    
-    // Select Category
-    const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
-    await clickElement(page, categoryTrigger);
-    await clickElement(page, page.locator('div.bg-popover').getByText('Beverages', { exact: true }));
-    
-    // Set Price: 50.00 = 5000 satang
-    await page.getByLabel('Price (Satang)').fill('5000');
+    await page.getByTestId('product-title-input').fill('Double Espresso');
+    await clickElement(page, page.getByTestId('product-category-select'));
+    await clickElement(page, page.locator('div.bg-popover').getByText('Coffee', { exact: true }));
+    await page.getByTestId('product-price-input').fill('5000');
     
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
     await expect(page.locator('table')).toContainText('Double Espresso', { timeout: 10000 });
@@ -98,41 +68,42 @@ test.describe('Priority A - Inventory & Recipes', () => {
     // Select "Double Espresso" in the right pane (Product Selection)
     logger.info("Selecting Double Espresso in Recipe Builder...");
     await page.locator('input[placeholder*="Search products"]').fill('Double Espresso');
-    const productItem = page.locator('div.bg-card').filter({ hasText: 'Double Espresso' }).first();
-    await clickElement(page, productItem);
+    await clickElement(page, page.locator('button[data-testid^="product-select-"]').first());
     
     // Add "Coffee Beans" from left pane
     logger.info("Adding Coffee Beans to recipe...");
     await page.locator('input[placeholder*="Search materials"]').fill('Coffee Beans');
-    const materialAddBtn = page.locator('div.bg-card').filter({ hasText: 'Coffee Beans' }).getByRole('button').first();
-    await clickElement(page, materialAddBtn);
+    await clickElement(page, page.locator('button[data-testid^="add-material-btn-"]').first());
     
     // Set volume to 18g
     logger.info("Setting recipe volume to 18g...");
-    const volumeInput = page.locator('div.bg-card').filter({ hasText: 'Coffee Beans' }).locator('input[type="number"]');
-    await volumeInput.fill('18');
+    let volumeInput = page.locator('input[id^="recipe-item-volume-"]').first();
+    let retryCount = 0;
+    const maxRetries = 10;
+    
+    while (retryCount < maxRetries) {
+      if (await volumeInput.isVisible()) {
+        await volumeInput.fill('18');
+        break;
+      }
+      await page.waitForTimeout(1000);
+      retryCount++;
+    }
     
     logger.info("Saving recipe...");
     await clickElement(page, page.getByRole('button', { name: /Save Recipe/i }));
-    
-    // Wait for success message
     await expect(page.getByText(/Recipe saved successfully/i)).toBeVisible({ timeout: 10000 });
     logger.info("Recipe saved.");
 
     // 4. Perform Sale
     logger.info("Performing sale in POS...");
     await navigateTo(page, null, 'Main Page');
-    
-    const productCard = page.locator('.tuner-card').filter({ hasText: 'Double Espresso' });
-    await clickElement(page, productCard);
-    
-    await clickElement(page, page.getByRole('button', { name: /Charge|Checkout/i }));
-    const quickAmountBtn = page.locator('button.bg-primary\\/10').first();
-    await clickElement(page, quickAmountBtn);
+    await clickElement(page, page.locator('.tuner-card').filter({ hasText: 'Double Espresso' }));
+    await clickElement(page, page.getByRole('button', { name: /CHECKOUT NOW/i }));
+    await clickElement(page, page.getByRole('button', { name: /฿100.00/i }).first());
     await clickElement(page, page.getByRole('button', { name: /Confirm Payment/i }));
     
-    // Wait for payment to complete
-    await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Payment Successful/i)).toBeVisible({ timeout: 10000 });
     logger.info("Sale completed.");
 
     // 5. Verify Stock
@@ -140,7 +111,6 @@ test.describe('Priority A - Inventory & Recipes', () => {
     await navigateTo(page, 'Management', 'Inventory & Stock');
     await clickElement(page, page.getByRole('button', { name: /Raw Materials/i }));
     
-    // Stock should be 1000 - 18 = 982
     const coffeeBeansRow = page.locator('tr').filter({ hasText: 'Coffee Beans' });
     await expect(coffeeBeansRow).toContainText('982', { timeout: 10000 });
     logger.info("TEST-A1 Passed: Stock is 982.");
@@ -149,72 +119,76 @@ test.describe('Priority A - Inventory & Recipes', () => {
   test('TEST-A2: Decimal Precision - 0.5 unit recipe', async () => {
     logger.info("Starting TEST-A2...");
 
-    // 1. Create Material "Milk" (Volume 10, Quantity 1)
     await navigateTo(page, 'Management', 'Inventory & Stock');
     await clickElement(page, page.getByRole('button', { name: /Raw Materials/i }));
     
     logger.info("Creating new material: Milk...");
     await clickElement(page, page.getByRole('button', { name: /Add Raw Material/i }));
-    await page.getByLabel('Material Name').fill('Milk');
-    await page.getByLabel('Volume').fill('10');
-    await page.getByLabel('Quantity').fill('1');
-    const typeTrigger = page.locator('div:has(> label:text-is("Type / Unit"))').locator('.relative > div').first();
-    await clickElement(page, typeTrigger);
-    await clickElement(page, page.locator('div.bg-popover').getByText('Volume (L)', { exact: true }));
+    
+    await page.getByTestId('material-name-input').fill('Milk');
+    await page.getByTestId('material-volume-input').fill('10');
+    await page.getByTestId('material-quantity-input').fill('1');
+    
+    await clickElement(page, page.getByTestId('material-type-select'));
+    await clickElement(page, page.locator('div.bg-popover').getByText('Liters', { exact: true }));
     await clickElement(page, page.getByRole('button', { name: /Save Material/i }));
     
-    // 2. Create Product "Small Latte"
     await navigateTo(page, 'Management', 'Product Management');
     logger.info("Creating new product: Small Latte...");
     await clickElement(page, page.getByRole('button', { name: /New Product/i }));
-    await page.getByLabel('Title').fill('Small Latte');
-    const categoryTrigger = page.locator('div:has(> label:text-is("Category"))').locator('.relative > div').first();
-    await clickElement(page, categoryTrigger);
-    await clickElement(page, page.locator('div.bg-popover').getByText('Beverages', { exact: true }));
-    await page.getByLabel('Price (Satang)').fill('4000');
+    await page.getByTestId('product-title-input').fill('Small Latte');
+    await clickElement(page, page.getByTestId('product-category-select'));
+    await clickElement(page, page.locator('div.bg-popover').getByText('Coffee', { exact: true }));
+    await page.getByTestId('product-price-input').fill('4000');
     await clickElement(page, page.getByRole('button', { name: /Save Product/i }));
 
-    // 3. Link in Recipe Builder (0.5L Milk)
     await navigateTo(page, 'Management', 'Inventory & Stock');
     await clickElement(page, page.getByRole('button', { name: /Raw Materials/i }));
     await clickElement(page, page.getByRole('link', { name: /Recipe Builder/i }));
     
     logger.info("Setting recipe for Small Latte (0.5L Milk)...");
     await page.locator('input[placeholder*="Search products"]').fill('Small Latte');
-    await clickElement(page, page.locator('div.bg-card').filter({ hasText: 'Small Latte' }).first());
+    await clickElement(page, page.locator('button[data-testid^="product-select-"]').first());
     
     await page.locator('input[placeholder*="Search materials"]').fill('Milk');
-    await clickElement(page, page.locator('div.bg-card').filter({ hasText: 'Milk' }).getByRole('button').first());
+    await clickElement(page, page.locator('button[data-testid^="add-material-btn-"]').first());
     
-    const volumeInput = page.locator('div.bg-card').filter({ hasText: 'Milk' }).locator('input[type="number"]');
-    await volumeInput.fill('0.5');
+    let volumeInput = page.locator('input[id^="recipe-item-volume-"]').first();
+    let retryCount = 0;
+    const maxRetries = 10;
+    
+    while (retryCount < maxRetries) {
+      if (await volumeInput.isVisible()) {
+        await volumeInput.fill('0.5');
+        break;
+      }
+      await page.waitForTimeout(1000);
+      retryCount++;
+    }
+    
     await clickElement(page, page.getByRole('button', { name: /Save Recipe/i }));
     await expect(page.getByText(/Recipe saved successfully/i)).toBeVisible({ timeout: 10000 });
 
-    // 4. Perform 3 Sales
     logger.info("Performing 3 sales of Small Latte...");
     await navigateTo(page, null, 'Main Page');
-    
     const productCard = page.locator('.tuner-card').filter({ hasText: 'Small Latte' });
     
     for (let i = 0; i < 3; i++) {
       logger.info(`Sale ${i + 1}/3...`);
       await clickElement(page, productCard);
-      await clickElement(page, page.getByRole('button', { name: /Charge|Checkout/i }));
-      await clickElement(page, page.locator('button.bg-primary\\/10').first());
-      await clickElement(page, page.getByRole('button', { name: /Confirm Payment/i }));
-      await expect(page.getByText(/Your cart is empty|Cart is Empty/i)).toBeVisible({ timeout: 10000 });
     }
+    
+    await clickElement(page, page.getByRole('button', { name: /CHECKOUT NOW/i }));
+    await clickElement(page, page.getByRole('button', { name: /฿100.00/i }).first());
+    await clickElement(page, page.getByRole('button', { name: /Confirm Payment/i }));
+    await expect(page.getByText(/Payment Successful/i)).toBeVisible({ timeout: 10000 });
 
-    // 5. Verify Stock: 10 - (0.5 * 3) = 8.5
     logger.info("Verifying stock deduction (10 - 1.5 = 8.5)...");
     await navigateTo(page, 'Management', 'Inventory & Stock');
     await clickElement(page, page.getByRole('button', { name: /Raw Materials/i }));
     
     const milkRow = page.locator('tr').filter({ hasText: 'Milk' });
-    // Note: Stock display might have different precision, but should contain "8.5"
     await expect(milkRow).toContainText('8.5', { timeout: 10000 });
     logger.info("TEST-A2 Passed: Stock is 8.5.");
   });
 });
-

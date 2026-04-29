@@ -7,6 +7,7 @@ import { useImageManagement } from "./hooks/useImageManagement";
 import ImageGrid from "@/components/manage/ImageGrid";
 import LinkImageModal from "@/components/manage/LinkImageModal";
 import ImagePositionModal from "@/components/manage/ImagePositionModal";
+import MoveImageConfirmationModal from "@/components/manage/MoveImageConfirmationModal";
 
 export default function ImageManagePage() {
   const {
@@ -14,6 +15,9 @@ export default function ImageManagePage() {
     links,
     isLinkModalOpen,
     setIsLinkModalOpen,
+    isMoveConfirmOpen,
+    setIsMoveConfirmOpen,
+    moveProductInfo,
     selectedImage,
     productSearch,
     setProductSearch,
@@ -26,6 +30,7 @@ export default function ImageManagePage() {
     isPositionModalOpen,
     setIsPositionModalOpen,
     toggleLink,
+    handleMoveImage,
     getProductUsage,
     filteredProductsToLink,
   } = useImageManagement();
@@ -75,6 +80,13 @@ export default function ImageManagePage() {
         onClose={() => setIsPositionModalOpen(false)}
         image={selectedImage}
         onUpdate={handleUpdatePosition}
+      />
+
+      <MoveImageConfirmationModal
+        isOpen={isMoveConfirmOpen}
+        onClose={() => setIsMoveConfirmOpen(false)}
+        onConfirm={handleMoveImage}
+        currentProductName={moveProductInfo?.currentProductName}
       />
     </ManagementPageLayout>
   );

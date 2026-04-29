@@ -150,6 +150,7 @@ export default function ProductModal({
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           id="product-title"
+          data-testid="product-title-input"
           label="Title"
           required
           value={formData.title}
@@ -157,6 +158,8 @@ export default function ProductModal({
         />
 
         <Select
+          id="product-category"
+          data-testid="product-category-select"
           label="Category"
           value={formData.category_id ? String(formData.category_id) : ""}
           onChange={(val) =>
@@ -172,6 +175,7 @@ export default function ProductModal({
         <div className="grid grid-cols-2 gap-4">
           <Input
             id="product-price"
+            data-testid="product-price-input"
             label="Price (Satang)"
             type="number"
             required

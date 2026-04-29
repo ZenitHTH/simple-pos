@@ -76,6 +76,27 @@ pub fn get_product_images(
         .load(conn)
 }
 
+/// Retrieves a specific link for an image, if it exists.
+pub fn get_image_link(
+    conn: &mut SqliteConnection,
+    img_id: i32,
+) -> Result<Option<model::ProductImage>, diesel::result::Error> {
+    use crate::schema::product_images::dsl::*;
+    product_images
+        .filter(image_id.eq(img_id))
+        .first(conn)
+        .optional()
+}
+
+/// Removes all links for a specific image.
+pub fn unlink_image_from_all_products(
+    conn: &mut SqliteConnection,
+    img_id: i32,
+) -> Result<usize, diesel::result::Error> {
+    use crate::schema::product_images::dsl::*;
+    diesel::delete(product_images.filter(image_id.eq(img_id))).execute(conn)
+}
+
 /// Retrieves all product-image links in the database.
 pub fn get_all_links(
     conn: &mut SqliteConnection,

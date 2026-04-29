@@ -71,7 +71,16 @@ export default function PasswordSetupScreen({
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter a strong password"
+                onKeyDown={(e) => {
+                  // Only allow English letters, numbers, standard special characters, and control keys
+                  if (
+                    e.key.length === 1 && 
+                    !/^[\x20-\x7E]+$/.test(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+                placeholder="English/Numbers/Special chars only"
                 autoFocus
                 className="pr-10"
               />
@@ -89,6 +98,14 @@ export default function PasswordSetupScreen({
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (
+                    e.key.length === 1 && 
+                    !/^[\x20-\x7E]+$/.test(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
                 placeholder="Repeat your password"
                 className="pr-10"
               />

@@ -90,7 +90,7 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
           </div>
 
           <div
-            className="rounded-3xl bg-muted/20 p-6 shadow-sm border border-border/50 transition-all origin-top"
+            className="rounded-3xl bg-muted/20 p-6 shadow-sm border border-border/50 transition-transform origin-top"
             style={{
               transform: `scale(${(settings.styling.payment.numpad_scale ?? 100) / 100})`,
             }}
@@ -99,6 +99,9 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
               onPress={handlePress}
               onBackspace={handleBackspace}
               onClear={handleClear}
+              gap={settings.styling.payment.numpad_gap}
+              buttonHeight={settings.styling.payment.numpad_button_height}
+              fontScale={settings.styling.payment.numpad_font_scale}
             />
           </div>
         </div>

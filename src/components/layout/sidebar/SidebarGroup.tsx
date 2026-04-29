@@ -34,7 +34,7 @@ export function SidebarGroup({
       <button
         onClick={onToggle}
         className={cn(
-          "group tuner-sidebar-item flex w-full items-center gap-3 transition-all duration-200 px-4 py-3",
+          "group tuner-sidebar-item flex w-full items-center gap-3 transition-[background-color,color,box-shadow] duration-200 px-4 py-3",
           hasActiveChild
             ? "text-primary shadow-sm"
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -68,7 +68,7 @@ export function SidebarGroup({
 
       <div
         className={cn(
-          "overflow-hidden transition-all duration-200",
+          "overflow-hidden transition-[max-height,opacity,margin] duration-300 ease-in-out",
           isExpanded ? "mt-1 max-h-96 opacity-100" : "max-h-0 opacity-0",
         )}
       >

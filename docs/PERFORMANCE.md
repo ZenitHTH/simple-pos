@@ -39,14 +39,18 @@ This document establishes the architectural mandates for maintaining the "Instan
 
 ---
 
-## 4. CSS: Hardware Acceleration & Layout Stability
-**Mandate**: Avoid layout-triggering properties and favor the GPU compositor.
+## 4. CSS: Tauri Rendering Engines (WebView2 & WebKitGTK)
+**Mandate**: Optimize for Chromium (Windows) VRAM and WebKitGTK (Linux) main-thread CPU. Never treat Tauri WebViews like a standard Chrome browser.
 
-*   **Scaling**: Use `transform: scale()` instead of the expensive `zoom` property.
-    *   *Note*: When using scale, compensate dimensions with `width: calc(100% / scale)`.
-*   **Transitions**: NEVER use `transition: all`. Explicitly define properties (e.g., `transition: transform 0.2s, opacity 0.2s`).
-*   **GPU Promotion**: Use `will-change: transform` on high-frequency scroll containers and elements with hover effects (e.g., `.tuner-card`).
-*   **Virtualization**: Use `content-visibility: auto` on long lists to enable browser-native virtualization.
+*   **Avoid "Layer Explosions" (WebView2)**: Chromium aggressively allocates GPU layers for elements marked with `will-change`. Applying `will-change: transform` or `box-shadow` to repeating elements (e.g., 50+ `ProductCard`s) will exhaust VRAM and cause severe scroll stuttering.
+    *   *Fix*: Rely on explicit `transition-[transform,...]` utility classes. The GPU will still accelerate the transition without pre-allocating hundreds of idle layers.
+*   **Virtualization Constraints (`content-visibility`)**: 
+    *   *Fix*: Apply `content-visibility: auto` **only** to the children *inside* a long list. Applying it to the scrollable parent container itself causes massive layout thrashing in Chromium as the off-screen bounding boxes pop in and out of existence.
+    *   Add `contain-intrinsic-size` to elements with `content-visibility` to prevent scrollbar jumping.
+*   **The `transition: all` Killer**: 
+    *   *Fix*: **NEVER** use `transition: all`. It forces WebKitGTK to monitor and recalculate every inherited CSS property, destroying Linux scrolling performance. Explicitly define exactly what changes (e.g., `transition-[background-color,color,transform,box-shadow] duration-200`).
+*   **Hardware Acceleration & Scaling**: 
+    *   *Fix*: Use `transform: scale()` instead of the expensive `zoom` property, as `zoom` triggers full CPU layout recalculations on every frame. When using scale, compensate container dimensions with `width: calc(100% / scale)`.
 
 ---
 
@@ -56,5 +60,18 @@ This document establishes the architectural mandates for maintaining the "Instan
 
 ---
 
-**Last Audit**: April 21, 2026.
+## 6. Tauri + Next.js 16 Performance Considerations
+**Mandate**: Mitigate the "Serialization Tax" and strict React 19 hydration rules.
+
+*   **IPC Latency (The Serialization Tax)**: JSON-RPC serialization between JS and Rust is expensive for large payloads.
+    *   **Fix**: Never use "chatty" IPC. Consolidate operations (see Section 2). For binary data (like images), use Tauri v2's Zero-Copy IPC (`Uint8Array`) instead of Base64 strings.
+*   **Hydration Mismatches**: React 19 treats hydration mismatches as critical failures, causing visible UI flicker or resets.
+    *   **Fix**: Never render local-first or environment-dependent data (e.g., local storage paths, `window` objects) during the initial server-side render. Use the `mounted` state pattern (e.g., `useEffect(() => setMounted(true), [])`) to defer rendering client-specific UI.
+*   **WebView Render Blocking**: Heavy React renders on the main thread will lock up the Tauri window (preventing drag/resize).
+    *   **Fix**: Always wrap heavy state updates or list renderings in `useTransition` to lower their render priority and keep the OS-level UI responsive.
+*   **Dev Server Overhead**: If Hot Module Replacement (HMR) feels slow in Turbopack, it is usually due to "Hook Pollution" (Section 5) causing massive component tree re-evaluations.
+
+---
+
+**Last Audit**: April 28, 2026.
 *Do not revert to manual connections or broad transitions.*

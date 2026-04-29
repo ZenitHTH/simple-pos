@@ -1,8 +1,11 @@
 use database::product_image::{
-    get_all_links as db_get_all_links, get_linked_images as db_get_images,
-    link_product_image as db_link_image, unlink_all_product_images as db_clear_product_images,
+    get_all_links as db_get_all_links, get_image_link as db_get_image_link,
+    get_linked_images as db_get_images, link_product_image as db_link_image,
+    unlink_all_product_images as db_clear_product_images,
+    unlink_image_from_all_products as db_unlink_image_from_all,
     unlink_product_image as db_unlink_image,
 };
+use diesel::Connection;
 use image_lib::save_image as lib_save_image;
 use settings_lib::get_settings;
 use tauri::command;
@@ -48,7 +51,41 @@ pub fn link_product_image(
     database::image::get_image(&mut conn, image_id)
         .map_err(|_| format!("Image with ID {} does not exist", image_id))?;
 
+    // Step 1: Add exclusivity check to link_product_image
+    let existing_link = db_get_image_link(&mut conn, image_id).map_err(|e| e.to_string())?;
+    if let Some(link) = existing_link {
+        let product = database::product::find_product(&mut conn, link.product_id)
+            .map_err(|_| "Product not found".to_string())?;
+        return Err(format!("ALREADY_LINKED: {}", product.title));
+    }
+
     db_link_image(&mut conn, product_id, image_id).map_err(|e| e.to_string())
+}
+
+/// Moves an image from one product to another.
+///
+/// # Arguments
+/// * `key` - The database encryption key.
+/// * `image_id` - The ID of the image to move.
+/// * `new_product_id` - The ID of the new product to link the image to.
+///
+/// # Returns
+/// An empty result on success.
+#[command]
+pub fn move_product_image(
+    state: tauri::State<'_, crate::AppState>,
+    image_id: i32,
+    new_product_id: i32,
+) -> Result<(), String> {
+    let mut conn = crate::conn!(state);
+
+    conn.transaction(|c| {
+        db_unlink_image_from_all(c, image_id)?;
+        db_clear_product_images(c, new_product_id)?;
+        db_link_image(c, new_product_id, image_id)?;
+        Ok(())
+    })
+    .map_err(|e: diesel::result::Error| e.to_string())
 }
 
 /// Unlinks an image from a product.

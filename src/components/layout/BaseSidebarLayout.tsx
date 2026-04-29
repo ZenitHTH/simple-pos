@@ -54,7 +54,6 @@ export default function BaseSidebarLayout({
       style={{ 
         width: dynamicWidth,
         "--sidebar-button-scale": buttonScale,
-        willChange: 'transform',
         ...extraStyle
       } as any}
       className={cn(

@@ -22,7 +22,7 @@ export function SidebarItem({
     <Link
       href={path}
       className={cn(
-        "group tuner-sidebar-item flex items-center gap-3 transition-all duration-200",
+        "group tuner-sidebar-item flex items-center gap-3 transition-[background-color,color,box-shadow,transform] duration-200",
         isSubItem ? "px-3 py-2 text-[0.9em]" : "px-4 py-3",
         isActive
           ? "bg-primary text-primary-foreground shadow-primary-glow shadow-md"

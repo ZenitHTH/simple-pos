@@ -20,8 +20,6 @@
   .tuner-sidebar-item {
     margin-bottom: var(--sidebar-item-spacing);
     border-radius: var(--sidebar-item-radius);
-    transition: transform var(--button-transition-speed) ease-out,
-                background-color var(--button-transition-speed) ease-out;
   }
 
   .tuner-sidebar-icon {

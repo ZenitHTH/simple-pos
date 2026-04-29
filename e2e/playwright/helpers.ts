@@ -1,31 +1,25 @@
 import { Page, expect, chromium, Locator } from '@playwright/test';
 import { logger } from './logger';
 
-/**
- * Enhanced E2E Helpers for Vibe POS (Fedora/Wayland Optimized)
- */
-
-// Cache connection status
 let cachedSetup: { isTauri: boolean; port: number } | null = null;
 
 export async function setupTestBrowser(browserType: any, port: number = 9223) {
   const baseUrl = `http://127.0.0.1:${port}`;
   
-  if (cachedSetup && !cachedSetup.isTauri && cachedSetup.port === port) {
-    const browser = await browserType.launch({ executablePath: '/usr/bin/google-chrome-stable' });
-    return { browser, isTauri: false };
-  }
-
+  // Try connecting to CDP first
   try {
     const cdpUrl = await getCDPUrl(baseUrl, 1);
-    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 5000 });
+    const browser = await browserType.connectOverCDP(cdpUrl, { timeout: 15000 });
+    console.log("Connected to Tauri via CDP successfully.");
     cachedSetup = { isTauri: true, port };
     return { browser, isTauri: true };
   } catch (err) {
-    logger.warn("Tauri CDP failed, falling back to System Chrome + Dev Server");
+    logger.warn(`Failed to connect to Tauri via CDP: ${(err as Error).message}`);
+    console.log("Falling back to standard browser launch...");
+    
     cachedSetup = { isTauri: false, port };
     const browser = await browserType.launch({ 
-        executablePath: '/usr/bin/google-chrome-stable',
+        executablePath: '/usr/bin/brave-browser',
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     return { browser, isTauri: false };
@@ -49,16 +43,17 @@ async function getCDPUrl(baseUrl: string, retries: number = 3): Promise<string> 
 
 export async function getMainPage(browser: any) {
   await new Promise(resolve => setTimeout(resolve, 2000));
-  let contexts = browser.contexts();
-  let page: Page;
   
+  const contexts = browser.contexts();
+  let context;
   if (contexts.length === 0) {
-    const context = await browser.newContext();
-    page = await context.newPage();
+    context = await browser.newContext();
   } else {
-    const pages = contexts[0].pages();
-    page = pages.length === 0 ? await contexts[0].newPage() : pages[0];
+    context = contexts[0];
   }
+  
+  const pages = context.pages();
+  let page = pages.length === 0 ? await context.newPage() : pages[0];
   
   // IF NOT TAURI, MUST GOTO DEV SERVER
   if (!cachedSetup?.isTauri) {
@@ -69,18 +64,19 @@ export async function getMainPage(browser: any) {
   return page;
 }
 
-/**
- * SUPER ROBUST CLICK
- * Try standard click -> force click -> dispatch event -> API Fallback
- */
 export async function clickElement(page: Page, selector: string | Locator) {
   const locator = typeof selector === 'string' ? page.locator(selector) : selector;
   try {
-    await locator.waitFor({ state: 'visible', timeout: 10000 });
+    await locator.waitFor({ state: 'attached', timeout: 10000 });
+    await page.waitForTimeout(300);
+    await locator.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
     await locator.click({ timeout: 5000 });
   } catch (e) {
     logger.warn(`Standard click failed for ${selector.toString()}, trying forced dispatch...`);
-    await locator.dispatchEvent('click').catch(() => {});
+    await locator.dispatchEvent('click').catch((err) => {
+        console.error(`Failed to click element: ${(err as Error).message}`);
+        throw err;
+    });
   }
 }
 
@@ -123,10 +119,6 @@ export async function verifyDatabaseState(page: Page, check: (db: any) => void) 
   return check(db);
 }
 
-/**
- * Waits for a specific logger.action to occur in the application.
- * Polling window.__TEST_MARKERS__ for the truth.
- */
 export async function waitForAction(page: Page, actionName: string, timeout: number = 15000) {
     logger.info(`Waiting for action truth: "${actionName}"...`);
     await page.waitForFunction((name) => {

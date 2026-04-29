@@ -37,3 +37,33 @@
     - [x] Add a toggle to show/hide lines for a cleaner look when not needed.
 - [x] **Inline Stock Updates**: Perform stress tests on rapid quantity adjustments to ensure database integrity and UI sync.
 - [x] **Final Integration**: Merge `feature/recipe-stock-enhancements` branch into `dev` and remove the worktree.
+
+## 🧪 E2E Testing & Image Linking Fixes (Session 2026-04-18)
+
+### ✅ Completed
+- [x] **Image Linking Exclusivity**: Enforced 1:1 image-product relationship in backend and added "Move Image" UI flow.
+- [x] **E2E Infrastructure**:
+    - Added `setupTestBrowser` helper with CDP-to-Mock fallback.
+    - Added `data-testid` support to `Input` and `Select` components.
+    - Added diagnostic logging and breakout loops to `helpers.ts`.
+- [x] **Selector Hardening**: Refactored `inventory-recipes.spec.ts` to use `getByTestId` and `getByRole('combobox')`.
+
+### ⏳ Pending / Next Steps --> from Human still broken from source don't do for now , we are waiting until that problem has been fixed.
+- [ ] **Fix TEST-A1/TEST-A2 Failure**: The final `expect(page.getByText(/Payment Successful/i)).toBeVisible()` is failing in mock mode.
+    - *Investigation*: Check if the toast message or the modal close animation is interfering with the visibility check.
+    - *Potential Fix*: Use `page.waitForSelector` with a longer timeout or check for database stock updates directly in the mock state.
+- [ ] **Refactor Remaining Specs**: Update the following files to use the new `setupTestBrowser` and `data-testid` pattern:
+    - `e2e/playwright/advanced-management.spec.ts`
+    - `e2e/playwright/design-mode.spec.ts`
+    - `e2e/playwright/reporting-history.spec.ts`
+    - `e2e/playwright/vibe-pos.spec.ts`
+- [ ] **Clean up Visual Companion**: Close the brainstorm server and remove temporary mockup files.
+
+## ⚡ Performance (WebView2 / WebKitGTK)
+- [ ] **Fix Later**: Conduct a full codebase audit to remove any remaining `transition-all` and `will-change` properties that cause Chromium layer explosion (VRAM exhaustion) in WebView2.
+- [ ] **Fix Later**: Ensure `content-visibility: auto` is only applied to children *inside* scrolling containers, not on the scrollable parent itself, to prevent layout thrashing.
+- [ ] **Implement Engine-Specific CSS**:
+    - **Backend**: Add a Rust IPC command (`get_os_target`) to safely detect the OS (Windows vs Linux) during the Database Password screen.
+    - **Frontend**: Fetch the OS via IPC on mount and inject `data-engine="webview2"` or `data-engine="webkitgtk"` onto the `<html>` tag.
+    - **CSS**: Split engine-specific optimizations into `webview2.css` (omit `will-change`) and `webkitgtk.css` (force `will-change` for GPU promotion) to maximize hardware acceleration on both targets without FOUC.
+

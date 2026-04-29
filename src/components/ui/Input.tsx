@@ -11,13 +11,15 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   /** Optional error message to display below the input. */
   error?: string;
+  /** Optional test ID for E2E testing. */
+  "data-testid"?: string;
 }
 
 /**
  * Standard text input component with support for labels and error messages.
  * Styled to match the application's design system.
  */
-export const Input = ({ className = "", label, error, ref, ...props }: InputProps & { ref?: React.Ref<HTMLInputElement> }) => {
+export const Input = ({ className = "", label, error, ref, "data-testid": testId, ...props }: InputProps & { ref?: React.Ref<HTMLInputElement> }) => {
     return (
       <div className="w-full">
         {label && (
@@ -35,6 +37,7 @@ export const Input = ({ className = "", label, error, ref, ...props }: InputProp
             className,
           )}
           ref={ref}
+          data-testid={testId}
           {...props}
         />
         {error && (
