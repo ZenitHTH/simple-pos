@@ -43,11 +43,20 @@ pub fn get_full_management_data(state: tauri::State<'_, crate::AppState>) -> Res
 /// An empty result on success.
 #[tauri::command]
 pub fn initialize_database(key: String, state: tauri::State<'_, crate::AppState>) -> Result<(), String> {
+    // 1. First, verify the key using a single, non-pooled connection.
+    // This prevents log flooding and crashes if the key is wrong.
+    database::connection::verify_database_key(&key)?;
+
+    // 2. If verified, create the authenticated connection pool.
     let pool = database::connection::create_pool(&key)?;
+
+    // 3. Run any pending migrations to ensure schema is up-to-date.
     {
         let mut conn = pool.get().map_err(|e| e.to_string())?;
         run_migrations(&mut conn).map_err(|e| e.to_string())?;
     }
+
+    // 4. Save the pool to application state.
     *state.pool.write().map_err(|_| "Failed to lock pool state")? = Some(pool);
     Ok(())
 }

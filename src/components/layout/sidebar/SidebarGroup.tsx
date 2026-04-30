@@ -34,21 +34,16 @@ export function SidebarGroup({
       <button
         onClick={onToggle}
         className={cn(
-          "group tuner-sidebar-item flex w-full items-center gap-3 transition-[background-color,color,box-shadow] duration-200 px-4 py-3",
+          "tuner-sidebar-item flex w-full items-center gap-3 transition-colors duration-150 px-4 py-3",
           hasActiveChild
-            ? "text-primary shadow-sm"
+            ? "text-primary"
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
-        style={{
-          backgroundColor: hasActiveChild ? "color-mix(in srgb, var(--primary), transparent calc(100% - var(--sidebar-active-bg-opacity) * 100%))" : undefined
-        }}
       >
         <span
           className={cn(
             "tuner-sidebar-icon flex items-center justify-center shrink-0",
-            hasActiveChild
-              ? "text-primary"
-              : "text-muted-foreground group-hover:text-foreground",
+            hasActiveChild ? "text-primary" : "text-muted-foreground",
           )}
         >
           {icon}
@@ -56,10 +51,8 @@ export function SidebarGroup({
         <span className="flex-1 text-left text-[1em] font-medium">{name}</span>
         <span
           className={cn(
-            "transition-transform duration-200",
-            hasActiveChild
-              ? "text-primary"
-              : "text-muted-foreground group-hover:text-foreground",
+            "transition-transform duration-150",
+            hasActiveChild ? "text-primary" : "text-muted-foreground",
           )}
         >
           {isExpanded ? <FaChevronDown size={12} /> : <FaChevronRight size={12} />}
@@ -68,7 +61,7 @@ export function SidebarGroup({
 
       <div
         className={cn(
-          "overflow-hidden transition-[max-height,opacity,margin] duration-300 ease-in-out",
+          "overflow-hidden transition-[max-height,opacity] duration-200",
           isExpanded ? "mt-1 max-h-96 opacity-100" : "max-h-0 opacity-0",
         )}
       >

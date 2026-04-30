@@ -43,7 +43,7 @@ const DisplaySettings = memo(() => {
         </div>
 
         {/* Design Mode (On-Canvas) */}
-        <div className="bg-muted/10 rounded-2xl p-6 border border-border/50 transition-[background-color,border-color] hover:bg-muted/20">
+        <div className="bg-muted/10 border-border/50 rounded-2xl border p-6 transition-[background-color] hover:bg-muted/20">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="bg-success/10 p-2.5 rounded-xl">

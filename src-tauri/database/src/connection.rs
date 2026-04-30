@@ -70,9 +70,9 @@ fn read_custom_db_storage_path(data_dir: &Path) -> Option<PathBuf> {
         .map(PathBuf::from)
 }
 
-/// DEPRECATED: Use create_pool instead for thread-safe access.
-/// Establishes a connection to the encrypted (or soon-to-be encrypted) database.
-pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
+/// Verifies the encryption key and handles initial database encryption if needed.
+/// This should be called before creating a connection pool to avoid flooding with errors.
+pub fn verify_database_key(key: &str) -> Result<(), String> {
     if key.len() < 8 {
         return Err("Encryption key must be at least 8 characters long".to_string());
     }
@@ -81,20 +81,24 @@ pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
     let hex_key = hex::encode(key);
 
     // 1. Try to open the database as already encrypted
-    let mut conn = open_connection(&database_url)?;
-    apply_encryption_key(&mut conn, &hex_key)?;
+    // We use a scope here to ensure the connection is closed before we try again
+    {
+        let mut conn = open_connection(&database_url)?;
+        apply_encryption_key(&mut conn, &hex_key)?;
 
-    if is_database_accessible(&mut conn) {
-        return Ok(conn);
+        if is_database_accessible(&mut conn) {
+            return Ok(());
+        }
     }
 
     // 2. If encrypted access failed, check if the database is currently unencrypted (fresh setup)
     // Note: We MUST open a new connection because SQLCipher locks the failed one into an error state.
-    let mut conn = open_connection(&database_url)?;
-
-    if is_database_accessible(&mut conn) {
-        encrypt_database(&mut conn, &hex_key)?;
-        return Ok(conn);
+    {
+        let mut conn = open_connection(&database_url)?;
+        if is_database_accessible(&mut conn) {
+            encrypt_database(&mut conn, &hex_key)?;
+            return Ok(());
+        }
     }
 
     // 3. Both attempts failed (wrong key or file is corrupted)
@@ -108,6 +112,11 @@ pub fn create_pool(key: &str) -> Result<DbPool, String> {
     
     Pool::builder()
         .connection_customizer(Box::new(SqlCipherCustomizer { hex_key }))
+        // Set min_idle to 0 to prevent r2d2 from aggressively opening connections 
+        // in the background, which can cause log floods and crashes on auth failure.
+        .min_idle(Some(0))
+        // Limit max size to keep resource usage low on POS hardware
+        .max_size(5)
         .build(manager)
         .map_err(|e| format!("Failed to create pool: {}", e))
 }

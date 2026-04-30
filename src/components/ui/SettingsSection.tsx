@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import { cn } from "@/lib";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 
 /**
  * Props for the SettingsSection component.
@@ -31,16 +30,17 @@ export default function SettingsSection({
   className = "",
 }: SettingsSectionProps) {
   return (
-    <Card 
-      className={cn("mb-8 shadow-sm", className)}
+    <div 
+      className={cn(
+        "bg-card text-card-foreground border-border mb-8 overflow-hidden rounded-2xl border p-6 shadow-sm", 
+        className
+      )}
     >
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-xl">
-          {Icon && <Icon className="text-primary" />}
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-    </Card>
+      <div className="mb-6 flex items-center gap-2">
+        {Icon && <Icon className="text-primary text-xl" />}
+        <h3 className="text-xl font-bold tracking-tight">{title}</h3>
+      </div>
+      <div>{children}</div>
+    </div>
   );
 }

@@ -31,7 +31,7 @@ pub mod schema;
 pub mod stock;
 
 pub use category::model::{Category, NewCategory};
-pub use connection::{establish_connection, get_database_path};
+pub use connection::{get_database_path, verify_database_key, create_pool};
 pub use customer::model::{Customer, NewCustomer};
 pub use image::model::{Image, NewImage};
 pub use image::{

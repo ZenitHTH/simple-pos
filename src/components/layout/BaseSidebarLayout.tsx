@@ -4,7 +4,6 @@ import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import { FaTimes } from "react-icons/fa";
 import { cn } from "@/lib";
-import GlobalHeader from "@/components/ui/GlobalHeader";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 import { useSettings } from "@/context/settings/SettingsContext";
@@ -54,6 +53,7 @@ export default function BaseSidebarLayout({
       style={{ 
         width: dynamicWidth,
         "--sidebar-button-scale": buttonScale,
+        fontSize: `${fontScale}%`,
         ...extraStyle
       } as any}
       className={cn(
@@ -64,35 +64,26 @@ export default function BaseSidebarLayout({
         className
       )}
     >
-      <div
-        style={{
-          width: dynamicWidth,
-          fontSize: `${fontScale}%`,
-        }}
-        className="group relative flex flex-1 flex-col overflow-hidden"
-      >
-        <div className="flex items-center justify-between p-6 lg:block">
-          <GlobalHeader
-            title={title}
-            icon={headerIcon}
-            className="mb-0 px-0"
-          />
-          {showMobileClose && onClose && (
-            <button
-              onClick={onClose}
-              className="text-muted hover:text-foreground p-2 transition-colors lg:hidden"
-            >
-              <FaTimes size={24} />
-            </button>
-          )}
+      <div className="flex items-center justify-between p-6 lg:block">
+        <div className="flex items-center gap-2">
+          {headerIcon && <headerIcon className="text-primary text-xl" />}
+          <h2 className="text-xl font-bold tracking-tight">{title}</h2>
         </div>
-
-        <div className="flex-1 overflow-hidden">
-          {children}
-        </div>
-
-        <SelectableOverlay id="sidebar_scale" />
+        {showMobileClose && onClose && (
+          <button
+            onClick={onClose}
+            className="text-muted hover:text-foreground p-2 transition-colors lg:hidden"
+          >
+            <FaTimes size={24} />
+          </button>
+        )}
       </div>
+
+      <nav className="flex-1 overflow-hidden">
+        {children}
+      </nav>
+
+      <SelectableOverlay id="sidebar_scale" />
     </aside>
   );
 }

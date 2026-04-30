@@ -31,7 +31,7 @@ const ProductCard = memo(function ProductCard({
   return (
     <div
       onClick={() => onAdd(product)}
-      className="group tuner-card relative cursor-pointer overflow-hidden active:scale-95 active:brightness-95 active:shadow-inner touch-manipulation transition-[transform,filter,box-shadow] duration-200"
+      className="tuner-card relative cursor-pointer overflow-hidden transition-[transform,background-color] duration-150 active:scale-95"
     >
       {/* Image Container */}
       <div
@@ -44,7 +44,7 @@ const ProductCard = memo(function ProductCard({
           <img
             src={imageSrc}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-active:scale-105"
+            className="h-full w-full object-cover"
             style={parseImageStyle(product.image_object_position)}
             onError={() => setImageError(true)}
           />
@@ -53,41 +53,33 @@ const ProductCard = memo(function ProductCard({
             {product.name.charAt(0)}
           </div>
         )}
-
-        {/* Hover/Tap Overlay with Icon */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-primary-muted group-active:bg-primary-glow">
-          <div className="bg-primary text-primary-foreground flex h-14 w-14 translate-y-4 items-center justify-center rounded-2xl opacity-0 shadow-xl transition-[transform,opacity] duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-active:scale-110">
-            <FaPlus size={24} />
-          </div>
-        </div>
       </div>
 
       {/* Info Section */}
-      <div className="pt-4 px-1 pb-1">
-        <div className="mb-3">
-          <span className="text-muted-foreground mb-1.5 block text-[0.8em] font-semibold tracking-wider uppercase opacity-80">
+      <div className="pt-3 px-1 pb-1">
+        <div className="mb-2">
+          <span className="text-muted-foreground mb-1 block text-[0.75em] font-semibold tracking-wider uppercase opacity-70">
             {product.category}
           </span>
           <h3 
-            className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.25em] leading-tight font-extrabold tracking-tight"
+            className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.125em] leading-tight font-extrabold"
             style={{ fontSize: "var(--grid-item-title-font-scale)" }}
           >
             {product.name}
           </h3>
         </div>
 
-          <div className="mt-4 flex items-center justify-between border-t border-dashed border-border/60 pt-4">
+        <div className="mt-3 flex items-center justify-between border-t border-dashed border-border/40 pt-3">
           <div className="flex flex-col">
-            <span className="text-muted-foreground text-[0.75em] font-medium">Price</span>
             <span 
-              className="text-primary text-[1.6em] leading-none font-black tracking-tight"
+              className="text-primary text-[1.4em] leading-none font-black tracking-tight"
               style={{ fontSize: "var(--grid-item-price-font-scale)" }}
             >
               {currency}
               {product.price.toFixed(2)}
             </span>
           </div>
-          <div className="bg-primary-muted text-primary tuner-button px-4 py-2 text-[0.9em] font-black tracking-wide group-hover:bg-primary-hover group-hover:text-primary-foreground transition-[color,background-color,transform,box-shadow] duration-200 shadow-sm group-active:scale-110 active:shadow-md">
+          <div className="bg-primary text-primary-foreground tuner-button rounded-lg px-3 py-1.5 text-[0.8em] font-black uppercase tracking-wider transition-colors hover:bg-primary/90">
             ADD
           </div>
         </div>

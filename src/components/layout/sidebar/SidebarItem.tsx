@@ -22,22 +22,17 @@ export function SidebarItem({
     <Link
       href={path}
       className={cn(
-        "group tuner-sidebar-item flex items-center gap-3 transition-[background-color,color,box-shadow,transform] duration-200",
+        "tuner-sidebar-item flex items-center gap-3 transition-colors duration-150",
         isSubItem ? "px-3 py-2 text-[0.9em]" : "px-4 py-3",
         isActive
-          ? "bg-primary text-primary-foreground shadow-primary-glow shadow-md"
+          ? "bg-primary text-primary-foreground"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
       )}
-      style={{
-        backgroundColor: isActive ? undefined : undefined, // Handled by classes, but keeping for color-mix if needed
-      } as any}
     >
       <span
         className={cn(
           "tuner-sidebar-icon flex items-center justify-center shrink-0",
-          isActive
-            ? "text-primary-foreground"
-            : "text-muted-foreground group-hover:text-foreground",
+          isActive ? "text-primary-foreground" : "text-muted-foreground",
         )}
       >
         {icon}

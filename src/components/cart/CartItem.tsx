@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { CartItem as CartItemType, parseImageStyle } from "@/lib";
-import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { FaMinus, FaPlus, FaTrash, FaTrashAlt } from "react-icons/fa";
 import { convertFileSrc } from "@/lib/api/invoke";
 
 interface CartItemProps {
@@ -24,13 +24,13 @@ const CartItem = memo(function CartItem({
 
   return (
     <div
-      className="border-border tuner-cart-item group hover:border-primary-glow flex flex-col overflow-hidden border"
+      className="border-border tuner-cart-item flex flex-col overflow-hidden border transition-colors duration-150"
     >
       {/* Top row: image + info + delete */}
-      <div className="flex items-center gap-4 p-[calc(var(--cart-item-padding)*1px)]">
+      <div className="flex items-center gap-3 p-3">
         {/* Thumbnail */}
         <div
-          className="border-border/50 shrink-0 overflow-hidden rounded-xl border shadow-sm"
+          className="border-border/50 shrink-0 overflow-hidden rounded-xl border"
           style={{
             width: "var(--cart-item-image-size)",
             height: "var(--cart-item-image-size)",
@@ -60,7 +60,7 @@ const CartItem = memo(function CartItem({
             {item.name}
           </h4>
           <div
-            className="text-primary mt-1 font-black"
+            className="text-primary mt-0.5 font-black"
             style={{ fontSize: "calc(var(--cart-item-price-font-size) * 0.0115em)" }}
           >
             {currency}
@@ -68,36 +68,35 @@ const CartItem = memo(function CartItem({
           </div>
         </div>
 
-        {/* Delete — extra large touch target */}
+        {/* Delete */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-muted/40 hover:text-destructive active:text-white hover:bg-destructive/10 active:bg-destructive flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-[color,background-color,transform] duration-200 active:scale-90"
+          className="text-muted/40 hover:text-destructive active:text-white flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors active:bg-destructive active:scale-90"
         >
-          <FaTrash size={16} />
+          <FaTrash size={14} />
         </button>
       </div>
 
-      {/* Bottom row: unit price + quantity controls */}
-      <div className="flex items-center justify-between px-[calc(var(--cart-item-padding)*1px)] pb-[calc(var(--cart-item-padding)*1px)]">
-        <span className="text-muted-foreground text-[0.8em] font-medium opacity-70">
-          {currency}
-          {item.price.toFixed(2)} each
+      {/* Bottom row: quantity controls */}
+      <div className="flex items-center justify-between px-3 pb-3">
+        <span className="text-muted-foreground text-[0.8em] font-medium opacity-60">
+          {currency}{item.price.toFixed(2)} each
         </span>
-        <div className="bg-muted/30 border-border/50 flex items-center gap-1 rounded-2xl border p-1 shadow-inner">
+        <div className="bg-muted/30 border-border/50 flex items-center rounded-xl border p-0.5">
           <button
             onClick={() => onUpdateQuantity(item.id, -1)}
-            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground tuner-button flex h-12 w-12 items-center justify-center shadow-sm active:scale-90 active:shadow-lg active:brightness-110 touch-manipulation"
+            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground flex h-9 w-9 items-center justify-center rounded-lg shadow-sm transition-colors active:scale-90"
           >
-            <FaMinus size={14} />
+            <FaMinus size={12} />
           </button>
-          <span className="w-12 text-center font-black select-none transition-transform duration-200" style={{ fontSize: "calc(var(--cart-item-font-size) * 0.0115em)" }}>
+          <span className="w-10 text-center font-black select-none" style={{ fontSize: "calc(var(--cart-item-font-size) * 0.0115em)" }}>
             {item.quantity}
           </span>
           <button
             onClick={() => onUpdateQuantity(item.id, 1)}
-            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground tuner-button flex h-12 w-12 items-center justify-center shadow-sm active:scale-90 active:shadow-lg active:brightness-110 touch-manipulation"
+            className="bg-card text-foreground hover:bg-muted active:bg-primary active:text-primary-foreground flex h-9 w-9 items-center justify-center rounded-lg shadow-sm transition-colors active:scale-90"
           >
-            <FaPlus size={14} />
+            <FaPlus size={12} />
           </button>
         </div>
       </div>
