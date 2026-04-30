@@ -38,7 +38,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
   return (
     <div className="bg-background/80 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div 
-        className="bg-card border-border w-full max-w-2xl rounded-3xl border p-10 shadow-2xl transition-all duration-500 ease-out origin-center"
+        className="bg-card border-border w-full max-w-2xl rounded-3xl border p-10 shadow-2xl origin-center"
         style={{ 
           transform: `scale(${(settings.scaling.display_scale || 100) / 100})`,
         }}
@@ -101,7 +101,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
                 Tax (VAT)
               </h3>
               <div className="space-y-4">
-                <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-all">
+                <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-[border-color,background-color]">
                   <input
                     type="checkbox"
                     checked={settings.general.tax_enabled}
@@ -163,7 +163,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className={`text-primary-foreground shadow-2xl shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black transition-all hover:scale-[1.02] active:scale-[0.98] ${
+            className={`text-primary-foreground shadow-2xl shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
               saving
                 ? "bg-primary/70 cursor-not-allowed"
                 : "bg-primary hover:bg-primary/90"

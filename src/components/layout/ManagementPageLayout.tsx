@@ -52,7 +52,6 @@ export default function ManagementPageLayout({
     <ContentWrapper>
       <div
         className={`relative mx-auto w-full p-8 ${scrollable ? "pb-24" : ""}`}
-        style={{ willChange: "transform" }}
       >
         <GlobalHeader title={title} subtitle={subtitle}>
           {headerActions}

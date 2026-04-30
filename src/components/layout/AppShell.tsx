@@ -53,12 +53,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   // Sync motion value with settings changes
   useEffect(() => {
+    const isLinux = typeof document !== 'undefined' && document.documentElement.getAttribute('data-engine') === 'webkitgtk';
+    
     const controls = animate(scaleMV, targetScale, {
-      type: "spring",
+      type: isLinux ? "tween" : "spring",
+      ease: "easeInOut",
+      duration: isLinux ? 0.2 : 0.4,
       stiffness: 300,
       damping: 30,
       mass: 1
-    });
+    } as any);
     return () => controls.stop();
   }, [targetScale, scaleMV]);
 
@@ -80,7 +84,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           transformOrigin: 'top left',
           width: staticWidth,
           height: staticHeight,
-          willChange: 'transform'
         }}
       >
         <Sidebar />

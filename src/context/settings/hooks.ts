@@ -82,6 +82,8 @@ export function useApplySettings(settings: AppSettings) {
     root.style.setProperty("--grid-item-radius", `${grid.item_radius ?? 24}px`);
     root.style.setProperty("--grid-item-title-font-size", String(grid.item_title_font_size ?? 100));
     root.style.setProperty("--grid-item-price-font-size", String(grid.item_price_font_size ?? 100));
+    root.style.setProperty("--grid-item-title-font-scale", `${(grid.item_title_font_size ?? 100) * 0.0125}em`);
+    root.style.setProperty("--grid-item-price-font-scale", `${(grid.item_price_font_size ?? 100) * 0.016}em`);
     root.style.setProperty("--grid-gap", `${grid.gap ?? 20}px`);
     root.style.setProperty("--grid-item-shadow-opacity", `${(grid.item_shadow ?? 10) / 100}`);
     root.style.setProperty("--grid-item-border-width", `${grid.item_border_width ?? 1}px`);
@@ -117,6 +119,28 @@ export function useApplySettings(settings: AppSettings) {
     root.style.setProperty(
         "--display-scale",
         `${(settings.scaling.display_scale ?? 100) / 100}`,
+    );
+
+    // Apply component scales
+    root.style.setProperty(
+        "--grid-scale",
+        `${(settings.scaling.components.grid ?? 100) / 100}`,
+    );
+    root.style.setProperty(
+        "--cart-scale",
+        `${(settings.scaling.components.cart ?? 100) / 100}`,
+    );
+    root.style.setProperty(
+        "--sidebar-scale",
+        `${(settings.scaling.components.sidebar ?? 100) / 100}`,
+    );
+    root.style.setProperty(
+        "--button-scale",
+        `${(settings.scaling.components.button ?? 100) / 100}`,
+    );
+    root.style.setProperty(
+        "--numpad-scale",
+        `${(settings.styling.payment.numpad_scale ?? 100) / 100}`,
     );
 
     // Apply font scales that are used as CSS variables

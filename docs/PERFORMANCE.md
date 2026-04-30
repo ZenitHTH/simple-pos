@@ -73,5 +73,17 @@ This document establishes the architectural mandates for maintaining the "Instan
 
 ---
 
-**Last Audit**: April 28, 2026.
-*Do not revert to manual connections or broad transitions.*
+## 7. Memoization Mandates (The WebView Exception)
+**Mandate**: While Next.js 16 utilizes the React Compiler, manual `useMemo` is still **mandatory** for IPC-heavy logic and Context stability in Vibe POS.
+
+*   **The IPC Bridge Rule**: Always manually memoize the transformation of "Raw Data" from Rust (JSON serialization). 
+    *   *Fix*: Use `useMemo` for `.map()`, `.filter()`, or category-mapping logic applied to data from `invoke()`. This prevents the "Serialization Tax" from blocking the UI thread during every keystroke (e.g., in the product search).
+*   **Context Stability (The Root Lock)**: Always wrap Context Provider `value` objects in `useMemo`.
+    *   *Reason*: Unstable context references force the WebView to recalculate the entire DOM tree, causing "Layer Explosions" and VRAM pressure in WebView2.
+*   **The Linux Budget (WebViewGTK)**: For low-end Linux POS terminals, favor manual `useMemo` for any nested loops or math (Tax/Change calculations). 
+    *   *Reason*: The React Compiler optimizes for the "average" case; manual memoization provides a hard guarantee that the main thread remains free for 60fps scrolling and input responsiveness.
+
+---
+
+**Last Audit**: April 30, 2026.
+*Do not revert to manual connections, broad transitions, or unstable context identities.*

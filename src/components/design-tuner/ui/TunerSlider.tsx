@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import RangeSlider from "@/components/ui/RangeSlider";
 import { cn } from "@/lib";
 import { useSettings } from "@/context/settings/SettingsContext";
@@ -13,15 +14,8 @@ interface TunerSliderProps {
   unit?: string;
   onChange: (v: number) => void;
   formatDisplay?: (v: number) => string;
-  variant?: "default" | "compact"; // To handle slight visual differences if needed, default covers both
+  variant?: "default" | "compact"; 
 }
-
-/**
- * TunerSlider Component
- * 
- * @param {Object} props - The properties object.
- * @returns {JSX.Element | null} The rendered component.
- */
 export function TunerSlider({
   label,
   value,
@@ -34,9 +28,25 @@ export function TunerSlider({
   variant = "default",
 }: TunerSliderProps) {
   const { commitHistory } = useSettings();
+  const [localValue, setLocalValue] = useState(value);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const handleLocalChange = (newVal: number) => {
+    setLocalValue(newVal);
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      onChange(newVal);
+    }, 100);
+  };
+
   const display = formatDisplay
-    ? formatDisplay(value)
-    : `${value}${unit}`;
+    ? formatDisplay(localValue)
+    : `${localValue}${unit}`;
 
   return (
     <div className={cn("space-y-1.5", variant === "compact" && "py-1")}>
@@ -64,14 +74,15 @@ export function TunerSlider({
       </div>
       <div className="flex items-center h-8">
         <RangeSlider
-          value={value}
+          value={localValue}
           min={min}
           max={max}
           step={step}
-          onChange={onChange}
+          onChange={handleLocalChange}
           onPointerDown={() => commitHistory()}
         />
       </div>
     </div>
   );
 }
+

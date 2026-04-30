@@ -2,6 +2,7 @@
 
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
+import { updateStyleVariable } from "@/context/settings/hooks";
 import { cn } from "@/lib";
 import { motion, PanInfo } from "framer-motion";
 import { useState, useRef } from "react";
@@ -19,6 +20,7 @@ export default function SelectableOverlay({
   const { settings, updateSettings } = useSettings();
   const [isDragging, setIsDragging] = useState(false);
   const startScaleRef = useRef<number>(100);
+  const currentScaleRef = useRef<number>(100);
 
   if (!isMockupMode) return null;
 
@@ -37,6 +39,14 @@ export default function SelectableOverlay({
       case "payment_modal_scale": return settings.scaling.components.payment_modal;
       default: return 100;
     }
+  };
+
+  const cssVarMap: Record<string, string> = {
+    grid_scale: "--grid-scale",
+    numpad_scale: "--numpad-scale",
+    cart_scale: "--cart-scale",
+    sidebar_scale: "--sidebar-scale",
+    button_scale: "--button-scale",
   };
 
   const updateScaleValue = (id: string, val: number) => {
@@ -61,32 +71,34 @@ export default function SelectableOverlay({
   const handleDragStart = () => {
     setIsDragging(true);
     startScaleRef.current = currentScale;
+    currentScaleRef.current = currentScale;
   };
 
   const handleDrag = (_: any, info: PanInfo, direction: "nw" | "ne" | "sw" | "se") => {
     const sensitivity = 0.5;
     let delta = 0;
 
-    // Logic: 
-    // Pulling away from center increases scale.
-    // Pushing towards center decreases scale.
     switch (direction) {
-      case "se": // Bottom-right: +x, +y increases scale
-        delta = (info.offset.x + info.offset.y) * sensitivity;
-        break;
-      case "nw": // Top-left: -x, -y increases scale
-        delta = (-info.offset.x - info.offset.y) * sensitivity;
-        break;
-      case "ne": // Top-right: +x, -y increases scale
-        delta = (info.offset.x - info.offset.y) * sensitivity;
-        break;
-      case "sw": // Bottom-left: -x, +y increases scale
-        delta = (-info.offset.x + info.offset.y) * sensitivity;
-        break;
+      case "se": delta = (info.offset.x + info.offset.y) * sensitivity; break;
+      case "nw": delta = (-info.offset.x - info.offset.y) * sensitivity; break;
+      case "ne": delta = (info.offset.x - info.offset.y) * sensitivity; break;
+      case "sw": delta = (-info.offset.x + info.offset.y) * sensitivity; break;
     }
 
     const newScale = Math.min(Math.max(startScaleRef.current + delta, 50), 200);
-    updateScaleValue(id, newScale);
+    currentScaleRef.current = newScale;
+
+    // Fast Path: Direct DOM Update
+    const varName = cssVarMap[id];
+    if (varName) {
+      updateStyleVariable(varName, `${newScale / 100}`);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    // Slow Path: Commit to State
+    updateScaleValue(id, currentScaleRef.current);
   };
 
   const renderHandle = (direction: "nw" | "ne" | "sw" | "se") => {
@@ -104,7 +116,7 @@ export default function SelectableOverlay({
         dragElastic={0}
         onDragStart={handleDragStart}
         onDrag={(e, info) => handleDrag(e, info, direction)}
-        onDragEnd={() => setIsDragging(false)}
+        onDragEnd={handleDragEnd}
         whileHover={{ scale: 1.2, backgroundColor: "var(--primary)" }}
         whileTap={{ scale: 0.9 }}
         data-handle-direction={direction}
@@ -121,7 +133,7 @@ export default function SelectableOverlay({
     <div
       data-selectable-id={id}
       className={cn(
-        "pointer-events-auto absolute inset-0 z-10 cursor-pointer rounded-xl transition-all duration-200",
+        "pointer-events-auto absolute inset-0 z-10 cursor-pointer rounded-xl transition-[border-color,background-color,opacity] duration-200",
         isSelected
           ? "border-4 border-primary bg-primary/10"
           : "border-2 border-transparent hover:border-primary/50 hover:bg-primary/5",

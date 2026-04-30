@@ -1,9 +1,35 @@
+use serde::Serialize;
 use settings_lib::{
     get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,
     save_settings as lib_save_settings, AppSettings, StorageInfo,
 };
 use std::path::PathBuf;
 use tauri::{command, Manager};
+
+#[derive(Serialize)]
+pub struct AppInitialState {
+    pub settings: AppSettings,
+    pub storage_info: StorageInfo,
+    pub database_exists: bool,
+}
+
+/// Retrieves the consolidated initial state for the application.
+/// Reduces IPC round-trips during startup.
+#[command]
+pub fn get_app_initial_state() -> Result<AppInitialState, String> {
+    let settings = lib_get_settings()?;
+    let storage_info = lib_get_storage_info()?;
+    
+    use database::get_database_path;
+    let db_path = get_database_path().map_err(|e| e.to_string())?;
+    let database_exists = db_path.exists();
+
+    Ok(AppInitialState {
+        settings,
+        storage_info,
+        database_exists,
+    })
+}
 
 /// Retrieves the current application settings.
 ///

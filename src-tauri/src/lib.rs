@@ -82,11 +82,13 @@ pub fn run() {
             // Export Commands
             export_receipts,
             // Settings Commands
+            get_app_initial_state,
             get_settings,
             save_settings,
             get_storage_info,
             migrate_image_directory,
             // Database Commands
+            get_full_management_data,
             initialize_database,
             check_database_exists,
             logout_database,

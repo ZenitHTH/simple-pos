@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { FaPalette, FaSun, FaMoon, FaDesktop } from "react-icons/fa";
 import { Button } from "@/components/ui/Button";
 import SettingsSection from "@/components/ui/SettingsSection";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
 /**
  * ThemeSettings Component
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
-export default function ThemeSettings() {
+const ThemeSettings = memo(function ThemeSettings() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -74,4 +74,6 @@ export default function ThemeSettings() {
       </div>
     </SettingsSection>
   );
-}
+});
+
+export default ThemeSettings;

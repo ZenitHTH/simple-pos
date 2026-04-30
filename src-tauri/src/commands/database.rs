@@ -1,4 +1,37 @@
 use database::run_migrations;
+use serde::Serialize;
+use database::product::model::ProductWithImage;
+use database::{Category, Customer, Material, Stock};
+
+#[derive(Serialize)]
+pub struct ManagementData {
+    pub products: Vec<ProductWithImage>,
+    pub categories: Vec<Category>,
+    pub customers: Vec<Customer>,
+    pub materials: Vec<Material>,
+    pub stocks: Vec<Stock>,
+}
+
+/// Retrieves all management data in a single atomic database operation.
+/// Consolidates products, categories, customers, materials, and stocks to reduce IPC overhead.
+#[tauri::command]
+pub fn get_full_management_data(state: tauri::State<'_, crate::AppState>) -> Result<ManagementData, String> {
+    let mut conn = crate::conn!(state);
+    
+    let products = database::product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())?;
+    let categories = database::category::get_all_categories(&mut conn).map_err(|e| e.to_string())?;
+    let customers = database::customer::get_all_customers(&mut conn).map_err(|e| e.to_string())?;
+    let materials = database::material::get_all_materials(&mut conn).map_err(|e| e.to_string())?;
+    let stocks = database::stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())?;
+
+    Ok(ManagementData {
+        products,
+        categories,
+        customers,
+        materials,
+        stocks,
+    })
+}
 
 /// Initializes the database using the provided encryption key.
 /// Runs all pending database migrations.

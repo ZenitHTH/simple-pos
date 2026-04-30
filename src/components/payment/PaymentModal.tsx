@@ -38,7 +38,6 @@ export default function PaymentModal({
 
   // Reset state when modal opens
   useEffect(() => {
-    logger.info("PaymentModal: isOpen changed to", isOpen);
     if (isOpen) {
       setCashReceived("");
     }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import RangeSlider from "./RangeSlider";
 
 /**
@@ -38,6 +39,24 @@ export default function NumberSlider({
   unit = "%",
   label,
 }: NumberSliderProps) {
+  const [localValue, setLocalValue] = useState(value);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync internal state when external value changes
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const handleLocalChange = (newVal: number) => {
+    setLocalValue(newVal);
+    
+    // Debounce external change to keep main thread and IPC channel clear
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      onChange(newVal);
+    }, 100);
+  };
+
   return (
     <div className="space-y-2">
       {(label || unit) && (
@@ -46,14 +65,14 @@ export default function NumberSlider({
             <span className="text-foreground font-semibold">{label}</span>
           )}
           <span className="text-primary font-mono">
-            {value}
+            {localValue}
             {unit}
           </span>
         </div>
       )}
       <RangeSlider
-        value={value}
-        onChange={onChange}
+        value={localValue}
+        onChange={handleLocalChange}
         min={min}
         max={max}
         step={step}

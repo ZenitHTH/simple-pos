@@ -56,9 +56,8 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Calculate Cart Width
-  const cartBaseWidth = 320; // w-80
-  const cartWidthMultiplier = (settings.scaling.components.cart || 100) / 100;
-  const cartDynamicWidth = isCartVisible ? `${cartBaseWidth * cartWidthMultiplier}px` : "0px";
+  // We use CSS variables to allow Design Mode to update scale without triggering React re-renders
+  const cartDynamicWidth = isCartVisible ? `calc(320px * var(--cart-scale, 1))` : "0px";
 
   return (
     <div className="bg-background box-border flex h-full gap-6 overflow-hidden p-6">

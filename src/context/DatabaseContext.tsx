@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { logger } from "@/lib/utils/logger";
+import { useSettings } from "./settings/SettingsContext"; // Import this
 
 interface DatabaseContextType {
   dbKey: string | null;
@@ -18,25 +19,17 @@ const DatabaseContext = createContext<DatabaseContextType | undefined>(
 );
 
 export function DatabaseProvider({ children }: { children: React.ReactNode }) {
+  const { databaseExists: initialDbExists } = useSettings(); // Get from settings
   const [dbKey, setDbKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dbExists, setDbExists] = useState<boolean | null>(null);
 
+  // Sync with initial check from SettingsProvider
   useEffect(() => {
-    const checkDb = async () => {
-      try {
-        const exists: boolean = await invoke("check_database_exists");
-        setDbExists(exists);
-      } catch (err) {
-        logger.error("Failed to check database:", err);
-        // If check fails, we don't know if it exists.
-        // Better to keep it null or set a specific state to show error UI.
-        // For now, setting it to null or handling it in the guard is safer.
-        setDbExists(null);
-      }
-    };
-    checkDb();
-  }, []);
+    if (initialDbExists !== null) {
+      setDbExists(initialDbExists);
+    }
+  }, [initialDbExists]);
 
   const login = async (key: string) => {
     setIsLoading(true);

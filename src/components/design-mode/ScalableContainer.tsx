@@ -61,7 +61,7 @@ export default function ScalableContainer({
 
   return (
     <motion.div
-      className={`group relative origin-top ${className}`}
+      className={`group relative origin-top transform-gpu ${className}`}
       initial={false}
       animate={{
         scale: scale / 100,
@@ -75,11 +75,11 @@ export default function ScalableContainer({
       style={{
         fontSize: `${fontScale}%`,
         marginBottom: `${(scale - 100) * 0.5}%`,
-        willChange: "transform",
       }}
     >
       <SelectableOverlay id={String(settingKey)} />
       {children}
     </motion.div>
+
   );
 }

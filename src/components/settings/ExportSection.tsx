@@ -119,7 +119,8 @@ export default function ExportSection() {
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-all ${format === f
+                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-[background-color,border-color,color] ${
+format === f
                     ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
                     : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
                     }`}

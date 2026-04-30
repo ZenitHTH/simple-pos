@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { CartItem as CartItemType, Customer } from "@/lib";
 import CartItem from "./CartItem";
 import CartSummary from "./CartSummary";
@@ -18,7 +19,7 @@ interface CartProps {
   itemsCount: number;
 }
 
-export default function Cart({
+const Cart = memo(function Cart({
   items,
   onUpdateQuantity,
   onRemove,
@@ -44,7 +45,7 @@ export default function Cart({
   }
 
   return (
-    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-2xl transition-all duration-300">
+    <Card className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col overflow-hidden shadow-2xl transition-[transform,box-shadow,opacity] duration-300">
       <CardHeader className="bg-card/80 z-20 border-b backdrop-blur-md">
         <CardTitle className="flex items-center justify-between gap-3 text-[1.5em] font-black">
           <div className="flex items-center gap-2">
@@ -63,7 +64,7 @@ export default function Cart({
         <div
           className="flex flex-col"
           style={{
-            gap: `${settings.styling.cart.margin ?? 10}px`,
+            gap: "var(--cart-item-margin)",
           }}
         >
           {items.map((item) => (
@@ -73,10 +74,6 @@ export default function Cart({
                 currency={currency}
                 onUpdateQuantity={onUpdateQuantity}
                 onRemove={onRemove}
-                itemFontSize={settings.styling.cart.font_size ?? undefined}
-                headerFontSize={settings.styling.cart.header_font_size ?? undefined}
-                priceFontSize={settings.styling.cart.price_font_size ?? undefined}
-                itemPadding={settings.styling.cart.padding ?? undefined}
               />
             </div>
           ))}
@@ -97,4 +94,6 @@ export default function Cart({
       </div>
     </Card>
   );
-}
+});
+
+export default Cart;

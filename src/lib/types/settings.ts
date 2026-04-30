@@ -1,7 +1,18 @@
+import { StorageInfo } from "./image";
+
 export interface GeneralSettings {
   currency_symbol: string;
   tax_enabled: boolean;
   tax_rate: number;
+}
+
+/**
+ * Consolidated initial state for the application.
+ */
+export interface AppInitialState {
+  settings: AppSettings;
+  storage_info: StorageInfo;
+  database_exists: boolean;
 }
 
 export interface ThemeSettings {

@@ -1,7 +1,7 @@
-import { useState, useEffect, useTransition, useOptimistic } from "react";
+import { useState, useEffect, useTransition, useOptimistic, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CartItem, Product, Customer } from "@/lib";
-import { categoryApi, receiptApi, customerApi } from "@/lib";
+import { receiptApi } from "@/lib";
 import { logger } from "@/lib/utils/logger";
 import { useCurrency } from "@/hooks/settings/useCurrency";
 import { useTax } from "@/hooks/settings/useTax";
@@ -9,6 +9,7 @@ import { exampleProducts, exampleCartItems } from "@/lib";
 import { useMockup } from "@/context/MockupContext";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
+import { useDataCache } from "@/context/DataContext";
 
 /**
  * Comprehensive hook to manage Point of Sale (POS) logic.
@@ -21,6 +22,7 @@ export function usePOSLogic(initialProducts: Product[]) {
   const { isMockupMode, mockupView, setMockupView } = useMockup();
   const { dbKey } = useDatabase();
   const { showToast } = useToast();
+  const { categories: cachedCategories, customers: cachedCustomers } = useDataCache();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { currency } = useCurrency();
@@ -30,7 +32,7 @@ export function usePOSLogic(initialProducts: Product[]) {
   const [isPending, startTransition] = useTransition();
 
   // Determine which products to use
-  const productsSource = isMockupMode ? exampleProducts : initialProducts;
+  const productsSource = useMemo(() => isMockupMode ? exampleProducts : initialProducts, [isMockupMode, initialProducts]);
 
   // URL State
   const selectedCategory = searchParams.get("category") || "All";
@@ -84,12 +86,13 @@ export function usePOSLogic(initialProducts: Product[]) {
     }
   );
 
-  const [categories, setCategories] = useState<string[]>(["All"]);
+  const categories = useMemo(() => ["All", ...cachedCategories.map((c) => c.name)], [cachedCategories]);
+  const customers = cachedCustomers;
+  
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(
     isMockupMode && mockupView === "payment"
   );
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<
     number | undefined
   >(undefined);
@@ -113,18 +116,6 @@ export function usePOSLogic(initialProducts: Product[]) {
     setIsPaymentModalOpen(mockupView === "payment");
   }
 
-  useEffect(() => {
-    if (!dbKey) return;
-    Promise.all([categoryApi.getAll(dbKey), customerApi.getAll(dbKey)])
-      .then(([catData, custData]) => {
-        setCategories(["All", ...catData.map((c) => c.name)]);
-        setCustomers(custData);
-      })
-      .catch((err) => {
-        logger.error("Failed to fetch initial pos data", err);
-      });
-  }, [dbKey]);
-
   const updateURL = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value && value !== "All") {
@@ -135,15 +126,15 @@ export function usePOSLogic(initialProducts: Product[]) {
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     updateURL("category", category);
-  };
+  }, [searchParams, router]);
 
-  const handleSearchChange = (query: string) => {
+  const handleSearchChange = useCallback((query: string) => {
     updateURL("search", query);
-  };
+  }, [searchParams, router]);
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = useCallback((product: Product) => {
     startTransition(() => {
       addOptimisticCart({ type: "add", product });
       setCartItems((prev) => {
@@ -158,9 +149,9 @@ export function usePOSLogic(initialProducts: Product[]) {
         return [...prev, { ...product, quantity: 1 }];
       });
     });
-  };
+  }, [addOptimisticCart]);
 
-  const handleUpdateQuantity = (id: number, delta: number) => {
+  const handleUpdateQuantity = useCallback((id: number, delta: number) => {
     startTransition(() => {
       addOptimisticCart({ type: "update", id, delta });
       setCartItems((prev) => {
@@ -175,31 +166,31 @@ export function usePOSLogic(initialProducts: Product[]) {
           .filter((item) => item.quantity > 0);
       });
     });
-  };
+  }, [addOptimisticCart]);
 
-  const handleRemove = (id: number) => {
+  const handleRemove = useCallback((id: number) => {
     startTransition(() => {
       addOptimisticCart({ type: "remove", id });
       setCartItems((prev) => prev.filter((item) => item.id !== id));
     });
-  };
+  }, [addOptimisticCart]);
 
-  const handleCheckout = () => {
+  const handleCheckout = useCallback(() => {
     logger.info("usePOSLogic: handleCheckout called, cart length =", cartItems.length);
     if (cartItems.length === 0) return;
     logger.info("usePOSLogic: setting isPaymentModalOpen to true");
     setIsPaymentModalOpen(true);
-  };
+  }, [cartItems.length]);
 
-  const cartTotal = (() => {
+  const cartTotal = useMemo(() => {
     const totalSatang = optimisticCart.reduce((sum, item) => {
       const itemSatang = item.satang ?? Math.round(item.price * 100);
       return sum + itemSatang * item.quantity;
     }, 0);
     return (totalSatang * (1 + taxRate)) / 100;
-  })();
+  }, [optimisticCart, taxRate]);
 
-  const handleConfirmPayment = (cashReceived: number) => {
+  const handleConfirmPayment = useCallback((cashReceived: number) => {
     if (!dbKey) return;
     
     startTransition(async () => {
@@ -233,16 +224,16 @@ export function usePOSLogic(initialProducts: Product[]) {
         showToast("Payment failed. Please try again.", "error");
       }
     });
-  };
+  }, [dbKey, selectedCustomerId, cartItems, cartTotal, currency, showToast, addOptimisticCart]);
 
-  const handleSetIsPaymentModalOpen = (isOpen: boolean) => {
+  const handleSetIsPaymentModalOpen = useCallback((isOpen: boolean) => {
     setIsPaymentModalOpen(isOpen);
     if (!isOpen && isMockupMode) {
       setMockupView("default");
     }
-  };
+  }, [isMockupMode, setMockupView]);
 
-  return {
+  return useMemo(() => ({
     productsSource,
     categories,
     selectedCategory,
@@ -263,5 +254,25 @@ export function usePOSLogic(initialProducts: Product[]) {
     selectedCustomerId,
     setSelectedCustomerId,
     isPending,
-  };
+  }), [
+    productsSource,
+    categories,
+    selectedCategory,
+    handleCategoryChange,
+    searchQuery,
+    handleSearchChange,
+    optimisticCart,
+    handleAddToCart,
+    handleUpdateQuantity,
+    handleRemove,
+    isPaymentModalOpen,
+    handleSetIsPaymentModalOpen,
+    handleCheckout,
+    handleConfirmPayment,
+    currency,
+    cartTotal,
+    customers,
+    selectedCustomerId,
+    isPending
+  ]);
 }

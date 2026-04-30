@@ -1,10 +1,15 @@
 import { invoke } from "@/lib/api/invoke";
-import { AppSettings, StorageInfo } from "@/lib/types";
+import { AppSettings, StorageInfo, AppInitialState } from "@/lib/types";
 
 /**
  * API wrapper for application settings and system info.
  */
 export const settingsApi = {
+  /** Retrieves the consolidated initial state for the application. */
+  getAppInitialState: async (): Promise<AppInitialState> => {
+    return await invoke("get_app_initial_state");
+  },
+
   /** Retrieves all application settings from the configuration file. */
   getSettings: async (): Promise<AppSettings> => {
     return await invoke("get_settings");

@@ -43,7 +43,7 @@ const DisplaySettings = memo(() => {
         </div>
 
         {/* Design Mode (On-Canvas) */}
-        <div className="bg-muted/10 rounded-2xl p-6 border border-border/50 transition-all hover:bg-muted/20">
+        <div className="bg-muted/10 rounded-2xl p-6 border border-border/50 transition-[background-color,border-color] hover:bg-muted/20">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="bg-success/10 p-2.5 rounded-xl">
@@ -76,7 +76,7 @@ const DisplaySettings = memo(() => {
 
           <button
             onClick={() => router.push("/design/tuner")}
-            className="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border border-zinc-700/50 rounded-xl py-4 font-black text-xs uppercase tracking-[0.2em] shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 group"
+            className="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border border-zinc-700/50 rounded-xl py-4 font-black text-xs uppercase tracking-[0.2em] shadow-xl transition-[background-color,transform,box-shadow] active:scale-[0.98] flex items-center justify-center gap-3 group"
           >
             <FaMagic className="group-hover:text-primary transition-colors" />
             Open Professional Design Tuner

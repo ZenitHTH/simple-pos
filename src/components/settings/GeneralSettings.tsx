@@ -4,32 +4,36 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { settingsApi } from "@/lib";
 import { StorageInfo } from "@/lib";
 import { FaFolderOpen, FaCog } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToast } from "@/context/ToastContext";
+import { useSettings } from "@/context/settings/SettingsContext";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Button } from "@/components/ui/Button";
 import { logger } from "@/lib/utils/logger";
 
 interface GeneralSettingsProps {
-  imageStoragePath?: string;
-  dbStoragePath?: string;
-  onUpdateSettings: (updates: DeepPartial<AppSettings>) => void;
+  // Props removed for performance (use context instead)
 }
 
-const GeneralSettings = memo(function GeneralSettings({
-  imageStoragePath,
-  dbStoragePath,
-  onUpdateSettings,
-}: GeneralSettingsProps) {
+const GeneralSettings = memo(function GeneralSettings({}: GeneralSettingsProps) {
   const { dbKey } = useDatabase();
   const { showToast } = useToast();
-  const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
+  const { 
+    settings, 
+    updateSettings, 
+    storageInfo: cachedStorageInfo 
+  } = useSettings(); 
+  
+  const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(cachedStorageInfo);
   const [isMigrating, setIsMigrating] = useState(false);
 
-  useEffect(() => {
-    settingsApi.getStorageInfo().then(setStorageInfo).catch(logger.error);
-  }, []);
+  const imageStoragePath = settings.storage.image_storage_path;
+  const dbStoragePath = settings.storage.db_storage_path;
+
+  const onUpdateSettings = useCallback((updates: DeepPartial<AppSettings>) => {
+    updateSettings(updates);
+  }, [updateSettings]);
 
   const handleSelectImageStorage = async () => {
     if (!dbKey) {

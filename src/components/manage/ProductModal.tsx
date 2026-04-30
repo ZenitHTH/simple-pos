@@ -19,6 +19,7 @@ import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
+import { useDataCache } from "@/context/DataContext";
 import { logger } from "@/lib/utils/logger";
 
 interface ProductModalProps {
@@ -52,6 +53,7 @@ export default function ProductModal({
 }: ProductModalProps) {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
+  const { categories } = useDataCache();
   const [formData, setFormData] = useState<NewProduct>({
     title: initialData?.title || "",
     category_id: initialData?.category_id || 0,
@@ -59,15 +61,8 @@ export default function ProductModal({
     use_recipe_stock: initialData?.use_recipe_stock || false,
   });
 
-  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-  useEffect(() => {
-    if (isOpen && dbKey) {
-      categoryApi.getAll(dbKey).then(setCategories).catch(logger.error);
-    }
-  }, [isOpen, dbKey]);
 
   // Reset form when opening for create, or set for edit
   useEffect(() => {

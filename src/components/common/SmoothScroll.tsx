@@ -15,8 +15,10 @@ export default function SmoothScroll({
     <ReactLenis
       root
       options={{
-        lerp: 0.1,
-        duration: 1.2,
+        lerp: 0.15,
+        duration: 0.8,
+        smoothWheel: true,
+        wheelMultiplier: 1.2,
         autoRaf: true,
         prevent: (node: HTMLElement) =>
           node.closest("[data-lenis-prevent]") !== null,

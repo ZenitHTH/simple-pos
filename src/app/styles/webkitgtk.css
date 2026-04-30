@@ -1,39 +1,72 @@
-/* WebKitGTK (Linux): CPU-based layout optimization */
-
 /* 
- * Force GPU promotion for smooth animations. 
- * On WebKitGTK, translateZ(0) is often more reliable than will-change 
- * for triggering Accelerated Compositing (AC) without memory overhead.
+ * WebKitGTK (Linux) High-Performance Rendering Mode
+ * Optimized for low-end POS hardware and the WebKit2 engine.
  */
+
+/* 1. Global GPU Promotion (Force hardware layers for specific complex items) */
 [data-engine="webkitgtk"] .tuner-card,
 [data-engine="webkitgtk"] .tuner-button,
 [data-engine="webkitgtk"] .btn-hero,
 [data-engine="webkitgtk"] .btn-primary-lg,
-[data-engine="webkitgtk"] .cart-item {
-  transform: translateZ(0);
+[data-engine="webkitgtk"] .cart-item,
+[data-engine="webkitgtk"] .selectable-overlay {
+  transform: translate3d(0, 0, 0); /* More aggressive than translateZ(0) */
   backface-visibility: hidden;
-  perspective: 1000;
+  perspective: 1000px;
 }
 
-/* 
- * WebKitGTK struggles with backdrop-filter. 
- * We simplify or remove it to prevent severe frame drops.
- */
-[data-engine="webkitgtk"] .backdrop-blur-sm,
-[data-engine="webkitgtk"] .backdrop-blur-md,
-[data-engine="webkitgtk"] .backdrop-blur-lg {
-  backdrop-filter: none !important;
-  background-color: rgba(var(--background), 0.95) !important;
-}
-
-/* Optimize transition properties to minimize layout thrashing */
+/* 2. Strict Effect Stripping (Remove CPU-heavy calculations) */
 [data-engine="webkitgtk"] * {
-  transition-property: background-color, color, border-color, transform, opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
 }
 
-/* Fix for scrolling performance in WebKitGTK */
+/* 3. Shadow Flattening (Shadows are the #1 performance killer in WebKitGTK) */
+[data-engine="webkitgtk"] .shadow-sm,
+[data-engine="webkitgtk"] .shadow-md,
+[data-engine="webkitgtk"] .shadow-lg,
+[data-engine="webkitgtk"] .shadow-xl,
+[data-engine="webkitgtk"] .shadow-2xl,
+[data-engine="webkitgtk"] .shadow-inner {
+  box-shadow: none !important;
+  /* Add a subtle border to replace the shadow depth */
+  border-width: 1px !important;
+}
+
+/* 4. Opaque Backgrounds (Force solid colors for containers to eliminate overdraw) */
+[data-engine="webkitgtk"] .bg-card,
+[data-engine="webkitgtk"] .bg-background,
+[data-engine="webkitgtk"] header,
+[data-engine="webkitgtk"] aside,
+[data-engine="webkitgtk"] .modal-content,
+[data-engine="webkitgtk"] [class*="bg-card/"],
+[data-engine="webkitgtk"] [class*="bg-background/"] {
+  background-color: var(--card) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+}
+
+[data-engine="webkitgtk"] .bg-primary-muted,
+[data-engine="webkitgtk"] [class*="bg-primary/"] {
+  background-color: var(--primary-muted) !important;
+  backdrop-filter: none !important;
+}
+
+/* 5. Animation Tuning (Simplified timing and properties) */
+[data-engine="webkitgtk"] * {
+  transition-duration: 150ms !important; /* Cap at 150ms for snappiness */
+}
+
+/* 6. Scrolling Stability */
 [data-engine="webkitgtk"] .custom-scrollbar {
   -webkit-overflow-scrolling: touch;
-  contain: paint;
+  contain: content;
+  overflow-anchor: none; /* Prevents layout jumping */
+}
+
+/* 7. Image Optimization */
+[data-engine="webkitgtk"] img {
+  image-rendering: -webkit-optimize-contrast;
+  transform: translate3d(0,0,0);
 }

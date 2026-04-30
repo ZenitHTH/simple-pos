@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, memo } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "@/components/filters/ProductFilter";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
@@ -34,7 +34,7 @@ interface POSProductGridProps {
  * @param {(product: Product) => void} props.onAddToCart - Callback when a product is added to the cart.
  * @param {string} props.currency - The currency symbol to display.
  */
-export default function POSProductGrid({
+const POSProductGrid = memo(function POSProductGrid({
   products,
   categories,
   selectedCategory,
@@ -56,25 +56,24 @@ export default function POSProductGrid({
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
-    const matchesSearch = product.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesCategory =
+        selectedCategory === "All" || product.category === selectedCategory;
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, selectedCategory, searchQuery]);
 
   // Calculate Grid Layout based on scale (Detailed adjustment)
-  const gridScale = settings?.scaling.components.grid || 100;
-  
-  // Base item width at 100% scale (M)
-  // We use a responsive base that gets smaller on mobile
-  const itemMinWidth = baseWidth * (gridScale / 100);
+  // We use CSS variables to allow Design Mode to update scale without triggering React re-renders
+  const itemMinWidth = baseWidth;
 
   const gridStyle = {
-    gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
-    fontSize: `${settings?.scaling.fonts.grid || 100}%`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(calc(${itemMinWidth}px * var(--grid-scale, 1)), 1fr))`,
+    fontSize: `calc(var(--grid-scale, 1) * 100%)`,
     gap: `${settings?.styling.grid.gap ?? 20}px`
   };
 
@@ -105,8 +104,6 @@ export default function POSProductGrid({
               product={product}
               onAdd={onAddToCart}
               currency={currency}
-              titleFontSizeScale={settings?.styling.grid.item_title_font_size ?? 100}
-              priceFontSizeScale={settings?.styling.grid.item_price_font_size ?? 100}
             />
           ))}
           <SelectableOverlay id="grid_scale" />
@@ -114,4 +111,6 @@ export default function POSProductGrid({
       </div>
     </>
   );
-}
+});
+
+export default POSProductGrid;

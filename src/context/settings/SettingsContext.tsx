@@ -9,7 +9,7 @@ import {
   useRef,
   ReactNode,
 } from "react";
-import { AppSettings, settingsApi, deepMerge, DeepPartial } from "@/lib";
+import { AppSettings, settingsApi, deepMerge, DeepPartial, StorageInfo } from "@/lib";
 import { logger } from "@/lib/utils/logger";
 import { DEFAULT_SETTINGS, THEME_PRESETS } from "./constants";
 import { useApplySettings } from "./hooks";
@@ -17,6 +17,8 @@ import { useApplySettings } from "./hooks";
 interface SettingsContextType {
   settings: AppSettings;
   loading: boolean;
+  storageInfo: StorageInfo | null; // Added
+  databaseExists: boolean | null; // Added
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
   save: () => Promise<void>;
   resetToCheckpoint: () => void;
@@ -35,6 +37,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+  const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
+  const [databaseExists, setDatabaseExists] = useState<boolean | null>(null);
   const [past, setPast] = useState<AppSettings[]>([]);
   const [future, setFuture] = useState<AppSettings[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,11 +56,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const load = async () => {
     try {
-      const data = await settingsApi.getSettings();
-      setSettings(deepMerge<AppSettings>(DEFAULT_SETTINGS, data));
+      const data = await settingsApi.getAppInitialState();
+      setSettings(deepMerge<AppSettings>(DEFAULT_SETTINGS, data.settings));
+      setStorageInfo(data.storage_info);
+      setDatabaseExists(data.database_exists);
       setTimeout(() => setIsInitialized(true), 100);
     } catch (error) {
-      logger.error("Failed to load settings:", error);
+      logger.error("Failed to load initial app state:", error);
     } finally {
       setLoading(false);
     }
@@ -150,6 +156,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       value={{
         settings,
         loading,
+        storageInfo,
+        databaseExists,
         updateSettings,
         save,
         resetToCheckpoint,

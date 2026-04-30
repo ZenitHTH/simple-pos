@@ -33,7 +33,6 @@ export default function SettingsSection({
   return (
     <Card 
       className={cn("mb-8 shadow-sm", className)}
-      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 300px" } as any}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">

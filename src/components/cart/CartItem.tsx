@@ -8,11 +8,6 @@ interface CartItemProps {
   currency: string;
   onUpdateQuantity: (id: number, delta: number) => void;
   onRemove: (id: number) => void;
-  /** Override font sizes & padding (from tuner or settings) */
-  itemFontSize?: number;
-  headerFontSize?: number;
-  priceFontSize?: number;
-  itemPadding?: number;
 }
 
 const CartItem = memo(function CartItem({

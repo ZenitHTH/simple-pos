@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback, use } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, use, useMemo } from "react";
+import { invoke } from "@/lib/api/invoke";
 import { 
   productApi, 
   categoryApi, 
@@ -11,13 +12,15 @@ import {
   Category, 
   Customer, 
   Material, 
-  Stock 
+  Stock,
+  Product // Import UI type
 } from "@/lib";
 import { useDatabase } from "./DatabaseContext";
 import { logger } from "@/lib/utils/logger";
 
 interface DataContextType {
   products: BackendProduct[];
+  mappedProducts: Product[]; // New field
   categories: Category[];
   customers: Customer[];
   materials: Material[];
@@ -51,15 +54,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     
     try {
       setLoading(true);
-      logger.info("Pre-fetching all management data for front-end cache...");
+      logger.info("Atomic Warming: Fetching consolidated management data...");
       
-      const [pData, cData, custData, mData, sData] = await Promise.all([
-        productApi.getAll(dbKey),
-        categoryApi.getAll(dbKey),
-        customerApi.getAll(dbKey),
-        materialApi.getAll(dbKey),
-        stockApi.getAll(dbKey)
-      ]);
+      const data = await invoke("get_full_management_data");
+      const { products: pData, categories: cData, customers: custData, materials: mData, stocks: sData } = data as any;
 
       setProducts(pData);
       setCategories(cData);
@@ -67,7 +65,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       setMaterials(mData);
       setStocks(sData);
       setError(null);
-      logger.info("Front-end cache warmed successfully.");
+      logger.info("Front-end cache warmed successfully (1 round-trip).");
     } catch (err) {
       logger.error("Failed to warm front-end cache:", err);
       setError("Failed to load application data.");
@@ -83,23 +81,37 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
   }, [dbKey, refreshAll]);
 
-  const updateCache = {
+  const updateCache = useMemo(() => ({
     products: setProducts,
     categories: setCategories,
     customers: setCustomers,
     materials: setMaterials,
     stocks: setStocks,
-  };
+  }), [setProducts, setCategories, setCustomers, setMaterials, setStocks]);
 
   // Expose for E2E testing
   useEffect(() => {
     if (typeof window !== 'undefined') {
       (window as any).updateCache = updateCache;
     }
-  }, [setProducts, setCategories, setCustomers, setMaterials, setStocks]);
+  }, [updateCache]);
 
-  const value = {
+  const mappedProducts = useMemo(() => {
+    const catMap = Object.fromEntries(categories.map((c) => [c.id, c.name]));
+    return products.map((p) => ({
+      id: p.product_id,
+      name: p.title,
+      price: p.satang / 100,
+      satang: p.satang,
+      category: catMap[p.category_id] || "Unknown",
+      image: p.image_path || "",
+      image_object_position: p.image_object_position,
+    }));
+  }, [products, categories]);
+
+  const value = useMemo(() => ({
     products,
+    mappedProducts,
     categories,
     customers,
     materials,
@@ -108,7 +120,18 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     error,
     refreshAll,
     updateCache
-  };
+  }), [
+    products,
+    mappedProducts,
+    categories,
+    customers,
+    materials,
+    stocks,
+    loading,
+    error,
+    refreshAll,
+    updateCache
+  ]);
 
   return <DataContext value={value}>{children}</DataContext>;
 }

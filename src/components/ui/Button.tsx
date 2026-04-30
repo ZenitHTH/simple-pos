@@ -38,7 +38,7 @@ const Button = ({
           "--font-scale": "var(--button-font-scale, 1)",
         } as React.CSSProperties}
         className={cn(
-          "focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
+          "focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-[background-color,color,transform,box-shadow] duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
           {
             "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm":
               variant === "default",

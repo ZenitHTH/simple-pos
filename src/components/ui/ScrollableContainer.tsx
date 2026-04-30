@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactNode } from "react";
-import { ReactLenis } from "lenis/react";
 
 /**
  * Props for the ScrollableContainer component.
@@ -14,29 +13,23 @@ interface ScrollableContainerProps {
 }
 
 /**
- * A wrapper component that provides smooth scrolling and a custom scrollbar.
- * Powered by Lenis for high-performance inertial scrolling.
+ * A wrapper component that provides high-performance scrolling.
+ * Uses native scrolling with data-lenis-prevent to avoid nested scroll lag
+ * while maintaining the root smooth scroll feel.
  * 
  * @param props - The scrollable container props.
- * @returns A scrollable container element with smooth scrolling.
+ * @returns A scrollable container element.
  */
 export default function ScrollableContainer({
   children,
   className = "",
 }: ScrollableContainerProps) {
   return (
-    <ReactLenis
-      root={false}
-      className={`custom-scrollbar h-full w-full ${className}`}
-      options={{
-        lerp: 0.1,
-        duration: 1.2,
-        autoRaf: true,
-        prevent: (node: HTMLElement) =>
-          node.closest("[data-lenis-prevent]") !== null,
-      }}
+    <div
+      className={`custom-scrollbar overflow-y-auto overflow-x-hidden h-full w-full ${className}`}
+      data-lenis-prevent
     >
       {children}
-    </ReactLenis>
+    </div>
   );
 }
