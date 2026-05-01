@@ -34,10 +34,12 @@ const ThemeSettings = memo(function ThemeSettings() {
           </label>
           <div className="grid grid-cols-3 gap-4">
             <Button
-              variant={theme === "light" ? "default" : "outline"}
+              variant="outline"
               onClick={() => setTheme("light")}
-              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 ${
-                theme === "light" ? "ring-primary/20 ring-2" : ""
+              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
+                theme === "light" 
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <FaSun className="text-2xl" />
@@ -45,10 +47,12 @@ const ThemeSettings = memo(function ThemeSettings() {
             </Button>
 
             <Button
-              variant={theme === "dark" ? "default" : "outline"}
+              variant="outline"
               onClick={() => setTheme("dark")}
-              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 ${
-                theme === "dark" ? "ring-primary/20 ring-2" : ""
+              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
+                theme === "dark" 
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <FaMoon className="text-2xl" />
@@ -56,10 +60,12 @@ const ThemeSettings = memo(function ThemeSettings() {
             </Button>
 
             <Button
-              variant={theme === "system" ? "default" : "outline"}
+              variant="outline"
               onClick={() => setTheme("system")}
-              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 ${
-                theme === "system" ? "ring-primary/20 ring-2" : ""
+              className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
+                theme === "system" 
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <FaDesktop className="text-2xl" />

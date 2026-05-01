@@ -17,8 +17,10 @@ import { useApplySettings } from "./hooks";
 interface SettingsContextType {
   settings: AppSettings;
   loading: boolean;
-  storageInfo: StorageInfo | null; // Added
-  databaseExists: boolean | null; // Added
+  isSaving: boolean; // Added
+  hasUnsavedChanges: boolean; // Added
+  storageInfo: StorageInfo | null;
+  databaseExists: boolean | null;
   updateSettings: (updates: DeepPartial<AppSettings>) => void;
   save: () => Promise<void>;
   resetToCheckpoint: () => void;
@@ -37,15 +39,15 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+  const [diskSettings, setDiskSettings] = useState<AppSettings>(DEFAULT_SETTINGS); // Track what is actually on disk
   const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
   const [databaseExists, setDatabaseExists] = useState<boolean | null>(null);
   const [past, setPast] = useState<AppSettings[]>([]);
   const [future, setFuture] = useState<AppSettings[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isFirstLoadAfterInit = useRef(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(false); // Default to false now
 
   // Apply CSS custom properties via custom hook
   useApplySettings(settings);
@@ -57,10 +59,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const load = async () => {
     try {
       const data = await settingsApi.getAppInitialState();
-      setSettings(deepMerge<AppSettings>(DEFAULT_SETTINGS, data.settings));
+      const loadedSettings = deepMerge<AppSettings>(DEFAULT_SETTINGS, data.settings);
+      setSettings(loadedSettings);
+      setDiskSettings(loadedSettings); // Sync disk state
+      setHasUnsavedChanges(false);
       setStorageInfo(data.storage_info);
       setDatabaseExists(data.database_exists);
-      setTimeout(() => setIsInitialized(true), 100);
     } catch (error) {
       logger.error("Failed to load initial app state:", error);
     } finally {
@@ -81,6 +85,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setFuture((prev) => [settings, ...prev]);
     setPast(newPast);
     setSettings(previous);
+    setHasUnsavedChanges(true); // Undo is an unsaved change
   };
 
   const redo = () => {
@@ -91,6 +96,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setPast((prev) => [...prev, settings]);
     setFuture(newFuture);
     setSettings(next);
+    setHasUnsavedChanges(true); // Redo is an unsaved change
   };
 
   const updateSettings = (updates: DeepPartial<AppSettings>) => {
@@ -106,45 +112,34 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         }
       }
 
+      setHasUnsavedChanges(true); // Mark as unsaved on any update
       return deepMerge<AppSettings>(prev, toApply);
     });
   };
 
   const save = async () => {
+    if (!hasUnsavedChanges) return;
+    
+    setIsSaving(true);
     try {
       await settingsApi.saveSettings(settings);
+      setDiskSettings(settings); // Sync disk state
+      setHasUnsavedChanges(false);
+      logger.info("Settings manually saved to disk.");
     } catch (error) {
       logger.error("Failed to save settings:", error);
       throw error;
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  useEffect(() => {
-    if (!isInitialized || !autoSaveEnabled) return;
-
-    if (isFirstLoadAfterInit.current) {
-      isFirstLoadAfterInit.current = false;
-      return;
-    }
-
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-
-    saveTimeoutRef.current = setTimeout(() => {
-      save().catch((err) => logger.error("Auto-save failed:", err));
-    }, 500);
-
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
-    };
-  }, [settings, isInitialized, autoSaveEnabled]);
-
   const resetToCheckpoint = async () => {
-    setLoading(true);
-    await load();
+    // Revert to what is on the disk (Memory Card style)
+    setSettings(diskSettings);
+    setHasUnsavedChanges(false);
+    setPast([]);
+    setFuture([]);
   };
 
   const resetToDefault = () => {
@@ -156,6 +151,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       value={{
         settings,
         loading,
+        isSaving,
+        hasUnsavedChanges,
         storageInfo,
         databaseExists,
         updateSettings,

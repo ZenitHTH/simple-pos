@@ -1,19 +1,9 @@
 {
-  "turn_count": 5,
-  "last_session_id": "7e304590-daeb-48b6-9be7-db623cd051aa",
-  "last_event_key": "7e304590-daeb-48b6-9be7-db623cd051aa:transcript:27b2142eeb6745935b60095f2eb16c3c12e52e6467aa3362d9549cc430abb139",
-  "last_transcript_hash": "27b2142eeb6745935b60095f2eb16c3c12e52e6467aa3362d9549cc430abb139",
-  "last_model": "gemini-3-flash-preview",
-  "last_provider": "gemini",
-  "last_turn_total_tokens": 100323,
-  "last_session_total_tokens": 993329,
-  "session_totals_by_model": {
-    "gemini-3-flash-preview": 993329
-  },
-  "session_totals_by_provider": {
-    "gemini": 993329
-  },
+  "turn_count": 0,
+  "last_session_id": "8896cacf-67e4-4823-a1f0-57dfe2f5f9a4",
+  "last_event_key": "8896cacf-67e4-4823-a1f0-57dfe2f5f9a4:transcript:78a2986801a04cf4b6caec8e2e7e6121faae96b3cfe58a9e6e1ac130bfca0882",
+  "last_transcript_hash": "78a2986801a04cf4b6caec8e2e7e6121faae96b3cfe58a9e6e1ac130bfca0882",
   "cwd_mode": "parent-leaf",
   "last_cwd_label": "git/vibe-pos",
-  "updated_at": "2026-04-21T08:17:43.895Z"
+  "updated_at": "2026-04-26T17:01:43.881Z"
 }

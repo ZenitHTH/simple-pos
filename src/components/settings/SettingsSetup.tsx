@@ -38,12 +38,12 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
   return (
     <div className="bg-background/80 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div 
-        className="bg-card border-border w-full max-w-2xl rounded-3xl border p-10 shadow-2xl origin-center"
+        className="bg-card border-border w-full max-w-2xl flex flex-col gap-8 rounded-3xl border p-10 shadow-2xl origin-center"
         style={{ 
           transform: `scale(${(settings.scaling.display_scale || 100) / 100})`,
         }}
       >
-        <div className="mb-10 text-center">
+        <div className="text-center">
           <div className="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
             <FaCog className="text-primary text-3xl" />
           </div>
@@ -57,7 +57,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column: Localization */}
-          <div className="space-y-8">
+          <div className="flex flex-col gap-8">
             {/* Currency Section */}
             <div className="bg-muted/30 border-border/50 rounded-2xl border p-6">
               <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-xs opacity-50">
@@ -96,83 +96,75 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
             </div>
 
             {/* Tax Section */}
-            <div className="bg-muted/30 border-border/50 rounded-2xl border p-6">
+            <div className="bg-muted/30 border-border/50 rounded-2xl border p-6 flex flex-col gap-4">
               <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-xs opacity-50">
                 Tax (VAT)
               </h3>
-              <div className="space-y-4">
-                <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-[border-color,background-color]">
-                  <input
-                    type="checkbox"
-                    checked={settings.general.tax_enabled}
-                    onChange={(e) =>
-                      updateSettings({ general: { tax_enabled: e.target.checked } })
-                    }
-                    className="text-primary focus:ring-primary h-6 w-6 rounded-lg border-2"
-                  />
-                  <span className="text-foreground font-bold">
-                    Enable Tax Calculation
-                  </span>
-                </label>
+              <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-[border-color,background-color]">
+                <input
+                  type="checkbox"
+                  checked={settings.general.tax_enabled}
+                  onChange={(e) =>
+                    updateSettings({ general: { tax_enabled: e.target.checked } })
+                  }
+                  className="text-primary focus:ring-primary h-6 w-6 rounded-lg border-2"
+                />
+                <span className="text-foreground font-bold">
+                  Enable Tax Calculation
+                </span>
+              </label>
 
-                {settings.general.tax_enabled && (
-                  <Input
-                    label="Rate (%)"
-                    type="number"
-                    value={settings.general.tax_rate}
-                    onChange={(e) =>
-                      updateSettings({
-                        general: { tax_rate: parseFloat(e.target.value) || 0 },
-                      })
-                    }
-                    placeholder="7.0"
-                    step="0.01"
-                  />
-                )}
-              </div>
+              {settings.general.tax_enabled && (
+                <Input
+                  label="Rate (%)"
+                  type="number"
+                  value={settings.general.tax_rate}
+                  onChange={(e) =>
+                    updateSettings({
+                      general: { tax_rate: parseFloat(e.target.value) || 0 },
+                    })
+                  }
+                  placeholder="7.0"
+                  step="0.01"
+                />
+              )}
             </div>
           </div>
 
           {/* Right Column: Layout */}
-          <div className="space-y-8">
-            <div className="bg-primary/5 border-primary/10 rounded-2xl border p-8 flex flex-col h-full justify-center">
-              <h3 className="text-primary mb-6 flex items-center gap-2 font-black uppercase tracking-widest text-xs">
-                Display & Scale
-              </h3>
-              
-              <div className="space-y-8">
-                <TunerSlider
-                  label="Interface Zoom"
-                  min={75}
-                  max={125}
-                  step={5}
-                  value={settings.scaling.display_scale || 100}
-                  onChange={(val) => updateSettings({ scaling: { display_scale: val } })}
-                  unit="%"
-                />
+          <div className="bg-primary/5 border-primary/10 rounded-2xl border p-8 flex flex-col justify-center gap-8">
+            <h3 className="text-primary mb-6 flex items-center gap-2 font-black uppercase tracking-widest text-xs">
+              Display & Scale
+            </h3>
+            
+            <TunerSlider
+              label="Interface Zoom"
+              min={75}
+              max={125}
+              step={5}
+              value={settings.scaling.display_scale || 100}
+              onChange={(val) => updateSettings({ scaling: { display_scale: val } })}
+              unit="%"
+            />
 
-                <div className="text-[10px] text-muted-foreground leading-relaxed italic bg-background/40 p-4 rounded-xl border border-border/30">
-                  Tip: Adjust the zoom to fit your screen resolution. You can always change this later in Design Mode.
-                </div>
-              </div>
+            <div className="text-[10px] text-muted-foreground leading-relaxed italic bg-background/40 p-4 rounded-xl border border-border/30">
+              Tip: Adjust the zoom to fit your screen resolution. You can always change this later in Design Mode.
             </div>
           </div>
         </div>
 
-        <div className="mt-12">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className={`text-primary-foreground shadow-2xl shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
-              saving
-                ? "bg-primary/70 cursor-not-allowed"
-                : "bg-primary hover:bg-primary/90"
-            }`}
-          >
-            {saving ? "Deploying Settings..." : "Complete Setup"}
-            {!saving && <FaCheck className="text-lg" />}
-          </button>
-        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className={`text-primary-foreground shadow-2xl shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
+            saving
+              ? "bg-primary/70 cursor-not-allowed"
+              : "bg-primary hover:bg-primary/90"
+          }`}
+        >
+          {saving ? "Deploying Settings..." : "Complete Setup"}
+          {!saving && <FaCheck className="text-lg" />}
+        </button>
       </div>
     </div>
   );

@@ -33,6 +33,10 @@ const Button = ({
 }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) => {
     return (
       <button
+        style={{
+          "--scale": "var(--button-scale, 1)",
+          "--font-scale": "var(--button-font-scale, 1)",
+        } as React.CSSProperties}
         className={cn(
           "focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
           {
@@ -47,10 +51,14 @@ const Button = ({
             "hover:bg-accent hover:text-accent-foreground": variant === "ghost",
             "text-primary underline-offset-4 hover:underline":
               variant === "link",
-            "h-11 px-6 py-2": size === "default",
-            "h-9 rounded-lg px-4 text-xs": size === "sm",
-            "h-12 rounded-xl px-10 text-base": size === "lg",
-            "h-11 w-11": size === "icon",
+            "h-[calc(2.75rem*var(--scale))] px-[calc(1.5rem*var(--scale))] py-2 text-[calc(0.875rem*var(--font-scale))]":
+              size === "default",
+            "h-[calc(2.25rem*var(--scale))] rounded-lg px-[calc(1rem*var(--scale))] text-[calc(0.75rem*var(--font-scale))]":
+              size === "sm",
+            "h-[calc(3rem*var(--scale))] rounded-xl px-[calc(2.5rem*var(--scale))] text-[calc(1rem*var(--font-scale))]":
+              size === "lg",
+            "h-[calc(2.75rem*var(--scale))] w-[calc(2.75rem*var(--scale))]":
+              size === "icon",
           },
           className,
         )}

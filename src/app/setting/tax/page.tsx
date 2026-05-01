@@ -4,7 +4,7 @@ import { useSettings } from "@/context/settings/SettingsContext";
 import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import TaxSettings from "@/components/settings/TaxSettings";
-import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
+import SettingsActions from "@/components/settings/SettingsActions";
 
 export default function TaxSettingPage() {
   const { settings, updateSettings } = useSettings();
@@ -24,7 +24,7 @@ export default function TaxSettingPage() {
     <ManagementPageLayout
       title="Tax Settings"
       subtitle="Configure tax rates and application rules."
-      headerActions={<ResetSettingsButton />}
+      headerActions={<SettingsActions />}
       scaleKey="setting_page_scale"
       scrollable={true}
     >

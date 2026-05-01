@@ -21,8 +21,9 @@ fn main() -> Result<(), String> {
     match command.as_str() {
         "check" => {
             let key = get_arg(&args, "--key").ok_or("Missing --key argument")?;
-            let mut conn =
-                establish_connection(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let pool =
+                create_pool(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let mut conn = pool.get().map_err(|e| e.to_string())?;
 
             // Actually verify the connection by querying something that touches the schema
             use diesel::RunQueryDsl;
@@ -37,8 +38,9 @@ fn main() -> Result<(), String> {
         }
         "init" => {
             let key = get_arg(&args, "--key").ok_or("Missing --key argument")?;
-            let mut conn =
-                establish_connection(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let pool =
+                create_pool(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let mut conn = pool.get().map_err(|e| e.to_string())?;
             run_migrations(&mut conn).map_err(|e| format!("Migration failed: {}", e))?;
             println!("✅ Migrations completed successfully.");
             Ok(())
@@ -49,8 +51,9 @@ fn main() -> Result<(), String> {
             }
             let item_type = &args[2];
             let key = get_arg(&args, "--key").ok_or("Missing --key argument")?;
-            let mut conn =
-                establish_connection(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let pool =
+                create_pool(key).map_err(|e| format!("Connection failed: {}", e))?;
+            let mut conn = pool.get().map_err(|e| e.to_string())?;
 
             match item_type.as_str() {
                 "categories" => {

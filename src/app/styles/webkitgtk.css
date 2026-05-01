@@ -34,28 +34,15 @@
   border-width: 1px !important;
 }
 
-/* 4. Opaque Backgrounds (Force solid colors for containers to eliminate overdraw) */
-[data-engine="webkitgtk"] .bg-card,
-[data-engine="webkitgtk"] .bg-background,
-[data-engine="webkitgtk"] header,
+/* 5. Animation Stripping (No transitions for persistent UI on Linux) */
 [data-engine="webkitgtk"] aside,
-[data-engine="webkitgtk"] .modal-content,
-[data-engine="webkitgtk"] [class*="bg-card/"],
-[data-engine="webkitgtk"] [class*="bg-background/"] {
-  background-color: var(--card) !important;
-  opacity: 1 !important;
-  backdrop-filter: none !important;
-}
-
-[data-engine="webkitgtk"] .bg-primary-muted,
-[data-engine="webkitgtk"] [class*="bg-primary/"] {
-  background-color: var(--primary-muted) !important;
-  backdrop-filter: none !important;
-}
-
-/* 5. Animation Tuning (Simplified timing and properties) */
-[data-engine="webkitgtk"] * {
-  transition-duration: 150ms !important; /* Cap at 150ms for snappiness */
+[data-engine="webkitgtk"] aside *,
+[data-engine="webkitgtk"] .tuner-card,
+[data-engine="webkitgtk"] .tuner-sidebar-item,
+[data-engine="webkitgtk"] .cart-item,
+[data-engine="webkitgtk"] .management-page-layout {
+  transition: none !important;
+  animation: none !important;
 }
 
 /* 6. Scrolling Stability */

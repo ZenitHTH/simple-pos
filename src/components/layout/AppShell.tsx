@@ -67,23 +67,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [targetScale, scaleMV]);
 
   const transformTemplate = useMotionTemplate`scale(${scaleMV})`;
-  const staticWidth = `calc(100vw / ${targetScale})`;
-  const staticHeight = `calc(100vh / ${targetScale})`;
+  const isScaled = targetScale !== 1;
+  const staticWidth = isScaled ? `calc(100vw / ${targetScale})` : "100vw";
+  const staticHeight = isScaled ? `calc(100vh / ${targetScale})` : "100vh";
 
   return (
     <div className="bg-background text-foreground relative flex h-screen w-full flex-col overflow-hidden antialiased">
       {/* 
         This container handles the global display scaling.
-        Using a motion.div prevents React from re-rendering the entire app 
-        tree 60 times a second during scale animations.
+        We add a solid background to eliminate overdraw during scaling.
       */}
       <motion.div 
-        className="relative flex overflow-hidden shrink-0" 
+        className="bg-background relative flex overflow-hidden shrink-0" 
         style={{ 
           transform: transformTemplate,
           transformOrigin: 'top left',
           width: staticWidth,
           height: staticHeight,
+          contain: isScaled ? "strict" : "none",
         }}
       >
         <Sidebar />

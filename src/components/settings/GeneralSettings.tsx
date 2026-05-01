@@ -95,92 +95,48 @@ const GeneralSettings = memo(function GeneralSettings({}: GeneralSettingsProps) 
 
   return (
     <SettingsSection title="General Settings" icon={FaCog}>
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Image Storage</h3>
-          <div className="flex flex-col gap-2">
-            <label className="text-muted-foreground text-sm">
-              Product images will be saved to this directory. If not set, the
-              default application data directory is used.
-            </label>
-            <div className="flex items-center gap-3">
-              <div className="bg-muted/30 border-border flex-1 truncate rounded-lg border p-3 font-mono text-sm">
-                {imageStoragePath || (
-                  <span className="text-muted-foreground italic">
-                    {storageInfo?.image_path || "Default (App Data)"}
-                  </span>
-                )}
-              </div>
-              <Button
-                onClick={handleSelectImageStorage}
-                className="gap-2"
-                disabled={isMigrating}
-              >
-                <FaFolderOpen />
-                {isMigrating ? "Migrating..." : "Browse"}
-              </Button>
-              {imageStoragePath && (
-                <Button variant="secondary" onClick={handleResetStorage}>
-                  Reset
-                </Button>
-              )}
+      <div className="space-y-4">
+        {/* Image Storage */}
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm font-bold uppercase tracking-wider opacity-60">Image Storage</h4>
+          <p className="text-muted-foreground text-xs">
+            Saved to directory below. Default is app data.
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="bg-muted/30 border-border flex-1 truncate rounded-lg border px-3 py-2 font-mono text-xs">
+              {imageStoragePath || storageInfo?.image_path || "Default (App Data)"}
             </div>
+            <Button size="sm" onClick={handleSelectImageStorage} disabled={isMigrating}>
+              {isMigrating ? "..." : "Browse"}
+            </Button>
+            {imageStoragePath && (
+              <Button size="sm" variant="secondary" onClick={handleResetStorage}>Reset</Button>
+            )}
           </div>
         </div>
 
-        <div className="border-border space-y-4 border-t pt-6">
-          <h3 className="text-lg font-semibold">Database Storage</h3>
-          <div className="flex flex-col gap-2">
-            <label className="text-muted-foreground text-sm">
-              The application database (database.db) will be stored in this
-              directory.
-            </label>
-            <div className="border-warning/20 bg-warning/10 text-warning rounded-lg border p-3 text-sm">
-              <strong>Note:</strong> Changing this setting requires an
-              application restart. You must manually move your existing
-              &apos;database.db&apos; to the new location, or a new empty
-              database will be created.
+        {/* Database Storage */}
+        <div className="border-border space-y-2 border-t pt-4">
+          <h4 className="text-sm font-bold uppercase tracking-wider opacity-60">Database Storage</h4>
+          <div className="bg-warning/10 text-warning rounded-lg border border-warning/20 p-2 text-[10px] leading-tight">
+            <strong>RESTART REQUIRED:</strong> Changing this requires moving 'database.db' manually.
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="bg-muted/30 border-border flex-1 truncate rounded-lg border px-3 py-2 font-mono text-xs">
+              {dbStoragePath || storageInfo?.db_path || "Default (App Data)"}
             </div>
-            <div className="flex items-center gap-3">
-              <div className="bg-muted/30 border-border flex-1 truncate rounded-lg border p-3 font-mono text-sm">
-                {dbStoragePath || (
-                  <span className="text-muted-foreground italic">
-                    {storageInfo?.db_path || "Default (App Data)"}
-                  </span>
-                )}
-              </div>
-              <Button
-                onClick={async () => {
-                  try {
-                    const selected = await open({
-                      directory: true,
-                      multiple: false,
-                      title: "Select Database Storage Directory",
-                    });
-
-                    if (selected && typeof selected === "string") {
-                      onUpdateSettings({ storage: { db_storage_path: selected } });
-                    }
-                  } catch (error) {
-                    logger.error("Failed to select directory:", error);
-                  }
-                }}
-                className="gap-2"
-              >
-                <FaFolderOpen />
-                Browse
-              </Button>
-              {dbStoragePath && (
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    onUpdateSettings({ storage: { db_storage_path: undefined } })
-                  }
-                >
-                  Reset
-                </Button>
-              )}
-            </div>
+            <Button
+              size="sm"
+              onClick={async () => {
+                const selected = await open({ directory: true, multiple: false });
+                if (selected && typeof selected === "string") onUpdateSettings({ storage: { db_storage_path: selected } });
+              }}
+            >
+              Browse
+            </Button>
+            {dbStoragePath && (
+              <Button size="sm" variant="secondary" onClick={() => onUpdateSettings({ storage: { db_storage_path: undefined } })}>Reset</Button>
+            )}
           </div>
         </div>
       </div>

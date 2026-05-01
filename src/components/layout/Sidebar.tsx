@@ -12,6 +12,8 @@ import {
   FaWarehouse,
   FaClipboardList,
   FaImages,
+  FaPalette,
+  FaDatabase,
 } from "react-icons/fa";
 
 import { useSettings } from "@/context/settings/SettingsContext";
@@ -80,9 +82,9 @@ const menuEntries: MenuEntry[] = [
     icon: <FaCog size={20} />,
     children: [
       {
-        name: "General",
-        path: "/setting/general",
-        icon: <FaCog size={18} />,
+        name: "Appearance",
+        path: "/setting/appearance",
+        icon: <FaPalette size={18} />,
       },
       {
         name: "Finance",
@@ -90,9 +92,9 @@ const menuEntries: MenuEntry[] = [
         icon: <FaTags size={18} />,
       },
       {
-        name: "Export",
-        path: "/setting/export",
-        icon: <FaClipboardList size={18} />,
+        name: "Expert & DB",
+        path: "/setting/expert",
+        icon: <FaDatabase size={18} />,
       },
     ],
   },
@@ -165,7 +167,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <BaseSidebarLayout
-        title="POS System"
+        title="Simple POS"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         scale={settings?.scaling.components.sidebar}

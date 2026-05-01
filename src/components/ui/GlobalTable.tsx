@@ -41,11 +41,11 @@ export default function GlobalTable<T>({
   return (
     <div
       className={cn(
-        "bg-card text-card-foreground border-border overflow-hidden rounded-2xl border shadow-sm",
+        "bg-card text-card-foreground border-border overflow-x-auto rounded-2xl border shadow-sm custom-scrollbar",
         className,
       )}
     >
-      <table className="w-full text-left">
+      <table className="w-full text-left min-w-[800px]">
         <thead className="bg-muted/40 border-border sticky top-0 border-b">
           <tr>
             {columns.map((col, index) => (

@@ -56,30 +56,26 @@ const ProductCard = memo(function ProductCard({
       </div>
 
       {/* Info Section */}
-      <div className="pt-3 px-1 pb-1">
-        <div className="mb-2">
-          <span className="text-muted-foreground mb-1 block text-[0.75em] font-semibold tracking-wider uppercase opacity-70">
-            {product.category}
-          </span>
-          <h3 
-            className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.125em] leading-tight font-extrabold"
-            style={{ fontSize: "var(--grid-item-title-font-scale)" }}
-          >
-            {product.name}
-          </h3>
-        </div>
+      <div className="pt-4 px-1 pb-1 flex flex-col justify-between flex-1">
+        <span className="text-muted-foreground mb-1.5 block text-[0.8em] font-semibold tracking-wider uppercase opacity-80">
+          {product.category}
+        </span>
+        <h3 
+          className="text-foreground line-clamp-2 min-h-[2.4em] text-[1.25em] leading-tight font-extrabold tracking-tight mb-4"
+          style={{ fontSize: "var(--grid-item-title-font-scale)" }}
+        >
+          {product.name}
+        </h3>
 
-        <div className="mt-3 flex items-center justify-between border-t border-dashed border-border/40 pt-3">
-          <div className="flex flex-col">
-            <span 
-              className="text-primary text-[1.4em] leading-none font-black tracking-tight"
-              style={{ fontSize: "var(--grid-item-price-font-scale)" }}
-            >
-              {currency}
-              {product.price.toFixed(2)}
-            </span>
-          </div>
-          <div className="bg-primary text-primary-foreground tuner-button rounded-lg px-3 py-1.5 text-[0.8em] font-black uppercase tracking-wider transition-colors hover:bg-primary/90">
+        <div className="mt-auto flex items-center justify-between border-t border-dashed border-border/60 pt-4">
+          <span 
+            className="text-primary text-[1.6em] leading-none font-black tracking-tight"
+            style={{ fontSize: "var(--grid-item-price-font-scale)" }}
+          >
+            {currency}
+            {product.price.toFixed(2)}
+          </span>
+          <div className="bg-primary text-primary-foreground tuner-button rounded-xl px-4 py-2 text-[0.9em] font-black uppercase tracking-widest transition-colors hover:bg-primary/90">
             ADD
           </div>
         </div>

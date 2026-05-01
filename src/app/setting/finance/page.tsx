@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import CurrencySettings from "@/components/settings/CurrencySettings";
 import TaxSettings from "@/components/settings/TaxSettings";
-import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
+import SettingsActions from "@/components/settings/SettingsActions";
 import { Separator } from "@/components/ui/Separator";
 
 export default function FinanceSettingPage() {
@@ -33,7 +33,7 @@ export default function FinanceSettingPage() {
         <ManagementPageLayout
             title="Finance Settings"
             subtitle="Configure currency, tax rates, and financial rules."
-            headerActions={<ResetSettingsButton />}
+            headerActions={<SettingsActions />}
             scaleKey="setting_page_scale"
             scrollable={true}
         >

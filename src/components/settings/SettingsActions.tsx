@@ -2,31 +2,70 @@
 
 import { useState } from "react";
 import { useSettings } from "@/context/settings/SettingsContext";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaSave, FaUndo } from "react-icons/fa";
+import { useToast } from "@/context/ToastContext";
 
 /**
- * ResetSettingsButton Component
- * 
- * @param {Object} props - The properties object.
- * @returns {JSX.Element | null} The rendered component.
+ * SettingsActions Component
+ * Handles manual saving, undoing, and resetting of global settings.
  */
-export default function ResetSettingsButton() {
-  const { resetToDefault } = useSettings();
+export default function SettingsActions() {
+  const { resetToDefault, save, isSaving, hasUnsavedChanges, resetToCheckpoint } = useSettings();
   const [showWarning, setShowWarning] = useState(false);
+  const { showToast } = useToast();
 
   const handleResetDefaults = () => {
     resetToDefault();
     setShowWarning(false);
+    showToast("Settings reset to default. Click Save to apply permanently.", "info");
+  };
+
+  const handleSave = async () => {
+    try {
+      await save();
+      showToast("Settings saved successfully.", "success");
+    } catch (e) {
+      showToast("Failed to save settings.", "error");
+    }
+  };
+
+  const handleRevert = () => {
+    resetToCheckpoint();
+    showToast("Reverted to last saved state.", "info");
   };
 
   return (
-    <>
+    <div className="flex items-center gap-3">
+      {hasUnsavedChanges && (
+        <button
+          onClick={handleRevert}
+          className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-sm font-bold text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
+          title="Revert to last saved state"
+        >
+          <FaUndo size={14} />
+          <span className="hidden sm:inline">Revert</span>
+        </button>
+      )}
+
       <button
         onClick={() => setShowWarning(true)}
         className="flex items-center gap-2 rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-2 text-sm font-bold text-destructive transition-colors hover:bg-destructive/20"
       >
         <FaTrash size={14} />
-        Reset to Default
+        <span className="hidden sm:inline">Reset</span>
+      </button>
+
+      <button
+        onClick={handleSave}
+        disabled={!hasUnsavedChanges || isSaving}
+        className={`flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-bold transition-all ${
+          hasUnsavedChanges
+            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 active:scale-95"
+            : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+        }`}
+      >
+        <FaSave size={14} />
+        {isSaving ? "Saving..." : "Save Changes"}
       </button>
 
       {/* Warning Modal */}
@@ -58,6 +97,6 @@ export default function ResetSettingsButton() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
