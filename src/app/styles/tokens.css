@@ -1,58 +1,50 @@
 @layer base {
   :root {
-    /* Light Theme (Default) */
-    --background: #ffffff;
-    --foreground: #0f172a;
-
-    --card: #ffffff;
-    --card-foreground: #0f172a;
-
-    --popover: #ffffff;
-    --popover-foreground: #0f172a;
-
-    /* ── Custom Theme Colors (New color-mix Logic) ── */
-    /* If --theme-primary is injected via JS, use it; otherwise fallback to default blue */
+    /* ── High-Definition Light Theme (Chinese Palette Base) ── */
     --theme-primary: #5352ed; /* Saturated Sky */
-    --primary-base: var(--theme-primary);
-    
-    /* Reassign --primary so Tailwind uses the base color */
-    --primary: var(--primary-base);
-    
+    --theme-background: #f1f2f6; /* Pumpkin Patch (Very Light Grey) */
+    --theme-text: #2f3542;       /* Prestige Blue (Inky Contrast) */
+    --theme-card: #ffffff;       /* Pure White (Surface Pop) */
+    --theme-border: #ced6e0;     /* Twinkle Blue (Defined Lines) */
+
+    /* Tailwind Variable Mapping */
+    --background: var(--theme-background);
+    --foreground: var(--theme-text);
+    --card: var(--theme-card);
+    --card-foreground: var(--theme-text);
+    --popover: var(--theme-card);
+    --popover-foreground: var(--theme-text);
+    --border: var(--theme-border);
+    --primary: var(--theme-primary);
+
     /* Auto-generated perceptual shades using OKLCH */
-    --primary-hover: color-mix(in oklch, var(--primary-base), white 15%);
-    --primary-active: color-mix(in oklch, var(--primary-base), black 10%);
-    --primary-muted: color-mix(in oklch, var(--primary-base), transparent 90%);
-    --primary-glow: color-mix(in oklch, var(--primary-base), transparent 50%);
+    --primary-hover: color-mix(in oklch, var(--primary), white 15%);
+    --primary-active: color-mix(in oklch, var(--primary), black 10%);
+    --primary-muted: color-mix(in oklch, var(--primary), transparent 90%);
+    --primary-glow: color-mix(in oklch, var(--primary), transparent 50%);
     
     /* Dynamic Primary Foreground (Accessibility) */
-    /* If primary is light, use dark text; if dark, use white text */
-    --primary-foreground: oklch(from var(--primary-base) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0);
+    --primary-foreground: oklch(from var(--primary) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0);
 
-    /* Manual Overrides with Auto-generated fallbacks */
-    --background: var(--theme-background, #ced6e0); /* Anti-Flash White */
-    --foreground: var(--theme-text, #2f3542);       /* Prestige Blue */
-    --card: var(--theme-card, #dfe4ea);             /* City Lights */
-    --border: var(--theme-border, #f1f2f6);           /* Pumpkin Patch */
+    --secondary: #dfe4ea; /* City Lights */
+    --secondary-foreground: #2f3542;
 
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f172a;
+    --muted: #dfe4ea;
+    --muted-foreground: #747d8c; /* Bay Wharf */
 
-    --muted: #f1f5f9;
-    --muted-foreground: #64748b;
-
-    --accent: #f1f5f9;
-    --accent-foreground: #0f172a;
+    --accent: #ffa502; /* Orange */
+    --accent-foreground: #ffffff;
 
     --success: #2ed573; /* Ufo Green */
-    --success-foreground: #f8fafc;
+    --success-foreground: #ffffff;
 
-    --warning: #ffa502; /* Orange */
-    --warning-foreground: #0f172a;
+    --warning: #eccc68; /* Golden Sand */
+    --warning-foreground: #2f3542;
 
     --destructive: #ff4757; /* Watermelon */
-    --destructive-foreground: #f8fafc;
+    --destructive-foreground: #ffffff;
 
-    --input: var(--border);
+    --input: var(--theme-background);
     --ring: var(--primary);
 
     --radius: 0.5rem;
@@ -89,33 +81,42 @@
   }
 
   .dark {
-    --theme-primary: #575fcf; /* Dark Periwinkle */
+    /* ── High-Definition Dark Theme (Swedish Palette Base) ── */
+    --theme-primary: #575fcf;    /* Dark Periwinkle */
+    --theme-background: #1e272e; /* Black Pearl (Deep Navy Base) */
+    --theme-card: #2f3542;       /* Prestige Blue (CN-based Deep Surface) */
+    --theme-text: #ffffff;       /* Pure White (Maximum Contrast) */
+    --theme-border: #485460;     /* Good Night! (Mid-Grey Lines) */
 
-    --theme-background: #1e272e; /* Black Pearl */
-    --theme-card: #485460;       /* Good Night! */
-    --theme-text: #d2dae2;       /* Hint of Elusive Blue */
-    --theme-border: #808e9b;     /* London Square */
+    /* Refresh Variable Mapping for Dark Mode */
+    --background: var(--theme-background);
+    --foreground: var(--theme-text);
+    --card: var(--theme-card);
+    --card-foreground: var(--theme-text);
+    --popover: var(--theme-card);
+    --popover-foreground: var(--theme-text);
+    --border: var(--theme-border);
+    --primary: var(--theme-primary);
 
-    --secondary: #1e293b;
-    --secondary-foreground: #f8fafc;
+    --secondary: #1e272e;
+    --secondary-foreground: #f1f2f6;
 
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
+    --muted: #1e272e;
+    --muted-foreground: #808e9b; /* London Square */
 
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
+    --accent: #ffa801; /* Chrome Yellow */
+    --accent-foreground: #1e272e;
 
     --destructive: #ff3f34; /* Red Orange */
-    --destructive-foreground: #f8fafc;
+    --destructive-foreground: #ffffff;
 
     --success: #05c46b; /* Green Teal */
-    --success-foreground: #020617;
+    --success-foreground: #ffffff;
 
-    --warning: #ffa801; /* Chrome Yellow */
-    --warning-foreground: #020617;
+    --warning: #ffd32a; /* Vibrant Yellow */
+    --warning-foreground: #1e272e;
 
-    --border: var(--theme-border);
-    --input: var(--theme-border);
-    --ring: #1d4ed8;
+    --input: #1a1a1a;
+    --ring: #575fcf;
   }
 }

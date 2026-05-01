@@ -19,7 +19,7 @@ export async function setupTestBrowser(browserType: any, port: number = 9223) {
     
     cachedSetup = { isTauri: false, port };
     const browser = await browserType.launch({ 
-        executablePath: '/usr/bin/brave-browser',
+        executablePath: '/usr/bin/google-chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox'] 
     });
     return { browser, isTauri: false };

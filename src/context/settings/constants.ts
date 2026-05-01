@@ -52,10 +52,10 @@ export const DEFAULT_SETTINGS: AppSettings = {
   },
   theme: {
     theme_primary_color: null,
-    theme_background_color: "#ced6e0", // Anti-Flash White
-    theme_card_color: "#dfe4ea",       // City Lights
-    theme_text_color: "#2f3542",       // Prestige Blue
-    theme_border_color: "#f1f2f6",     // Pumpkin Patch
+    theme_background_color: null,
+    theme_card_color: null,
+    theme_text_color: null,
+    theme_border_color: null,
     theme_radius: 0.5,
     theme_preset: "cozy",
   },
