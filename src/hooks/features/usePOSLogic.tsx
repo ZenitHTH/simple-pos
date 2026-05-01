@@ -97,24 +97,16 @@ export function usePOSLogic(initialProducts: Product[]) {
     number | undefined
   >(undefined);
 
-  const [prevIsMockupMode, setPrevIsMockupMode] = useState(isMockupMode);
-  const [prevMockupView, setPrevMockupView] = useState(mockupView);
-
-  // Modern React 19/2025 pattern: Avoid useEffect for syncing state. Update during render instead.
-  if (isMockupMode !== prevIsMockupMode) {
-    setPrevIsMockupMode(isMockupMode);
-    setCartItems(isMockupMode ? exampleCartItems : []);
+  // Sync state when mockup mode or view changes
+  useEffect(() => {
     if (isMockupMode) {
+      setCartItems(exampleCartItems);
       setIsPaymentModalOpen(mockupView === "payment");
     } else {
+      setCartItems([]);
       setIsPaymentModalOpen(false);
     }
-  }
-
-  if (isMockupMode && mockupView !== prevMockupView) {
-    setPrevMockupView(mockupView);
-    setIsPaymentModalOpen(mockupView === "payment");
-  }
+  }, [isMockupMode, mockupView]);
 
   const updateURL = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());

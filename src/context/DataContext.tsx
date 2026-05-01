@@ -89,9 +89,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     stocks: setStocks,
   }), [setProducts, setCategories, setCustomers, setMaterials, setStocks]);
 
-  // Expose for E2E testing
+  // Expose for E2E testing (Development only)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
       (window as any).updateCache = updateCache;
     }
   }, [updateCache]);

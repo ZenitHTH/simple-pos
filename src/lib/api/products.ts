@@ -50,7 +50,7 @@ export const productApi = {
   },
 };
 
-// Expose globally for E2E testing
-if (typeof window !== 'undefined') {
+// Expose globally for E2E testing (Development only)
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).productApi = productApi;
 }

@@ -6,11 +6,20 @@ use serde_json;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use std::fmt;
+
 pub type DbPool = Pool<ConnectionManager<SqliteConnection>>;
 
-#[derive(Debug)]
 pub struct SqlCipherCustomizer {
     hex_key: String,
+}
+
+impl fmt::Debug for SqlCipherCustomizer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("SqlCipherCustomizer")
+            .field("hex_key", &"[REDACTED]")
+            .finish()
+    }
 }
 
 impl CustomizeConnection<SqliteConnection, diesel::r2d2::Error> for SqlCipherCustomizer {
@@ -65,7 +74,8 @@ fn read_custom_db_storage_path(data_dir: &Path) -> Option<PathBuf> {
     let content = fs::read_to_string(settings_path).ok()?;
     let json: serde_json::Value = serde_json::from_str(&content).ok()?;
     
-    json.get("db_storage_path")
+    json.get("storage")
+        .and_then(|s| s.get("db_storage_path"))
         .and_then(|v| v.as_str())
         .map(PathBuf::from)
 }

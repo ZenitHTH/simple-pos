@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { CartItem as CartItemType, parseImageStyle } from "@/lib";
-import { FaMinus, FaPlus, FaTrash, FaTrashAlt } from "react-icons/fa";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { convertFileSrc } from "@/lib/api/invoke";
 
 interface CartItemProps {

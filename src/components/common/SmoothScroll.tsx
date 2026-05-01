@@ -12,15 +12,24 @@ export default function SmoothScroll({
   children,
   className = "",
 }: SmoothScrollProps) {
-  // Disable Lenis on Linux for high-performance native scrolling
-  useEffect(() => {
-    const isLinux = typeof document !== 'undefined' && document.documentElement.getAttribute('data-engine') === 'webkitgtk';
-    if (isLinux) {
-      // In native mode, we don't need Lenis
-    }
-  }, []);
+  const [isLinux, setIsLinux] = useState(false);
 
-  const isLinux = typeof document !== 'undefined' && document.documentElement.getAttribute('data-engine') === 'webkitgtk';
+  useEffect(() => {
+    // Check engine after mount. EngineProvider sets this on documentElement.
+    const engine = document.documentElement.getAttribute("data-engine");
+    if (engine === "webkitgtk") {
+      setIsLinux(true);
+    }
+    
+    // Optional: Mutation observer if we expect it to change after mount
+    const observer = new MutationObserver(() => {
+      const currentEngine = document.documentElement.getAttribute("data-engine");
+      setIsLinux(currentEngine === "webkitgtk");
+    });
+    
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-engine"] });
+    return () => observer.disconnect();
+  }, []);
 
   if (isLinux) {
     return <div className={className}>{children}</div>;

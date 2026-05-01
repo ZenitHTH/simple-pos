@@ -1,6 +1,6 @@
 use crate::migration::{SettingsFormat, migrate_flat_to_nested};
 use crate::models::{AppSettings, StorageInfo};
-use crate::paths::{get_settings_path, validate_path};
+use crate::paths::get_settings_path;
 use std::fs;
 
 pub fn get_settings() -> Result<AppSettings, String> {
@@ -32,15 +32,17 @@ pub fn get_settings() -> Result<AppSettings, String> {
 }
 
 pub fn save_settings(settings: AppSettings) -> Result<(), String> {
-    // Validate storage paths if provided
+    let path = get_settings_path()?;
+    let app_dir = path.parent().ok_or("Cannot determine app directory")?;
+
+    // Validate storage paths are within app data directory
     if let Some(ref p) = settings.storage.db_storage_path {
-        validate_path(p)?;
+        crate::paths::validate_path_within(p, app_dir)?;
     }
     if let Some(ref p) = settings.storage.image_storage_path {
-        validate_path(p)?;
+        crate::paths::validate_path_within(p, app_dir)?;
     }
 
-    let path = get_settings_path()?;
     let content = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
     fs::write(path, content).map_err(|e| e.to_string())?;
     Ok(())
