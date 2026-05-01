@@ -1,3 +1,8 @@
+//! Product database operations.
+//!
+//! This module handles CRUD operations for products, including managing their associations
+//! with images and handling their stock tracking modes.
+
 pub mod model;
 pub mod schema;
 
@@ -7,6 +12,7 @@ use diesel::prelude::*;
 use diesel::result::Error;
 
 // FIX: Return Result<Product, Error> instead of ()
+/// Inserts a new product into the database and returns the created record.
 pub fn insert_product(conn: &mut SqliteConnection, newprod: &NewProduct) -> Result<Product, Error> {
     diesel::insert_into(product_schema::table)
         .values(newprod)
@@ -15,10 +21,12 @@ pub fn insert_product(conn: &mut SqliteConnection, newprod: &NewProduct) -> Resu
     // FIX: Removed .expect(), letting the caller handle the error
 }
 
+/// Deletes a product from the database by its ID.
 pub fn remove_product(conn: &mut SqliteConnection, id: i32) -> Result<usize, Error> {
     diesel::delete(product_schema::dsl::product.find(id)).execute(conn)
 }
 
+/// Removes all image associations for a specific product.
 pub fn remove_product_images_link(
     conn: &mut SqliteConnection,
     target_id: i32,
@@ -27,6 +35,7 @@ pub fn remove_product_images_link(
     diesel::delete(product_images.filter(product_id.eq(target_id))).execute(conn)
 }
 
+/// Checks if a product has any dependencies (e.g., used in receipts) that would prevent deletion.
 pub fn check_product_dependencies(
     conn: &mut SqliteConnection,
     target_id: i32,
@@ -41,6 +50,7 @@ pub fn check_product_dependencies(
     Ok(receipt_count > 0)
 }
 
+/// Finds a product by its title. Returns None if not found.
 pub fn find_product_by_title(
     conn: &mut SqliteConnection,
     target_title: &str,
@@ -52,9 +62,12 @@ pub fn find_product_by_title(
         .optional()
 }
 
+/// Retrieves all products from the database.
 pub fn get_all_products(conn: &mut SqliteConnection) -> Result<Vec<Product>, Error> {
     product_schema::table.load::<Product>(conn)
 }
+
+/// Updates an existing product record in the database.
 pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Product, Error> {
     use product_schema::dsl::{
         category_id, product as product_dsl, product_id, satang, title, use_recipe_stock,
@@ -72,6 +85,7 @@ pub fn update_product(conn: &mut SqliteConnection, prod: Product) -> Result<Prod
         .get_result(conn)
 }
 
+/// Toggles whether a product should use recipe-based stock tracking.
 pub fn set_product_stock_mode(
     conn: &mut SqliteConnection,
     id: i32,
@@ -84,10 +98,12 @@ pub fn set_product_stock_mode(
     Ok(())
 }
 
+/// Retrieves a specific product from the database by its ID.
 pub fn find_product(conn: &mut SqliteConnection, id: i32) -> Result<Product, Error> {
     product_schema::table.find(id).first(conn)
 }
 
+/// Retrieves all products along with their associated image paths.
 pub fn get_all_products_with_images(
     conn: &mut SqliteConnection,
 ) -> Result<Vec<crate::product::model::ProductWithImage>, Error> {

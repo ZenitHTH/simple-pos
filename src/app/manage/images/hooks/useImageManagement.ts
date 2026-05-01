@@ -1,15 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
-import { Image, ProductImage, BackendProduct, productApi } from "@/lib";
-import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
+import {
+  Image,
+  ProductImage,
+  BackendProduct,
+  productApi,
+  imageApi,
+} from "@/lib";
+import { logger } from "@/lib/utils/logger";
 
 export function useImageManagement() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   const [images, setImages] = useState<Image[]>([]);
   const [links, setLinks] = useState<ProductImage[]>([]);
   const [products, setProducts] = useState<BackendProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Linking Modal State
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
@@ -17,9 +25,16 @@ export function useImageManagement() {
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [productSearch, setProductSearch] = useState("");
 
+  // Move Confirmation State
+  const [isMoveConfirmOpen, setIsMoveConfirmOpen] = useState(false);
+  const [moveProductInfo, setMoveProductInfo] = useState<{
+    targetProductId: number;
+    currentProductName: string;
+  } | null>(null);
+
   const fetchData = useCallback(async () => {
     if (!dbKey) return;
-    setLoading(true);
+    if (images.length === 0) setLoading(true);
     try {
       // Parallel fetch
       const [imgs, lnks, prods] = await Promise.all([
@@ -64,7 +79,7 @@ export function useImageManagement() {
       setLinks((prev) => prev.filter((l) => l.image_id !== image.id));
     } catch (err) {
       logger.error("Failed to delete image", err);
-      alert("Failed to delete image");
+      await showAlert("Image Error", "Failed to delete image");
     }
   };
 
@@ -89,7 +104,7 @@ export function useImageManagement() {
       fetchData(); // Refresh all to get new ID and sort
     } catch (err) {
       logger.error("Upload failed", err);
-      alert("Upload failed: " + err);
+      await showAlert("Image Error", "Upload failed: " + err);
     }
   };
 
@@ -152,7 +167,10 @@ export function useImageManagement() {
       setIsPositionModalOpen(false);
     } catch (err) {
       logger.error("Failed to update position:", err);
-      alert("Failed to update position. Check console for details.");
+      await showAlert(
+        "Image Error",
+        "Failed to update position. Check console for details.",
+      );
     }
   };
 
@@ -194,8 +212,53 @@ export function useImageManagement() {
         // Auto-close modal after selection as per "click only one" requirement
         setIsLinkModalOpen(false);
       }
+    } catch (err: any) {
+      const errMsg = String(err);
+      if (errMsg.startsWith("ALREADY_LINKED: ")) {
+        const currentProductName = errMsg.replace("ALREADY_LINKED: ", "");
+        setMoveProductInfo({
+          targetProductId: productId,
+          currentProductName,
+        });
+        setIsMoveConfirmOpen(true);
+      } else {
+        logger.error("Failed to toggle link", err);
+      }
+    }
+  };
+
+  const handleMoveImage = async () => {
+    if (!dbKey || !selectedImage || !moveProductInfo) return;
+
+    try {
+      await imageApi.moveProductImage(
+        dbKey,
+        selectedImage.id,
+        moveProductInfo.targetProductId,
+      );
+
+      // Update local state:
+      // 1. Remove the image from its OLD product(s)
+      // 2. Remove any other images linked to the TARGET product
+      // 3. Add the link to the TARGET product
+      setLinks((prev) => [
+        ...prev.filter(
+          (l) =>
+            l.image_id !== selectedImage.id &&
+            l.product_id !== moveProductInfo.targetProductId,
+        ),
+        {
+          product_id: moveProductInfo.targetProductId,
+          image_id: selectedImage.id,
+        },
+      ]);
+
+      setIsMoveConfirmOpen(false);
+      setMoveProductInfo(null);
+      setIsLinkModalOpen(false);
     } catch (err) {
-      logger.error("Failed to toggle link", err);
+      logger.error("Failed to move image", err);
+      await showAlert("Move Error", "Failed to move image: " + err);
     }
   };
 
@@ -219,6 +282,9 @@ export function useImageManagement() {
     setIsLinkModalOpen,
     isPositionModalOpen,
     setIsPositionModalOpen,
+    isMoveConfirmOpen,
+    setIsMoveConfirmOpen,
+    moveProductInfo,
     selectedImage,
     productSearch,
     setProductSearch,
@@ -229,6 +295,7 @@ export function useImageManagement() {
     openPositionModal,
     handleUpdatePosition,
     toggleLink,
+    handleMoveImage,
     getProductUsage,
     filteredProductsToLink,
   };

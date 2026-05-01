@@ -3,10 +3,11 @@
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
 import { useRouter, usePathname } from "next/navigation";
+import { FaUndo, FaRedo } from "react-icons/fa";
 import NavigationMenu from "./NavigationMenu";
 import DualColumnTuner from "./DualColumnTuner";
 import ActionButton from "./ActionButton";
-import { SidebarSlider } from "../design-tuner/SidebarSlider";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface BottomControlPanelProps {
   hideSaveButton?: boolean;
@@ -24,7 +25,8 @@ export default function BottomControlPanel({
   dualColumnProps,
 }: BottomControlPanelProps) {
   const { isMockupMode, toggleMockupMode, selectedElementId } = useMockup();
-  const { settings, updateSettings, save } = useSettings();
+  const { settings, updateSettings, save, undo, redo, canUndo, canRedo } =
+    useSettings();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -40,11 +42,10 @@ export default function BottomControlPanel({
   };
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-auto pointer-events-auto">
-      <div className="bg-background/80 border-border/60 flex items-center gap-6 rounded-full border px-6 py-3 shadow-2xl backdrop-blur-xl transition-all hover:shadow-primary/20 hover:border-primary/40">
-        
+    <div className="pointer-events-auto fixed bottom-8 left-1/2 z-[100] w-auto -translate-x-1/2">
+      <div className="bg-background/80 border-border/60 hover:shadow-primary/20 hover:border-primary/40 flex items-center gap-6 rounded-full border px-6 py-3 shadow-2xl backdrop-blur-xl transition-all">
         {/* Navigation */}
-        <div className="flex items-center gap-6 shrink-0">
+        <div className="flex shrink-0 items-center gap-6">
           <NavigationMenu router={router} />
         </div>
 
@@ -55,29 +56,19 @@ export default function BottomControlPanel({
           {/* Global Scalers */}
           <div className="flex items-center gap-6">
             <div className="w-32">
-              <SidebarSlider
+              <TunerSlider
                 label="Display Zoom"
                 min={75}
                 max={125}
                 step={5}
-                value={settings.display_scale || 100}
-                onChange={(val) => updateSettings({ display_scale: val })}
+                value={settings.scaling.display_scale || 100}
+                onChange={(val) =>
+                  updateSettings({ scaling: { display_scale: val } })
+                }
                 unit="%"
               />
             </div>
-            <div className="w-40">
-              <SidebarSlider
-                label="Page Width"
-                min={400}
-                max={2500}
-                step={50}
-                value={settings.layout_max_width || 1280}
-                onChange={(val) => updateSettings({ layout_max_width: val })}
-                unit="px"
-              />
-            </div>
           </div>
-
           {/* Dual Column Tuner (Only on specific pages like Settings) */}
           {dualColumnProps && (
             <>
@@ -89,6 +80,28 @@ export default function BottomControlPanel({
               />
             </>
           )}
+        </div>
+
+        <div className="bg-border h-8 w-px opacity-40"></div>
+
+        {/* Undo / Redo */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={undo}
+            disabled={!canUndo}
+            className="hover:bg-accent rounded-full p-2 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+            title="Undo (Ctrl+Z)"
+          >
+            <FaUndo className="h-4 w-4" />
+          </button>
+          <button
+            onClick={redo}
+            disabled={!canRedo}
+            className="hover:bg-accent rounded-full p-2 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+            title="Redo (Ctrl+Y)"
+          >
+            <FaRedo className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Action Button */}

@@ -6,12 +6,19 @@ import { FaCheck, FaCog } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { CURRENCIES } from "./CurrencySettings";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
+import { TunerSlider } from "../design-tuner/ui/TunerSlider";
 
 interface SettingsSetupProps {
   onComplete: () => void;
 }
 
+/**
+ * SettingsSetup Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
   const { settings, updateSettings, save } = useSettings();
   const [saving, setSaving] = useState(false);
@@ -30,37 +37,46 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
 
   return (
     <div className="bg-background/80 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-card border-border w-full max-w-2xl rounded-2xl border p-8 shadow-xl">
-        <div className="mb-8 text-center">
-          <div className="bg-primary/10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-            <FaCog className="text-primary text-2xl" />
+      <div
+        className="bg-card border-border flex w-full max-w-2xl origin-center flex-col gap-8 rounded-3xl border p-10 shadow-2xl"
+        style={{
+          transform: `scale(${(settings.scaling.display_scale || 100) / 100})`,
+        }}
+      >
+        <div className="text-center">
+          <div className="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
+            <FaCog className="text-primary text-3xl" />
           </div>
-          <h1 className="text-foreground mb-2 text-3xl font-bold">
+          <h1 className="text-foreground mb-3 text-4xl font-black tracking-tight">
             Final Touches
           </h1>
-          <p className="text-muted-foreground">
-            Configure your regional settings.
+          <p className="text-muted-foreground text-lg">
+            Personalize your workspace before we begin.
           </p>
         </div>
 
-        <div className="space-y-8">
-          {/* Currency Section */}
-          <div className="bg-muted/50 border-border rounded-xl border p-6">
-            <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold">
-              Currency
-            </h3>
-            <div>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* Left Column: Localization */}
+          <div className="flex flex-col gap-8">
+            {/* Currency Section */}
+            <div className="bg-muted/30 border-border/50 rounded-2xl border p-6">
+              <h3 className="text-foreground mb-4 flex items-center gap-2 text-xs font-bold tracking-widest uppercase opacity-50">
+                Currency
+              </h3>
               <Select
-                label="Currency Symbol"
+                label="Region & Symbol"
                 value={
-                  CURRENCIES.find((c) => c.symbol === settings.currency_symbol)
-                    ?.code || "CUSTOM"
+                  CURRENCIES.find(
+                    (c) => c.symbol === settings.general.currency_symbol,
+                  )?.code || "CUSTOM"
                 }
                 onChange={(val: string | number) => {
                   const code = val as string;
                   const selected = CURRENCIES.find((c) => c.code === code);
                   if (selected) {
-                    updateSettings({ currency_symbol: selected.symbol });
+                    updateSettings({
+                      general: { currency_symbol: selected.symbol },
+                    });
                   }
                 }}
                 options={[
@@ -69,51 +85,48 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
                     label: `${c.country} (${c.code}) - ${c.symbol}`,
                   })),
                   ...(!CURRENCIES.some(
-                    (c) => c.symbol === settings.currency_symbol,
+                    (c) => c.symbol === settings.general.currency_symbol,
                   )
                     ? [
-                      {
-                        value: "CUSTOM",
-                        label: `Custom (${settings.currency_symbol})`,
-                      },
-                    ]
+                        {
+                          value: "CUSTOM",
+                          label: `Custom (${settings.general.currency_symbol})`,
+                        },
+                      ]
                     : []),
                 ]}
               />
-              <p className="text-muted-foreground mt-2 text-xs">
-                Symbol displayed next to prices (e.g., $, €, £, ¥)
-              </p>
             </div>
-          </div>
 
-          {/* Tax Section */}
-          <div className="bg-muted/50 border-border rounded-xl border p-6">
-            <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold">
-              Tax Configuration
-            </h3>
-            <div className="space-y-4">
-              <label className="bg-background border-border hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors">
+            {/* Tax Section */}
+            <div className="bg-muted/30 border-border/50 flex flex-col gap-4 rounded-2xl border p-6">
+              <h3 className="text-foreground mb-4 flex items-center gap-2 text-xs font-bold tracking-widest uppercase opacity-50">
+                Tax (VAT)
+              </h3>
+              <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-[border-color,background-color]">
                 <input
                   type="checkbox"
-                  checked={settings.tax_enabled}
+                  checked={settings.general.tax_enabled}
                   onChange={(e) =>
-                    updateSettings({ tax_enabled: e.target.checked })
+                    updateSettings({
+                      general: { tax_enabled: e.target.checked },
+                    })
                   }
-                  className="text-primary focus:ring-primary h-5 w-5 rounded"
+                  className="text-primary focus:ring-primary h-6 w-6 rounded-lg border-2"
                 />
-                <span className="text-foreground font-medium">
+                <span className="text-foreground font-bold">
                   Enable Tax Calculation
                 </span>
               </label>
 
-              {settings.tax_enabled && (
+              {settings.general.tax_enabled && (
                 <Input
-                  label="Tax Rate (%)"
+                  label="Rate (%)"
                   type="number"
-                  value={settings.tax_rate}
+                  value={settings.general.tax_rate}
                   onChange={(e) =>
                     updateSettings({
-                      tax_rate: parseFloat(e.target.value) || 0,
+                      general: { tax_rate: parseFloat(e.target.value) || 0 },
                     })
                   }
                   placeholder="7.0"
@@ -122,21 +135,44 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
               )}
             </div>
           </div>
+
+          {/* Right Column: Layout */}
+          <div className="bg-primary/5 border-primary/10 flex flex-col justify-center gap-8 rounded-2xl border p-8">
+            <h3 className="text-primary mb-6 flex items-center gap-2 text-xs font-black tracking-widest uppercase">
+              Display & Scale
+            </h3>
+
+            <TunerSlider
+              label="Interface Zoom"
+              min={75}
+              max={125}
+              step={5}
+              value={settings.scaling.display_scale || 100}
+              onChange={(val) =>
+                updateSettings({ scaling: { display_scale: val } })
+              }
+              unit="%"
+            />
+
+            <div className="text-muted-foreground bg-background/40 border-border/30 rounded-xl border p-4 text-[10px] leading-relaxed italic">
+              Tip: Adjust the zoom to fit your screen resolution. You can always
+              change this later in Design Mode.
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className={`text-primary-foreground shadow-primary/30 flex w-full transform items-center justify-center gap-2 rounded-xl px-6 py-4 text-lg font-bold shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] ${saving
-                ? "bg-primary/70 cursor-not-allowed"
-                : "bg-primary hover:bg-primary/90"
-              }`}
-          >
-            {saving ? "Saving..." : "Finish Setup"}
-            {!saving && <FaCheck />}
-          </button>
-        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className={`text-primary-foreground shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black shadow-2xl transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
+            saving
+              ? "bg-primary/70 cursor-not-allowed"
+              : "bg-primary hover:bg-primary/90"
+          }`}
+        >
+          {saving ? "Deploying Settings..." : "Complete Setup"}
+          {!saving && <FaCheck className="text-lg" />}
+        </button>
       </div>
     </div>
   );

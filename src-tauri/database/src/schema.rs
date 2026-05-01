@@ -37,6 +37,7 @@ diesel::table! {
         volume -> Integer,
         quantity -> Integer,
         precision -> Integer,
+        tags -> Nullable<Text>,
     }
 }
 

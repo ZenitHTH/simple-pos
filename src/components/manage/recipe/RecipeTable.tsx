@@ -1,15 +1,8 @@
 "use client";
 
-import { BackendProduct, Material, formatVolume } from "@/lib";
-import { RecipeItem, RecipeList } from "@/lib/types/recipe";
-import GlobalTable, { Column } from "@/components/ui/GlobalTable";
-
-interface RecipeRow {
-  product: BackendProduct;
-  list: RecipeList;
-  items: RecipeItem[];
-  materials: Material[];
-}
+import { BackendProduct, Material, formatVolume, Column } from "@/lib";
+import { RecipeItem, RecipeList, RecipeRow } from "@/lib/types/recipe";
+import GlobalTable from "@/components/ui/GlobalTable";
 
 interface RecipeTableProps {
   recipeRows: RecipeRow[];

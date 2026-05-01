@@ -1,5 +1,8 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Material, formatVolume } from "@/lib";
+import { Badge } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { TableActionButton } from "@/components/ui/TableActionButton";
 
 interface MaterialTableProps {
   materials: Material[];
@@ -7,6 +10,15 @@ interface MaterialTableProps {
   onDelete: (id: number) => void;
 }
 
+/**
+ * MaterialTable component displays a list of materials in a tabular format.
+ * It shows details like ID, name, type, tags, volume, and quantity, with edit/delete actions.
+ *
+ * @param {MaterialTableProps} props - The component props.
+ * @param {Material[]} props.materials - List of materials to display.
+ * @param {(material: Material) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {(id: number) => void} props.onDelete - Callback when the delete button is clicked.
+ */
 export default function MaterialTable({
   materials,
   onEdit,
@@ -14,9 +26,10 @@ export default function MaterialTable({
 }: MaterialTableProps) {
   if (materials.length === 0) {
     return (
-      <div className="text-muted-foreground flex h-64 items-center justify-center rounded-xl border border-dashed">
-        No materials found. Add some materials to get started.
-      </div>
+      <EmptyState
+        message="No materials found. Add some materials to get started."
+        className="h-64 rounded-xl border border-dashed"
+      />
     );
   }
 
@@ -29,6 +42,7 @@ export default function MaterialTable({
               <th className="px-6 py-4">ID</th>
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Type</th>
+              <th className="px-6 py-4">Tags</th>
               <th className="px-6 py-4">Volume</th>
               <th className="px-6 py-4">Quantity</th>
               <th className="px-6 py-4 text-right">Actions</th>
@@ -42,28 +56,44 @@ export default function MaterialTable({
                 </td>
                 <td className="px-6 py-4 font-medium">{m.name}</td>
                 <td className="px-6 py-4">
-                  <span className="bg-secondary text-secondary-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
+                  <Badge variant="secondary" className="rounded-full">
                     {m.type_}
-                  </span>
+                  </Badge>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {m.tags && m.tags.length > 0 ? (
+                      m.tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="primary-subtle"
+                          className="rounded-full text-[10px] tracking-wider uppercase"
+                        >
+                          {tag}
+                        </Badge>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground/50 text-[10px] italic">
+                        No tags
+                      </span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-6 py-4">{m.volume}</td>
                 <td className="px-6 py-4 font-semibold">{m.quantity}</td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-2">
-                    <button
+                    <TableActionButton
                       onClick={() => onEdit(m)}
-                      className="text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
                       title="Edit material"
-                    >
-                      <FaEdit size={16} />
-                    </button>
-                    <button
+                      icon={<FaEdit size={16} />}
+                    />
+                    <TableActionButton
                       onClick={() => onDelete(m.id)}
-                      className="text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors"
                       title="Delete material"
-                    >
-                      <FaTrash size={16} />
-                    </button>
+                      variant="destructive"
+                      icon={<FaTrash size={16} />}
+                    />
                   </div>
                 </td>
               </tr>

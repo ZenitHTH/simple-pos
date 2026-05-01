@@ -1,87 +1,6 @@
 @import "tailwindcss";
-
-@layer base {
-  :root {
-    /* Light Theme (Default) */
-    --background: #ffffff;
-    --foreground: #0f172a;
-
-    --card: #ffffff;
-    --card-foreground: #0f172a;
-
-    --popover: #ffffff;
-    --popover-foreground: #0f172a;
-
-    --primary: #3b82f6;
-    --primary-foreground: #ffffff;
-
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f172a;
-
-    --muted: #f1f5f9;
-    --muted-foreground: #64748b;
-
-    --accent: #f1f5f9;
-    --accent-foreground: #0f172a;
-
-    --destructive: #ef4444;
-    --destructive-foreground: #f8fafc;
-
-    --success: #16a34a; /* green-600 */
-    --success-foreground: #f8fafc;
-
-    --warning: #f59e0b; /* amber-500 */
-    --warning-foreground: #0f172a; /* slate-900 for contrast */
-
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #3b82f6;
-
-    --radius: 0.5rem;
-
-    /* Typography (overridden at runtime by SettingsContext) */
-    --typography-font-family: var(--font-noto-sans), Inter, sans-serif;
-    --typography-base-size: 16px;
-    --typography-heading-weight: 700;
-    --typography-body-weight: 400;
-    --typography-line-height: 1.6;
-    --typography-letter-spacing: 0em;
-  }
-
-  .dark {
-    --background: #020617;
-    --foreground: #f8fafc;
-
-    --card: #0f172a;
-    --card-foreground: #f8fafc;
-
-    --popover: #0f172a;
-    --popover-foreground: #f8fafc;
-
-    --secondary: #1e293b;
-    --secondary-foreground: #f8fafc;
-
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
-
-    --destructive: #7f1d1d;
-    --destructive-foreground: #f8fafc;
-
-    /* Usually success is brighter in dark mode */
-    --success: #22c55e; /* green-500 */
-    --success-foreground: #020617;
-
-    --warning: #f59e0b; /* amber-500 */
-    --warning-foreground: #020617;
-
-    --border: #1e293b;
-    --input: #1e293b;
-    --ring: #1d4ed8;
-  }
-}
+@import "./styles/tokens.css";
+@import "./styles/components.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -95,6 +14,12 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
+  /* Generated Interactive States */
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-muted: var(--primary-muted);
+  --color-primary-glow: var(--primary-glow);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -146,15 +71,12 @@
   h1 {
     @apply text-3xl;
   }
-
   h2 {
     @apply text-2xl;
   }
-
   h3 {
     @apply text-xl;
   }
-
   h4 {
     @apply text-lg;
   }
@@ -166,209 +88,5 @@
   label {
     color: var(--muted-foreground);
     font-weight: 500;
-  }
-}
-
-/* Component Classes - Using standard CSS to avoid @apply issues with theme variables */
-
-.page-container {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--background);
-  z-index: 50;
-  padding: 1rem;
-}
-
-.card-container {
-  background-color: var(--card);
-  padding: 3rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  width: 100%;
-  max-width: 32rem;
-  border: 1px solid var(--border);
-  text-align: center;
-  transform: translate(0);
-  transition: all 0.5s;
-}
-
-.card-container:hover {
-  transform: scale(1.01);
-}
-
-.hero-title {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-  font-weight: 800;
-  color: var(--foreground);
-  margin-bottom: 1rem;
-  letter-spacing: -0.025em;
-}
-
-.hero-subtitle {
-  color: var(--muted-foreground);
-  margin-bottom: 2.5rem;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  line-height: 1.625;
-}
-
-.meta-text {
-  margin-top: 2rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
-}
-
-.btn-hero {
-  position: relative;
-  width: 100%;
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  background-color: var(--foreground);
-  color: var(--background);
-  font-weight: 700;
-  font-size: 1.125rem;
-  overflow: hidden;
-  transition: all 0.3s;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-}
-
-.btn-hero:hover {
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-}
-
-.btn-primary-lg {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  font-size: 1.125rem;
-  font-weight: 700;
-  padding: 1rem 2.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-left: auto;
-  margin-right: auto;
-  cursor: pointer;
-}
-
-.btn-primary-lg:hover {
-  transform: scale(1.05) translateY(-2px);
-  filter: brightness(0.95);
-}
-
-.icon-box-lg {
-  width: 6rem;
-  height: 6rem;
-  background: linear-gradient(to top right, var(--primary), #06b6d4);
-  border-radius: 1.5rem;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(3deg);
-  transition: transform 0.5s;
-}
-
-.icon-box-lg:hover {
-  transform: rotate(6deg);
-}
-
-.icon-box-md {
-  display: inline-flex;
-  padding: 1.25rem;
-  background-color: color-mix(in srgb, var(--primary), transparent 90%);
-  color: var(--primary);
-  border-radius: 1rem;
-  margin-bottom: 2rem;
-  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-}
-
-/* Scrollbar Styling - Scoped to .custom-scrollbar utility class */
-.custom-scrollbar {
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
-}
-
-.payment-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background-color: rgb(0 0 0 / 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.payment-modal-content {
-  background-color: var(--card);
-  width: 100%;
-  max-width: 28rem;
-  /* max-w-md */
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  border-radius: 1rem;
-  /* rounded-2xl is usually 1rem or 1.5rem, tailwind rounded-2xl is 1rem */
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  position: relative;
-  /* Animation would typically require keyframes if not using tailwind animate utility, 
-     but since we are mixing, I will keep the animation classes on the element or add them here if possible.
-     For simplicity and to avoid re-implementing tailwind animations in vanilla CSS right now, 
-     I will leave the animation classes in the JSX or rely on simple transitions if needed. 
-     The user asked to "move css part", so I will try to include as much as standard CSS. */
-  animation: modalIn 0.2s ease-out forwards;
-}
-
-@media (min-width: 1024px) {
-  .payment-modal-content {
-    max-width: 32rem;
-    /* lg:max-w-lg (approx) */
-  }
-}
-
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }

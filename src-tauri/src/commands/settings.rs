@@ -1,251 +1,104 @@
-use directories::ProjectDirs;
-use serde::{Deserialize, Serialize};
-use std::fs;
+use serde::Serialize;
+use settings_lib::{
+    AppSettings, StorageInfo, get_settings as lib_get_settings,
+    get_storage_info as lib_get_storage_info, save_settings as lib_save_settings,
+};
 use std::path::PathBuf;
-use tauri::command;
+use tauri::{Manager, command};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct AppSettings {
-    // ── General ──
-    pub currency_symbol: String,
-    pub tax_enabled: bool,
-    pub tax_rate: f64,
-
-    // ── Global Display ──
-    pub display_scale: f64,
-    pub layout_max_width: f64,
-
-    // ── Component Scales ──
-    pub sidebar_scale: f64,
-    pub cart_scale: f64,
-    pub grid_scale: f64,
-    pub manage_table_scale: f64,
-    pub stock_table_scale: f64,
-    pub material_table_scale: f64,
-    pub category_table_scale: f64,
-    pub setting_page_scale: f64,
-    pub payment_modal_scale: f64,
-
-    // ── Font Scales ──
-    pub header_font_scale: f64,
-    pub sidebar_font_scale: f64,
-    pub cart_font_scale: f64,
-    pub grid_font_scale: f64,
-    pub manage_table_font_scale: f64,
-    pub stock_table_font_scale: f64,
-    pub material_table_font_scale: f64,
-    pub category_table_font_scale: f64,
-    pub setting_page_font_scale: f64,
-    pub payment_modal_font_scale: f64,
-    pub history_font_scale: Option<f64>,
-
-    // ── Cart Item Styling ──
-    pub cart_item_font_size: Option<f64>,
-    pub cart_item_header_font_size: Option<f64>,
-    pub cart_item_price_font_size: Option<f64>,
-    pub cart_item_padding: Option<f64>,
-    pub cart_item_margin: Option<f64>,
-
-    // ── Payment ──
-    pub payment_numpad_height: Option<f64>,
-
-    // ── Typography ──
-    pub typography_font_family: Option<String>,
-    pub typography_base_size: Option<f64>,
-    pub typography_heading_weight: Option<f64>,
-    pub typography_body_weight: Option<f64>,
-    pub typography_line_height: Option<f64>,
-    pub typography_letter_spacing: Option<f64>,
-
-    // ── Storage Paths ──
-    pub image_storage_path: Option<String>,
-    pub db_storage_path: Option<String>,
-
-    // ── Theme ──
-    pub theme_primary_color: Option<String>,
-    pub theme_radius: Option<f64>,
-    pub theme_preset: Option<String>,
+#[derive(Serialize)]
+pub struct AppInitialState {
+    pub settings: AppSettings,
+    pub storage_info: StorageInfo,
+    pub database_exists: bool,
 }
 
-impl Default for AppSettings {
-    fn default() -> Self {
-        Self {
-            // ── General ──
-            currency_symbol: "$".to_string(),
-            tax_enabled: true,
-            tax_rate: 7.0,
-
-            // ── Global Display ──
-            display_scale: 100.0,
-            layout_max_width: 1280.0,
-
-            // ── Component Scales ──
-            sidebar_scale: 100.0,
-            cart_scale: 100.0,
-            grid_scale: 100.0,
-            manage_table_scale: 100.0,
-            stock_table_scale: 100.0,
-            material_table_scale: 100.0,
-            category_table_scale: 100.0,
-            setting_page_scale: 100.0,
-            payment_modal_scale: 100.0,
-
-            // ── Font Scales ──
-            header_font_scale: 100.0,
-            sidebar_font_scale: 100.0,
-            cart_font_scale: 100.0,
-            grid_font_scale: 100.0,
-            manage_table_font_scale: 100.0,
-            stock_table_font_scale: 100.0,
-            material_table_font_scale: 100.0,
-            category_table_font_scale: 100.0,
-            setting_page_font_scale: 100.0,
-            payment_modal_font_scale: 100.0,
-            history_font_scale: Some(100.0),
-
-            // ── Cart Item Styling ──
-            cart_item_font_size: Some(100.0),
-            cart_item_header_font_size: Some(100.0),
-            cart_item_price_font_size: Some(100.0),
-            cart_item_padding: Some(10.0),
-            cart_item_margin: Some(8.0),
-
-            // ── Payment ──
-            payment_numpad_height: Some(320.0),
-
-            // ── Typography ──
-            typography_font_family: None,
-            typography_base_size: None,
-            typography_heading_weight: None,
-            typography_body_weight: None,
-            typography_line_height: None,
-            typography_letter_spacing: None,
-
-            // ── Storage Paths ──
-            image_storage_path: None,
-            db_storage_path: None,
-
-            // ── Theme ──
-            theme_primary_color: None,
-            theme_radius: Some(0.5),
-            theme_preset: Some("cozy".to_string()),
-        }
-    }
-}
-
-fn get_settings_path() -> Result<PathBuf, String> {
-    let proj_dirs = ProjectDirs::from("", "", "simple-pos").ok_or_else(|| {
-        "No valid home directory path could be retrieved from the operating system.".to_string()
-    })?;
-
-    let data_dir = proj_dirs.data_dir();
-    if !data_dir.exists() {
-        fs::create_dir_all(data_dir)
-            .map_err(|e| format!("Error creating data directory: {}", e))?;
-    }
-    Ok(data_dir.join("settings.json"))
-}
-
-fn validate_path(path_str: &str) -> Result<(), String> {
-    let path = PathBuf::from(path_str);
-    if !path.is_absolute() {
-        return Err(format!("Path '{}' must be absolute", path_str));
-    }
-    if path
-        .components()
-        .any(|c| matches!(c, std::path::Component::ParentDir))
-    {
-        return Err(format!(
-            "Path '{}' cannot contain '..' components",
-            path_str
-        ));
-    }
-    Ok(())
-}
-
+/// Retrieves the consolidated initial state for the application.
+/// Reduces IPC round-trips during startup.
 #[command]
-pub fn get_settings() -> Result<AppSettings, String> {
-    let path = get_settings_path()?;
-    if !path.exists() {
-        return Ok(AppSettings::default());
-    }
+pub fn get_app_initial_state() -> Result<AppInitialState, String> {
+    let settings = lib_get_settings()?;
+    let storage_info = lib_get_storage_info()?;
 
-    let content = fs::read_to_string(path).map_err(|e| e.to_string())?;
-    let settings: AppSettings = match serde_json::from_str(&content) {
-        Ok(s) => s,
-        Err(e) => {
-            log::error!("Failed to parse settings.json: {}. Using defaults.", e);
-            AppSettings::default()
-        }
-    };
-    Ok(settings)
-}
+    use database::get_database_path;
+    let db_path = get_database_path().map_err(|e| e.to_string())?;
+    let database_exists = db_path.exists();
 
-#[command]
-pub fn save_settings(settings: AppSettings) -> Result<(), String> {
-    // Validate storage paths if provided
-    if let Some(ref p) = settings.db_storage_path {
-        validate_path(p)?;
-    }
-    if let Some(ref p) = settings.image_storage_path {
-        validate_path(p)?;
-    }
-
-    let path = get_settings_path()?;
-    let content = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
-    fs::write(path, content).map_err(|e| e.to_string())?;
-    Ok(())
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct StorageInfo {
-    pub image_path: String,
-    pub db_path: String,
-}
-
-#[command]
-pub fn get_storage_info() -> Result<StorageInfo, String> {
-    let db_path_buf = database::get_database_path().map_err(|e| e.to_string())?;
-    let db_path = db_path_buf.to_string_lossy().to_string();
-
-    let settings = get_settings()?;
-    let image_path = if let Some(p) = settings.image_storage_path {
-        p
-    } else if let Some(parent) = db_path_buf.parent() {
-        parent.join("images").to_string_lossy().to_string()
-    } else {
-        return Err("Cannot determine image path".to_string());
-    };
-
-    Ok(StorageInfo {
-        image_path,
-        db_path,
+    Ok(AppInitialState {
+        settings,
+        storage_info,
+        database_exists,
     })
 }
 
+/// Retrieves the current application settings.
+///
+/// # Returns
+/// The current application settings object.
 #[command]
-pub fn migrate_image_directory(key: String, new_path: String) -> Result<(), String> {
-    validate_path(&new_path)?;
+pub fn get_settings() -> Result<AppSettings, String> {
+    lib_get_settings()
+}
 
-    let mut conn = database::establish_connection(&key).map_err(|e| e.to_string())?;
+/// Saves the provided application settings to disk.
+///
+/// # Arguments
+/// * `settings` - The application settings to save.
+///
+/// # Returns
+/// An empty result on success.
+#[command]
+pub fn save_settings(settings: AppSettings) -> Result<(), String> {
+    lib_save_settings(settings)
+}
+
+/// Retrieves information about the current application storage and data paths.
+///
+/// # Returns
+/// Storage info including paths for database and images.
+#[command]
+pub fn get_storage_info() -> Result<StorageInfo, String> {
+    lib_get_storage_info()
+}
+
+/// Migrates the image storage directory to a new path.
+/// Moves all existing image files to the new location and updates their database paths.
+/// Restricted to subdirectories of the application's local data directory for security.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+/// * `key` - The database encryption key.
+/// * `new_path` - The target directory for image storage.
+///
+/// # Returns
+/// An empty result on success.
+#[command]
+pub fn migrate_image_directory(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, crate::AppState>,
+    new_path: String,
+) -> Result<(), String> {
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    let new_path_buf = settings_lib::validate_path_within(&new_path, &app_dir)?;
+
+    let mut conn = crate::conn!(state);
     let images = database::image::get_all_images(&mut conn).map_err(|e| e.to_string())?;
 
-    let new_path_buf = std::path::PathBuf::from(&new_path);
     if !new_path_buf.exists() {
         std::fs::create_dir_all(&new_path_buf)
             .map_err(|e| format!("Error creating new directory: {}", e))?;
     }
 
     for image in images {
-        let old_path = std::path::PathBuf::from(&image.file_path);
-        
+        let old_path = PathBuf::from(&image.file_path);
+
         // Use the actual filename from the current path (which is hash-based and safe)
         // instead of image.file_name (which is the original user-provided name)
         let actual_filename = match old_path.file_name() {
             Some(name) => name,
             None => continue, // Should not happen for valid paths
         };
-        
+
         let dest_path = new_path_buf.join(actual_filename);
         let dest_path_str = dest_path.to_string_lossy().to_string();
 

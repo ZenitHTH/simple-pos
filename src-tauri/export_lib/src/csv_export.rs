@@ -2,6 +2,12 @@ use super::{CellValue, ExportTable, sanitize_cell_text};
 use std::error::Error;
 use std::path::Path;
 
+/// Exports an `ExportTable` to a CSV file.
+///
+/// # Arguments
+///
+/// * `table` - The table to export.
+/// * `path` - The destination file path.
 pub fn export_to_csv<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_path(path)?;
 
@@ -23,6 +29,50 @@ pub fn export_to_csv<P: AsRef<Path>>(table: &ExportTable, path: P) -> Result<(),
 
     wtr.flush()?;
     Ok(())
+}
+
+/// Imports an `ExportTable` from a CSV file.
+///
+/// # Arguments
+///
+/// * `path` - The source file path.
+///
+/// # Returns
+///
+/// An `ExportTable` containing the data from the CSV file.
+pub fn import_from_csv<P: AsRef<Path>>(path: P) -> Result<ExportTable, Box<dyn Error>> {
+    let mut rdr = csv::Reader::from_path(path)?;
+    
+    // Get headers
+    let headers = rdr.headers()?.iter().map(|s| s.to_string()).collect();
+    let mut table = ExportTable::new(headers);
+
+    // Read records
+    for result in rdr.records() {
+        let record = result?;
+        let row: Vec<CellValue> = record.iter()
+            .map(|s| {
+                // Try to parse as number or bool, default to text
+                if let Ok(n) = s.parse::<f64>() {
+                    CellValue::Number(n)
+                } else if let Ok(b) = s.parse::<bool>() {
+                    CellValue::Bool(b)
+                } else {
+                    // Remove leading single quote if it was added for sanitization
+                    if s.starts_with('\'') && (s.len() > 1) {
+                        let inner = &s[1..];
+                        if inner.starts_with('=') || inner.starts_with('+') || inner.starts_with('-') || inner.starts_with('@') {
+                            return CellValue::Text(inner.to_string());
+                        }
+                    }
+                    CellValue::Text(s.to_string())
+                }
+            })
+            .collect();
+        table.add_row(row);
+    }
+
+    Ok(table)
 }
 
 #[cfg(test)]

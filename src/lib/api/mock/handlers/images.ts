@@ -46,7 +46,9 @@ export const imageHandlers = {
   get_all_images: () => state.images,
   delete_image: ({ imageId }: { imageId: number }) => {
     state.images = state.images.filter((img) => img.id !== imageId);
-    state.productImages = state.productImages.filter((pi) => pi.image_id !== imageId);
+    state.productImages = state.productImages.filter(
+      (pi) => pi.image_id !== imageId,
+    );
   },
   get_all_image_links: () => state.productImages,
 };

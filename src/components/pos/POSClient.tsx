@@ -1,20 +1,32 @@
 "use client";
 
-import { usePOSLogic } from "@/hooks/usePOSLogic";
+import { usePOSLogic } from "@/hooks/features/usePOSLogic";
 import { Product } from "@/lib";
 import { useSettings } from "@/context/settings/SettingsContext";
 import POSHeader from "./POSHeader";
 import POSProductGrid from "./POSProductGrid";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import Cart from "@/components/cart/Cart";
-import PaymentModal from "@/components/payment/PaymentModal";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Drawer } from "@/components/ui/Drawer";
+
+const PaymentModal = dynamic(
+  () => import("@/components/payment/PaymentModal"),
+  { ssr: false },
+);
 
 interface POSClientProps {
   initialProducts?: Product[];
 }
 
+/**
+ * POSClient component serves as the main entry point for the Point of Sale interface.
+ * It manages the product grid, category filtering, search, and the shopping cart.
+ *
+ * @param {POSClientProps} props - The component props.
+ * @param {Product[]} [props.initialProducts] - Optional initial list of products to display.
+ */
 export default function POSClient({ initialProducts = [] }: POSClientProps) {
   const { settings } = useSettings();
   const {
@@ -37,6 +49,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
     customers,
     selectedCustomerId,
     setSelectedCustomerId,
+    isPending,
   } = usePOSLogic(initialProducts);
 
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -46,9 +59,10 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Calculate Cart Width
-  const cartBaseWidth = 320; // w-80
-  const cartWidthMultiplier = (settings?.cart_scale || 100) / 100;
-  const cartDynamicWidth = isCartVisible ? `${cartBaseWidth * cartWidthMultiplier}px` : "0px";
+  // We use CSS variables to allow Design Mode to update scale without triggering React re-renders
+  const cartDynamicWidth = isCartVisible
+    ? `calc(320px * var(--cart-scale, 1))`
+    : "0px";
 
   return (
     <div className="bg-background box-border flex h-full gap-6 overflow-hidden p-6">
@@ -76,12 +90,14 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
       {/* Right Side: Cart Sidebar */}
       <div
-        className={`relative hidden h-full shrink-0 transition-all duration-500 md:block ${
-          isCartVisible ? "opacity-100" : "w-0 overflow-hidden opacity-0 pointer-events-none"
+        className={`relative hidden h-full shrink-0 transition-[width,opacity] duration-500 md:block ${
+          isCartVisible
+            ? "opacity-100"
+            : "pointer-events-none w-0 overflow-hidden opacity-0"
         }`}
         style={{
           width: cartDynamicWidth,
-          fontSize: `${settings?.cart_font_scale || 100}%`,
+          fontSize: `${settings.scaling.fonts.cart || 100}%`,
         }}
       >
         <SelectableOverlay id="cart_scale" />
@@ -104,6 +120,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         onClose={() => setIsPaymentModalOpen(false)}
         total={cartTotal}
         onConfirm={handleConfirmPayment}
+        isPending={isPending}
         currency={currency}
       />
 
@@ -117,7 +134,7 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
         <div
           className="h-full overflow-y-auto"
           style={{
-            fontSize: `${settings?.cart_font_scale || 100}%`,
+            fontSize: `${settings.scaling.fonts.cart || 100}%`,
           }}
         >
           <Cart

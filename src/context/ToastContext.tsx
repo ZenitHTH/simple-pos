@@ -7,7 +7,8 @@ import React, {
   useCallback,
   ReactNode,
 } from "react";
-import { Toast, ToastType } from "@/components/ui/Toast";
+import { Toast } from "@/components/ui/Toast";
+import { ToastType } from "@/lib";
 
 interface ToastItem {
   id: string;
@@ -34,7 +35,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext value={{ showToast }}>
       {children}
       <div className="fixed right-6 bottom-6 z-9999 flex flex-col gap-3">
         {toasts.map((toast) => (
@@ -47,12 +48,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           />
         ))}
       </div>
-    </ToastContext.Provider>
+    </ToastContext>
   );
 }
 
 export function useToast() {
-  const context = useContext(ToastContext);
+  const context = React.use(ToastContext);
   if (context === undefined) {
     throw new Error("useToast must be used within a ToastProvider");
   }

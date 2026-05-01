@@ -1,17 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Material, scaledToFloat, UNIT_OPTIONS } from "@/lib";
+import { Material, MaterialFormData, scaledToFloat, UNIT_OPTIONS } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Controller } from "react-hook-form";
-
-interface MaterialFormData {
-  name: string;
-  type_: string;
-  volume: number;
-  quantity: number;
-}
 
 interface MaterialModalProps {
   isOpen: boolean;
@@ -21,6 +14,17 @@ interface MaterialModalProps {
   isSubmitting?: boolean;
 }
 
+/**
+ * MaterialModal component provides a form for creating or editing raw materials/inventory items.
+ * It handles fields for name, volume, quantity, unit type, and tags.
+ *
+ * @param {MaterialModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(data: MaterialFormData) => Promise<void>} props.onSubmit - Callback to submit the material form data.
+ * @param {Material} [props.initialData] - Optional initial material data for editing.
+ * @param {boolean} [props.isSubmitting] - Whether the form is currently being submitted.
+ */
 export default function MaterialModal({
   isOpen,
   onClose,
@@ -28,13 +32,22 @@ export default function MaterialModal({
   initialData,
   isSubmitting,
 }: MaterialModalProps) {
+  const [tagInput, setTagInput] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     control,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<MaterialFormData>();
+  } = useForm<MaterialFormData>({
+    defaultValues: {
+      tags: [],
+    },
+  });
+
+  const tags = watch("tags") || [];
 
   useEffect(() => {
     if (isOpen) {
@@ -44,6 +57,7 @@ export default function MaterialModal({
           type_: initialData.type_,
           volume: scaledToFloat(initialData.volume, initialData.precision),
           quantity: initialData.quantity,
+          tags: initialData.tags || [],
         });
       } else {
         reset({
@@ -51,10 +65,27 @@ export default function MaterialModal({
           type_: "Pieces",
           volume: 1,
           quantity: 0,
+          tags: [],
         });
       }
+      setTagInput("");
     }
   }, [isOpen, initialData, reset]);
+
+  const addTag = () => {
+    const trimmed = tagInput.trim();
+    if (trimmed && !tags.includes(trimmed)) {
+      setValue("tags", [...tags, trimmed]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setValue(
+      "tags",
+      tags.filter((t) => t !== tagToRemove),
+    );
+  };
 
   return (
     <Modal
@@ -64,6 +95,8 @@ export default function MaterialModal({
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
+          id="material-name"
+          data-testid="material-name-input"
           label="Material Name"
           error={errors.name?.message}
           {...register("name", {
@@ -75,6 +108,8 @@ export default function MaterialModal({
 
         <div className="grid grid-cols-2 gap-4">
           <Input
+            id="material-volume"
+            data-testid="material-volume-input"
             label="Volume"
             type="number"
             min="0.0001"
@@ -86,6 +121,8 @@ export default function MaterialModal({
             })}
           />
           <Input
+            id="material-quantity"
+            data-testid="material-quantity-input"
             label="Quantity"
             type="number"
             min="0"
@@ -104,6 +141,8 @@ export default function MaterialModal({
             rules={{ required: true }}
             render={({ field }) => (
               <Select
+                id="material-type"
+                data-testid="material-type-select"
                 label="Type / Unit"
                 value={field.value}
                 onChange={field.onChange}
@@ -111,6 +150,61 @@ export default function MaterialModal({
               />
             )}
           />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Tags</label>
+          <div className="flex gap-2">
+            <Input
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag();
+                }
+              }}
+              placeholder="Add a tag..."
+              className="flex-1"
+            />
+            <button
+              type="button"
+              onClick={addTag}
+              className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-xl px-4 py-2 font-medium transition-colors"
+            >
+              Add
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1 rounded-full border px-3 py-1 text-sm font-medium"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => removeTag(tag)}
+                  className="hover:text-destructive transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="border-border mt-6 flex justify-end gap-3 border-t pt-4">

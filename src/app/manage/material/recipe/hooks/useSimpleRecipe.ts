@@ -11,13 +11,7 @@ import {
   scaledToFloat,
 } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-
-export interface SimpleRecipeItem {
-  material_id: number;
-  name: string;
-  volume_use: number;
-  unit: string;
-}
+import { SimpleRecipeItem } from "@/lib/types/recipe";
 
 export function useSimpleRecipe({ onSaved }: { onSaved?: () => void } = {}) {
   const { dbKey } = useDatabase();

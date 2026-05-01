@@ -3,6 +3,9 @@
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
+/**
+ * A fixed-position button that triggers the browser's back navigation.
+ */
 export default function GoBackButton() {
   const router = useRouter();
 

@@ -1,29 +1,48 @@
 use chrono::{TimeZone, Utc};
 use database::customer;
-use database::establish_connection;
 use database::receipt::model::ReceiptList;
 
-use crate::commands::settings::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
-use std::path::PathBuf;
-use tauri::command;
+use settings_lib::get_settings;
+use tauri::{Manager, command};
 
 #[command]
+/// Exports receipts within a specific date range to a file (CSV or XLSX).
+///
+/// The export generates a Thai sales tax report format, including VAT calculations
+/// based on the configured tax rate.
+///
+/// # Arguments
+///
+/// * `app` - The Tauri application handle.
+/// * `key` - The database encryption key.
+/// * `export_path` - The absolute destination file path.
+/// * `format` - The export format ("csv" or "xlsx").
+/// * `start_date` - The start of the date range (Unix timestamp in seconds).
+/// * `end_date` - The end of the date range (Unix timestamp in seconds).
+///
+/// # Returns
+///
+/// A success message string.
 pub fn export_receipts(
-    key: String,
+    app: tauri::AppHandle,
+    state: tauri::State<'_, crate::AppState>,
     export_path: String,
     format: String,
     start_date: i64,
     end_date: i64,
 ) -> Result<String, String> {
-    let mut conn = establish_connection(&key).map_err(|e| e.to_string())?;
-    let path = validate_export_path(&export_path)?;
+    let mut conn = crate::conn!(state);
+
+    // Security: Restrict export path to app-local data directory
+    let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+    let path = settings_lib::validate_path_within(&export_path, &app_dir)?;
 
     let all_data = fetch_export_data(&mut conn, start_date, end_date)?;
     let customers = customer::get_all_customers(&mut conn).unwrap_or_default();
     let settings = get_settings().map_err(|e| e.to_string())?;
 
-    let report_rows = convert_to_tax_report_rows(all_data, customers, settings.tax_rate);
+    let report_rows = convert_to_tax_report_rows(all_data, customers, settings.general.tax_rate);
     let export_table = build_thai_sales_tax_report(report_rows);
 
     match format.as_str() {
@@ -33,20 +52,6 @@ pub fn export_receipts(
     }
 
     Ok("Export successful".to_string())
-}
-
-fn validate_export_path(export_path: &str) -> Result<PathBuf, String> {
-    let path = PathBuf::from(export_path);
-    if !path.is_absolute() {
-        return Err("Export path must be absolute".to_string());
-    }
-    if path
-        .components()
-        .any(|c| matches!(c, std::path::Component::ParentDir))
-    {
-        return Err("Export path cannot contain '..' components".to_string());
-    }
-    Ok(path)
 }
 
 fn fetch_export_data(

@@ -71,14 +71,20 @@ export default function PasswordSetupScreen({
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter a strong password"
+                onKeyDown={(e) => {
+                  // Only allow English letters, numbers, standard special characters, and control keys
+                  if (e.key.length === 1 && !/^[\x20-\x7E]+$/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                placeholder="English/Numbers/Special chars only"
                 autoFocus
                 className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground hover:text-foreground absolute right-0 top-[34px] flex h-11 items-center pr-3 z-10"
+                className="text-muted-foreground hover:text-foreground absolute top-[34px] right-0 z-10 flex h-11 items-center pr-3"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -89,13 +95,18 @@ export default function PasswordSetupScreen({
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key.length === 1 && !/^[\x20-\x7E]+$/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 placeholder="Repeat your password"
                 className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="text-muted-foreground hover:text-foreground absolute right-0 top-[34px] flex h-11 items-center pr-3 z-10"
+                className="text-muted-foreground hover:text-foreground absolute top-[34px] right-0 z-10 flex h-11 items-center pr-3"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -111,7 +122,7 @@ export default function PasswordSetupScreen({
 
           {(/[^\x00-\x7F]/.test(password) ||
             /[^\x00-\x7F]/.test(confirmPassword)) && (
-            <div className="mb-4 flex items-center rounded-lg border border-warning/20 bg-warning/10 p-3 text-sm font-medium text-warning">
+            <div className="border-warning/20 bg-warning/10 text-warning mb-4 flex items-center rounded-lg border p-3 text-sm font-medium">
               <FaExclamationTriangle className="mr-2 h-4 w-4 shrink-0" />
               Warning: detailed characters detected. Please check your keyboard
               language (English recommended).

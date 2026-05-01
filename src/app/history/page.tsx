@@ -13,12 +13,14 @@ import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
-import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
+import { logger } from "@/lib/utils/logger";
 
 export default function HistoryPage() {
   const { dbKey } = useDatabase();
   const { settings } = useSettings();
   const { isMockupMode } = useMockup();
+  const { showAlert } = useAlert();
 
   const [receipts, setReceipts] = useState<ReceiptListType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -69,16 +71,19 @@ export default function HistoryPage() {
     setLoading(true);
 
     if (isMockupMode) {
-      setTimeout(() => {
+      setTimeout(async () => {
         const id = parseInt(searchId);
-        if ([1001, 1002, 1003].includes(id)) {
+        if (id === 1001 || id === 1002 || id === 1003) {
           setSelectedReceipt({
             receipt_id: id,
             datetime_unix: 1735689600 + (id - 1001) * 86400,
             // In real app, we would fetch details here, but for list item type it's enough.
           } as ReceiptListType);
         } else {
-          alert("Receipt not found (Mockup: try 1001, 1002, 1003)");
+          await showAlert(
+            "History",
+            "Receipt not found (Mockup: try 1001, 1002, 1003)",
+          );
         }
         setLoading(false);
       }, 500);
@@ -88,7 +93,7 @@ export default function HistoryPage() {
     try {
       const id = parseInt(searchId);
       if (isNaN(id)) {
-        alert("Please enter a valid number");
+        await showAlert("History", "Please enter a valid number");
         return;
       }
 
@@ -98,11 +103,11 @@ export default function HistoryPage() {
       if (header && header.receipt_id) {
         setSelectedReceipt(header);
       } else {
-        alert("Receipt not found");
+        await showAlert("History", "Receipt not found");
       }
     } catch (error) {
       logger.error("Search failed:", error);
-      alert("Receipt not found");
+      await showAlert("History", "Receipt not found");
     } finally {
       setLoading(false);
     }
@@ -117,8 +122,7 @@ export default function HistoryPage() {
       <div
         className="relative w-full transition-all duration-300"
         style={{
-          maxWidth: `${settings.layout_max_width || 1280}px`,
-          fontSize: `${settings.history_font_scale || 100}%`,
+          fontSize: `${settings.scaling.fonts.history || 100}%`,
         }}
       >
         <SelectableOverlay id="history_font_scale" />

@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { categoryApi } from "@/lib";
 import { Category } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
+import { useDataCache } from "@/context/DataContext";
 
 export function useCategoryManagement() {
   const { dbKey } = useDatabase();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
+  const { categories, updateCache, refreshAll } = useDataCache();
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,23 +20,6 @@ export function useCategoryManagement() {
     undefined,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      if (!dbKey) return;
-      try {
-        setLoading(true);
-        const data = await categoryApi.getAll(dbKey);
-        setCategories(data);
-      } catch (err) {
-        logger.error("Failed to fetch categories:", err);
-        setError("Failed to load categories.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCategories();
-  }, [dbKey]);
 
   const handleCreate = () => {
     setEditingCategory(undefined);
@@ -49,10 +36,10 @@ export function useCategoryManagement() {
       return;
     try {
       await categoryApi.delete(dbKey, id);
-      setCategories(categories.filter((c) => c.id !== id));
+      updateCache.categories(categories.filter((c) => c.id !== id));
     } catch (err) {
       logger.error("Failed to delete category:", err);
-      alert("Failed to delete category");
+      await showAlert("Category Error", "Failed to delete category");
     }
   };
 
@@ -65,17 +52,19 @@ export function useCategoryManagement() {
           ...editingCategory,
           name,
         });
-        setCategories(
+        updateCache.categories(
           categories.map((c) => (c.id === updated.id ? updated : c)),
         );
+        logger.action("category_updated", { id: updated.id });
       } else {
         const created = await categoryApi.create(dbKey, name);
-        setCategories([...categories, created]);
+        updateCache.categories([...categories, created]);
+        logger.action("category_created", { id: created.id });
       }
       setIsModalOpen(false);
     } catch (err) {
       logger.error("Failed to save category:", err);
-      alert("Failed to save category");
+      await showAlert("Category Error", "Failed to save category");
     } finally {
       setIsSubmitting(false);
     }
@@ -93,5 +82,6 @@ export function useCategoryManagement() {
     handleEdit,
     handleDelete,
     handleModalSubmit,
+    refresh: refreshAll,
   };
 }

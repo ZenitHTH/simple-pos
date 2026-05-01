@@ -1,13 +1,12 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Simple POS",
+  "productName": "vibe-pos",
   "version": "0.2.0",
   "identifier": "com.simple-pos.app",
   "build": {
     "frontendDist": "../out",
-    "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "devUrl": "http://127.0.0.1:3000",
+    "beforeDevCommand": "npm run dev"
   },
   "app": {
     "windows": [
@@ -24,8 +23,8 @@
       "assetProtocol": {
         "enable": true,
         "scope": [
-          "**/.local/share/simple-pos/images/**",
-          "**/AppData/Roaming/simple-pos/images/**"
+          "**/.local/share/simple-pos/**",
+          "**/AppData/Roaming/simple-pos/**"
         ]
       }
     }

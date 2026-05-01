@@ -3,6 +3,12 @@ import { FaCoins } from "react-icons/fa";
 import { Select } from "@/components/ui/Select";
 import SettingsSection from "@/components/ui/SettingsSection";
 
+/**
+ * CURRENCIES Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export const CURRENCIES = [
   { country: "United States", code: "USD", symbol: "$" },
   { country: "United Kingdom", code: "GBP", symbol: "£" },

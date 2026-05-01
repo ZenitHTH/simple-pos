@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe POS - Manual & Guide by Google Gemini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            securityLevel: 'loose',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: 18,
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+            sequence: { useMaxWidth: false, showSequenceNumbers: true },
+        });
+
+        // Post-process ER diagram elements to override mermaid's dark theme inline styles
+        function styleErDiagram(svg) {
+            // Entity header boxes
+            svg.querySelectorAll('rect.er.entityBox').forEach(el => {
+                el.style.setProperty('fill', '#1e3a5f', 'important');
+                el.style.setProperty('stroke', '#3b82f6', 'important');
+                el.style.setProperty('stroke-width', '2px', 'important');
+            });
+            // Odd attribute rows
+            svg.querySelectorAll('rect.er.attributeBoxOdd').forEach(el => {
+                el.style.setProperty('fill', '#161b2e', 'important');
+                el.style.setProperty('stroke', 'rgba(59,130,246,0.35)', 'important');
+            });
+            // Even attribute rows
+            svg.querySelectorAll('rect.er.attributeBoxEven').forEach(el => {
+                el.style.setProperty('fill', '#12172a', 'important');
+                el.style.setProperty('stroke', 'rgba(59,130,246,0.35)', 'important');
+            });
+            // Relationship label boxes
+            svg.querySelectorAll('rect.er.relationshipLabelBox').forEach(el => {
+                el.style.setProperty('fill', '#0c0c14', 'important');
+                el.style.setProperty('opacity', '0.9', 'important');
+            });
+            // Relationship lines
+            svg.querySelectorAll('.er.relationshipLine').forEach(el => {
+                el.style.setProperty('stroke', '#3b82f6', 'important');
+                el.style.setProperty('stroke-width', '2px', 'important');
+            });
+            // Entity label text
+            svg.querySelectorAll('text.er.entityLabel').forEach(el => {
+                el.style.setProperty('fill', '#ffffff', 'important');
+                el.style.setProperty('font-weight', '700', 'important');
+            });
+            // Attribute type text (int, string, etc.)
+            svg.querySelectorAll('text.er.attributeType').forEach(el => {
+                el.style.setProperty('fill', '#60a5fa', 'important');
+            });
+            // Attribute name text
+            svg.querySelectorAll('text.er.attributeName').forEach(el => {
+                el.style.setProperty('fill', '#e4e4e7', 'important');
+            });
+            // PK/FK key labels
+            svg.querySelectorAll('text.er.attributeKey').forEach(el => {
+                el.style.setProperty('fill', '#a855f7', 'important');
+                el.style.setProperty('font-weight', '700', 'important');
+            });
+            // Relationship label text
+            svg.querySelectorAll('text.er.relationshipLabel').forEach(el => {
+                el.style.setProperty('fill', '#94a3b8', 'important');
+            });
+        }
+
+        async function initDiagrams() {
+            await mermaid.run();
+            const svgs = document.querySelectorAll('.mermaid svg');
+            svgs.forEach((svg, index) => {
+                svg.id = 'mermaid-svg-' + index;
+                svg.style.width = '100%';
+                svg.style.height = '100%';
+                svg.style.maxWidth = 'none';
+
+                // Apply ER diagram overrides via JS (CSS alone can't beat mermaid's specificity)
+                styleErDiagram(svg);
+
+                const panZoom = svgPanZoom(svg, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.01,
+                    maxZoom: 20,
+                    refreshRate: 'auto'
+                });
+
+                setTimeout(() => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                }, 100);
+
+                const container = svg.closest('.mermaid-container');
+                container.querySelector('.zoom-in').onclick = () => panZoom.zoomIn();
+                container.querySelector('.zoom-out').onclick = () => panZoom.zoomOut();
+                container.querySelector('.reset').onclick = () => {
+                    panZoom.resetZoom();
+                    panZoom.fit();
+                    panZoom.center();
+                };
+
+                window.addEventListener('resize', () => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initDiagrams);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --background: #0c0c0e;
+            --card: #161618;
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #a855f7;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: #e4e4e7;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            letter-spacing: -0.04em;
+            color: #ffffff;
+        }
+
+        .animate-section {
+            animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .mermaid-container {
+            position: relative;
+            background: #09090b;
+            border-radius: 1.5rem;
+            border: 1px solid var(--border);
+            margin: 3rem 0;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .mermaid-container:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.1);
+        }
+
+        .mermaid {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mermaid:active {
+            cursor: grabbing;
+        }
+
+        /* --- STRICT MERMAID OVERRIDES --- */
+        .mermaid svg {
+            background: transparent !important;
+        }
+
+        /* Global Node container & shape fix (Flowchart v2 / v10+) */
+        .mermaid .node .label-container,
+        .mermaid .node rect,
+        .mermaid .node circle,
+        .mermaid .node polygon,
+        .mermaid .node path,
+        .mermaid .node.cylinder .label-container,
+        .mermaid .node.cylinder path {
+            fill: #1c1c1f !important;
+            stroke: var(--primary) !important;
+            stroke-width: 2px !important;
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        /* Lines and Paths - High Contrast White */
+        .mermaid .edgePath .path,
+        .mermaid .messageLine0,
+        .mermaid .messageLine1,
+        .mermaid .flowchart-link {
+            stroke: #ffffff !important;
+            stroke-width: 2.5px !important;
+            opacity: 1 !important;
+        }
+
+        /* Arrows and Markers - High Contrast White */
+        .mermaid .marker,
+        .mermaid [id^=arrowhead],
+        .mermaid marker path,
+        .mermaid #arrowhead path {
+            fill: #ffffff !important;
+            stroke: none !important;
+        }
+
+        /* Vertical Lifelines (Sequence Diagram) - Sky Blue Contrast */
+        .mermaid .actor-line {
+            stroke: #60a5fa !important;
+            stroke-width: 2px !important;
+            stroke-dasharray: 6, 6 !important;
+        }
+
+        .mermaid .label text,
+        .mermaid .label span,
+        .mermaid tspan {
+            fill: #ffffff !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+        }
+
+        .mermaid .cluster rect {
+            fill: rgba(39, 39, 42, 0.3) !important;
+            stroke: var(--primary) !important;
+            stroke-dasharray: 4, 4 !important;
+        }
+
+        /* Sequence Diagram specific fixes */
+        .mermaid .actor {
+            stroke: #3b82f6 !important;
+            fill: #1c1c1f !important;
+        }
+
+        .mermaid text.actor>tspan {
+            fill: #ffffff !important;
+            stroke: none !important;
+        }
+
+        .mermaid .messageText {
+            fill: #f8fafc !important;
+            color: #f8fafc !important;
+            stroke: none !important;
+            font-weight: 600 !important;
+        }
+
+        .mermaid .loopText {
+            fill: #ffffff !important;
+        }
+
+        /* Connector Dots, Markers and Sequence diagram fix */
+        .mermaid circle.dot,
+        .mermaid .dot,
+        .mermaid .messageDot,
+        .mermaid marker circle,
+        .mermaid [id^="mermaid-marker-dot"] circle {
+            fill: #3b82f6 !important;
+            stroke: #ffffff !important;
+            stroke-width: 1.5px !important;
+        }
+
+        .diagram-controls {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .btn-ctrl {
+            background: rgba(39, 39, 42, 0.6);
+            border: 1px solid var(--border);
+            color: #e4e4e7;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            font-size: 1.25rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-ctrl:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .glass-sidebar {
+            background: rgba(12, 12, 14, 0.8);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid var(--border);
+            z-index: 50;
+        }
+
+        .glass-card {
+            background: rgba(22, 22, 24, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(22, 22, 24, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            color: #a1a1aa;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a855f7, #ec4899, #60a5fa);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 6s linear infinite;
+        }
+
+        pre {
+            background: #09090b !important;
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+        }
+
+        th {
+            text-align: left;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: #71717a;
+            font-weight: 800;
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+
+        .prose code {
+            background: rgba(255, 255, 255, 0.05);
+            color: #93c5fd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.4rem;
+        }
+
+        /* --- ER DIAGRAM OVERRIDES (mermaid v10) --- */
+        /* These selectors target elements with both 'er' and specific class names */
+        .mermaid rect.er.entityBox {
+            fill: #1e3a5f !important;
+            stroke: #3b82f6 !important;
+            stroke-width: 2px !important;
+        }
+        .mermaid rect.er.attributeBoxOdd {
+            fill: #161b2e !important;
+            stroke: rgba(59, 130, 246, 0.35) !important;
+        }
+        .mermaid rect.er.attributeBoxEven {
+            fill: #12172a !important;
+            stroke: rgba(59, 130, 246, 0.35) !important;
+        }
+        .mermaid text.er.entityLabel {
+            fill: #ffffff !important;
+        }
+        .mermaid text.er.attributeType {
+            fill: #60a5fa !important;
+        }
+        .mermaid text.er.attributeName {
+            fill: #e4e4e7 !important;
+        }
+        .mermaid text.er.attributeKey {
+            fill: #a855f7 !important;
+            font-weight: 700 !important;
+        }
+        .mermaid .er.relationshipLine {
+            stroke: #60a5fa !important;
+            stroke-width: 2px !important;
+        }
+        .mermaid rect.er.relationshipLabelBox {
+            fill: #0c0c0e !important;
+        }
+        .mermaid text.er.relationshipLabel {
+            fill: #a1a1aa !important;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-primary/30">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav class="fixed hidden h-screen w-72 glass-sidebar p-10 lg:block">
+            <div class="mb-12 flex items-center gap-3">
+                <div
+                    class="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <span class="text-2xl font-black tracking-tighter uppercase text-white">Vibe <span
+                        class="text-blue-500">POS</span></span>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <h5 class="mb-6 px-4 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Navigation
+                    </h5>
+                    <ul class="space-y-2">
+                        <li><a href="#intro" class="nav-link">Introduction</a></li>
+                        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                        <li><a href="#design-system" class="nav-link">UI & Design System</a></li>
+                        <li><a href="#themes" class="nav-link">Theme & Palette</a></li>
+                        <li><a href="#pos-engine" class="nav-link">POS Engine</a></li>
+                        <li><a href="#database" class="nav-link">Database Security</a></li>
+                        <li><a href="#schema" class="nav-link">Database Schema</a></li>
+                        <li><a href="#ai-registry" class="nav-link">AI Registry</a></li>
+                        <li><a href="#backend-crates" class="nav-link">Backend Crates</a></li>
+                        <li><a href="#frontend-components" class="nav-link">Frontend Components</a></li>
+                        <li><a href="#structure" class="nav-link">Project Structure</a></li>
+                        <li><a href="#commands" class="nav-link">Quick Reference</a></li>
+                    </ul>
+                </div>
+
+                <div class="pt-8 border-t border-white/5">
+                    <div class="glass-card p-5">
+                        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Version</p>
+                        <p class="text-white font-black">v0.2.1 Stable</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 px-6 py-20 lg:ml-72 lg:px-32">
+            <div class="mx-auto max-w-4xl">
+
+                <!-- Introduction -->
+                <header id="intro" class="mb-32 animate-section">
+                    <div class="mb-8 inline-flex">
+                        <span class="tag">Next.js 16 + Tauri 2</span>
+                    </div>
+                    <h1 class="mb-8 text-7xl font-black tracking-tighter leading-[0.9] lg:text-9xl">
+                        Vibe <span class="gradient-text">Manual</span>
+                    </h1>
+                    <p class="max-w-2xl text-2xl leading-relaxed text-zinc-400 font-light">
+                        The definitive guide to the modern POS ecosystem. Encrypted, extensible, and engineered for
+                        speed.
+                    </p>
+                </header>
+
+                <!-- 1. Architecture -->
+                <section id="architecture" class="mb-40 scroll-mt-32 animate-section" style="animation-delay: 0.1s">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            01</span>
+                        <h2 class="text-5xl font-black italic">Core Architecture</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <div
+                            class="glass-card p-4 mb-8 text-center text-sm text-zinc-500 italic flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                <path fill-rule="evenodd"
+                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Interative View: Scroll to Zoom • Drag to Pan
+                        </div>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph LR
+                                subgraph Frontend [Frontend: Next.js + React 19]
+                                UI[User Interface]
+                                State[React Context]
+                                Hooks[Custom Hooks]
+                                API[API Wrappers]
+                                end
+
+                                subgraph Bridge [Tauri RPC Bridge]
+                                IPC((Inter-Process Communication))
+                                end
+
+                                subgraph Backend [Backend: Rust + Tauri]
+                                Commands[Tauri Commands]
+                                DB[(Encrypted SQLite)]
+                                Crates[Export / Image]
+                                end
+
+                                UI <--> State
+                                    State <--> Hooks
+                                        Hooks <--> API
+                                            API <--> IPC
+                                                IPC <--> Commands
+                                                    Commands <--> DB
+                                                        Commands <--> Crates
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 grid gap-8 md:grid-cols-2">
+                            <div class="glass-card p-8">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 text-blue-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">The Frontend</h4>
+                                <p class="text-zinc-500 leading-relaxed">Built with Next.js 16 and React 19. Leveraging
+                                    the latest App Router patterns for seamless state management and rich interaction
+                                    logic.</p>
+                            </div>
+                            <div class="glass-card p-8">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mb-6 border border-purple-500/20 text-purple-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">The Backend</h4>
+                                <p class="text-zinc-500 leading-relaxed">Rust-powered core handling encrypted SQLite
+                                    data, heavy-duty processing, and low-level system integrations via Tauri.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Design System -->
+                <section id="design-system" class="mb-40 scroll-mt-32 animate-section" style="animation-delay: 0.2s">
+                    <div class="mb-12">
+                        <span class="text-purple-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            02</span>
+                        <h2 class="text-5xl font-black italic">UI Design Engine</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                DB[(SQLite Database)] -->|Loads on Startup| SC[SettingsContext]
+                                SC -->|Injects CSS Variables| Root[:root HTML Element]
+                                SC -->|Passes props| Components[React Components]
+
+                                subgraph Design Mode
+                                MT[MiniTuner] -->|User drags slider| SC
+                                TS[TunerSidebar] -->|User changes preset| SC
+                                TE[Theme Explorer] -->|User picks palette| SC
+                                end
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 glass-card p-10">
+                            <h3 class="mb-6 text-2xl font-bold">Dynamic Component Tuning</h3>
+                            <p class="mb-8 text-zinc-400 text-lg leading-relaxed">Our advanced tuner allows real-time
+                                manipulation of component scales and theme properties using CSS variables globally
+                                managed by the <code>SettingsContext</code>.</p>
+                            <pre><code>// Example of a tunable component
+&lt;div style={{ transform: `scale(${settings.grid_scale / 100})` }}&gt;
+  &lt;SelectableOverlay id="grid_scale" /&gt;
+  &lt;MyActualComponent /&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Theme System -->
+                <section id="themes" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-pink-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            03</span>
+                        <h2 class="text-5xl font-black italic">Theme & Palette System</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS features a sophisticated theming engine that leverages native CSS <code>oklch</code> color spaces for perceptual accuracy. The <strong>Theme Explorer</strong> provides an immersive full-screen experience for browsing curated palettes and generating custom ones.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                User((User)) -->|Selects Base Color| Generator[Advanced Palette Generator]
+                                Generator -->|Updates --theme-primary| CSS[Global CSS Engine]
+                                
+                                subgraph CSS Processing
+                                CSS -->|color-mix| Hover[--primary-hover]
+                                CSS -->|color-mix| Active[--primary-active]
+                                CSS -->|oklch Lightness Check| FG[--primary-foreground]
+                                end
+                                
+                                FG -->|Auto-Contrast| UI[Accessible UI Components]
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-8 md:grid-cols-2 mt-12">
+                            <div class="glass-card p-8 border-t-4 border-blue-500">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4 text-blue-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">Curated Library</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed">6+ professionally designed themes including Ocean, Matcha, and Sunset. Each theme includes custom background, card, and text overrides tuned for optimal POS readability.</p>
+                            </div>
+                            <div class="glass-card p-8 border-t-4 border-purple-500">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 text-purple-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <h4 class="mb-3 text-xl font-bold">Smart Auto-Contrast</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed">Real-time contrast detection ensures that text on primary buttons automatically switches between dark and light based on the background luminance of the primary color.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. POS Engine -->
+                <section id="pos-engine" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-pink-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            04</span>
+                        <h2 class="text-5xl font-black italic">POS Transaction Flow</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                sequenceDiagram
+                                participant User
+                                participant POS[usePOSLogic Hook]
+                                participant Cart[Cart Component]
+                                participant Pay[Payment Modal]
+                                participant Rust[Tauri Backend]
+
+                                User->>POS: Clicks Product
+                                POS->>Cart: Adds Item (Updates State)
+                                User->>Pay: Clicks Checkout
+                                Pay->>POS: handleConfirmPayment()
+                                POS->>Rust: invoke("create_receipt", payload)
+                                Rust-->>POS: Returns Success
+                                POS->>Cart: Clears Cart
+                                POS-->>User: Shows Success Toast
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Database -->
+                <section id="database" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section
+                            05</span>
+                        <h2 class="text-5xl font-black italic">Security & Encryption</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                File[app_data.db] -->|Encrypted AES-256| SQLCipher
+                                App[Rust App starts] -->|Prompts User| Key[Decryption Key]
+                                Key --> SQLCipher
+                                SQLCipher -->|Decrypted Connection Pool| Diesel[Diesel ORM]
+                                Diesel --> Commands[Tauri Commands]
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Database Schema -->
+                <section id="schema" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 06</span>
+                        <h2 class="text-5xl font-black italic">Database Schema</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS uses a normalized relational schema optimized for offline-first performance and data integrity.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                erDiagram
+                                    CATEGORY ||--o{ PRODUCT : "contains"
+                                    PRODUCT ||--o{ STOCK : "has"
+                                    PRODUCT ||--o{ RECIPE_LIST : "defined by"
+                                    RECIPE_LIST ||--o{ RECIPE_ITEM : "contains"
+                                    MATERIAL ||--o{ RECIPE_ITEM : "used in"
+                                    
+                                    CUSTOMER ||--o{ RECEIPT_LIST : "places"
+                                    RECEIPT_LIST ||--o{ RECEIPT_ITEM : "contains"
+                                    PRODUCT ||--o{ RECEIPT_ITEM : "sold as"
+                                    
+                                    RECEIPT_ITEM ||--o{ RECEIPT_ITEM_MATERIAL : "consumes"
+                                    MATERIAL ||--o{ RECEIPT_ITEM_MATERIAL : "documented in"
+                                    
+                                    PRODUCT }o--o{ IMAGES : "uses (product_images)"
+
+                                    CATEGORY {
+                                        int id PK
+                                        string name
+                                    }
+                                    PRODUCT {
+                                        int product_id PK
+                                        string title
+                                        int category_id FK
+                                        int satang
+                                        bool use_recipe_stock
+                                    }
+                                    CUSTOMER {
+                                        int id PK
+                                        string name
+                                        string tax_id
+                                        string address
+                                        string branch
+                                    }
+                                    MATERIAL {
+                                        int id PK
+                                        string name
+                                        string type
+                                        int volume
+                                        int quantity
+                                        int precision
+                                    }
+                                    RECEIPT_LIST {
+                                        int receipt_id PK
+                                        bigint datetime_unix
+                                        int customer_id FK
+                                    }
+                                    IMAGES {
+                                        int id PK
+                                        string file_name
+                                        string file_hash
+                                        string file_path
+                                    }
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. AI Registry -->
+                <section id="ai-registry" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12 text-center">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 07</span>
+                        <h2 class="text-5xl font-black italic">AI Knowledge Engine</h2>
+                    </div>
+                    <div class="glass-card p-12 border-l-8 border-blue-500 overflow-hidden relative">
+                        <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                        <p class="text-xl text-zinc-400 mb-8 leading-relaxed">
+                            Vibe POS maintains an <code>ai-components.json</code> registry, serving as a neural map for
+                            AI assistants. This enables instant context retrieval for components, hooks, and API
+                            services.
+                        </p>
+                        <div class="flex gap-4">
+                            <span class="tag">npm run registry</span>
+                            <span class="tag">Auto-updating</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. Backend Architecture -->
+                <section id="backend-crates" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-purple-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 08</span>
+                        <h2 class="text-5xl font-black italic">Backend Crate Architecture</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            The Vibe POS backend is modularized into specialized Rust crates within the <code>src-tauri/</code> directory, each handling a specific domain of the application logic.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                Main[tauri::main] -->|Invokes| DB[database crate]
+                                Main -->|Invokes| EX[export_lib crate]
+                                Main -->|Invokes| IM[image_lib crate]
+                                Main -->|Invokes| SL[settings_lib crate]
+
+                                subgraph database
+                                DB --> Conn[connection.rs]
+                                DB --> Migr[migrations/]
+                                DB --> Models[Domain Models]
+                                end
+
+                                subgraph export_lib
+                                EX --> CSV[csv_export.rs]
+                                EX --> XLSX[xlsx_export.rs]
+                                EX --> Thai[thai_accounting.rs]
+                                end
+
+                                subgraph image_lib
+                                IM --> Hash[SHA-256 Hashing]
+                                IM --> Storage[Atomic Storage]
+                                end
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6 mt-12">
+                            <!-- Database -->
+                            <div class="glass-card p-8">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 text-blue-400 shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-2">database</h4>
+                                        <p class="text-zinc-500 text-sm mb-4 leading-relaxed">The core persistence layer. Handles SQLCipher encrypted connections, Diesel ORM integration, and domain-specific logic for products, categories, recipes, and customers.</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">connection.rs</code>
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">schema.rs</code>
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">migrations/</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Export -->
+                            <div class="glass-card p-8">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20 text-green-400 shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-2">export_lib</h4>
+                                        <p class="text-zinc-500 text-sm mb-4 leading-relaxed">Extensible reporting engine. Supports CSV, ODS, and XLSX formats with a specialized module for Thai accounting standards and Sales Tax Reporting.</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">xlsx_export.rs</code>
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">thai_accounting.rs</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Image -->
+                            <div class="glass-card p-8">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center border border-pink-500/20 text-pink-400 shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-2">image_lib</h4>
+                                        <p class="text-zinc-500 text-sm mb-4 leading-relaxed">Content-addressed media management. Images are stored by their SHA-256 hash to ensure zero duplicates and atomic file system integrity.</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">sha2 hashing</code>
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">atomic writes</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Settings -->
+                            <div class="glass-card p-8">
+                                <div class="flex items-start gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 text-yellow-400 shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-bold mb-2">settings_lib</h4>
+                                        <p class="text-zinc-500 text-sm mb-4 leading-relaxed">System-wide configuration manager. Handles JSON serialization, multi-version migrations, and cross-platform path resolution for application data.</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">migration.rs</code>
+                                            <code class="text-[10px] bg-white/5 px-2 py-1 rounded">manager.rs</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 09. Frontend Component Architecture -->
+                <section id="frontend-components" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-indigo-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 09</span>
+                        <h2 class="text-5xl font-black italic">Frontend Component Architecture</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Our frontend is engineered with a strict hierarchical component model, ensuring modularity, reusability, and high-performance rendering using <strong>React 19 Server & Client Components</strong>.
+                        </p>
+
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                Root[App Root] --> Layout[Global Layout / AppShell]
+                                Layout --> Sidebar[Navigation Sidebar]
+                                Layout --> BCP[Bottom Control Panel]
+                                Layout --> Main[Page Content]
+
+                                subgraph UI Layers
+                                Main --> Views[Domain-Specific Views]
+                                Views --> DomainComp[Domain Components]
+                                DomainComp --> Shared[Shared / UI Primitives]
+                                end
+
+                                subgraph State Management
+                                SC[SettingsContext] -.-> Shared
+                                MC[MockupContext] -.-> DomainComp
+                                DC[DatabaseContext] -.-> Views
+                                end
+                            </div>
+                            <div class="diagram-controls">
+                                <button class="btn-ctrl zoom-in">+</button>
+                                <button class="btn-ctrl zoom-out">−</button>
+                                <button class="btn-ctrl reset">↺</button>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6 mt-12">
+                            <!-- Shell & Layout -->
+                            <div class="glass-card p-8 border-l-4 border-blue-500">
+                                <h4 class="text-xl font-bold mb-4">1. The AppShell (Core Layout)</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Located in <code>src/components/layout/</code>, the AppShell acts as the global container. It manages the persistent Sidebar, the BottomControlPanel, and handles global keyboard shortcuts.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">Sidebar.tsx</span>
+                                    <span class="tag">AppShell.tsx</span>
+                                    <span class="tag">BottomControlPanel.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Domain Logic -->
+                            <div class="glass-card p-8 border-l-4 border-purple-500">
+                                <h4 class="text-xl font-bold mb-4">2. Domain-Specific Components</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Each feature domain (POS, Manage, History) has its own component directory. These components encapsulate business logic and interact with domain-specific hooks like <code>usePOSLogic</code>.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">pos/ProductGrid.tsx</span>
+                                    <span class="tag">cart/CartItem.tsx</span>
+                                    <span class="tag">manage/ProductForm.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Design Tuner -->
+                            <div class="glass-card p-8 border-l-4 border-pink-500">
+                                <h4 class="text-xl font-bold mb-4">3. Design Tuner Ecosystem</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">A specialized subset of components for the WYSIWYG editor. They leverage <code>SettingsContext</code> to provide real-time visual feedback and state manipulation.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">design-mode/MiniTuner.tsx</span>
+                                    <span class="tag">design-tuner/ui/TunerSlider.tsx</span>
+                                </div>
+                            </div>
+
+                            <!-- Shared UI -->
+                            <div class="glass-card p-8 border-l-4 border-zinc-500">
+                                <h4 class="text-xl font-bold mb-4">4. Shared UI Primitives</h4>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">Atomic components found in <code>src/components/ui/</code>. These are purely visual, stateless elements (Buttons, Inputs, Modals) styled with Tailwind CSS and CSS variables.</p>
+                                <div class="flex gap-2">
+                                    <span class="tag">ui/Button.tsx</span>
+                                    <span class="tag">ui/Card.tsx</span>
+                                    <span class="tag">ui/Input.tsx</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Project Structure -->
+                <section id="structure" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12">
+                        <span class="text-indigo-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 10</span>
+                        <h2 class="text-5xl font-black italic">Project Structure</h2>
+                    </div>
+
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                            Vibe POS follows a strict architectural alignment between <strong>Next.js 16 (App Router)</strong> and <strong>Tauri 2.0</strong>, ensuring high-performance local execution with modern web standards.
+                        </p>
+
+                        <div class="mt-8 glass-card p-10 overflow-hidden">
+                            <h3 class="mb-6 text-2xl font-bold">App Anatomy (Deep Dive)</h3>
+                            <pre class="text-xs leading-relaxed text-indigo-300"><code>simple-pos/
+├── .agents/                 # AI Knowledge Base
+│   ├── rules/               # Coding standards (Backend/Component)
+│   └── skills/              # Specialized agent capabilities
+├── e2e/                     # End-to-End Testing
+│   └── playwright/          # Playwright test suites & helpers
+├── public/                  # Static Assets (Icons, Mock images)
+├── scripts/                 # Maintenance & Setup scripts
+├── src/                     # Frontend (Next.js 16 / React 19)
+│   ├── app/                 # App Router
+│   │   ├── design/tuner/    # Full-screen UI Editor
+│   │   ├── history/         # Transaction logs
+│   │   ├── manage/          # CRUD (Products/Categories)
+│   │   └── setting/         # App configuration
+│   ├── components/          # React Component Library
+│   │   ├── design-mode/     # WYSIWYG Editor components
+│   │   ├── pos/             # Cashier interface logic
+│   │   ├── ui/              # Shadcn-style primitives
+│   │   └── layout/          # Sidebar & AppShell
+│   ├── context/             # Global Providers
+│   │   └── settings/        # Design/Undo history state
+│   ├── hooks/               # Custom hooks (usePOSLogic, useCurrency)
+│   └── lib/                 # Core utilities
+│       ├── api/             # Tauri RPC wrappers
+│       └── types/           # Shared TypeScript interfaces
+└── src-tauri/               # Backend (Rust / Tauri 2.0)
+    ├── src/                 # Main entry & commands
+    │   └── commands/        # Domain-specific RPC handlers
+    ├── database/            # Encrypted Persistence
+    │   ├── migrations/      # SQL versioning
+    │   └── src/             # Diesel models & schema
+    ├── export_lib/          # Reporting engine
+    ├── image_lib/           # Media processing (SHA-256)
+    └── settings_lib/        # Cross-platform config manager</code></pre>
+                        </div>
+
+                        <div class="grid gap-8 md:grid-cols-2 mt-12">
+                            <div class="glass-card p-8">
+                                <h4 class="mb-4 text-xl font-bold text-indigo-400">Next.js Alignment</h4>
+                                <ul class="space-y-4 text-sm text-zinc-500">
+                                    <li><strong class="text-zinc-300">app/</strong>: Uses the <code>page.tsx</code> and <code>layout.tsx</code> convention for zero-config routing.</li>
+                                    <li><strong class="text-zinc-300">components/ui/</strong>: Atomic components following Shadcn-like modularity.</li>
+                                    <li><strong class="text-zinc-300">lib/api/</strong>: Standardized Tauri <code>invoke</code> wrappers for type-safe RPC calls.</li>
+                                </ul>
+                            </div>
+                            <div class="glass-card p-8">
+                                <h4 class="mb-4 text-xl font-bold text-indigo-400">Tauri Integration</h4>
+                                <ul class="space-y-4 text-sm text-zinc-500">
+                                    <li><strong class="text-zinc-300">src-tauri/src/commands/</strong>: Modular Rust handlers exposed to the frontend.</li>
+                                    <li><strong class="text-zinc-300">src-tauri/capabilities/</strong>: Fine-grained security permissions for system access.</li>
+                                    <li><strong class="text-zinc-300">database/migrations/</strong>: Versioned SQL schemas for local-first synchronization.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Commands -->
+                <section id="commands" class="mb-40 scroll-mt-32 animate-section">
+                    <div class="mb-12 text-center">
+                        <span class="text-blue-500 font-black tracking-widest text-xs uppercase mb-4 block">Section 10</span>
+                        <h2 class="text-5xl font-black italic">Quick Reference</h2>
+                    </div>
+
+                    <div class="glass-card overflow-hidden">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CLI Command</th>
+                                    <th>Description / Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run tauri dev</td>
+                                    <td class="text-zinc-400">Launch live development environment</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run tauri build</td>
+                                    <td class="text-zinc-400">Generate production release artifacts</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run lint</td>
+                                    <td class="text-zinc-400">Static code analysis & type checking</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run test:e2e</td>
+                                    <td class="text-zinc-400">Execute automated browser flow tests</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm text-blue-400 font-bold">npm run registry</td>
+                                    <td class="text-zinc-400">Sync local AI knowledge components</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <footer class="mt-48 pb-20 text-center animate-section">
+                    <div
+                        class="inline-block h-px w-24 bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-12">
+                    </div>
+                    <p class="text-xs uppercase tracking-[0.4em] font-black text-zinc-600 mb-4">Vibe POS Documentation
+                        Engine</p>
+                    <p class="text-[10px] text-zinc-700 font-bold">&copy; 2026 Interactive Design System • Built with
+                        Chrome & Gemini</p>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple active link tracker
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, header').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+
+</html>

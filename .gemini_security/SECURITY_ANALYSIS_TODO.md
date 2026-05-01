@@ -1,0 +1,46 @@
+- [x] Define the audit scope.
+- [x] SAST Recon on `src-tauri/src/commands/category.rs`
+  - [ ] Investigate data flow from `name` in `create_category` on line 25.
+  - [ ] Investigate data flow from `id`, `name` in `update_category` on line 51.
+  - [ ] Investigate data flow from `id` in `delete_category` on line 78.
+- [x] SAST Recon on `src-tauri/src/commands/customer.rs`
+  - [ ] Investigate data flow from `name`, `tax_id`, `address`, `branch` in `create_customer` on line 23.
+  - [ ] Investigate data flow from `id`, `name`, `tax_id`, `address`, `branch` in `update_customer" on line 52.
+- [x] SAST Recon on `src-tauri/src/commands/database.rs`
+  - [ ] Investigate data flow from `key` in `initialize_database` on line 46.
+- [x] SAST Recon on `src-tauri/src/commands/export.rs`
+  - [ ] Investigate data flow from `export_path` in `export_receipts` on line 32.
+- [x] SAST Recon on `src-tauri/src/commands/images.rs`
+  - [ ] Investigate data flow from `data`, `filename` in `save_image` on line 22.
+  - [ ] Investigate data flow from `image_id` in `delete_image" on line 125.
+- [x] SAST Recon on `src-tauri/src/commands/material.rs`
+  - [ ] Investigate data flow from `name`, `type`, `volume`, `quantity`, `tags` in `create_material` on line 30.
+  - [ ] Investigate data flow from `id`, `name`, `type`, `volume`, `quantity`, `tags` in `update_material` on line 71.
+- [x] SAST Recon on `src-tauri/src/commands/product.rs`
+  - [ ] Investigate data flow from `title`, `category_id`, `satang` in `create_product` on line 26.
+  - [ ] Investigate data flow from `id`, `title`, `category_id`, `satang` in `update_product" on line 64.
+- [x] SAST Recon on `src-tauri/src/commands/receipt.rs`
+  - [ ] Investigate data flow from `items` in `complete_checkout` on line 43.
+- [x] SAST Recon on `src-tauri/src/commands/recipe.rs`
+  - [ ] Investigate data flow from `volume_use`, `unit` in `add_recipe_item` on line 55.
+  - [ ] Investigate data flow from `volume_use`, `unit` in `update_recipe_item` on line 91.
+- [x] SAST Recon on `src-tauri/src/commands/settings.rs`
+  - [ ] Investigate data flow from `settings` in `save_settings` on line 51.
+  - [ ] Investigate data flow from `new_path` in `migrate_image_directory` on line 70.
+- [x] SAST Recon on `src-tauri/src/commands/stock.rs`
+  - [ ] Investigate data flow from `path` in `export_stock_data` on line 87.
+  - [ ] Investigate data flow from `path" in `import_stock_data` on line 133.
+- [x] SAST Recon on `src-tauri/src/commands/utils.rs`
+- [x] SAST Recon on `src/hooks/features/usePOSLogic.tsx`
+  - [ ] Investigate data flow from `selectedCategory`, `searchQuery` on line 36.
+  - [ ] Investigate data flow from `cashReceived` in `handleConfirmPayment` on line 192.
+- [x] SAST Recon on `src/context/DataContext.tsx`
+  - [ ] Investigate `window.updateCache` exposure on line 96.
+- [x] SAST Recon on `src/context/DatabaseContext.tsx`
+  - [ ] Investigate data flow from `key` in `login` on line 34.
+- [x] SAST Recon on `src/lib/api/` files.
+  - [ ] Investigate `window.*Api` exposures in `categories.ts`, `products.ts`, `receipts.ts`, `settings.ts`.
+  - [ ] Investigate `getDbTruth` in `settings.ts` on line 30.
+- [x] SAST Recon on `src/lib/utils/logger.ts`
+  - [ ] Investigate PII leak in `logger.action` on line 87.
+- [ ] Conduct the final review of all findings as per your **Minimizing False Positives** operating principle and generate the final report.

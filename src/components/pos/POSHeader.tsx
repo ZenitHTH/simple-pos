@@ -1,8 +1,14 @@
 import { memo } from "react";
 
-import { FaReceipt, FaShoppingCart, FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import {
+  FaReceipt,
+  FaShoppingCart,
+  FaChevronRight,
+  FaChevronLeft,
+} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import GlobalHeader from "@/components/ui/GlobalHeader";
+import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 
 interface POSHeaderProps {
   cartCount: number;
@@ -11,6 +17,16 @@ interface POSHeaderProps {
   onToggleCart: () => void;
 }
 
+/**
+ * POSHeader component displays the top navigation bar for the POS interface.
+ * It includes the application title, cart toggle (desktop), cart button (mobile), and navigation to history.
+ *
+ * @param {POSHeaderProps} props - The component props.
+ * @param {number} props.cartCount - Total number of items in the cart.
+ * @param {() => void} props.onOpenCart - Callback to open the cart drawer on mobile.
+ * @param {boolean} props.isCartVisible - Whether the cart sidebar is visible on desktop.
+ * @param {() => void} props.onToggleCart - Callback to toggle cart visibility on desktop.
+ */
 const POSHeader = memo(function POSHeader({
   cartCount,
   onOpenCart,
@@ -53,12 +69,15 @@ const POSHeader = memo(function POSHeader({
           )}
         </button>
 
-        <button
-          onClick={() => router.push("/history")}
-          className="bg-card text-card-foreground border-border hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-colors"
-        >
-          <FaReceipt /> History
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => router.push("/history")}
+            className="bg-card text-card-foreground border-border hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-colors"
+          >
+            <FaReceipt /> History
+          </button>
+          <SelectableOverlay id="button_scale" />
+        </div>
       </div>
     </GlobalHeader>
   );

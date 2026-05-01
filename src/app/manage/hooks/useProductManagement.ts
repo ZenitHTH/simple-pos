@@ -1,15 +1,24 @@
 import { useState, useEffect } from "react";
 import { productApi, categoryApi } from "@/lib";
 import { BackendProduct, NewProduct, Category } from "@/lib";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
+import { useDataCache } from "@/context/DataContext";
 
 export function useProductManagement() {
   const { dbKey } = useDatabase();
-  const [products, setProducts] = useState<BackendProduct[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
+  const {
+    products,
+    categories,
+    updateCache,
+    refreshAll,
+    loading: cacheLoading,
+  } = useDataCache();
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -19,28 +28,6 @@ export function useProductManagement() {
     BackendProduct | undefined
   >(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const fetchProducts = async () => {
-    if (!dbKey) return;
-    try {
-      setLoading(true);
-      const [data, fetchedCategories] = await Promise.all([
-        productApi.getAll(dbKey),
-        categoryApi.getAll(dbKey),
-      ]);
-      setProducts(data);
-      setCategories(fetchedCategories);
-    } catch (err) {
-      logger.error("Failed to fetch products:", err);
-      setError("Failed to load products. Is the backend running?");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [dbKey]);
 
   const handleCreate = () => {
     setEditingProduct(undefined);
@@ -58,10 +45,10 @@ export function useProductManagement() {
 
     try {
       await productApi.delete(dbKey, id);
-      setProducts(products.filter((p) => p.product_id !== id));
+      updateCache.products(products.filter((p) => p.product_id !== id));
     } catch (err) {
       logger.error("Failed to delete product:", err);
-      alert(err);
+      await showAlert("Product Error", String(err));
     }
   };
 
@@ -79,23 +66,28 @@ export function useProductManagement() {
           product_id: editingProduct.product_id,
         });
         result = updated;
+        updateCache.products(
+          products.map((p) =>
+            p.product_id === result.product_id ? result : p,
+          ),
+        );
+        logger.action("product_updated", { id: result.product_id });
       } else {
         const created = await productApi.create(dbKey, data);
         result = created;
+        updateCache.products([...products, result]);
+        logger.action("product_created", { id: result.product_id });
       }
 
       if (afterSubmit) {
         await afterSubmit(result);
       }
 
-      // Re-fetch to get updated state (including images)
-      await fetchProducts();
-
       setIsModalOpen(false);
       return result;
     } catch (err) {
       logger.error("Failed to save product:", err);
-      alert(err);
+      await showAlert("Product Error", String(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -117,8 +109,8 @@ export function useProductManagement() {
     if (!dbKey) return;
     const nextMode = !currentMode;
     // Optimistic update — flip immediately so the Switch responds right away
-    setProducts((prev) =>
-      prev.map((p) =>
+    updateCache.products(
+      products.map((p) =>
         p.product_id === productId ? { ...p, use_recipe_stock: nextMode } : p,
       ),
     );
@@ -126,15 +118,15 @@ export function useProductManagement() {
       await productApi.setStockMode(dbKey, productId, nextMode);
     } catch (err) {
       // Roll back on failure
-      setProducts((prev) =>
-        prev.map((p) =>
+      updateCache.products(
+        products.map((p) =>
           p.product_id === productId
             ? { ...p, use_recipe_stock: currentMode }
             : p,
         ),
       );
       logger.error("Failed to toggle stock mode:", err);
-      alert("Failed to toggle stock mode");
+      await showAlert("Product Error", "Failed to toggle stock mode");
     }
   };
 

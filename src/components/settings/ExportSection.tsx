@@ -6,11 +6,19 @@ import { FaFileExport, FaFolderOpen } from "react-icons/fa";
 import { save } from "@tauri-apps/plugin-dialog";
 import SettingsSection from "@/components/ui/SettingsSection";
 import { Select } from "@/components/ui/Select";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 import { useDatabase } from "@/context/DatabaseContext";
+import { useAlert } from "@/context/AlertContext";
 
+/**
+ * ExportSection Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function ExportSection() {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
   // Default: Last 30 days
   const [startDate, setStartDate] = useState(() => {
     const d = new Date();
@@ -38,7 +46,7 @@ export default function ExportSection() {
       if (!path || !dbKey) return;
 
       await receiptApi.exportReceipts(dbKey, path, ext, start, end);
-      alert(`${label} Export successful!`);
+      await showAlert("Export", `${label} Export successful!`);
     };
 
     try {
@@ -57,7 +65,10 @@ export default function ExportSection() {
       }
     } catch (error) {
       logger.error(`Export failed for format ${format}:`, error);
-      alert(`Export failed for ${format.toUpperCase()}: ` + error);
+      await showAlert(
+        "Export Error",
+        `Export failed for ${format.toUpperCase()}: ` + error,
+      );
     } finally {
       setLoading(false);
     }
@@ -111,10 +122,11 @@ export default function ExportSection() {
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-all ${format === f
-                    ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
-                    : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
-                    }`}
+                  className={`rounded-xl border px-4 py-2 font-medium uppercase transition-[background-color,border-color,color] ${
+                    format === f
+                      ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
+                      : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
+                  }`}
                 >
                   {f}
                 </button>

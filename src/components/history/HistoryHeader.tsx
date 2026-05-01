@@ -2,6 +2,12 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useSettings } from "@/context/settings/SettingsContext";
 
+/**
+ * HistoryHeader Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function HistoryHeader() {
   const router = useRouter();
   const { settings } = useSettings();
@@ -9,7 +15,7 @@ export default function HistoryHeader() {
   return (
     <header
       className="mb-8 flex items-center gap-4 transition-all duration-300"
-      style={{ fontSize: `${settings.header_font_scale || 100}%` }}
+      style={{ fontSize: `${settings.scaling.fonts.header || 100}%` }}
     >
       <button
         onClick={() => router.back()}

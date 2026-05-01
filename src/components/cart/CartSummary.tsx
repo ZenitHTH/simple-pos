@@ -2,8 +2,8 @@ import { memo } from "react";
 import { CardFooter } from "@/components/ui/Card";
 import { Customer } from "@/lib";
 import { Select } from "@/components/ui/Select";
-import { useTax } from "@/hooks/useTax";
-import { logger } from "@/lib/logger";
+import { useTax } from "@/hooks/settings/useTax";
+import { logger } from "@/lib/utils/logger";
 
 interface CartSummaryProps {
   subtotal: number;
@@ -75,7 +75,7 @@ const CartSummary = memo(function CartSummary({
           logger.info("CartSummary: Checkout Now clicked");
           onCheckout();
         }}
-        className="bg-primary text-primary-foreground shadow-primary/40 hover:bg-primary/95 flex w-full items-center justify-center gap-3 rounded-2xl py-5 text-[1.3em] font-black shadow-xl transition-all active:scale-95 active:brightness-90 touch-manipulation"
+        className="bg-primary text-primary-foreground shadow-primary/40 hover:bg-primary/95 flex w-full touch-manipulation items-center justify-center gap-3 rounded-2xl py-5 text-[1.3em] font-black shadow-xl transition-[transform,background-color,box-shadow,filter] duration-200 will-change-transform active:scale-95 active:brightness-90"
       >
         CHECKOUT NOW
       </button>

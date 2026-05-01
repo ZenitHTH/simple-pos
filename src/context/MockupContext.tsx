@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useState, ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 interface MockupContextType {
@@ -30,6 +24,21 @@ export function MockupProvider({ children }: { children: ReactNode }) {
     "default",
   );
 
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  // Modern React 19 pattern: Update state during render when props/context changes
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+
+    // Clear selection on navigation
+    setSelectedElementId(null);
+
+    // Auto-enable if on /mockup route
+    if (pathname.startsWith("/mockup")) {
+      setIsMockupMode(true);
+    }
+  }
+
   const toggleMockupMode = () => {
     setIsMockupMode((prev) => {
       const newValue = !prev;
@@ -41,20 +50,8 @@ export function MockupProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Auto-enable if on /mockup route (backward compatibility or direct link)
-  useEffect(() => {
-    if (pathname.startsWith("/mockup")) {
-      setIsMockupMode(true);
-    }
-  }, [pathname]);
-
-  // Clear selection on navigation
-  useEffect(() => {
-    setSelectedElementId(null);
-  }, [pathname]);
-
   return (
-    <MockupContext.Provider
+    <MockupContext
       value={{
         isMockupMode,
         selectedElementId,
@@ -65,12 +62,12 @@ export function MockupProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </MockupContext.Provider>
+    </MockupContext>
   );
 }
 
 export function useMockup() {
-  const context = useContext(MockupContext);
+  const context = React.use(MockupContext);
   if (!context) {
     throw new Error("useMockup must be used within a MockupProvider");
   }

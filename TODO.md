@@ -17,14 +17,53 @@
 ### 🎨 UX & Aesthetics (Refined Design)
 - [x] **On-Canvas Hybrid Editor**: Combine direct manipulation with precision controls.
     - **Spec**: [2026-04-09-on-canvas-hybrid-editor-design.md](./docs/superpowers/specs/2026-04-09-on-canvas-hybrid-editor-design.md)
-    - **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
-    - **Tabbed Mini-Tuner**: Implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
-        - **Follow & Update**: Menu follows the element during drag.
-        - **Smart Flipping**: Ensures visibility near screen edges.
-    - **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
+    - [x] **Direct Manipulation**: Add corner drag handles to `SelectableOverlay` for real-time `display_scale` updates.
+    - [x] **Tabbed Mini-Tuner**: Implement a floating contextual menu (React Portal) with **Tabbed Groups** (Layout vs. Style).
+        - [x] **Follow & Update**: Menu follows the element during drag.
+        - [x] **Smart Flipping**: Ensures visibility near screen edges.
+    - [x] **Live Feedback**: Use real-time updates with spring animations and a "Ghost Outline" showing original dimensions during drag.
 - [x] **Color Sampler**: Add a tool to pick colors directly from product images.
-    - **Extraction**: Canvas-based extraction of top 3 dominant colors.
-    - **Explicit Apply**: Clicking a swatch shows a preview; requires clicking "Apply" to confirm.
-- [ ] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
-- [ ] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
+    - [x] **Extraction**: Canvas-based extraction of top 3 dominant colors.
+    - [x] **Explicit Apply**: Clicking a swatch shows a preview; requires clicking "Apply" to confirm.
+- [x] **Ghost Layout Previews**: Show faint outlines of original sizes during scaling to provide better spatial context.
+- [x] **Animated Scaling**: Implement spring physics (e.g., via Framer Motion) to make UI transitions feel more premium and fluid.
 - [ ] **Undo/Redo History**: Add a state stack to allow users to revert design changes step-by-step.
+
+## Inventory & Recipe Enhancements
+- [x] **Inventory Bulk Operations**: Verify import/export for CSV, XLSX, and ODS formats.
+    - [x] Add more robust error handling for malformed files in the Rust backend.
+    - [x] Implement progress indicators for large file imports.
+- [x] **Recipe Builder Visuals**: Finalize and verify SVG connection lines on various screen sizes and resolutions.
+    - [x] Add a toggle to show/hide lines for a cleaner look when not needed.
+- [x] **Inline Stock Updates**: Perform stress tests on rapid quantity adjustments to ensure database integrity and UI sync.
+- [x] **Final Integration**: Merge `feature/recipe-stock-enhancements` branch into `dev` and remove the worktree.
+
+## 🧪 E2E Testing & Image Linking Fixes (Session 2026-04-18)
+
+### ✅ Completed
+- [x] **Image Linking Exclusivity**: Enforced 1:1 image-product relationship in backend and added "Move Image" UI flow.
+- [x] **E2E Infrastructure**:
+    - Added `setupTestBrowser` helper with CDP-to-Mock fallback.
+    - Added `data-testid` support to `Input` and `Select` components.
+    - Added diagnostic logging and breakout loops to `helpers.ts`.
+- [x] **Selector Hardening**: Refactored `inventory-recipes.spec.ts` to use `getByTestId` and `getByRole('combobox')`.
+
+### ⏳ Pending / Next Steps --> from Human still broken from source don't do for now , we are waiting until that problem has been fixed.
+- [ ] **Fix TEST-A1/TEST-A2 Failure**: The final `expect(page.getByText(/Payment Successful/i)).toBeVisible()` is failing in mock mode.
+    - *Investigation*: Check if the toast message or the modal close animation is interfering with the visibility check.
+    - *Potential Fix*: Use `page.waitForSelector` with a longer timeout or check for database stock updates directly in the mock state.
+- [ ] **Refactor Remaining Specs**: Update the following files to use the new `setupTestBrowser` and `data-testid` pattern:
+    - `e2e/playwright/advanced-management.spec.ts`
+    - `e2e/playwright/design-mode.spec.ts`
+    - `e2e/playwright/reporting-history.spec.ts`
+    - `e2e/playwright/vibe-pos.spec.ts`
+- [ ] **Clean up Visual Companion**: Close the brainstorm server and remove temporary mockup files.
+
+## ⚡ Performance (WebView2 / WebKitGTK)
+- [x] **Optimize Layering/Transitions**: Completed codebase audit and removal of `transition-all` and `will-change`.
+- [x] **Engine-Specific CSS**: Implemented platform-specific optimizations for WebView2 (no `will-change`) and WebKitGTK (forced GPU promotion) via `data-engine` injection.
+- [ ] **Performance Deep Audit (Next Steps)**:
+    - [ ] **React-induced Style Thrashing**: Eliminate global state updates in Design Tuner from triggering full-app re-renders by switching to direct-to-DOM CSS variable injection.
+    - [ ] **usePOSLogic Optimization**: Refactor state management to prevent redundant top-down re-renders during high-frequency cart updates.
+    - [ ] **Next.js Hydration/Overhead**: Investigate App Router layout thrashing in Tauri environment.
+

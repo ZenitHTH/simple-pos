@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import AmountSummary from "./AmountSummary";
 import CashInput from "./CashInput";
 import ChangeDisplay from "./ChangeDisplay";
@@ -8,33 +8,38 @@ import { useSettings } from "@/context/settings/SettingsContext";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { Modal } from "@/components/ui/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   total: number;
-  onConfirm: (cashReceived: number) => Promise<void>;
+  onConfirm: (cashReceived: number) => void;
+  isPending?: boolean;
   currency?: string;
 }
 
+/**
+ * PaymentModal Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function PaymentModal({
   isOpen,
   onClose,
   total,
   onConfirm,
+  isPending = false,
   currency = "$",
 }: PaymentModalProps) {
   const { settings } = useSettings();
   const [cashReceived, setCashReceived] = useState<string>("");
-  const [isProcessing, setIsProcessing] = useState(false);
 
   // Reset state when modal opens
   useEffect(() => {
-    logger.info("PaymentModal: isOpen changed to", isOpen);
     if (isOpen) {
       setCashReceived("");
-      setIsProcessing(false);
     }
   }, [isOpen]);
 
@@ -43,8 +48,7 @@ export default function PaymentModal({
   const change = cashValue - total;
   const isValid = cashValue >= total;
 
-  // Memoize quick amounts to avoid recalculating on every render
-  const quickAmounts = useMemo(() => {
+  const quickAmounts = (() => {
     const candidates = [
       Math.ceil(total / 100) * 100,
       Math.ceil(total / 500) * 500,
@@ -54,25 +58,18 @@ export default function PaymentModal({
     return Array.from(new Set(candidates))
       .filter((val) => val >= total)
       .sort((a, b) => a - b);
-  }, [total]);
+  })();
 
-  const handleConfirm = async () => {
-    if (!isValid || isProcessing) return;
-
-    setIsProcessing(true);
-    try {
-      await onConfirm(cashValue);
-    } catch (error) {
-      logger.error("Payment failed:", error);
-      setIsProcessing(false);
-    }
+  const handleConfirm = () => {
+    if (!isValid || isPending) return;
+    onConfirm(cashValue);
   };
 
   if (!isOpen) return null;
 
   // Calculate base width (e.g. 512px for max-w-lg) and apply scaling
-  const scale = (settings?.payment_modal_scale || 100) / 100;
-  const fontScale = (settings?.payment_modal_font_scale || 100) / 100;
+  const scale = (settings.scaling.components.payment_modal || 100) / 100;
+  const fontScale = (settings.scaling.fonts.payment_modal || 100) / 100;
   const baseWidth = 512; // approx 32rem
   const scaledWidth = `${baseWidth * scale}px`;
 
@@ -120,13 +117,13 @@ export default function PaymentModal({
           onChange={setCashReceived}
           quickAmounts={quickAmounts}
           currency={currency}
-          numpadHeight={settings?.payment_numpad_height ?? undefined}
+          numpadHeight={settings.styling.payment.numpad_height || 320}
         />
       </div>
 
       <PaymentFooter
         isValid={isValid}
-        isProcessing={isProcessing}
+        isProcessing={isPending}
         onConfirm={handleConfirm}
       />
     </Modal>

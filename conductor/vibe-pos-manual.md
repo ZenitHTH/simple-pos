@@ -147,4 +147,100 @@ To help AI assistants (like the Gemini CLI) navigate the codebase instantly, we 
 
 ---
 
+## 🚀 7. React 19 vs. 18 Developer Cheat Sheet (2025 Standard)
+
+Since Vibe POS uses **React 19**, it is critical to follow the modern "2025" paradigm shift. The focus is now on **Automation and Declarative state** rather than manual synchronization.
+
+### 🚀 Key Improvements
+| Feature | React 18 (Manual) | React 19 (Automatic) |
+| :--- | :--- | :--- |
+| **Memoization** | Manual `useMemo`, `useCallback`, `React.memo`. | **React Compiler** automatically optimizes re-renders. |
+| **Form Handling** | Manual `useState` for loading, error, and data. | **Actions** handle async transitions & state automatically. |
+| **Data Fetching** | `useEffect` or complex Suspense patterns. | **`use()` hook** handles Promises and Context in-render. |
+
+### 🛠️ The New Hooks
+*   **`useActionState`**: Replaces complex form state logic. It tracks the pending state, errors, and the returned value of an async action automatically.
+*   **`useFormStatus`**: A "Context-like" hook for child components to access a parent `<form>`'s status (e.g., `pending`) without prop drilling.
+*   **`useOptimistic`**: Simplifies "optimistic UI" (showing the result before the server responds) by managing the temporary state and reverting automatically on failure.
+*   **`use()`**: A unique hook that can be called **conditionally** or inside loops to read a Promise or Context. It replaces `useContext` and simplifies async data loading.
+
+### ⚠️ The "useEffect" Rule (2025 Paradigm)
+**`useEffect` should be a last resort.** 
+
+In Vibe POS, do not use `useEffect` to synchronize state based on props or context changes. Instead, use the **"updating state during render"** pattern:
+
+```typescript
+// ✅ GOOD: Updating state during render phase
+const [prevValue, setPrevValue] = useState(value);
+if (value !== prevValue) {
+  setPrevValue(value);
+  setDependentState(newValue);
+}
+```
+
+### 🏗️ Breaking Changes to Note
+*   **Ref as a Prop**: You no longer need `forwardRef`. Just pass `ref` as a standard prop to functional components.
+*   **Metadata Support**: Direct use of `<title>`, `<meta>`, and `<link>` tags anywhere in the tree; React automatically hoists them to the head.
+*   **Asset Loading**: New APIs like `preload` and `preinit` for early resource loading.
+
+---
+
+## 🦀 8. Rust 2024 Edition (Backend Standard)
+
+The Tauri backend (`src-tauri` and all local crates like `database`, `export_lib`, `image_lib`, `settings_lib`) is strictly compiled using the **Rust 2024 Edition** (Stabilized in Rust 1.85.0). 
+
+When writing Rust code for Vibe POS, strictly adhere to 2024 edition idioms:
+
+### ✨ Key 2024 Ergonomic Improvements
+*   **Drop Order Fixes:** The borrow checker is smarter with temporary variables.
+    *   Temporaries in **tail expressions** drop *after* local variables, resolving many lifetime issues in block returns.
+    *   Temporaries in `if let` guards drop immediately if the condition fails, freeing locks (like `MutexGuard`) before executing the `else` block.
+*   **RPIT Lifetime Capture:** Returning `impl Trait` now automatically captures *all* in-scope parameters and lifetimes by default. Use the new `use<..>` syntax if you need to restrict captured lifetimes.
+*   **Async Closures:** Use native `async || {}` closures for returning futures that capture local environment variables cleanly.
+*   **Future in Prelude:** `Future` and `IntoFuture` are in the standard prelude; no need for `use std::future::Future;`.
+
+### 🛡️ Stricter `unsafe` Requirements
+Rust 2024 introduces stricter boundaries for unsafe behavior:
+*   **Unsafe Extern:** External FFI blocks must be explicitly marked `unsafe extern`.
+*   **Unsafe Attributes:** Linker attributes like `#[no_mangle]` or `#[export_name]` can cause undefined behavior if misused, so they now require an unsafe wrapper: `#[unsafe(no_mangle)]`.
+*   **`unsafe_op_in_unsafe_fn`:** This lint is a warning by default. Even inside an `unsafe fn`, you **must** wrap the specifically dangerous operations in an `unsafe {}` block.
+*   **`static mut` References:** Creating a reference to a `static mut` item is an error. Use `&raw const` or `&raw mut` instead.
+
+---
+
+## 📘 9. TypeScript 2025 Standard (The Native Era)
+
+Vibe POS uses the **TypeScript 2025** standard. The focus has moved from slow transpilation to **Native Speed** and **Simplified Configuration**.
+
+### ⚡ Key Standards
+*   **Native Execution:** We prioritize runtimes that support native TypeScript execution (like Node.js with `--experimental-strip-types` or Bun/Deno). Traditional `ts-node` is deprecated.
+*   **Strict Return Checks:** TypeScript now validates every branch of a conditional return independently. Ensure all paths in a ternary or `if/else` strictly match the return type.
+*   **Modern Targets:** We no longer target ES5. The minimum baseline is **ES2015 (ES6)**.
+*   **Clean Config:** Keep `tsconfig.json` minimal. Use `moduleResolution: "bundler"` or `"nodenext"`.
+
+---
+
+## 🚀 10. Next.js 16 & Turbopack
+
+Vibe POS is built on **Next.js 16**, which marks the end of the Webpack era and the rise of **Explicit Caching**.
+
+### 🏗️ Bundling & Performance
+*   **Turbopack by Default:** We use `next dev --turbopack`. Builds are up to 5x faster than Webpack.
+*   **File System Caching:** Next.js 16 caches compilation data to disk. Cold starts should be near-instant.
+
+### 💾 Explicit Caching (`"use cache"`)
+Next.js 16 moves away from "guessing" what to cache.
+*   Use the **`"use cache"`** directive at the top of functions or components to explicitly persist data.
+*   **Request-Time Default:** Unless marked with `"use cache"`, all code runs at request time.
+
+### ⚠️ Critical Migration Rules (The "Async" Rule)
+In Next.js 16, several previously synchronous APIs are now **Asynchronous**. You **must** await them:
+*   **`params` and `searchParams`**: `const { id } = await params;`
+*   **`cookies()` and `headers()`**: `const cookieStore = await cookies();`
+
+### 🎨 Native View Transitions
+Next.js 16 supports the **Browser View Transitions API**. Use it for smooth, app-like animations during page navigation without heavy external libraries.
+
+---
+
 *This manual was generated to provide a clear, visual understanding of the Vibe POS architecture and workflows.*

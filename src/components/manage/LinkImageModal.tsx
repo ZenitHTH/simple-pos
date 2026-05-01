@@ -15,6 +15,20 @@ interface LinkImageModalProps {
   toggleLink: (productId: number, isLinked: boolean) => void;
 }
 
+/**
+ * LinkImageModal component allows users to link or unlink an image to multiple products.
+ * It includes a searchable list of products with toggle buttons for linking state.
+ *
+ * @param {LinkImageModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {Image | null} props.selectedImage - The image being linked.
+ * @param {string} props.productSearch - Current search query for products.
+ * @param {(s: string) => void} props.setProductSearch - Callback to update the search query.
+ * @param {BackendProduct[]} props.filteredProductsToLink - List of products filtered by search query.
+ * @param {ProductImage[]} props.links - Current linking data between products and images.
+ * @param {(productId: number, isLinked: boolean) => void} props.toggleLink - Callback to toggle the link state for a product.
+ */
 export default function LinkImageModal({
   isOpen,
   onClose,

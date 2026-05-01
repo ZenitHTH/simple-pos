@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { Input } from "@/components/ui/Input";
 
@@ -17,17 +17,35 @@ const ProductFilter = memo(function ProductFilter({
   selectedCategory,
   onCategoryChange,
 }: ProductFilterProps) {
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localSearch, onSearchChange, searchQuery]);
+
   return (
     <div className="flex flex-col gap-5">
       {/* Categories Row - One tap access */}
-      <div className="scrollbar-hide flex snap-x snap-mandatory items-center gap-3 overflow-x-auto pb-2 -mx-1 px-1 scroll-smooth">
+      <div className="scrollbar-hide -mx-1 flex snap-x snap-mandatory items-center gap-3 overflow-x-auto scroll-smooth px-1 pb-2">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => onCategoryChange(cat)}
-            className={`snap-start rounded-xl px-7 py-3.5 text-base font-bold whitespace-nowrap transition-all active:scale-90 touch-manipulation shadow-sm ${
+            className={`touch-manipulation snap-start rounded-xl px-7 py-3.5 text-base font-bold whitespace-nowrap shadow-sm transition-all active:scale-90 ${
               selectedCategory === cat
-                ? "bg-primary text-primary-foreground shadow-primary/30 shadow-lg scale-105"
+                ? "bg-primary text-primary-foreground shadow-primary/30 scale-105 shadow-lg"
                 : "bg-card text-muted-foreground border-border hover:bg-accent hover:text-accent-foreground border"
             }`}
           >
@@ -39,18 +57,21 @@ const ProductFilter = memo(function ProductFilter({
       {/* Search Bar + Scan */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1">
-          <FaSearch className="text-muted-foreground absolute top-1/2 left-5 -translate-y-1/2 text-xl z-10" />
+          <FaSearch className="text-muted-foreground absolute top-1/2 left-5 z-10 -translate-y-1/2 text-xl" />
           <Input
             type="text"
             placeholder="Search items..."
-            className="h-[70px] rounded-2xl pl-12 pr-14 text-xl"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            className="h-[70px] rounded-2xl pr-14 pl-12 text-xl"
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
           />
-          {searchQuery && (
+          {localSearch && (
             <button
-              onClick={() => onSearchChange("")}
-              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-4 -translate-y-1/2 p-2 transition-colors rounded-full hover:bg-muted z-10"
+              onClick={() => {
+                setLocalSearch("");
+                onSearchChange("");
+              }}
+              className="text-muted-foreground hover:text-foreground hover:bg-muted absolute top-1/2 right-4 z-10 -translate-y-1/2 rounded-full p-2 transition-colors"
             >
               <FaTimes size={22} />
             </button>
@@ -66,7 +87,9 @@ const ProductFilter = memo(function ProductFilter({
             <div className="h-4 w-0.5 bg-current"></div>
             <div className="h-4 w-1 bg-current opacity-50"></div>
           </div>
-          <span className="text-[10px] font-black tracking-widest uppercase">SCAN</span>
+          <span className="text-[10px] font-black tracking-widest uppercase">
+            SCAN
+          </span>
         </button>
       </div>
     </div>

@@ -1,13 +1,20 @@
+//! Customer database operations.
+//!
+//! This module handles CRUD operations for customer profiles, which are used
+//! for recording sales and tax-related information (e.g., tax IDs for invoices).
+
 pub mod model;
 
 use crate::schema::customer::dsl::*;
 use diesel::prelude::*;
 pub use model::*;
 
+/// Retrieves all customers from the database.
 pub fn get_all_customers(conn: &mut SqliteConnection) -> QueryResult<Vec<Customer>> {
     customer.load::<Customer>(conn)
 }
 
+/// Inserts a new customer record into the database.
 pub fn insert_customer(
     conn: &mut SqliteConnection,
     new_customer: &NewCustomer,
@@ -18,6 +25,9 @@ pub fn insert_customer(
         .get_result(conn)
 }
 
+/// Updates an existing customer record by their ID.
+///
+/// If `update_data.branch` is not provided, it defaults to "00000" (Head Office).
 pub fn update_customer_record(
     conn: &mut SqliteConnection,
     customer_id: i32,

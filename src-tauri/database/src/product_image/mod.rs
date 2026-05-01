@@ -1,7 +1,13 @@
+//! Product-Image association database operations.
+//!
+//! This module handles the many-to-many relationship between products and images.
+//! It provides functions to link/unlink images to products and retrieve associated records.
+
 use diesel::prelude::*;
 
 pub mod model;
 
+/// Creates a link between a product and an image in the database.
 pub fn link_product_image(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -20,6 +26,7 @@ pub fn link_product_image(
         .get_result(conn)
 }
 
+/// Removes a specific link between a product and an image.
 pub fn unlink_product_image(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -31,6 +38,7 @@ pub fn unlink_product_image(
         .execute(conn)
 }
 
+/// Removes all image links for a specific product.
 pub fn unlink_all_product_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -40,6 +48,7 @@ pub fn unlink_all_product_images(
     diesel::delete(product_images.filter(product_id.eq(prod_id))).execute(conn)
 }
 
+/// Retrieves all `Image` records linked to a specific product.
 pub fn get_linked_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -54,6 +63,7 @@ pub fn get_linked_images(
         .load(conn)
 }
 
+/// Retrieves all `ProductImage` link records for a specific product.
 pub fn get_product_images(
     conn: &mut SqliteConnection,
     prod_id: i32,
@@ -66,6 +76,28 @@ pub fn get_product_images(
         .load(conn)
 }
 
+/// Retrieves a specific link for an image, if it exists.
+pub fn get_image_link(
+    conn: &mut SqliteConnection,
+    img_id: i32,
+) -> Result<Option<model::ProductImage>, diesel::result::Error> {
+    use crate::schema::product_images::dsl::*;
+    product_images
+        .filter(image_id.eq(img_id))
+        .first(conn)
+        .optional()
+}
+
+/// Removes all links for a specific image.
+pub fn unlink_image_from_all_products(
+    conn: &mut SqliteConnection,
+    img_id: i32,
+) -> Result<usize, diesel::result::Error> {
+    use crate::schema::product_images::dsl::*;
+    diesel::delete(product_images.filter(image_id.eq(img_id))).execute(conn)
+}
+
+/// Retrieves all product-image links in the database.
 pub fn get_all_links(
     conn: &mut SqliteConnection,
 ) -> Result<Vec<model::ProductImage>, diesel::result::Error> {

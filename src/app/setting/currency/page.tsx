@@ -4,14 +4,14 @@ import { useSettings } from "@/context/settings/SettingsContext";
 import { useCallback } from "react";
 import ManagementPageLayout from "@/components/layout/ManagementPageLayout";
 import CurrencySettings from "@/components/settings/CurrencySettings";
-import ResetSettingsButton from "@/components/settings/ResetSettingsButton";
+import SettingsActions from "@/components/settings/SettingsActions";
 
 export default function CurrencySettingPage() {
   const { settings, updateSettings } = useSettings();
 
   const handleUpdateCurrency = useCallback(
     (symbol: string) => {
-      updateSettings({ currency_symbol: symbol });
+      updateSettings({ general: { currency_symbol: symbol } });
     },
     [updateSettings],
   );
@@ -20,13 +20,12 @@ export default function CurrencySettingPage() {
     <ManagementPageLayout
       title="Currency Settings"
       subtitle="Configure currency symbol and formatting."
-      headerActions={<ResetSettingsButton />}
+      headerActions={<SettingsActions />}
       scaleKey="setting_page_scale"
       scrollable={true}
-      layoutMaxWidth={settings.layout_max_width}
     >
       <CurrencySettings
-        currency={settings.currency_symbol}
+        currency={settings.general.currency_symbol}
         onUpdateCurrency={handleUpdateCurrency}
       />
     </ManagementPageLayout>

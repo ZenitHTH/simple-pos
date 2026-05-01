@@ -1,8 +1,16 @@
+//! The database crate for Vibe POS.
+//!
+//! This crate provides the data models, schema definitions, and database operations
+//! for the application using Diesel ORM and SQLite (SQLCipher for encryption).
+//! It is organized into modules for each domain entity (products, categories, etc.).
+
 use diesel::prelude::*;
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
+/// Embedded database migrations for SQLite.
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
+/// Runs all pending database migrations.
 pub fn run_migrations(
     connection: &mut SqliteConnection,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -23,7 +31,7 @@ pub mod schema;
 pub mod stock;
 
 pub use category::model::{Category, NewCategory};
-pub use connection::{establish_connection, get_database_path};
+pub use connection::{get_database_path, verify_database_key, create_pool};
 pub use customer::model::{Customer, NewCustomer};
 pub use image::model::{Image, NewImage};
 pub use image::{

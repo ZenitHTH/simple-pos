@@ -8,6 +8,12 @@ interface IdSearchProps {
   onSearch: () => void;
 }
 
+/**
+ * IdSearch Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function IdSearch({
   searchId,
   loading,
@@ -21,7 +27,7 @@ export default function IdSearch({
       </h3>
       <div className="flex gap-4">
         <div className="relative max-w-xs flex-1">
-          <FaSearch className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2 z-10" />
+          <FaSearch className="text-muted-foreground absolute top-1/2 left-4 z-10 -translate-y-1/2" />
           <Input
             type="text"
             value={searchId}

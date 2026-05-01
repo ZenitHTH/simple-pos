@@ -1,7 +1,11 @@
 import { invoke } from "@/lib/api/invoke";
 import { ReceiptList, Receipt, AccumulatedReport } from "@/lib/types";
 
+/**
+ * API wrapper for receipt and transaction operations.
+ */
 export const receiptApi = {
+  /** Creates a new invoice/receipt header. */
   createInvoice: async (
     key: string,
     customerId?: number,
@@ -12,6 +16,7 @@ export const receiptApi = {
     });
   },
 
+  /** Adds items to an existing invoice in bulk. */
   addInvoiceItems: async (
     key: string,
     receiptId: number,
@@ -24,13 +29,33 @@ export const receiptApi = {
     });
   },
 
+  /** Creates a new invoice, adds items, and deducts stock in a single atomic operation. */
+  completeCheckout: async (
+    key: string,
+    data: {
+      customerId?: number;
+      items: { productId: number; quantity: number }[];
+    },
+  ): Promise<ReceiptList> => {
+    return await invoke("complete_checkout", {
+      key,
+      customerId: data.customerId ? Number(data.customerId) : undefined,
+      items: data.items.map((i) => [Number(i.productId), Number(i.quantity)]),
+    });
+  },
+
+  /** Retrieves full details for a specific invoice, including its items. */
   getInvoiceDetail: async (
     key: string,
     receiptId: number,
   ): Promise<[ReceiptList, Receipt[]]> => {
-    return await invoke("get_invoice_detail", { key, receiptId: Number(receiptId) });
+    return await invoke("get_invoice_detail", {
+      key,
+      receiptId: Number(receiptId),
+    });
   },
 
+  /** Retrieves all invoices within a specified date range. */
   getInvoicesByDate: async (
     key: string,
     startUnix: number,
@@ -43,6 +68,7 @@ export const receiptApi = {
     });
   },
 
+  /** Exports receipt data to a file in the specified format. */
   exportReceipts: async (
     key: string,
     exportPath: string,
@@ -59,6 +85,7 @@ export const receiptApi = {
     });
   },
 
+  /** Generates an accumulated sales report for a specified date range. */
   getAccumulatedReport: async (
     key: string,
     startUnix: number,
@@ -71,3 +98,8 @@ export const receiptApi = {
     });
   },
 };
+
+// Expose globally for E2E testing (Development only)
+if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+  (window as any).receiptApi = receiptApi;
+}

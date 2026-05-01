@@ -1,115 +1,145 @@
-# GEMINI.md - Vibe POS (Simple POS)
+# 🤖 Vibe POS - Agent Operations Manual (GEMINI.md)
 
-## Project Overview
-Vibe POS is a professional, modern, and lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**. It is a local-first desktop application designed for high performance and security, featuring an encrypted database and a highly customizable touch-optimized UI.
-
-### Core Technologies
-- **Backend**: Rust, Tauri 2.x, Diesel ORM, SQLite with **SQLCipher** (AES-256 encryption).
-- **Frontend**: Next.js 16 (App Router, React 19), TypeScript, Tailwind CSS 4.
-- **Database**: Local encrypted SQLite database using `sqlcipher`. Data is stored in platform-specific app data directories (e.g., `~/.local/share/simple-pos` on Linux).
-- **Testing**: WebdriverIO for E2E testing with `tauri-driver`.
+Welcome, Gemini. This is your mission-critical "Source of Truth" for **Vibe POS**. This document is designed to onboard you instantly to the project's architecture, patterns, and safety constraints.
 
 ---
 
-## Building and Running
+## 🏗️ 1. Project DNA & Philosophy
+Vibe POS is a **Local-First, Privacy-First, High-Customization** Point of Sale system.
+- **Local-First**: Data never leaves the machine unless explicitly exported.
+- **Privacy-First**: Entire database is AES-256 encrypted (SQLCipher).
+- **High-Customization**: The "Design Tuner" allows real-time UI scaling and styling without code changes.
 
-### Development
-Starts both the Next.js development server (with Turbopack) and the Tauri application window.
-```bash
-npm run tauri dev
-```
-*Note: On Linux, this script automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues.*
-
-### Production Build
-Generates a standalone executable for the current operating system.
-```bash
-npm run tauri build
-```
-Output binaries are located in `src-tauri/target/release/bundle/`.
-
-### Linting and Testing
-```bash
-npm run lint        # Runs ESLint
-npm run test:e2e    # Runs WebdriverIO E2E tests
-```
+### Core Tech Stack (2025/2026 Standards)
+- **Frontend**: Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS 4, TypeScript 2025.
+- **Backend**: Rust 2024, Tauri v2 (Mobile-ready core).
+- **Database**: SQLite + SQLCipher (via Diesel ORM).
+- **E2E Testing**: Playwright + `tauri-driver`.
 
 ---
 
-## Architecture and Data Flow
+## 📂 2. Directory Map (Where things live)
 
-### Backend Structure (`src-tauri/`)
-- **`src-tauri/src/commands/`**: Contains the Tauri commands exposed to the frontend, organized by module (product, stock, receipt, etc.).
-- **`src-tauri/database/`**: Local crate for database interactions, Diesel models, and migrations.
-- **`src-tauri/export_lib/`**: Local crate for handling data exports (CSV, XLSX, ODS).
-- **`src-tauri/image_lib/`**: Local crate for image processing and storage.
+### 🦀 Backend (`src-tauri/`)
+- `src/commands/`: The "API" of the backend. Every file here maps to a domain (e.g., `stock.rs`, `receipt.rs`).
+- `database/`: A local crate for Diesel models, schemas, and SQLCipher migrations.
+- `settings_lib/`: Handles app configuration and **Security Path Validation**.
+- `export_lib/`: Handles CSV/XLSX/ODS generation.
+- `image_lib/`: Secure image processing and storage in app-local directories.
 
-#### Backend Architecture
-```mermaid
-graph TD
-    MN[main.rs] --> LIB[lib.rs]
-    LIB --> IH[Invoke Handler]
-    IH --> CM[Command Handlers]
-    CM --> DB[Database Crate]
-    CM --> EX[Export Crate]
-    CM --> IM[Image Crate]
-    DB --> SQL[(SQLCipher)]
-```
-
-### Frontend Structure (`src/`)
-- **App Router**: Uses Next.js 16 App Router (`src/app/`).
-- **Context Providers**: Found in `src/context/`, managing global state for Settings, Database (auth/connection), Toasts, and Mockup mode.
-- **API Layer**: `src/lib/api/` wraps Tauri `invoke` calls. Most API calls require a `dbKey` from the `DatabaseContext`.
-- **UI Scaling**: Custom scaling logic (50%-200%) implemented via CSS custom properties managed by `SettingsContext`.
-
-#### Component Hierarchy
-```mermaid
-graph TD
-    RL[RootLayout] --> SP[SettingsProvider]
-    SP --> DP[DatabaseProvider]
-    DP --> DG[DatabaseGuard]
-    DG --> SB[Sidebar]
-    DG --> PC[POSClient]
-    PC --> PPG[POSProductGrid]
-    PC --> CT[Cart]
-    PPG --> PCA[ProductCard]
-    CT --> PM[PaymentModal]
-    usePOSLogic((usePOSLogic)) -.-> PC
-```
-
-### Data Flow
-1. **Database Initialization**: User enters a key → `DatabaseProvider` initializes the encrypted SQLCipher connection.
-2. **Settings**: Loaded from disk → `SettingsProvider` applies UI scales and themes.
-3. **Transaction**: Cart managed by `usePOSLogic` hook → Payment creates an invoice → Backend deducts stock (directly or via recipes).
+### ⚛️ Frontend (`src/`)
+- `app/`: Next.js App Router pages.
+- `components/`:
+  - `ui/`: Atomic, reusable components (Buttons, Inputs, etc.).
+  - `design-tuner/`: Logic for the real-time UI editor.
+  - `pos/`: Core register components.
+- `context/`: Global state (Settings, Database, Toast, Alert).
+- `hooks/`: **Strictly Grouped**:
+  - `common/`: Generic helpers (e.g., `useColorSampler`).
+  - `features/`: Logic-heavy features (e.g., `usePOSLogic`).
+  - `settings/`: Config-specific hooks.
+- `lib/`:
+  - `api/`: Tauri `invoke` wrappers (The bridge to Rust).
+  - `types/`: **Centralized Type Definitions** (Start here to understand data models).
+  - `utils/`: Pure helper functions (e.g., `deepMerge`, `logger`).
 
 ---
 
-### AI Component Registry
-We maintain a "yellow pages" registry of reusable components, hooks, and API functions in `.agents/ai-components.json`. 
-Update it by running:
-`npm run registry`
-AI agents should check this file first when looking for existing functionality.
+## 🔒 3. Security & Safety Mandates
 
-### Backend (Rust)
-- **API Compatibility**: Always verify that changes in the Rust backend align with the frontend API calls in `src/lib/api/`.
-- **SQLCipher**: The `.db` file is encrypted. Do not attempt to read it directly without SQLCipher support.
-- **Data Paths**: Use the platform-specific local data directory for storage.
-- **Logging**: Use `log::info!()` and run with `RUST_LOG=debug` for troubleshooting.
+### 🔑 The `AppState` & `dbKey` Protocol
+Database security is managed via Tauri's global state and SQLCipher.
+- **Connection Pool**: We use `r2d2` to pool authenticated connections. **Never** call `establish_connection` manually in a command.
+- **Access**: Commands MUST take `state: tauri::State<'_, crate::AppState>` and borrow from `state.pool`.
+- **Decryption**: The `dbKey` is provided once at login and handled by a custom `SqlCipherCustomizer`.
 
-### Frontend (React/Next.js)
-- **Component Reuse**: Prioritize using global components from `src/components/ui/` or `src/components/common/`.
-- **CSS Standards**: Avoid hardcoded CSS values. Use Tailwind CSS and global styles in `src/app/globals.css`.
-- **Code Splitting**: Keep files focused. Split logic into dedicated components, hooks, or utility libraries.
-- **Types**: Always define and update shared types in `src/lib/types/`.
+### 🛡️ Path Validation (VULN-001)
+We enforce strict path boundaries. All file operations (exports, custom DB paths, image saves) must happen within the platform-specific app data directory.
+- **Tool**: Use `settings_lib::paths::validate_path_within` in Rust.
+- **Rule**: If a user or the frontend provides a path, it **must** be validated against the app data root before use.
 
-### Database Migrations
-- Use Diesel CLI: `diesel migration generate <name>`.
-- Implement SQL in `src-tauri/database/migrations/`.
+### 🧼 Privacy Logging (VULN-003)
+Our `logger.ts` and Rust logging (`lib.rs`) filter out sensitive keywords.
+- **Filtered Keywords**: `password`, `dbKey`, `ssn`, `tax_id`, `address`, `email`.
+- **Constraint**: Do not bypass the central logger for sensitive operations.
 
 ---
 
-## Key Files
-- `CLAUDE.md`: Detailed project guidelines and command references.
-- `package.json`: Frontend dependencies and scripts.
-- `src-tauri/Cargo.toml`: Backend dependencies.
-- `src-tauri/tauri.conf.json`: Tauri configuration (capabilities, plugins, window settings).
-- `.agents/rules/`: Project-specific AI rules for backend and component development.
+## 🎨 4. The Design Tuner System
+Styles are not hardcoded. They are derived from `AppSettings`.
+1. **Load**: `SettingsContext` loads JSON config from disk.
+2. **Inject**: It converts values to CSS variables (e.g., `--numpad-height`) on the `:root`.
+3. **Apply**: Tailwind classes use these variables (e.g., `h-[var(--numpad-height)]`).
+4. **Tune**: Users use sliders in `DesignMode` to update `AppSettings` in real-time.
+
+---
+
+## ⚡ 5. High-Performance Standards (2026)
+
+To maintain the "Instant-Feel" required for a retail POS, adhere to the architectural mandates in **`docs/PERFORMANCE.md`**.
+
+### Core Performance Checklist:
+1. **Atomic IPC**: Consolidate multi-step DB writes into single Rust commands.
+2. **Connection Pooling**: Always borrow from `state.pool`; never use `establish_connection`.
+3. **React 19 Transitions**: Wrap async logic in `useTransition` and `useOptimistic`.
+4. **GPU Acceleration**: Use `transform: scale()` instead of `zoom`. Explicitly define transitions (no `transition: all`).
+
+---
+
+## 🚀 6. Project Meta-Documentation & Registries
+
+To work effectively, you MUST consult these "Source of Truth" files. They are designed to give you a 360-degree view of the project without scanning the entire codebase.
+
+### 📖 `conductor/vibe-pos-manual.md` (The Master Guide)
+- **What it is**: A human-readable (and agent-readable) deep dive into the application's logic.
+- **Why use it**: It explains the *why* and *how* behind complex systems like the **Design Tuner flow**, the **POS engine logic**, and the **Encrypted Database architecture**. It also contains the "2025 Standards" for React 19 and Rust 2024.
+
+### 🗺️ `.agents/tech-docs.json` (Architectural Map)
+- **What it is**: A machine-readable JSON file mapping the entire project structure.
+- **Why use it**: Use this to quickly find which local Rust crates handle specific tasks (like `image_lib` for SHA-256 storage) and to understand the "Data Flow Integrity" rules (e.g., Satang-based financial precision).
+
+### 🟡 `.agents/ai-components.json` (Frontend Yellowpages)
+- **What it is**: An auto-generated index of every React component, custom hook, and API wrapper.
+- **Why use it**: Instead of guessing where a component is, search this file for keywords like "modal", "cart", or "usePOS". It includes file paths, exported names, and detailed descriptions.
+
+### 🦀 `.agents/ai-backend.json` (Backend Yellowpages)
+- **What it is**: An auto-generated index of all Tauri commands (Rust) and Database models.
+- **Why use it**: Use this to find the exact Rust function signature for a command you need to `invoke` from the frontend, or to see the fields available in a Diesel database model.
+
+---
+
+## 🚀 6. Common Agent Workflows
+
+### 📚 Using the "Yellowpages" (Registries)
+Before creating a new component or utility, check the registries:
+- `.agents/ai-components.json`: Frontend components/hooks/API.
+- `.agents/ai-backend.json`: Backend commands and DB models.
+- **Maintenance**: Run `npm run registry` after adding new exports.
+
+### 🧪 Testing & Verification
+- **E2E**: Run `npm run test:e2e`. We use Playwright to drive the Tauri window.
+- **Lint**: Run `npm run lint` before committing.
+- **Backend**: Run `cargo check` inside `src-tauri` for Rust type safety.
+
+### 🛠️ Database Migrations
+1. Run `diesel migration generate <name>` inside `src-tauri/database`.
+2. Edit `up.sql` and `down.sql`.
+3. Migrations run automatically on app start or via `cargo test`.
+
+---
+
+## 🧠 6. Critical Symbols Glossary
+- **`Invoke`**: The method used to call Rust from JS (`src/lib/api/invoke.ts`).
+- **`SelectableOverlay`**: Component that makes an element clickable in Design Mode.
+- **`SQLCipher`**: The reason we need a `dbKey`.
+- **`Turbopack`**: Our ultra-fast dev bundler.
+
+---
+
+## 📜 Agent Guidelines
+- **Stay Surgical**: When fixing a bug, don't refactor unrelated files.
+- **Preserve Security**: Always keep the path validation and PII filtering logic intact.
+- **Centralize Types**: Add new interfaces to `src/lib/types/` rather than local files.
+- **DRY Registry**: If you add a reusable component, run `npm run registry`.
+
+*This file is your companion. Update it if the project's fundamental patterns change.*

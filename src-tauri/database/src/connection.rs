@@ -1,9 +1,41 @@
 use diesel::prelude::*;
 use diesel::sql_query;
+use diesel::r2d2::{ConnectionManager, CustomizeConnection, Pool};
 use directories::ProjectDirs;
 use serde_json;
 use std::fs;
 use std::path::{Path, PathBuf};
+
+use std::fmt;
+
+pub type DbPool = Pool<ConnectionManager<SqliteConnection>>;
+
+pub struct SqlCipherCustomizer {
+    hex_key: String,
+}
+
+impl fmt::Debug for SqlCipherCustomizer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("SqlCipherCustomizer")
+            .field("hex_key", &"[REDACTED]")
+            .finish()
+    }
+}
+
+impl CustomizeConnection<SqliteConnection, diesel::r2d2::Error> for SqlCipherCustomizer {
+    fn on_acquire(&self, conn: &mut SqliteConnection) -> Result<(), diesel::r2d2::Error> {
+        apply_encryption_key(conn, &self.hex_key)
+            .map_err(|e| diesel::r2d2::Error::QueryError(diesel::result::Error::DatabaseError(
+                diesel::result::DatabaseErrorKind::Unknown,
+                Box::new(e),
+            )))?;
+            
+        sql_query("PRAGMA journal_mode = WAL;").execute(conn).map_err(|e| diesel::r2d2::Error::QueryError(e))?;
+        sql_query("PRAGMA synchronous = NORMAL;").execute(conn).map_err(|e| diesel::r2d2::Error::QueryError(e))?;
+        
+        Ok(())
+    }
+}
 
 /// Gets the absolute path to the SQLite database file.
 /// Checks for a custom path override in `settings.json` within the app data directory.
@@ -21,11 +53,16 @@ pub fn get_database_path() -> Result<PathBuf, String> {
 
     // Check for custom database path in settings
     if let Some(custom_path) = read_custom_db_storage_path(data_dir) {
-        if !custom_path.exists() {
-            fs::create_dir_all(&custom_path)
+        let validated_path = settings_lib::paths::validate_path_within(
+            custom_path.to_str().unwrap_or(""),
+            data_dir
+        )?;
+        
+        if !validated_path.exists() {
+            fs::create_dir_all(&validated_path)
                 .map_err(|e| format!("Error creating custom database directory: {}", e))?;
         }
-        return Ok(custom_path.join("database.db"));
+        return Ok(validated_path.join("database.db"));
     }
 
     Ok(data_dir.join("database.db"))
@@ -37,42 +74,67 @@ fn read_custom_db_storage_path(data_dir: &Path) -> Option<PathBuf> {
     let content = fs::read_to_string(settings_path).ok()?;
     let json: serde_json::Value = serde_json::from_str(&content).ok()?;
     
-    json.get("db_storage_path")
+    json.get("storage")
+        .and_then(|s| s.get("db_storage_path"))
         .and_then(|v| v.as_str())
         .map(PathBuf::from)
 }
 
-/// Establishes a connection to the encrypted (or soon-to-be encrypted) database.
-pub fn establish_connection(key: &str) -> Result<SqliteConnection, String> {
-    if key.len() < 4 {
-        return Err("Encryption key must be at least 4 characters long".to_string());
+/// Verifies the encryption key and handles initial database encryption if needed.
+/// This should be called before creating a connection pool to avoid flooding with errors.
+pub fn verify_database_key(key: &str) -> Result<(), String> {
+    if key.len() < 8 {
+        return Err("Encryption key must be at least 8 characters long".to_string());
     }
 
     let database_url = get_database_url()?;
     let hex_key = hex::encode(key);
 
     // 1. Try to open the database as already encrypted
-    let mut conn = open_connection(&database_url)?;
-    apply_encryption_key(&mut conn, &hex_key)?;
+    // We use a scope here to ensure the connection is closed before we try again
+    {
+        let mut conn = open_connection(&database_url)?;
+        apply_encryption_key(&mut conn, &hex_key)?;
 
-    if is_database_accessible(&mut conn) {
-        return Ok(conn);
+        if is_database_accessible(&mut conn) {
+            return Ok(());
+        }
     }
 
     // 2. If encrypted access failed, check if the database is currently unencrypted (fresh setup)
     // Note: We MUST open a new connection because SQLCipher locks the failed one into an error state.
-    let mut conn = open_connection(&database_url)?;
-
-    if is_database_accessible(&mut conn) {
-        encrypt_database(&mut conn, &hex_key)?;
-        return Ok(conn);
+    {
+        let mut conn = open_connection(&database_url)?;
+        if is_database_accessible(&mut conn) {
+            encrypt_database(&mut conn, &hex_key)?;
+            return Ok(());
+        }
     }
 
     // 3. Both attempts failed (wrong key or file is corrupted)
     Err("Invalid encryption key or corrupted database".to_string())
 }
 
+pub fn create_pool(key: &str) -> Result<DbPool, String> {
+    let database_url = get_database_url()?;
+    let manager = ConnectionManager::<SqliteConnection>::new(database_url);
+    let hex_key = hex::encode(key);
+    
+    Pool::builder()
+        .connection_customizer(Box::new(SqlCipherCustomizer { hex_key }))
+        // Set min_idle to 0 to prevent r2d2 from aggressively opening connections 
+        // in the background, which can cause log floods and crashes on auth failure.
+        .min_idle(Some(0))
+        // Limit max size to keep resource usage low on POS hardware
+        .max_size(5)
+        .build(manager)
+        .map_err(|e| format!("Failed to create pool: {}", e))
+}
+
 fn get_database_url() -> Result<String, String> {
+    if std::env::var("VIBE_POS_IN_MEMORY").is_ok() {
+        return Ok(":memory:".to_string());
+    }
     get_database_path()?
         .to_str()
         .map(|s| s.to_string())

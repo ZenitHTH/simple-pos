@@ -9,6 +9,12 @@ interface UISetupModeProps {
   onNext: () => void;
 }
 
+/**
+ * UISetupMode Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function UISetupMode({ onNext }: UISetupModeProps) {
   return (
     <div className="bg-background relative min-h-screen w-full overflow-hidden">

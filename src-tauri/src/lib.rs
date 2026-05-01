@@ -14,17 +14,33 @@ use commands::images::*;
 use commands::material::*;
 use commands::recipe::*;
 use commands::settings::*; // Settings Commands
+use std::sync::RwLock;
 use tauri::Manager;
+
+pub struct AppState {
+    pub pool: RwLock<Option<database::connection::DbPool>>,
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(AppState {
+            pool: RwLock::new(None),
+        })
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             if let Some(window) = app.get_webview_window("main") {
                 let _ = window.set_focus();
             }
         }))
-        .plugin(tauri_plugin_log::Builder::default().build())
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .filter(|metadata| {
+                    // Security: Prevent logging of IPC calls which contains raw arguments (like encryption keys)
+                    !metadata.target().starts_with("tauri::ipc")
+                        && !metadata.target().starts_with("tauri::runtime")
+                })
+                .build(),
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .setup(|app| {
@@ -50,6 +66,7 @@ pub fn run() {
             update_stock,
             remove_stock,
             // Receipt Commands
+            complete_checkout,
             create_invoice,
             add_invoice_items,
             get_invoice_detail,
@@ -67,17 +84,21 @@ pub fn run() {
             // Export Commands
             export_receipts,
             // Settings Commands
+            get_app_initial_state,
             get_settings,
             save_settings,
             get_storage_info,
             migrate_image_directory,
             // Database Commands
+            get_full_management_data,
             initialize_database,
             check_database_exists,
+            logout_database,
             // Image Commands
             save_image,
             link_product_image,
             unlink_product_image,
+            move_product_image,
             clear_product_images,
             get_product_images,
             get_all_images,

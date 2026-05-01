@@ -96,6 +96,7 @@ fn test_material_operations() {
         volume: 1000,
         quantity: 10,
         precision: 0,
+        tags: None,
     };
     let inserted = database::material::insert_material(&mut conn, &new_mat).unwrap();
     assert_eq!(inserted.name, "Sugar");
@@ -114,4 +115,76 @@ fn test_customer_operations() {
     };
     let inserted = database::customer::insert_customer(&mut conn, &new_cust).unwrap();
     assert_eq!(inserted.name, "John Doe");
+}
+
+#[test]
+fn test_image_linking_exclusivity() {
+    let mut conn = setup_test_db();
+
+    let cat =
+        database::category::insert_category(&mut conn, &NewCategory { name: "Food" }).unwrap();
+
+    let prod1 = database::product::insert_product(
+        &mut conn,
+        &NewProduct {
+            title: "Apple",
+            category_id: cat.id,
+            satang: 1500,
+            use_recipe_stock: false,
+        },
+    )
+    .unwrap();
+
+    let prod2 = database::product::insert_product(
+        &mut conn,
+        &NewProduct {
+            title: "Banana",
+            category_id: cat.id,
+            satang: 2000,
+            use_recipe_stock: false,
+        },
+    )
+    .unwrap();
+
+    let img = database::image::insert_image(
+        &mut conn,
+        &NewImage {
+            file_name: "img.png",
+            file_path: "path/to/img.png",
+            file_hash: "hash123",
+            image_object_position: Some("center".to_string()),
+        },
+    )
+    .unwrap();
+
+    // Link to product 1
+    database::product_image::link_product_image(&mut conn, prod1.product_id, img.id).unwrap();
+
+    // Verify it is linked to product 1
+    let link = database::product_image::get_image_link(&mut conn, img.id)
+        .unwrap()
+        .expect("Link should exist");
+    assert_eq!(link.product_id, prod1.product_id);
+
+    // Verify exclusivity: Simulate the command check for ALREADY_LINKED
+    let existing_link = database::product_image::get_image_link(&mut conn, img.id).unwrap();
+    assert!(existing_link.is_some());
+    if let Some(link) = existing_link {
+        let product = database::product::find_product(&mut conn, link.product_id).unwrap();
+        assert_eq!(product.title, "Apple");
+        // In the command, this would return Err("ALREADY_LINKED: Apple")
+    }
+
+    // Test move image (simulate move_product_image command transaction)
+    conn.transaction::<_, diesel::result::Error, _>(|c| {
+        database::product_image::unlink_image_from_all_products(c, img.id)?;
+        database::product_image::link_product_image(c, prod2.product_id, img.id)?;
+        Ok(())
+    })
+    .unwrap();
+
+    let link2 = database::product_image::get_image_link(&mut conn, img.id)
+        .unwrap()
+        .expect("Link should exist");
+    assert_eq!(link2.product_id, prod2.product_id);
 }

@@ -7,7 +7,8 @@ import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import NumberSlider from "@/components/ui/NumberSlider";
 import { convertFileSrc } from "@/lib/api/invoke";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
+import { useAlert } from "@/context/AlertContext";
 
 interface ImagePositionModalProps {
   isOpen: boolean;
@@ -16,12 +17,23 @@ interface ImagePositionModalProps {
   onUpdate: (position: string) => Promise<void>;
 }
 
+/**
+ * ImagePositionModal component provides a specialized interface for adjusting how an image is displayed.
+ * It uses a cropping tool to determine the object-position and zoom level for the image.
+ *
+ * @param {ImagePositionModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {Image | null} props.image - The image object to adjust.
+ * @param {(position: string) => Promise<void>} props.onUpdate - Callback to save the new position string.
+ */
 export default function ImagePositionModal({
   isOpen,
   onClose,
   image,
   onUpdate,
 }: ImagePositionModalProps) {
+  const { showAlert } = useAlert();
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPercentages, setCroppedAreaPercentages] =
@@ -141,7 +153,7 @@ export default function ImagePositionModal({
       onClose();
     } catch (err) {
       logger.error("Critical: Failed to save position:", err);
-      alert("Error saving: " + err);
+      await showAlert("Image Error", "Error saving: " + err);
     } finally {
       setIsSubmitting(false);
     }

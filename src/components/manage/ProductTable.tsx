@@ -4,6 +4,8 @@ import { BackendProduct, Category, cn } from "@/lib";
 import { FaEdit, FaTrash, FaImage, FaUtensils, FaBoxes } from "react-icons/fa";
 import GlobalTable from "@/components/ui/GlobalTable";
 import { Switch } from "@/components/ui/Switch";
+import { Badge } from "@/components/ui/Badge";
+import { TableActionButton } from "@/components/ui/TableActionButton";
 import { AppSettings } from "@/lib";
 
 interface ProductTableProps {
@@ -15,12 +17,25 @@ interface ProductTableProps {
   settings: AppSettings;
 }
 
+/**
+ * ProductTable component displays a list of products in a tabular format with detailed information.
+ * It shows images, titles, categories, prices, and provides actions for editing, deleting, and managing stock/recipes.
+ *
+ * @param {ProductTableProps} props - The component props.
+ * @param {(BackendProduct & { image_path?: string })[]} props.products - List of products to display, including optional image path.
+ * @param {Category[]} props.categories - List of all categories for display name lookup.
+ * @param {(product: BackendProduct) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {(id: number) => void} props.onDelete - Callback when the delete button is clicked.
+ * @param {(id: number, current: boolean) => void} props.onToggleStockMode - Callback to toggle between normal and recipe stock modes.
+ * @param {AppSettings} props.settings - Application settings for currency display.
+ */
 export default function ProductTable({
   products,
   categories,
   onEdit,
   onDelete,
   onToggleStockMode,
+  settings,
 }: ProductTableProps) {
   const router = useRouter();
 
@@ -63,16 +78,17 @@ export default function ProductTable({
           render: (product) => {
             const cat = categories.find((c) => c.id === product.category_id);
             return (
-              <span className="bg-primary/10 text-primary rounded-md px-2 py-1 text-sm font-medium">
+              <Badge variant="primary-subtle">
                 {cat ? cat.name : "Unknown"}
-              </span>
+              </Badge>
             );
           },
         },
         {
           header: "Price",
           className: "font-mono tabular-nums",
-          render: (product) => `฿${(product.satang / 100).toFixed(2)}`,
+          render: (product) =>
+            `${settings.general.currency_symbol}${(product.satang / 100).toFixed(2)}`,
         },
         {
           header: "Actions",
@@ -94,7 +110,7 @@ export default function ProductTable({
                     : "Stock Mode: Normal"
                 }
               />
-              <button
+              <TableActionButton
                 onClick={() =>
                   router.push(
                     product.use_recipe_stock
@@ -102,27 +118,22 @@ export default function ProductTable({
                       : `/manage/stock?product_id=${product.product_id}`,
                   )
                 }
-                className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg p-2 transition-colors"
                 title={
                   product.use_recipe_stock ? "Manage Recipe" : "Manage Stock"
                 }
-              >
-                {product.use_recipe_stock ? <FaUtensils /> : <FaBoxes />}
-              </button>
-              <button
+                icon={product.use_recipe_stock ? <FaUtensils /> : <FaBoxes />}
+              />
+              <TableActionButton
                 onClick={() => onEdit(product)}
-                className="text-muted-foreground hover:text-accent-foreground hover:bg-accent rounded-lg p-2 transition-colors"
                 title="Edit"
-              >
-                <FaEdit />
-              </button>
-              <button
+                icon={<FaEdit />}
+              />
+              <TableActionButton
                 onClick={() => onDelete(product.product_id)}
-                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg p-2 transition-colors"
                 title="Delete"
-              >
-                <FaTrash />
-              </button>
+                variant="destructive"
+                icon={<FaTrash />}
+              />
             </div>
           ),
         },

@@ -16,6 +16,8 @@ import { MockupProvider } from "@/context/MockupContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/common/SmoothScroll";
 import { ToastProvider } from "@/context/ToastContext";
+import { AlertProvider } from "@/context/AlertContext";
+import { DataProvider } from "@/context/DataContext";
 import AppShell from "@/components/layout/AppShell";
 
 const inter = Inter({
@@ -74,15 +76,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SettingsProvider>
-              <ToastProvider>
-                <DatabaseProvider>
-                  <MockupProvider>
-                    <DatabaseGuard>
-                      <AppShell>{children}</AppShell>
-                    </DatabaseGuard>
-                  </MockupProvider>
-                </DatabaseProvider>
-              </ToastProvider>
+              <AlertProvider>
+                <ToastProvider>
+                  <DatabaseProvider>
+                    <DataProvider>
+                      <MockupProvider>
+                        <DatabaseGuard>
+                          <AppShell>{children}</AppShell>
+                        </DatabaseGuard>
+                      </MockupProvider>
+                    </DataProvider>
+                  </DatabaseProvider>
+                </ToastProvider>
+              </AlertProvider>
             </SettingsProvider>
           </ThemeProvider>
         </SmoothScroll>

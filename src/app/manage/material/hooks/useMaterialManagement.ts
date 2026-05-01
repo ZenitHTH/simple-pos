@@ -3,40 +3,24 @@ import { useState, useMemo, useEffect } from "react";
 import { materialApi } from "@/lib";
 import { Material } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
+import { logger } from "@/lib/utils/logger";
+import { useDataCache } from "@/context/DataContext";
 
 export function useMaterialManagement() {
   const { dbKey } = useDatabase();
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
+  const { materials, updateCache, refreshAll } = useDataCache();
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<Material | undefined>(
     undefined,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const fetchMaterials = async () => {
-    if (!dbKey) return;
-    try {
-      setLoading(true);
-      const data = await materialApi.getAll(dbKey);
-      setMaterials(data);
-      setError(null);
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch materials",
-      );
-      logger.error("Failed to fetch materials:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMaterials();
-  }, [dbKey]);
 
   const handleCreate = () => {
     setEditingMaterial(undefined);
@@ -58,9 +42,10 @@ export function useMaterialManagement() {
 
     try {
       await materialApi.delete(dbKey, id);
-      await fetchMaterials();
+      updateCache.materials(materials.filter((m) => m.id !== id));
     } catch (err: unknown) {
-      alert(
+      await showAlert(
+        "Material Error",
         `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`,
       );
     }
@@ -72,28 +57,34 @@ export function useMaterialManagement() {
       setIsSubmitting(true);
 
       if (editingMaterial) {
-        await materialApi.update(
+        const updated = await materialApi.update(
           dbKey,
           editingMaterial.id,
           data.name,
           data.type_,
           parseFloat(data.volume),
           parseInt(data.quantity, 10),
+          data.tags,
+        );
+        updateCache.materials(
+          materials.map((m) => (m.id === updated.id ? updated : m)),
         );
       } else {
-        await materialApi.create(
+        const created = await materialApi.create(
           dbKey,
           data.name,
           data.type_,
           parseFloat(data.volume),
           parseInt(data.quantity, 10),
+          data.tags,
         );
+        updateCache.materials([...materials, created]);
       }
 
-      await fetchMaterials();
       setIsModalOpen(false);
     } catch (err: unknown) {
-      alert(
+      await showAlert(
+        "Material Error",
         `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,
       );
     } finally {
@@ -102,17 +93,41 @@ export function useMaterialManagement() {
   };
 
   const filteredMaterials = useMemo(() => {
-    return materials.filter((m) =>
-      m.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    return materials.filter((m) => {
+      const matchesSearch = m.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.every((tag) => m.tags?.includes(tag));
+      return matchesSearch && matchesTags;
+    });
+  }, [materials, searchQuery, selectedTags]);
+
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    materials.forEach((m) => {
+      m.tags?.forEach((tag) => tags.add(tag));
+    });
+    return Array.from(tags).sort();
+  }, [materials]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  }, [materials, searchQuery]);
+  };
 
   return {
     materials: filteredMaterials,
+    allTags,
     loading,
     error,
     searchQuery,
     setSearchQuery,
+    selectedTags,
+    setSelectedTags,
+    toggleTag,
     isModalOpen,
     setIsModalOpen,
     editingMaterial,
@@ -121,6 +136,6 @@ export function useMaterialManagement() {
     handleEdit,
     handleDelete,
     handleModalSubmit,
-    refresh: fetchMaterials,
+    refresh: refreshAll,
   };
 }

@@ -18,7 +18,9 @@ import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import { FaImage, FaTrash } from "react-icons/fa";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
+import { useDataCache } from "@/context/DataContext";
+import { logger } from "@/lib/utils/logger";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -31,6 +33,17 @@ interface ProductModalProps {
   isSubmitting: boolean;
 }
 
+/**
+ * ProductModal component provides a comprehensive form for creating or editing products.
+ * It includes fields for title, category, price, stock tracking mode, and image upload/selection.
+ *
+ * @param {ProductModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(product: NewProduct, afterSubmit?: (saved: BackendProduct) => Promise<void>) => Promise<BackendProduct | undefined>} props.onSubmit - Callback to submit the product data.
+ * @param {BackendProduct} [props.initialData] - Optional initial product data for editing.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function ProductModal({
   isOpen,
   onClose,
@@ -39,6 +52,8 @@ export default function ProductModal({
   isSubmitting,
 }: ProductModalProps) {
   const { dbKey } = useDatabase();
+  const { showAlert } = useAlert();
+  const { categories } = useDataCache();
   const [formData, setFormData] = useState<NewProduct>({
     title: initialData?.title || "",
     category_id: initialData?.category_id || 0,
@@ -46,15 +61,8 @@ export default function ProductModal({
     use_recipe_stock: initialData?.use_recipe_stock || false,
   });
 
-  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-  useEffect(() => {
-    if (isOpen && dbKey) {
-      categoryApi.getAll(dbKey).then(setCategories).catch(logger.error);
-    }
-  }, [isOpen, dbKey]);
 
   // Reset form when opening for create, or set for edit
   useEffect(() => {
@@ -112,7 +120,7 @@ export default function ProductModal({
         setSelectedImage(savedImage);
       } catch (err) {
         logger.error("Failed to upload image:", err);
-        alert("Failed to upload image.");
+        await showAlert("Upload Error", "Failed to upload image.");
       } finally {
         setIsUploading(false);
       }
@@ -136,17 +144,26 @@ export default function ProductModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
+          id="product-title"
+          data-testid="product-title-input"
           label="Title"
           required
           value={formData.title}
-          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, title: e.target.value }))
+          }
         />
 
         <Select
+          id="product-category"
+          data-testid="product-category-select"
           label="Category"
           value={formData.category_id ? String(formData.category_id) : ""}
           onChange={(val) =>
-            setFormData((prev) => ({ ...prev, category_id: parseInt(String(val), 10) }))
+            setFormData((prev) => ({
+              ...prev,
+              category_id: parseInt(String(val), 10),
+            }))
           }
           options={categories.map((cat) => ({
             value: String(cat.id),
@@ -157,6 +174,8 @@ export default function ProductModal({
 
         <div className="grid grid-cols-2 gap-4">
           <Input
+            id="product-price"
+            data-testid="product-price-input"
             label="Price (Satang)"
             type="number"
             required
@@ -201,7 +220,9 @@ export default function ProductModal({
 
         {/* Image Section */}
         <div className="space-y-4">
-          <label className="mb-1.5 block text-sm font-semibold">Product Image</label>
+          <label className="mb-1.5 block text-sm font-semibold">
+            Product Image
+          </label>
           <div className="flex flex-wrap gap-2">
             {selectedImage && (
               <div
@@ -248,11 +269,12 @@ export default function ProductModal({
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isSubmitting || isUploading}
-          >
-            {isSubmitting ? "Saving..." : initialData ? "Update Product" : "Save Product"}
+          <Button type="submit" disabled={isSubmitting || isUploading}>
+            {isSubmitting
+              ? "Saving..."
+              : initialData
+                ? "Update Product"
+                : "Save Product"}
           </Button>
         </div>
       </form>

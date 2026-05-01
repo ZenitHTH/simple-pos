@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, memo } from "react";
+import { useEffect, useState, useMemo, memo } from "react";
 import ProductCard from "./ProductCard";
 import ProductFilter from "@/components/filters/ProductFilter";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
@@ -19,6 +19,21 @@ interface POSProductGridProps {
   currency: string;
 }
 
+/**
+ * POSProductGrid component renders a responsive grid of products with filtering capabilities.
+ * It handles category selection, search queries, and dynamic grid scaling based on application settings.
+ *
+ * @param {POSProductGridProps} props - The component props.
+ * @param {Product[]} props.products - List of products to display.
+ * @param {string[]} props.categories - List of available categories for filtering.
+ * @param {string} props.selectedCategory - The currently selected category.
+ * @param {(category: string) => void} props.onCategoryChange - Callback when a category is selected.
+ * @param {string} props.searchQuery - Current search string.
+ * @param {(query: string) => void} props.onSearchChange - Callback when search query changes.
+ * @param {AppSettings} props.settings - Application settings for UI scaling.
+ * @param {(product: Product) => void} props.onAddToCart - Callback when a product is added to the cart.
+ * @param {string} props.currency - The currency symbol to display.
+ */
 const POSProductGrid = memo(function POSProductGrid({
   products,
   categories,
@@ -30,6 +45,17 @@ const POSProductGrid = memo(function POSProductGrid({
   onAddToCart,
   currency,
 }: POSProductGridProps) {
+  const [baseWidth, setBaseWidth] = useState(240);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setBaseWidth(window.innerWidth < 768 ? 160 : 240);
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesCategory =
@@ -42,17 +68,13 @@ const POSProductGrid = memo(function POSProductGrid({
   }, [products, selectedCategory, searchQuery]);
 
   // Calculate Grid Layout based on scale (Detailed adjustment)
-  const gridScale = settings?.grid_scale || 100;
-  
-  // Base item width at 100% scale (M)
-  // We use a responsive base that gets smaller on mobile
-  const baseWidth = typeof window !== 'undefined' && window.innerWidth < 768 ? 160 : 240;
-  const itemMinWidth = baseWidth * (gridScale / 100);
+  // We use CSS variables to allow Design Mode to update scale without triggering React re-renders
+  const itemMinWidth = baseWidth;
 
   const gridStyle = {
-    gridTemplateColumns: `repeat(auto-fill, minmax(${itemMinWidth}px, 1fr))`,
-    fontSize: `${settings?.grid_font_scale || 100}%`,
-    gap: `${settings?.grid_gap ?? 20}px`
+    gridTemplateColumns: `repeat(auto-fill, minmax(calc(${itemMinWidth}px * var(--grid-scale, 1)), 1fr))`,
+    fontSize: `calc(var(--grid-scale, 1) * 100%)`,
+    gap: `${settings?.styling.grid.gap ?? 20}px`,
   };
 
   return (
@@ -69,13 +91,10 @@ const POSProductGrid = memo(function POSProductGrid({
 
       {/* Product Grid - Scrollable Area */}
       <div
-        className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pr-4 -mr-4"
+        className="custom-scrollbar -mr-4 min-h-0 flex-1 overflow-y-auto pr-4"
         data-lenis-prevent
       >
-        <div
-          className="grid relative pb-6"
-          style={gridStyle}
-        >
+        <div className="relative grid pb-6" style={gridStyle}>
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
@@ -84,6 +103,7 @@ const POSProductGrid = memo(function POSProductGrid({
               currency={currency}
             />
           ))}
+          <SelectableOverlay id="grid_scale" />
         </div>
       </div>
     </>

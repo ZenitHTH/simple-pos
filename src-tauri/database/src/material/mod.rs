@@ -5,10 +5,12 @@ use crate::material::model::{Material, NewMaterial};
 use crate::material::schema::material::dsl::*;
 use diesel::prelude::*;
 
+/// Retrieves all material records from the database.
 pub fn get_all_materials(conn: &mut SqliteConnection) -> QueryResult<Vec<Material>> {
     material.load::<Material>(conn)
 }
 
+/// Inserts a new material record into the database.
 pub fn insert_material(
     conn: &mut SqliteConnection,
     new_mat: &NewMaterial,
@@ -19,6 +21,7 @@ pub fn insert_material(
         .get_result(conn)
 }
 
+/// Updates an existing material record.
 pub fn update_material(
     conn: &mut SqliteConnection,
     material_data: Material,
@@ -35,10 +38,12 @@ pub fn update_material(
         .get_result(conn)
 }
 
+/// Deletes a material record from the database by its ID.
 pub fn remove_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<usize> {
     diesel::delete(material.find(target_id)).execute(conn)
 }
 
+/// Finds a specific material by its ID.
 pub fn find_material(conn: &mut SqliteConnection, target_id: i32) -> QueryResult<Material> {
     material.find(target_id).first(conn)
 }

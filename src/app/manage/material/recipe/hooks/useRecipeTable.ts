@@ -7,16 +7,9 @@ import {
   productApi,
   materialApi,
 } from "@/lib";
-import { RecipeItem, RecipeList } from "@/lib/types/recipe";
+import { RecipeItem, RecipeList, RecipeRow } from "@/lib/types/recipe";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
-
-export interface RecipeRow {
-  product: BackendProduct;
-  list: RecipeList;
-  items: RecipeItem[];
-  materials: Material[];
-}
+import { logger } from "@/lib/utils/logger";
 
 export function useRecipeTable() {
   const { dbKey } = useDatabase();

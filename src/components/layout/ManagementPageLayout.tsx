@@ -1,10 +1,10 @@
 "use client";
 
-import { FaSearch } from "react-icons/fa";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import ScalableContainer from "@/components/design-mode/ScalableContainer";
 import ScrollableContainer from "@/components/ui/ScrollableContainer";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
+import { SearchInput } from "@/components/ui/SearchInput";
 
 import { AppSettings } from "@/lib";
 
@@ -16,14 +16,19 @@ interface ManagementPageLayoutProps {
   error?: string | null;
   searchQuery?: string;
   setSearchQuery?: (query: string) => void;
-  scaleKey: keyof AppSettings;
+  scaleKey: string;
   children: React.ReactNode;
   modal?: React.ReactNode;
   floatingActions?: React.ReactNode;
   scrollable?: boolean;
-  layoutMaxWidth?: number;
 }
 
+/**
+ * ManagementPageLayout Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function ManagementPageLayout({
   title,
   subtitle,
@@ -37,7 +42,6 @@ export default function ManagementPageLayout({
   modal,
   floatingActions,
   scrollable = false,
-  layoutMaxWidth,
 }: ManagementPageLayoutProps) {
   // useSettings() removed for better performance (prop drilling)
   const ContentWrapper = scrollable
@@ -47,24 +51,19 @@ export default function ManagementPageLayout({
   return (
     <ContentWrapper>
       <div
-        className={`relative mx-auto w-full p-8 transition-all duration-300 ${scrollable ? "pb-24" : ""}`}
-        style={{ maxWidth: `${layoutMaxWidth || 1280}px` }}
+        className={`mx-auto w-full max-w-7xl p-4 md:p-8 ${scrollable ? "pb-24" : ""}`}
       >
-        <SelectableOverlay id="layout_max_width" />
         <GlobalHeader title={title} subtitle={subtitle}>
           {headerActions}
         </GlobalHeader>
 
         <ScalableContainer settingKey={scaleKey}>
           {setSearchQuery && (
-            <div className="relative mb-6 max-w-md">
-              <FaSearch className="text-muted absolute top-1/2 left-3 -translate-y-1/2" />
-              <input
-                type="text"
+            <div className="mb-6">
+              <SearchInput
                 placeholder={`Search ${title.toLowerCase()}...`}
                 value={searchQuery || ""}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border-border bg-card focus:ring-primary/50 w-full rounded-lg border py-2 pr-4 pl-10 outline-none focus:ring-2"
               />
             </div>
           )}

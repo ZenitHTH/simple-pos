@@ -14,4 +14,5 @@ export const settingHandlers = {
     database_path: "/mock/db.sqlite",
     image_path: "/mock/images",
   }),
+  get_db_truth: () => state,
 };

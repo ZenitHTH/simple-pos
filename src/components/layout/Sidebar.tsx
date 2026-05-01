@@ -12,10 +12,11 @@ import {
   FaWarehouse,
   FaClipboardList,
   FaImages,
+  FaPalette,
+  FaDatabase,
 } from "react-icons/fa";
 
 import { useSettings } from "@/context/settings/SettingsContext";
-import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
 import { cn } from "@/lib";
 import { SidebarItem } from "./sidebar/SidebarItem";
 import { SidebarGroup } from "./sidebar/SidebarGroup";
@@ -81,9 +82,9 @@ const menuEntries: MenuEntry[] = [
     icon: <FaCog size={20} />,
     children: [
       {
-        name: "General",
-        path: "/setting/general",
-        icon: <FaCog size={18} />,
+        name: "Appearance",
+        path: "/setting/appearance",
+        icon: <FaPalette size={18} />,
       },
       {
         name: "Finance",
@@ -91,14 +92,20 @@ const menuEntries: MenuEntry[] = [
         icon: <FaTags size={18} />,
       },
       {
-        name: "Export",
-        path: "/setting/export",
-        icon: <FaClipboardList size={18} />,
+        name: "Expert & DB",
+        path: "/setting/expert",
+        icon: <FaDatabase size={18} />,
       },
     ],
   },
 ];
 
+/**
+ * Sidebar Component
+ *
+ * @param {Object} props - The properties object.
+ * @returns {JSX.Element | null} The rendered component.
+ */
 export default function Sidebar() {
   const { settings } = useSettings();
   const pathname = usePathname();
@@ -160,11 +167,11 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <BaseSidebarLayout
-        title="POS System"
+        title="Simple POS"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        scale={settings?.sidebar_scale}
-        fontScale={settings?.sidebar_font_scale}
+        scale={settings?.scaling.components.sidebar}
+        fontScale={settings?.scaling.fonts.sidebar}
       >
         <nav
           className="flex-1 space-y-2 overflow-y-auto px-4 py-4"

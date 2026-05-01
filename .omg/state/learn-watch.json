@@ -1,0 +1,12 @@
+{
+  "last_session_id": "daeedf3b-a2ae-483a-8aba-b1b1115a8593",
+  "last_event_key": "daeedf3b-a2ae-483a-8aba-b1b1115a8593:transcript:ddb42db9c5755658e5a84fa832b7d40f06add010398ac85477d7a53916f20be6",
+  "last_prompted_session_id": "7e304590-daeb-48b6-9be7-db623cd051aa",
+  "last_reason": "short-session",
+  "last_prompted_at": "2026-04-21T10:00:39.504Z",
+  "last_user_message_count": 0,
+  "last_actionable_message_count": 0,
+  "deep_interview_lock_active": false,
+  "deep_interview_lock_source": "/home/zenithth/git/vibe-pos/.omg/state/deep-interview.json",
+  "updated_at": "2026-05-01T11:19:47.932Z"
+}

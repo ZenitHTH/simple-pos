@@ -1,0 +1,59 @@
+/* 
+ * WebKitGTK (Linux) High-Performance Rendering Mode
+ * Optimized for low-end POS hardware and the WebKit2 engine.
+ */
+
+/* 1. Global GPU Promotion (Force hardware layers for specific complex items) */
+[data-engine="webkitgtk"] .tuner-card,
+[data-engine="webkitgtk"] .tuner-button,
+[data-engine="webkitgtk"] .btn-hero,
+[data-engine="webkitgtk"] .btn-primary-lg,
+[data-engine="webkitgtk"] .cart-item,
+[data-engine="webkitgtk"] .selectable-overlay {
+  transform: translate3d(0, 0, 0); /* More aggressive than translateZ(0) */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 2. Strict Effect Stripping (Remove CPU-heavy calculations) */
+[data-engine="webkitgtk"] * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+/* 3. Shadow Flattening (Shadows are the #1 performance killer in WebKitGTK) */
+[data-engine="webkitgtk"] .shadow-sm,
+[data-engine="webkitgtk"] .shadow-md,
+[data-engine="webkitgtk"] .shadow-lg,
+[data-engine="webkitgtk"] .shadow-xl,
+[data-engine="webkitgtk"] .shadow-2xl,
+[data-engine="webkitgtk"] .shadow-inner {
+  box-shadow: none !important;
+  /* Add a subtle border to replace the shadow depth */
+  border-width: 1px !important;
+}
+
+/* 5. Animation Stripping (No transitions for persistent UI on Linux) */
+[data-engine="webkitgtk"] aside,
+[data-engine="webkitgtk"] aside *,
+[data-engine="webkitgtk"] .tuner-card,
+[data-engine="webkitgtk"] .tuner-sidebar-item,
+[data-engine="webkitgtk"] .cart-item,
+[data-engine="webkitgtk"] .management-page-layout {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* 6. Scrolling Stability */
+[data-engine="webkitgtk"] .custom-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  contain: content;
+  overflow-anchor: none; /* Prevents layout jumping */
+}
+
+/* 7. Image Optimization */
+[data-engine="webkitgtk"] img {
+  image-rendering: -webkit-optimize-contrast;
+  transform: translate3d(0, 0, 0);
+}

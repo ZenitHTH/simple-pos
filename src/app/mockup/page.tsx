@@ -5,7 +5,7 @@ import POSClient from "@/components/pos/POSClient";
 import { Product } from "@/lib";
 import { productApi, categoryApi } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 export default function MockupPage() {
   const { dbKey } = useDatabase();

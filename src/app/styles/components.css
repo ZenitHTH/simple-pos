@@ -1,0 +1,267 @@
+@layer utilities {
+  /* Tunable Component Utilities */
+  .tuner-card {
+    padding: var(--grid-item-padding);
+    border-radius: var(--grid-item-radius);
+    border-width: var(--grid-item-border-width);
+    background-color: color-mix(
+      in srgb,
+      var(--card),
+      transparent calc(100% - var(--grid-item-bg-opacity) * 100%)
+    );
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / var(--grid-item-shadow-opacity)),
+      0 4px 6px -4px rgb(0 0 0 / var(--grid-item-shadow-opacity));
+    transition:
+      transform var(--button-transition-speed) ease-out,
+      box-shadow var(--button-transition-speed) ease-out,
+      background-color var(--button-transition-speed) ease-out,
+      opacity var(--button-transition-speed) ease-out;
+  }
+
+  .tuner-card:hover {
+    transform: translateY(-4px) scale(var(--grid-item-hover-scale));
+    box-shadow:
+      0 20px 25px -5px rgb(0 0 0 / calc(var(--grid-item-shadow-opacity) * 2)),
+      0 8px 10px -6px rgb(0 0 0 / calc(var(--grid-item-shadow-opacity) * 2));
+  }
+
+  .tuner-sidebar-item {
+    margin-bottom: var(--sidebar-item-spacing);
+    border-radius: var(--sidebar-item-radius);
+  }
+
+  .tuner-sidebar-icon {
+    font-size: var(--sidebar-icon-size);
+    width: var(--sidebar-icon-size);
+    height: var(--sidebar-icon-size);
+  }
+
+  .tuner-button {
+    border-radius: var(--button-radius);
+    transition:
+      transform var(--button-transition-speed) ease-out,
+      box-shadow var(--button-transition-speed) ease-out,
+      background-color var(--button-transition-speed) ease-out;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / var(--button-shadow-intensity)),
+      0 2px 4px -2px rgb(0 0 0 / var(--button-shadow-intensity));
+  }
+
+  .tuner-cart-item {
+    gap: var(--cart-item-gap);
+    border-style: var(--cart-item-border-style);
+    background-color: color-mix(
+      in srgb,
+      var(--card),
+      transparent calc(100% - var(--cart-item-bg-opacity) * 100%)
+    );
+    transition:
+      transform var(--button-transition-speed) ease-out,
+      background-color var(--button-transition-speed) ease-out;
+  }
+
+  /* Scrollbar Styling */
+  .custom-scrollbar {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+}
+
+/* Manual Component Classes */
+
+.page-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+  z-index: 50;
+  padding: 1rem;
+}
+
+.card-container {
+  background-color: var(--card);
+  padding: 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  width: 100%;
+  max-width: 32rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  transform: translate(0);
+  transition:
+    transform 0.2s,
+    filter 0.2s,
+    box-shadow 0.2s;
+}
+
+.card-container:hover {
+  transform: scale(1.01);
+}
+
+.hero-title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 800;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+.hero-subtitle {
+  color: var(--muted-foreground);
+  margin-bottom: 2.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.meta-text {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.btn-hero {
+  position: relative;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-weight: 700;
+  font-size: 1.125rem;
+  overflow: hidden;
+  transition:
+    box-shadow 0.2s,
+    background-color 0.2s,
+    transform 0.1s;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.btn-hero:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+.btn-primary-lg {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding: 1rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s,
+    background-color 0.2s,
+    filter 0.2s,
+    box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.btn-primary-lg:hover {
+  transform: scale(1.05) translateY(-2px);
+  filter: brightness(0.95);
+}
+
+.icon-box-lg {
+  width: 6rem;
+  height: 6rem;
+  background: linear-gradient(to top right, var(--primary), #06b6d4);
+  border-radius: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(3deg);
+  transition: transform 0.5s;
+}
+
+.icon-box-lg:hover {
+  transform: rotate(6deg);
+}
+
+.icon-box-md {
+  display: inline-flex;
+  padding: 1.25rem;
+  background-color: color-mix(in srgb, var(--primary), transparent 90%);
+  color: var(--primary);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+}
+
+.payment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.payment-modal-content {
+  background-color: var(--card);
+  width: 100%;
+  max-width: 28rem;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  animation: modalIn 0.2s ease-out forwards;
+}
+
+@media (min-width: 1024px) {
+  .payment-modal-content {
+    max-width: 32rem;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

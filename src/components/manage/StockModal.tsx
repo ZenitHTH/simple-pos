@@ -5,6 +5,7 @@ import { Stock, BackendProduct } from "@/lib";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { useAlert } from "@/context/AlertContext";
 
 interface StockModalProps {
   isOpen: boolean;
@@ -15,6 +16,18 @@ interface StockModalProps {
   isSubmitting: boolean;
 }
 
+/**
+ * StockModal component provides a form for adding or editing stock entries for products.
+ * It allows selecting a product and specifying the available quantity.
+ *
+ * @param {StockModalProps} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is currently open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ * @param {(productId: number, quantity: number) => Promise<void>} props.onSubmit - Callback to submit the stock data.
+ * @param {Stock} [props.initialData] - Optional initial stock data for editing.
+ * @param {BackendProduct[]} props.products - List of products available for selection.
+ * @param {boolean} props.isSubmitting - Whether a submission is currently in progress.
+ */
 export default function StockModal({
   isOpen,
   onClose,
@@ -23,6 +36,7 @@ export default function StockModal({
   products,
   isSubmitting,
 }: StockModalProps) {
+  const { showAlert } = useAlert();
   const [productId, setProductId] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
 
@@ -38,10 +52,10 @@ export default function StockModal({
     }
   }, [isOpen, initialData, products]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (productId === 0) {
-      alert("Please select a product");
+      await showAlert("Validation Error", "Please select a product.");
       return;
     }
     onSubmit(productId, quantity);
@@ -89,7 +103,7 @@ export default function StockModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-primary flex-1 rounded-xl px-4 py-2.5 font-medium text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-primary shadow-primary/20 hover:bg-primary/90 flex-1 rounded-xl px-4 py-2.5 font-medium text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Saving..." : "Save Stock"}
           </button>

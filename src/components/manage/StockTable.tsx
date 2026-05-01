@@ -9,6 +9,16 @@ interface StockTableProps {
   onDelete: (stockId: number) => void;
 }
 
+/**
+ * StockTable component displays product stock levels in a tabular format.
+ * It shows the product name and current quantity, with actions to edit or delete entries.
+ *
+ * @param {StockTableProps} props - The component props.
+ * @param {Stock[]} props.stocks - List of stock entries to display.
+ * @param {(productId: number) => string} props.getProductName - Helper function to look up product names by ID.
+ * @param {(stock: Stock) => void} props.onEdit - Callback when the edit button is clicked.
+ * @param {(stockId: number) => void} props.onDelete - Callback when the delete button is clicked.
+ */
 export default function StockTable({
   stocks,
   getProductName,
@@ -29,7 +39,9 @@ export default function StockTable({
         {
           header: "Product",
           render: (stock) => (
-            <span className="font-medium">{getProductName(stock.product_id)}</span>
+            <span className="font-medium">
+              {getProductName(stock.product_id)}
+            </span>
           ),
         },
         {

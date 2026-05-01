@@ -1,3 +1,8 @@
+//! Receipt database operations.
+//!
+//! This module handles CRUD operations for receipts (sales transactions), including
+//! headers (transaction metadata) and individual line items.
+
 pub mod model;
 pub mod schema;
 
@@ -8,6 +13,10 @@ pub use model::*;
 
 // --- Header Functions ---
 
+/// Creates a new receipt header (transaction record).
+///
+/// If `custom_timestamp` is not provided, the current UTC timestamp is used.
+/// Returns the newly created `ReceiptList` header.
 pub fn create_receipt_header(
     conn: &mut SqliteConnection,
     custom_timestamp: Option<i64>,
@@ -27,6 +36,7 @@ pub fn create_receipt_header(
         .get_result(conn)
 }
 
+/// Retrieves all receipt headers from the database.
 pub fn get_all_headers(
     conn: &mut SqliteConnection,
 ) -> Result<Vec<ReceiptList>, diesel::result::Error> {
@@ -35,6 +45,9 @@ pub fn get_all_headers(
 
 // --- Item Functions ---
 
+/// Adds a new transaction item to an existing receipt.
+///
+/// This records the product, quantity, and price at the time of sale.
 pub fn add_item(
     conn: &mut SqliteConnection,
     new_item: &NewReceipt,
@@ -45,6 +58,10 @@ pub fn add_item(
         .get_result(conn)
 }
 
+/// Adds historical material usage data for a specific receipt item.
+///
+/// This is used to track exactly which materials (and what quantities) were used
+/// for a product sold via recipe-based stock tracking.
 pub fn add_item_material(
     conn: &mut SqliteConnection,
     new_item_material: &NewReceiptItemMaterial,
@@ -55,6 +72,7 @@ pub fn add_item_material(
         .get_result(conn)
 }
 
+/// Retrieves all items associated with a specific receipt header ID.
 pub fn get_items_by_header_id(
     conn: &mut SqliteConnection,
     header_id: i32,
@@ -66,6 +84,9 @@ pub fn get_items_by_header_id(
 
 // --- Search Functions ---
 
+/// Finds receipt headers within a specific Unix timestamp range.
+///
+/// Results are ordered by timestamp in descending order (newest first).
 pub fn find_headers_by_date_range(
     conn: &mut SqliteConnection,
     start_unix: i64,
@@ -78,6 +99,9 @@ pub fn find_headers_by_date_range(
         .load::<ReceiptList>(conn)
 }
 
+/// Retrieves a full receipt including its header and all associated items.
+///
+/// Returns a tuple of `(ReceiptList, Vec<Receipt>)`.
 pub fn get_full_receipt(
     conn: &mut SqliteConnection,
     header_id: i32,

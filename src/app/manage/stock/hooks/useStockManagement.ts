@@ -5,13 +5,16 @@ import { useSearchParams } from "next/navigation";
 import { stockApi, productApi } from "@/lib";
 import { Stock, BackendProduct } from "@/lib";
 import { useDatabase } from "@/context/DatabaseContext";
-import { logger } from "@/lib/logger";
+import { useAlert } from "@/context/AlertContext";
+import { logger } from "@/lib/utils/logger";
+import { useDataCache } from "@/context/DataContext";
 
 export function useStockManagement() {
   const { dbKey } = useDatabase();
-  const [stocks, setStocks] = useState<Stock[]>([]);
-  const [products, setProducts] = useState<BackendProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
+  const { stocks, products, updateCache, refreshAll } = useDataCache();
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const searchParams = useSearchParams();
@@ -23,36 +26,17 @@ export function useStockManagement() {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Still need this for the deep-link search logic, but it uses cached products
   useEffect(() => {
-    const fetchData = async () => {
-      if (!dbKey) return;
-      try {
-        setLoading(true);
-        const [stockData, productData] = await Promise.all([
-          stockApi.getAll(dbKey),
-          productApi.getAll(dbKey),
-        ]);
-        setStocks(stockData);
-        setProducts(productData);
-
-        // If product_id is provided in URL, pre-fill search query with product title
-        if (targetProductId) {
-          const product = productData.find(
-            (p) => p.product_id === Number(targetProductId),
-          );
-          if (product) {
-            setSearchQuery(product.title);
-          }
-        }
-      } catch (err) {
-        logger.error("Failed to fetch stock data:", err);
-        setError("Failed to load stock data. Is the backend running?");
-      } finally {
-        setLoading(false);
+    if (targetProductId && products.length > 0) {
+      const product = products.find(
+        (p) => p.product_id === Number(targetProductId),
+      );
+      if (product) {
+        setSearchQuery(product.title);
       }
-    };
-    fetchData();
-  }, [dbKey, targetProductId]);
+    }
+  }, [targetProductId, products]);
 
   const getProductName = (productId: number): string => {
     const product = products.find((p) => p.product_id === productId);
@@ -74,10 +58,10 @@ export function useStockManagement() {
       return;
     try {
       await stockApi.remove(dbKey, stockId);
-      setStocks(stocks.filter((s) => s.stock_id !== stockId));
+      updateCache.stocks(stocks.filter((s) => s.stock_id !== stockId));
     } catch (err) {
       logger.error("Failed to delete stock:", err);
-      alert("Failed to delete stock entry");
+      await showAlert("Stock Error", "Failed to delete stock entry");
     }
   };
 
@@ -87,19 +71,19 @@ export function useStockManagement() {
       setIsSubmitting(true);
       if (editingStock) {
         const updated = await stockApi.update(dbKey, productId, quantity);
-        setStocks(
+        updateCache.stocks(
           stocks.map((s) =>
             s.stock_id === editingStock.stock_id ? updated : s,
           ),
         );
       } else {
         const created = await stockApi.add(dbKey, productId, quantity);
-        setStocks([...stocks, created]);
+        updateCache.stocks([...stocks, created]);
       }
       setIsModalOpen(false);
     } catch (err) {
       logger.error("Failed to save stock:", err);
-      alert("Failed to save stock entry");
+      await showAlert("Stock Error", "Failed to save stock entry");
     } finally {
       setIsSubmitting(false);
     }

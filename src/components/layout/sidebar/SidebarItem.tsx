@@ -22,17 +22,16 @@ export function SidebarItem({
     <Link
       href={path}
       className={cn(
-        "group flex items-center gap-3 transition-all duration-200",
-        isSubItem
-          ? "rounded-lg px-3 py-2.5 text-[0.9em]"
-          : "rounded-xl px-4 py-3",
+        "group tuner-sidebar-item flex items-center gap-3 transition-[background-color,color,box-shadow,transform] duration-200",
+        isSubItem ? "px-3 py-2 text-[0.9em]" : "px-4 py-3",
         isActive
-          ? "bg-primary text-primary-foreground shadow-primary/20 shadow-md"
+          ? "bg-primary text-primary-foreground shadow-primary-glow shadow-md"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
       )}
     >
       <span
         className={cn(
+          "tuner-sidebar-icon flex shrink-0 items-center justify-center",
           isActive
             ? "text-primary-foreground"
             : "text-muted-foreground group-hover:text-foreground",

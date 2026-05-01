@@ -4,7 +4,7 @@ import { ReceiptList as ReceiptListType, Receipt } from "@/lib";
 import { Product } from "@/lib";
 import { receiptApi, productApi } from "@/lib";
 import { useMockup } from "@/context/MockupContext";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
 
 export const formatDate = (unix: number) => {
   return new Date(unix * 1000).toLocaleString("th-TH", {

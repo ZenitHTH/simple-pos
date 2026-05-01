@@ -9,16 +9,31 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-export type ToastType = "success" | "error" | "info";
+import { ToastType } from "@/lib/types/common";
 
+/**
+ * Props for the Toast component.
+ */
 export interface ToastProps {
+  /** Unique identifier for the toast. */
   id: string;
+  /** The message to display. */
   message: string;
+  /** The type of notification. Defaults to "info". */
   type?: ToastType;
+  /** Auto-close duration in milliseconds. Defaults to 3000. */
   duration?: number;
+  /** Callback triggered when the toast is closed. */
   onClose: (id: string) => void;
 }
 
+/**
+ * A notification component that slides in and auto-closes.
+ * Features different themes for success, error, and informational messages.
+ *
+ * @param props - The toast props.
+ * @returns A notification element.
+ */
 export const Toast = ({
   id,
   message,
@@ -63,6 +78,8 @@ export const Toast = ({
 
   return (
     <div
+      role="alert"
+      aria-live="assertive"
       className={cn(
         "flex max-w-md min-w-[300px] overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md transition-all duration-300 ease-in-out",
         bg,

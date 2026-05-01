@@ -1,0 +1,124 @@
+@layer base {
+  :root {
+    /* ── High-Definition Light Theme (Chinese Palette Base) ── */
+    --theme-primary: #5352ed; /* Saturated Sky */
+    --theme-background: #f1f2f6; /* Pumpkin Patch (Very Light Grey) */
+    --theme-text: #2f3542; /* Prestige Blue (Inky Contrast) */
+    --theme-card: #ffffff; /* Pure White (Surface Pop) */
+    --theme-border: #ced6e0; /* Twinkle Blue (Defined Lines) */
+
+    /* Tailwind Variable Mapping */
+    --background: var(--theme-background);
+    --foreground: var(--theme-text);
+    --card: var(--theme-card);
+    --card-foreground: var(--theme-text);
+    --popover: var(--theme-card);
+    --popover-foreground: var(--theme-text);
+    --border: var(--theme-border);
+    --primary: var(--theme-primary);
+
+    /* Auto-generated perceptual shades using OKLCH */
+    --primary-hover: color-mix(in oklch, var(--primary), white 15%);
+    --primary-active: color-mix(in oklch, var(--primary), black 10%);
+    --primary-muted: color-mix(in oklch, var(--primary), transparent 90%);
+    --primary-glow: color-mix(in oklch, var(--primary), transparent 50%);
+
+    /* Dynamic Primary Foreground (Accessibility) */
+    --primary-foreground: oklch(
+      from var(--primary) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0
+    );
+
+    --secondary: #dfe4ea; /* City Lights */
+    --secondary-foreground: #2f3542;
+
+    --muted: #dfe4ea;
+    --muted-foreground: #747d8c; /* Bay Wharf */
+
+    --accent: #ffa502; /* Orange */
+    --accent-foreground: #ffffff;
+
+    --success: #2ed573; /* Ufo Green */
+    --success-foreground: #ffffff;
+
+    --warning: #eccc68; /* Golden Sand */
+    --warning-foreground: #2f3542;
+
+    --destructive: #ff4757; /* Watermelon */
+    --destructive-foreground: #ffffff;
+
+    --input: var(--theme-background);
+    --ring: var(--primary);
+
+    --radius: 0.5rem;
+
+    /* Typography Defaults */
+    --typography-font-family: var(--font-noto-sans), Inter, sans-serif;
+    --typography-base-size: 16px;
+    --typography-heading-weight: 700;
+    --typography-body-weight: 400;
+    --typography-line-height: 1.6;
+    --typography-letter-spacing: 0em;
+
+    /* Tunable Design Tokens (Defaults) */
+    --grid-item-padding: 16px;
+    --grid-item-radius: 24px;
+    --grid-item-shadow-opacity: 0.1;
+    --grid-item-border-width: 1px;
+    --grid-item-hover-scale: 1.02;
+    --grid-item-bg-opacity: 1;
+
+    --sidebar-icon-size: 20px;
+    --sidebar-item-spacing: 8px;
+    --sidebar-item-radius: 12px;
+    --sidebar-active-bg-opacity: 0.1;
+
+    --button-radius: 12px;
+    --button-shadow-intensity: 0.1;
+    --button-transition-speed: 200ms;
+
+    --cart-item-image-size: 48px;
+    --cart-item-gap: 12px;
+    --cart-item-border-style: solid;
+    --cart-item-bg-opacity: 0;
+  }
+
+  .dark {
+    /* ── High-Definition Dark Theme (Swedish Palette Base) ── */
+    --theme-primary: #575fcf; /* Dark Periwinkle */
+    --theme-background: #1e272e; /* Black Pearl (Deep Navy Base) */
+    --theme-card: #2f3542; /* Prestige Blue (CN-based Deep Surface) */
+    --theme-text: #ffffff; /* Pure White (Maximum Contrast) */
+    --theme-border: #485460; /* Good Night! (Mid-Grey Lines) */
+
+    /* Refresh Variable Mapping for Dark Mode */
+    --background: var(--theme-background);
+    --foreground: var(--theme-text);
+    --card: var(--theme-card);
+    --card-foreground: var(--theme-text);
+    --popover: var(--theme-card);
+    --popover-foreground: var(--theme-text);
+    --border: var(--theme-border);
+    --primary: var(--theme-primary);
+
+    --secondary: #1e272e;
+    --secondary-foreground: #f1f2f6;
+
+    --muted: #1e272e;
+    --muted-foreground: #808e9b; /* London Square */
+
+    --accent: #ffa801; /* Chrome Yellow */
+    --accent-foreground: #1e272e;
+
+    --destructive: #ff3f34; /* Red Orange */
+    --destructive-foreground: #ffffff;
+
+    --success: #05c46b; /* Green Teal */
+    --success-foreground: #ffffff;
+
+    --warning: #ffd32a; /* Vibrant Yellow */
+    --warning-foreground: #1e272e;
+
+    --input: #1a1a1a;
+    --ring: #575fcf;
+  }
+}

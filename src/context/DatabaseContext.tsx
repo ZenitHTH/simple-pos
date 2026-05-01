@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { invoke } from "@/lib/api/invoke";
-import { logger } from "@/lib/logger";
+import { logger } from "@/lib/utils/logger";
+import { useSettings } from "./settings/SettingsContext"; // Import this
 
 interface DatabaseContextType {
   dbKey: string | null;
@@ -18,25 +19,17 @@ const DatabaseContext = createContext<DatabaseContextType | undefined>(
 );
 
 export function DatabaseProvider({ children }: { children: React.ReactNode }) {
+  const { databaseExists: initialDbExists } = useSettings(); // Get from settings
   const [dbKey, setDbKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dbExists, setDbExists] = useState<boolean | null>(null);
 
+  // Sync with initial check from SettingsProvider
   useEffect(() => {
-    const checkDb = async () => {
-      try {
-        const exists: boolean = await invoke("check_database_exists");
-        setDbExists(exists);
-      } catch (err) {
-        logger.error("Failed to check database:", err);
-        // If check fails, we don't know if it exists.
-        // Better to keep it null or set a specific state to show error UI.
-        // For now, setting it to null or handling it in the guard is safer.
-        setDbExists(null);
-      }
-    };
-    checkDb();
-  }, []);
+    if (initialDbExists !== null) {
+      setDbExists(initialDbExists);
+    }
+  }, [initialDbExists]);
 
   const login = async (key: string) => {
     setIsLoading(true);
@@ -44,29 +37,50 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
       await invoke("initialize_database", { key });
       setDbKey(key);
       setDbExists(true); // Ensure we mark it as existing after successful init
-    } catch (error) {
-      logger.error("Failed to initialize DB. Please check your credentials and try again.");
+    } catch (error: any) {
+      const errorMsg = String(error).toLowerCase();
+      const isAuthError =
+        errorMsg.includes("no such table") ||
+        errorMsg.includes("file is not a database") ||
+        errorMsg.includes("invalid encryption key");
+
+      if (isAuthError) {
+        logger.warn(
+          "Database login failed: Invalid key or unauthorized access.",
+        );
+      } else {
+        logger.error(
+          "Failed to initialize DB. Please check your credentials and try again.",
+          error,
+        );
+      }
       throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    setDbKey(null);
+  const logout = async () => {
+    try {
+      await invoke("logout_database");
+    } catch (err) {
+      logger.error("Failed to clear backend database pool:", err);
+    } finally {
+      setDbKey(null);
+    }
   };
 
   return (
-    <DatabaseContext.Provider
+    <DatabaseContext
       value={{ dbKey, isLoggedIn: !!dbKey, login, logout, isLoading, dbExists }}
     >
       {children}
-    </DatabaseContext.Provider>
+    </DatabaseContext>
   );
 }
 
 export function useDatabase() {
-  const context = useContext(DatabaseContext);
+  const context = React.use(DatabaseContext);
   if (context === undefined) {
     throw new Error("useDatabase must be used within a DatabaseProvider");
   }
