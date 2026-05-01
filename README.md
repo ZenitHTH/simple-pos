@@ -1,37 +1,42 @@
-# Vibe POS (Simple POS) v0.2.1
+# 🛒 Vibe POS (Simple POS) v0.2.1
 
 A professional, modern, and lightweight Point of Sale (POS) system built with **Tauri v2** and **Next.js 16**, designed for high performance, security, and simplicity.
 
 ## Features
 
-- **Point of Sale Interface**: Fast and intuitive interface for processing sales with optimized touch support.
-- **Advanced Inventory Management**:
-  - **Product Management**: Detailed product tracking with categories and images.
-  - **Material & Recipe Management**: Track raw materials and define recipes for complex items (e.g., drinks, food).
-  - **Real-time Stock Tracking**: Monitor inventory levels with low-stock alerts.
-- **Customer Management**: Track customer information and purchase history.
-- **Checkout & Payment**:
-  - **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
-  - **Touch-Optimized Cart**: Large touch targets for interactive cart elements.
-  - **Smart Change Calculation**: Automated change display with validity checks.
-  - **Receipt Generation**: Backend integration for secure transaction recording.
-- **Modern Hybrid Design Editor (New)**:
-  - **Centered Global Action Bar**: A sleek, floating island for high-level app control (Display Zoom, Page Width, and Navigation).
-  - **Draggable Contextual MiniTuner**: A smart, persistent tuning panel that follows your selection and allows real-time styling of components.
-  - **Specialized Component Tuners**: Dedicated interactive environments for fine-tuning the **Product Grid**, **Sidebar Layout**, **Virtual Numpad**, and **Order History**.
-  - **Smooth Scaling Engine**: Fluid, non-snapping item resizing powered by dynamic CSS Grid `auto-fill` and `minmax` logic.
-  - **Live Color Sampler**: Extract and apply brand colors directly from product images to your global theme.
-  - **Apple-Inspired Dark Mode**: A premium flat interface utilizing glassmorphism, `framer-motion` animations, and modern aesthetics.
-  - **Layout Presets**: Quickly toggle between **Compact POS** (high density) and **Cozy Desktop** (spacious) modes.
-- **Data Export & Reporting**:
-  - Export transaction data to CSV, XLSX, and ODS.
-  - **Thai Accounting Integration**: Built-in support for Thai Sales Tax Reports (รายงานภาษีขาย).
-- **Order History**:
-  - Comprehensive view of past transactions with filters and search.
+### Point of Sale Interface
+- **Fast and intuitive interface** for processing sales with optimized touch support.
+- **Virtual Numpad**: Optimized touchscreen numeric keypad for quick cash entry.
+- **Touch-Optimized Cart**: Large touch targets for interactive cart elements.
+- **Smart Change Calculation**: Automated change display with validity checks.
+- **Receipt Generation**: Backend integration for secure transaction recording.
+
+### Inventory Management
+- **Product Management**: Detailed product tracking with categories and images.
+- **Material & Recipe Management**: Track raw materials and define recipes for complex items (e.g., drinks, food).
+- **Real-time Stock Tracking**: Monitor inventory levels with low-stock alerts.
+
+### Customer Management
+- **Customer Information**: Track customer profiles and preferences.
+- **Purchase History**: Comprehensive view of past transactions with filters and search.
+
+### Modern Hybrid Design Editor (New)
+- **Centered Global Action Bar**: A sleek, floating island for high-level app control (Display Zoom, Page Width, and Navigation).
+- **Draggable Contextual MiniTuner**: A smart, persistent tuning panel that follows your selection and allows real-time styling of components.
+- **Specialized Component Tuners**: Dedicated interactive environments for fine-tuning the **Product Grid**, **Sidebar Layout**, **Virtual Numpad**, and **Order History**.
+- **Smooth Scaling Engine**: Fluid, non-snapping item resizing powered by dynamic CSS Grid `auto-fill` and `minmax` logic.
+- **Live Color Sampler**: Extract and apply brand colors directly from product images to your global theme.
+- **Apple-Inspired Dark Mode**: A sleek, flat interface utilizing glassmorphism, `framer-motion` animations, and modern aesthetics.
+- **Layout Presets**: Quickly toggle between **Compact POS** (high density) and **Cozy Desktop** (spacious) modes.
+
+### Data Export & Reporting
+- **Export Formats**: CSV, XLSX, and ODS.
+- **Thai Accounting Reports**: Built-in support for Thai Sales Tax Reports (รายงานภาษีขาย).
+
+### Security & Privacy
+- **Encrypted Database**: Local data is protected via **SQLCipher** (AES-256 encryption).
+- **Local-First**: Your data stays on your machine.
 - **Mock API Mode**: Develop and test the UI directly in the browser without needing the Tauri backend.
-- **Security & Privacy**:
-  - **Encrypted Database**: Local data is protected via **SQLCipher** (AES-256 encryption).
-  - **Local-First**: Your data stays on your machine.
 
 ## Tech Stack
 
@@ -44,17 +49,21 @@ A professional, modern, and lightweight Point of Sale (POS) system built with **
 
 ## Project Structure
 
-The project has been refactored into a highly organized, production-grade structure:
-
-- **`src/app/`**: Next.js App Router pages and layouts.
-- **`src/components/`**: Modularized UI components, including UI primitives and feature-specific components.
-- **`src/context/`**: Global state management (Settings, Database, Mockup, Toast).
-- **`src/lib/`**: Reorganized core library:
-  - **`api/`**: Module-based service layer for backend communication.
-  - **`types/`**: Specialized TypeScript definitions for each domain.
-  - **`utils/`**: Shared helper functions.
-  - **`constants/`**: Permanent application constants and example data.
-- **`src-tauri/`**: Rust backend source code and specialized crates.
+```
+simple-pos/
+├── src/
+│   ├── app/            # Next.js App Router pages and layouts
+│   ├── components/     # Modularized UI components
+│   ├── context/        # Global state management
+│   ├── lib/
+│   │   ├── api/        # Module-based service layer
+│   │   ├── types/      # TypeScript definitions
+│   │   └── utils/      # Shared helper functions
+│   └── constants/      # Permanent application constants
+├── src-tauri/          # Rust backend source
+├── TODO.md             # TODO list
+└── package.json
+```
 
 ## Prerequisites
 
@@ -63,36 +72,34 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v24 or newer recommended)
 - **Rust & Cargo** (latest stable)
 - **System Dependencies**:
-  - **Linux**: Build essentials, webkit2gtk (see [Tauri Linux Setup](https://v2.tauri.app/start/prerequisites/#linux))
-  - **macOS**:
-    - **Xcode Command Line Tools**: `xcode-select --install`
-    - **OpenSSL**: `brew install openssl`.
-  - **Windows**:
-    - Microsoft Visual Studio C++ Build Tools
-    - **OpenSSL**: Required for database encryption (`sqlcipher`).
+  - **Linux**: Build essentials, webkit2gtk
+  - **macOS**: Xcode Command Line Tools, OpenSSL
+  - **Windows**: Microsoft Visual Studio C++ Build Tools, OpenSSL
 
 ## Setup & Development
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### 1. Install Dependencies
 
-2. **Run in Development Mode**
-   ```bash
-   npm run tauri dev
-   ```
+```bash
+npm install
+```
 
-   > **Note for Linux Users**: The `tauri` script in `package.json` automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues.
+### 2. Run in Development Mode
 
-## Building for Production
+```bash
+npm run tauri dev
+```
 
-To build a standalone executable for your operating system:
+> **Note for Linux Users**: The `tauri` script automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` to prevent rendering issues.
+
+### 3. Build for Production
+
+To build a standalone executable:
 
 ```bash
 npm run tauri build
 ```
 
-## Known Issues & Tasks
+## License
 
-See the [TODO.md](./TODO.md) file for current bugs, pending tasks, and architectural decisions under discussion.
+MIT
