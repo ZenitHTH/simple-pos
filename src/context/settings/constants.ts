@@ -1,6 +1,8 @@
 import { AppSettings, CuratedTheme } from "@/lib";
 
 export const CURATED_THEMES: CuratedTheme[] = [
+  { id: "flat-cn", name: "Chinese Soft", color: "#5352ed", description: "Flat UI Chinese Palette" },
+  { id: "flat-se", name: "Swedish Deep", color: "#575fcf", description: "Flat UI Swedish Palette" },
   { id: "ocean", name: "Ocean Deep", color: "#0ea5e9", description: "Professional and calm" },
   { id: "matcha", name: "Matcha Cafe", color: "#4ade80", description: "Fresh and organic" },
   { id: "sunset", name: "Sunset Glow", color: "#f59e0b", description: "Warm and inviting" },
@@ -50,10 +52,10 @@ export const DEFAULT_SETTINGS: AppSettings = {
   },
   theme: {
     theme_primary_color: null,
-    theme_background_color: null,
-    theme_card_color: null,
-    theme_text_color: null,
-    theme_border_color: null,
+    theme_background_color: "#ced6e0", // Anti-Flash White
+    theme_card_color: "#dfe4ea",       // City Lights
+    theme_text_color: "#2f3542",       // Prestige Blue
+    theme_border_color: "#f1f2f6",     // Pumpkin Patch
     theme_radius: 0.5,
     theme_preset: "cozy",
   },
