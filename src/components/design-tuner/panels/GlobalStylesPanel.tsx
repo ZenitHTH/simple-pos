@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { ThemeExplorerModal } from "../core/ThemeExplorerModal";
 import { FaCompass } from "react-icons/fa";
 import { AppSettings, DeepPartial } from "@/lib/types";
 import { DEFAULT_SETTINGS } from "@/context/settings/constants";
 import { TunerSlider } from "../ui/TunerSlider";
+
+const PALETTES = {
+  light: ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"],
+  dark: ["#ef5777", "#575fcf", "#4bcffa", "#34e7e4", "#0be881", "#f53b57", "#3c40c6", "#0fbcf9", "#00d8d6", "#05c46b", "#ffc048", "#ffdd59", "#ff5e57", "#d2dae2", "#485460", "#ffa801", "#ffd32a", "#ff3f34", "#808e9b", "#1e272e"]
+};
 
 interface GlobalStylesPanelProps {
   settings: AppSettings;
@@ -28,6 +34,8 @@ export function GlobalStylesPanel({
   setPreviewZoom,
 }: GlobalStylesPanelProps) {
   const [showExplorer, setShowExplorer] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
 
   return (
     <div className="border-border mt-8 border-t px-2 pt-4">
@@ -104,6 +112,23 @@ export function GlobalStylesPanel({
               className="border-input bg-background flex-1 rounded-lg border px-3 py-1 font-mono text-xs shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
               placeholder="#3b82f6"
             />
+          </div>
+
+          <div className="mt-4">
+            <label className="text-muted-foreground block text-[10px] font-black uppercase tracking-widest mb-2">
+              Quick Palette (Flat UI v2)
+            </label>
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
+              {(isDarkMode ? PALETTES.dark : PALETTES.light).map((color) => (
+                <button
+                  key={color}
+                  onClick={() => updateSettings({ theme: { theme_primary_color: color } })}
+                  className="h-6 w-6 rounded-full shrink-0 transition-transform hover:scale-125 border border-white/10"
+                  style={{ backgroundColor: color }}
+                  title={color}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
