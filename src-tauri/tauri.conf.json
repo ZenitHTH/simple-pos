@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Simple POS",
+  "productName": "vibe-pos",
   "version": "0.2.0",
   "identifier": "com.simple-pos.app",
   "build": {
