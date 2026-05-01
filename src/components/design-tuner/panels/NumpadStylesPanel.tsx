@@ -10,7 +10,7 @@ interface NumpadStylesPanelProps {
 
 /**
  * NumpadStylesPanel Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -27,13 +27,13 @@ export function NumpadStylesPanel({
           numpad_display_font_scale: 100,
           numpad_button_height: 80,
           numpad_gap: 12,
-        }
-      }
+        },
+      },
     });
   };
 
   return (
-    <div className="border-border mt-6 border-t px-2 pt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+    <div className="border-border animate-in fade-in slide-in-from-top-2 mt-6 border-t px-2 pt-4 duration-300">
       <h2 className="text-foreground/80 mb-4 text-sm font-semibold">
         Numpad Styling
       </h2>
@@ -41,7 +41,9 @@ export function NumpadStylesPanel({
         <TunerSlider
           label="Overall Scale"
           value={settings.styling.payment.numpad_scale ?? 100}
-          onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { payment: { numpad_scale: v } } })
+          }
           min={50}
           max={150}
           unit="%"
@@ -50,7 +52,9 @@ export function NumpadStylesPanel({
         <TunerSlider
           label="Button Font Scale"
           value={settings.styling.payment.numpad_font_scale ?? 100}
-          onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { payment: { numpad_font_scale: v } } })
+          }
           min={50}
           max={200}
           unit="%"
@@ -59,7 +63,11 @@ export function NumpadStylesPanel({
         <TunerSlider
           label="Display Font Scale"
           value={settings.styling.payment.numpad_display_font_scale ?? 100}
-          onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
+          onChange={(v) =>
+            updateSettings({
+              styling: { payment: { numpad_display_font_scale: v } },
+            })
+          }
           min={50}
           max={200}
           unit="%"
@@ -68,7 +76,11 @@ export function NumpadStylesPanel({
         <TunerSlider
           label="Button Height"
           value={settings.styling.payment.numpad_button_height ?? 80}
-          onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
+          onChange={(v) =>
+            updateSettings({
+              styling: { payment: { numpad_button_height: v } },
+            })
+          }
           min={40}
           max={120}
           unit="px"
@@ -77,7 +89,9 @@ export function NumpadStylesPanel({
         <TunerSlider
           label="Button Gap"
           value={settings.styling.payment.numpad_gap ?? 12}
-          onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { payment: { numpad_gap: v } } })
+          }
           min={0}
           max={32}
           unit="px"
@@ -86,7 +100,7 @@ export function NumpadStylesPanel({
         <div className="pt-2">
           <button
             onClick={handleReset}
-            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold uppercase tracking-wider transition-colors"
+            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold tracking-wider uppercase transition-colors"
           >
             Reset Numpad Styles
           </button>

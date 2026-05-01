@@ -17,9 +17,13 @@ export default function ComponentScaleControls({
 }) {
   if (!selectedId) {
     return (
-      <div className="text-muted flex h-full flex-1 flex-col items-center justify-center border-l border-border pl-8">
-        <span className="text-xs font-black uppercase tracking-widest opacity-50">Select Component</span>
-        <span className="text-[10px] opacity-40">Sidebar, Grid, Cart, or Tables</span>
+      <div className="text-muted border-border flex h-full flex-1 flex-col items-center justify-center border-l pl-8">
+        <span className="text-xs font-black tracking-widest uppercase opacity-50">
+          Select Component
+        </span>
+        <span className="text-[10px] opacity-40">
+          Sidebar, Grid, Cart, or Tables
+        </span>
       </div>
     );
   }
@@ -75,29 +79,58 @@ export default function ComponentScaleControls({
 
   const updateNestedScale = (id: string, val: number) => {
     switch (id) {
-      case "sidebar_scale": updateSettings({ scaling: { components: { sidebar: val } } }); break;
-      case "cart_scale": updateSettings({ scaling: { components: { cart: val } } }); break;
-      case "grid_scale": updateSettings({ scaling: { components: { grid: val } } }); break;
-      case "manage_table_scale": updateSettings({ scaling: { components: { manage_table: val } } }); break;
-      case "category_table_scale": updateSettings({ scaling: { components: { category_table: val } } }); break;
-      case "setting_page_scale": updateSettings({ scaling: { components: { setting_page: val } } }); break;
-      case "payment_modal_scale": updateSettings({ scaling: { components: { payment_modal: val } } }); break;
+      case "sidebar_scale":
+        updateSettings({ scaling: { components: { sidebar: val } } });
+        break;
+      case "cart_scale":
+        updateSettings({ scaling: { components: { cart: val } } });
+        break;
+      case "grid_scale":
+        updateSettings({ scaling: { components: { grid: val } } });
+        break;
+      case "manage_table_scale":
+        updateSettings({ scaling: { components: { manage_table: val } } });
+        break;
+      case "category_table_scale":
+        updateSettings({ scaling: { components: { category_table: val } } });
+        break;
+      case "setting_page_scale":
+        updateSettings({ scaling: { components: { setting_page: val } } });
+        break;
+      case "payment_modal_scale":
+        updateSettings({ scaling: { components: { payment_modal: val } } });
+        break;
     }
   };
 
   const updateNestedFontScale = (id: string, val: number) => {
     switch (id) {
-      case "sidebar_scale": updateSettings({ scaling: { fonts: { sidebar: val } } }); break;
-      case "cart_scale": updateSettings({ styling: { cart: { font_size: val } } }); break;
-      case "grid_scale": updateSettings({ scaling: { fonts: { grid: val } } }); break;
-      case "manage_table_scale": updateSettings({ scaling: { fonts: { manage_table: val } } }); break;
-      case "category_table_scale": updateSettings({ scaling: { fonts: { category_table: val } } }); break;
-      case "setting_page_scale": updateSettings({ scaling: { fonts: { setting_page: val } } }); break;
-      case "payment_modal_scale": updateSettings({ scaling: { fonts: { payment_modal: val } } }); break;
+      case "sidebar_scale":
+        updateSettings({ scaling: { fonts: { sidebar: val } } });
+        break;
+      case "cart_scale":
+        updateSettings({ styling: { cart: { font_size: val } } });
+        break;
+      case "grid_scale":
+        updateSettings({ scaling: { fonts: { grid: val } } });
+        break;
+      case "manage_table_scale":
+        updateSettings({ scaling: { fonts: { manage_table: val } } });
+        break;
+      case "category_table_scale":
+        updateSettings({ scaling: { fonts: { category_table: val } } });
+        break;
+      case "setting_page_scale":
+        updateSettings({ scaling: { fonts: { setting_page: val } } });
+        break;
+      case "payment_modal_scale":
+        updateSettings({ scaling: { fonts: { payment_modal: val } } });
+        break;
     }
   };
 
-  const { scale: currentValue, fontScale: currentFontScale } = getScaleValues(selectedId);
+  const { scale: currentValue, fontScale: currentFontScale } =
+    getScaleValues(selectedId);
 
   const label = getLabel(selectedId);
   const hasFontControl = [
@@ -111,14 +144,11 @@ export default function ComponentScaleControls({
   ].includes(selectedId);
 
   return (
-    <div className="flex flex-1 gap-8 items-center border-l border-border pl-8">
+    <div className="border-border flex flex-1 items-center gap-8 border-l pl-8">
       {/* Layout Scale */}
       <div className="flex-1">
         {selectedId === "grid_scale" ? (
-          <GridStylesPanel
-            settings={settings}
-            onUpdate={updateSettings}
-          />
+          <GridStylesPanel settings={settings} onUpdate={updateSettings} />
         ) : (
           <NumberSlider
             label={label}
@@ -135,7 +165,9 @@ export default function ComponentScaleControls({
       {hasFontControl && (
         <div className="border-border flex-1 space-y-2 border-l pl-8">
           <div className="flex items-center justify-between px-1">
-            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">FontSize</span>
+            <span className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
+              FontSize
+            </span>
             <span className="text-primary font-mono text-xs font-bold">
               {currentFontScale}%
             </span>

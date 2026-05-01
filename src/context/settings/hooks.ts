@@ -16,8 +16,10 @@ export function useApplySettings(settings: AppSettings) {
     const root = document.documentElement;
 
     // Basic sanitization for CSS variables
-    const safeFont = (f: string | null | undefined) => (f?.includes(";") ? "Inter" : f);
-    const safeColor = (c: string | null | undefined) => (c?.includes(";") ? "#3b82f6" : c);
+    const safeFont = (f: string | null | undefined) =>
+      f?.includes(";") ? "Inter" : f;
+    const safeColor = (c: string | null | undefined) =>
+      c?.includes(";") ? "#3b82f6" : c;
 
     root.style.setProperty(
       "--typography-font-family",
@@ -54,7 +56,8 @@ export function useApplySettings(settings: AppSettings) {
 
     // Apply manual color overrides
     const backgroundColor = safeColor(settings.theme.theme_background_color);
-    if (backgroundColor) root.style.setProperty("--theme-background", backgroundColor);
+    if (backgroundColor)
+      root.style.setProperty("--theme-background", backgroundColor);
     else root.style.removeProperty("--theme-background");
 
     const cardColor = safeColor(settings.theme.theme_card_color);
@@ -78,76 +81,138 @@ export function useApplySettings(settings: AppSettings) {
 
     // ── Product Grid Styling ──
     const grid = settings.styling.grid;
-    root.style.setProperty("--grid-item-padding", `${grid.item_padding ?? 16}px`);
+    root.style.setProperty(
+      "--grid-item-padding",
+      `${grid.item_padding ?? 16}px`,
+    );
     root.style.setProperty("--grid-item-radius", `${grid.item_radius ?? 24}px`);
-    root.style.setProperty("--grid-item-title-font-size", String(grid.item_title_font_size ?? 100));
-    root.style.setProperty("--grid-item-price-font-size", String(grid.item_price_font_size ?? 100));
-    root.style.setProperty("--grid-item-title-font-scale", `${(grid.item_title_font_size ?? 100) * 0.0125}em`);
-    root.style.setProperty("--grid-item-price-font-scale", `${(grid.item_price_font_size ?? 100) * 0.016}em`);
+    root.style.setProperty(
+      "--grid-item-title-font-size",
+      String(grid.item_title_font_size ?? 100),
+    );
+    root.style.setProperty(
+      "--grid-item-price-font-size",
+      String(grid.item_price_font_size ?? 100),
+    );
+    root.style.setProperty(
+      "--grid-item-title-font-scale",
+      `${(grid.item_title_font_size ?? 100) * 0.0125}em`,
+    );
+    root.style.setProperty(
+      "--grid-item-price-font-scale",
+      `${(grid.item_price_font_size ?? 100) * 0.016}em`,
+    );
     root.style.setProperty("--grid-gap", `${grid.gap ?? 20}px`);
-    root.style.setProperty("--grid-item-shadow-opacity", `${(grid.item_shadow ?? 10) / 100}`);
-    root.style.setProperty("--grid-item-border-width", `${grid.item_border_width ?? 1}px`);
-    root.style.setProperty("--grid-item-hover-scale", `${(grid.item_hover_scale ?? 102) / 100}`);
-    root.style.setProperty("--grid-item-bg-opacity", `${(grid.item_bg_opacity ?? 100) / 100}`);
+    root.style.setProperty(
+      "--grid-item-shadow-opacity",
+      `${(grid.item_shadow ?? 10) / 100}`,
+    );
+    root.style.setProperty(
+      "--grid-item-border-width",
+      `${grid.item_border_width ?? 1}px`,
+    );
+    root.style.setProperty(
+      "--grid-item-hover-scale",
+      `${(grid.item_hover_scale ?? 102) / 100}`,
+    );
+    root.style.setProperty(
+      "--grid-item-bg-opacity",
+      `${(grid.item_bg_opacity ?? 100) / 100}`,
+    );
 
     // ── Sidebar Styling ──
     const sidebar = settings.styling.sidebar;
-    root.style.setProperty("--sidebar-icon-size", `${sidebar.icon_size ?? 20}px`);
-    root.style.setProperty("--sidebar-item-spacing", `${sidebar.item_spacing ?? 8}px`);
-    root.style.setProperty("--sidebar-item-radius", `${sidebar.item_radius ?? 12}px`);
-    root.style.setProperty("--sidebar-active-bg-opacity", `${(sidebar.active_bg_opacity ?? 10) / 100}`);
+    root.style.setProperty(
+      "--sidebar-icon-size",
+      `${sidebar.icon_size ?? 20}px`,
+    );
+    root.style.setProperty(
+      "--sidebar-item-spacing",
+      `${sidebar.item_spacing ?? 8}px`,
+    );
+    root.style.setProperty(
+      "--sidebar-item-radius",
+      `${sidebar.item_radius ?? 12}px`,
+    );
+    root.style.setProperty(
+      "--sidebar-active-bg-opacity",
+      `${(sidebar.active_bg_opacity ?? 10) / 100}`,
+    );
 
     // ── Button Styling ──
     const button = settings.styling.button;
     root.style.setProperty("--button-radius", `${button.radius ?? 12}px`);
-    root.style.setProperty("--button-shadow-intensity", `${(button.shadow_intensity ?? 10) / 100}`);
-    root.style.setProperty("--button-transition-speed", `${button.transition_speed ?? 200}ms`);
+    root.style.setProperty(
+      "--button-shadow-intensity",
+      `${(button.shadow_intensity ?? 10) / 100}`,
+    );
+    root.style.setProperty(
+      "--button-transition-speed",
+      `${button.transition_speed ?? 200}ms`,
+    );
 
     // ── Cart Item Styling ──
     const cart = settings.styling.cart;
-    root.style.setProperty("--cart-item-font-size", String(cart.font_size ?? 100));
-    root.style.setProperty("--cart-item-header-font-size", String(cart.header_font_size ?? 100));
-    root.style.setProperty("--cart-item-price-font-size", String(cart.price_font_size ?? 100));
+    root.style.setProperty(
+      "--cart-item-font-size",
+      String(cart.font_size ?? 100),
+    );
+    root.style.setProperty(
+      "--cart-item-header-font-size",
+      String(cart.header_font_size ?? 100),
+    );
+    root.style.setProperty(
+      "--cart-item-price-font-size",
+      String(cart.price_font_size ?? 100),
+    );
     root.style.setProperty("--cart-item-padding", `${cart.padding ?? 10}`);
     root.style.setProperty("--cart-item-margin", `${cart.margin ?? 8}`);
-    root.style.setProperty("--cart-item-image-size", `${cart.image_size ?? 48}px`);
+    root.style.setProperty(
+      "--cart-item-image-size",
+      `${cart.image_size ?? 48}px`,
+    );
     root.style.setProperty("--cart-item-gap", `${cart.gap ?? 12}px`);
-    root.style.setProperty("--cart-item-border-style", cart.border_style ?? "solid");
-    root.style.setProperty("--cart-item-bg-opacity", `${(cart.bg_opacity ?? 0) / 100}`);
+    root.style.setProperty(
+      "--cart-item-border-style",
+      cart.border_style ?? "solid",
+    );
+    root.style.setProperty(
+      "--cart-item-bg-opacity",
+      `${(cart.bg_opacity ?? 0) / 100}`,
+    );
 
     // Apply global scales
     root.style.setProperty(
-        "--display-scale",
-        `${(settings.scaling.display_scale ?? 100) / 100}`,
+      "--display-scale",
+      `${(settings.scaling.display_scale ?? 100) / 100}`,
     );
 
     // Apply component scales
     root.style.setProperty(
-        "--grid-scale",
-        `${(settings.scaling.components.grid ?? 100) / 100}`,
+      "--grid-scale",
+      `${(settings.scaling.components.grid ?? 100) / 100}`,
     );
     root.style.setProperty(
-        "--cart-scale",
-        `${(settings.scaling.components.cart ?? 100) / 100}`,
+      "--cart-scale",
+      `${(settings.scaling.components.cart ?? 100) / 100}`,
     );
     root.style.setProperty(
-        "--sidebar-scale",
-        `${(settings.scaling.components.sidebar ?? 100) / 100}`,
+      "--sidebar-scale",
+      `${(settings.scaling.components.sidebar ?? 100) / 100}`,
     );
     root.style.setProperty(
-        "--button-scale",
-        `${(settings.scaling.components.button ?? 100) / 100}`,
+      "--button-scale",
+      `${(settings.scaling.components.button ?? 100) / 100}`,
     );
     root.style.setProperty(
-        "--numpad-scale",
-        `${(settings.styling.payment.numpad_scale ?? 100) / 100}`,
+      "--numpad-scale",
+      `${(settings.styling.payment.numpad_scale ?? 100) / 100}`,
     );
 
     // Apply font scales that are used as CSS variables
     root.style.setProperty(
-        "--header-font-scale",
-        `${(settings.scaling.fonts.header ?? 100) / 100}`,
+      "--header-font-scale",
+      `${(settings.scaling.fonts.header ?? 100) / 100}`,
     );
-
   }, [settings]);
 }

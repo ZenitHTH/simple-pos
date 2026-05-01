@@ -26,7 +26,7 @@ interface NumpadTunerProps {
 
 /**
  * NumpadTuner Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -58,39 +58,44 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
           <motion.div variants={item}>
             <h2 className="mb-2 text-3xl font-bold tracking-tight">Numpad</h2>
             <p className="text-muted-foreground text-lg">
-              Fine-tune the virtual numpad for the best touch checkout experience.
+              Fine-tune the virtual numpad for the best touch checkout
+              experience.
             </p>
           </motion.div>
-          <NumpadStylesPanel settings={settings} updateSettings={updateSettings} />
-          
-          <motion.div variants={item} className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> Button height and gap are critical for usability. Test the interactive preview on your target device.
+          <NumpadStylesPanel
+            settings={settings}
+            updateSettings={updateSettings}
+          />
+
+          <motion.div
+            variants={item}
+            className="bg-primary/5 border-primary/10 text-muted-foreground rounded-2xl border p-4 text-xs leading-relaxed"
+          >
+            <strong>Tip:</strong> Button height and gap are critical for
+            usability. Test the interactive preview on your target device.
           </motion.div>
         </div>
       </div>
 
       {/* Right Column: Live Preview */}
-      <motion.div
-        variants={item}
-        className="space-y-6"
-      >
+      <motion.div variants={item} className="space-y-6">
         <div className="border-border/60 bg-card/50 rounded-3xl border p-10 shadow-sm backdrop-blur-sm">
           <div className="mb-8 flex flex-col items-center gap-4">
             <div
-              className="bg-background border-border flex h-24 w-full items-center justify-end rounded-2xl border px-6 font-black tracking-widest shadow-inner overflow-hidden"
+              className="bg-background border-border flex h-24 w-full items-center justify-end overflow-hidden rounded-2xl border px-6 font-black tracking-widest shadow-inner"
               style={{
                 fontSize: `${(settings.styling.payment.numpad_display_font_scale ?? 100) * 0.36}px`, // 36px is approx 4xl
               }}
             >
               {displayValue || "0"}
             </div>
-            <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest">
+            <p className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
               Interactive Preview
             </p>
           </div>
 
           <div
-            className="rounded-3xl bg-muted/20 p-6 shadow-sm border border-border/50 transition-transform origin-top"
+            className="bg-muted/20 border-border/50 origin-top rounded-3xl border p-6 shadow-sm transition-transform"
             style={{
               transform: `scale(${(settings.styling.payment.numpad_scale ?? 100) / 100})`,
             }}
@@ -99,9 +104,9 @@ export function NumpadTuner({ settings, updateSettings }: NumpadTunerProps) {
               onPress={handlePress}
               onBackspace={handleBackspace}
               onClear={handleClear}
-              gap={settings.styling.payment.numpad_gap}
-              buttonHeight={settings.styling.payment.numpad_button_height}
-              fontScale={settings.styling.payment.numpad_font_scale}
+              gap={settings.styling.payment.numpad_gap ?? undefined}
+              buttonHeight={settings.styling.payment.numpad_button_height ?? undefined}
+              fontScale={settings.styling.payment.numpad_font_scale ?? undefined}
             />
           </div>
         </div>

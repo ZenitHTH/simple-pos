@@ -34,7 +34,7 @@ interface HistoryTunerProps {
 
 /**
  * HistoryTuner Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -50,56 +50,66 @@ export function HistoryTuner({ settings, updateSettings }: HistoryTunerProps) {
       <div className="lg:col-span-1">
         <div className="sticky top-10 space-y-6">
           <motion.div variants={item}>
-            <h2 className="mb-2 text-3xl font-bold tracking-tight">Order History</h2>
+            <h2 className="mb-2 text-3xl font-bold tracking-tight">
+              Order History
+            </h2>
             <p className="text-muted-foreground text-lg">
               Adjust the typography and layout of the Order History page. These
               settings help with readability on different screen sizes.
             </p>
           </motion.div>
-          <HistoryStylesPanel settings={settings} updateSettings={updateSettings} />
-          
-          <motion.div variants={item} className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> Header Size affects the title and main filters, while Content Size affects the receipt list density.
+          <HistoryStylesPanel
+            settings={settings}
+            updateSettings={updateSettings}
+          />
+
+          <motion.div
+            variants={item}
+            className="bg-primary/5 border-primary/10 text-muted-foreground rounded-2xl border p-4 text-xs leading-relaxed"
+          >
+            <strong>Tip:</strong> Header Size affects the title and main
+            filters, while Content Size affects the receipt list density.
           </motion.div>
         </div>
       </div>
 
       {/* Right Column: Live Preview */}
-      <motion.div
-        variants={item}
-        className="lg:col-span-2 space-y-6"
-      >
-        <div className="border-border/60 bg-card/30 rounded-3xl border p-10 shadow-xl backdrop-blur-sm relative overflow-hidden min-h-[600px]">
-           {/* Preview Zoom Layer */}
-           <div style={{ fontSize: `${settings.scaling.fonts.history || 100}%` }}>
-                <HistoryHeader />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <div className="scale-90 origin-top-left -mb-10">
-                        <DateFilter 
-                            startDate="" 
-                            endDate="" 
-                            loading={false} 
-                            onStartDateChange={() => {}} 
-                            onEndDateChange={() => {}} 
-                            onFilter={() => {}} 
-                        />
-                    </div>
-                    <div className="scale-90 origin-top-left -mb-10">
-                        <IdSearch 
-                            searchId="" 
-                            loading={false} 
-                            onSearchIdChange={() => {}} 
-                            onSearch={() => {}} 
-                        />
-                    </div>
-                </div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 ml-2">Recent Transactions</h4>
-                <ReceiptList 
-                    receipts={SAMPLE_RECEIPTS as any} 
-                    loading={false} 
-                    onSelect={() => {}} 
+      <motion.div variants={item} className="space-y-6 lg:col-span-2">
+        <div className="border-border/60 bg-card/30 relative min-h-[600px] overflow-hidden rounded-3xl border p-10 shadow-xl backdrop-blur-sm">
+          {/* Preview Zoom Layer */}
+          <div
+            style={{ fontSize: `${settings.scaling.fonts.history || 100}%` }}
+          >
+            <HistoryHeader />
+            <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="-mb-10 origin-top-left scale-90">
+                <DateFilter
+                  startDate=""
+                  endDate=""
+                  loading={false}
+                  onStartDateChange={() => {}}
+                  onEndDateChange={() => {}}
+                  onFilter={() => {}}
                 />
-           </div>
+              </div>
+              <div className="-mb-10 origin-top-left scale-90">
+                <IdSearch
+                  searchId=""
+                  loading={false}
+                  onSearchIdChange={() => {}}
+                  onSearch={() => {}}
+                />
+              </div>
+            </div>
+            <h4 className="text-muted-foreground mb-4 ml-2 text-xs font-bold tracking-widest uppercase">
+              Recent Transactions
+            </h4>
+            <ReceiptList
+              receipts={SAMPLE_RECEIPTS as any}
+              loading={false}
+              onSelect={() => {}}
+            />
+          </div>
         </div>
       </motion.div>
     </motion.div>

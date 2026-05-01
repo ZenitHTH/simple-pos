@@ -13,7 +13,7 @@ export function useStockManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
   const { stocks, products, updateCache, refreshAll } = useDataCache();
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");

@@ -20,7 +20,7 @@ interface ImagePositionModalProps {
 /**
  * ImagePositionModal component provides a specialized interface for adjusting how an image is displayed.
  * It uses a cropping tool to determine the object-position and zoom level for the image.
- * 
+ *
  * @param {ImagePositionModalProps} props - The component props.
  * @param {boolean} props.isOpen - Whether the modal is currently open.
  * @param {() => void} props.onClose - Callback to close the modal.

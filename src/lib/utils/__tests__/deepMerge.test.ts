@@ -5,7 +5,7 @@ describe("deepMerge", () => {
     const source = { items: [1, 2, 3] };
     const target = { items: [] };
     const result = deepMerge<{ items: number[] }>(target, source);
-    
+
     expect(result.items).toEqual([1, 2, 3]);
     expect(result.items).not.toBe(source.items);
   });

@@ -10,8 +10,14 @@ import { useDataCache } from "@/context/DataContext";
 export function useProductManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
-  const { products, categories, updateCache, refreshAll, loading: cacheLoading } = useDataCache();
-  
+  const {
+    products,
+    categories,
+    updateCache,
+    refreshAll,
+    loading: cacheLoading,
+  } = useDataCache();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,7 +66,11 @@ export function useProductManagement() {
           product_id: editingProduct.product_id,
         });
         result = updated;
-        updateCache.products(products.map(p => p.product_id === result.product_id ? result : p));
+        updateCache.products(
+          products.map((p) =>
+            p.product_id === result.product_id ? result : p,
+          ),
+        );
         logger.action("product_updated", { id: result.product_id });
       } else {
         const created = await productApi.create(dbKey, data);

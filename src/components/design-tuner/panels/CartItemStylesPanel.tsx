@@ -11,7 +11,7 @@ interface CartItemStylesPanelProps {
 
 /**
  * CartItemStylesPanel Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -32,13 +32,13 @@ export function CartItemStylesPanel({
           gap: 12,
           border_style: "solid",
           bg_opacity: 0,
-        }
-      }
+        },
+      },
     });
   };
 
   return (
-    <div className="border-border mt-6 border-t px-2 pt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+    <div className="border-border animate-in fade-in slide-in-from-top-2 mt-6 border-t px-2 pt-4 duration-300">
       <h2 className="text-foreground/80 mb-4 text-sm font-semibold">
         Cart Item Styles
       </h2>
@@ -46,7 +46,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Font Size"
           value={settings.styling.cart.font_size ?? 100}
-          onChange={(v) => updateSettings({ styling: { cart: { font_size: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { font_size: v } } })
+          }
           min={50}
           max={200}
           unit="%"
@@ -54,7 +56,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Header Font"
           value={settings.styling.cart.header_font_size ?? 100}
-          onChange={(v) => updateSettings({ styling: { cart: { header_font_size: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { header_font_size: v } } })
+          }
           min={50}
           max={200}
           unit="%"
@@ -62,7 +66,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Price Font"
           value={settings.styling.cart.price_font_size ?? 100}
-          onChange={(v) => updateSettings({ styling: { cart: { price_font_size: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { price_font_size: v } } })
+          }
           min={50}
           max={200}
           unit="%"
@@ -70,7 +76,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Padding"
           value={settings.styling.cart.padding ?? 10}
-          onChange={(update) => updateSettings({ styling: { cart: { padding: update } } })}
+          onChange={(update) =>
+            updateSettings({ styling: { cart: { padding: update } } })
+          }
           min={0}
           max={32}
           unit="px"
@@ -86,7 +94,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Image Size"
           value={settings.styling.cart.image_size ?? 48}
-          onChange={(v) => updateSettings({ styling: { cart: { image_size: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { image_size: v } } })
+          }
           min={32}
           max={96}
           unit="px"
@@ -103,7 +113,9 @@ export function CartItemStylesPanel({
         <Select
           label="Border Style"
           value={settings.styling.cart.border_style ?? "solid"}
-          onChange={(v) => updateSettings({ styling: { cart: { border_style: v as any } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { border_style: v as any } } })
+          }
           options={[
             { value: "solid", label: "Solid" },
             { value: "dashed", label: "Dashed" },
@@ -114,7 +126,9 @@ export function CartItemStylesPanel({
         <TunerSlider
           label="Glass Opacity"
           value={settings.styling.cart.bg_opacity ?? 0}
-          onChange={(v) => updateSettings({ styling: { cart: { bg_opacity: v } } })}
+          onChange={(v) =>
+            updateSettings({ styling: { cart: { bg_opacity: v } } })
+          }
           min={0}
           max={100}
           unit="%"
@@ -123,7 +137,7 @@ export function CartItemStylesPanel({
         <div className="pt-2">
           <button
             onClick={handleReset}
-            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold uppercase tracking-wider transition-colors"
+            className="text-muted-foreground hover:text-foreground w-full rounded-lg border border-dashed py-2 text-[10px] font-semibold tracking-wider uppercase transition-colors"
           >
             Reset Cart Styles
           </button>

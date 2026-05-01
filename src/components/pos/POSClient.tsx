@@ -11,7 +11,10 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Drawer } from "@/components/ui/Drawer";
 
-const PaymentModal = dynamic(() => import("@/components/payment/PaymentModal"), { ssr: false });
+const PaymentModal = dynamic(
+  () => import("@/components/payment/PaymentModal"),
+  { ssr: false },
+);
 
 interface POSClientProps {
   initialProducts?: Product[];
@@ -20,7 +23,7 @@ interface POSClientProps {
 /**
  * POSClient component serves as the main entry point for the Point of Sale interface.
  * It manages the product grid, category filtering, search, and the shopping cart.
- * 
+ *
  * @param {POSClientProps} props - The component props.
  * @param {Product[]} [props.initialProducts] - Optional initial list of products to display.
  */
@@ -57,7 +60,9 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
 
   // Calculate Cart Width
   // We use CSS variables to allow Design Mode to update scale without triggering React re-renders
-  const cartDynamicWidth = isCartVisible ? `calc(320px * var(--cart-scale, 1))` : "0px";
+  const cartDynamicWidth = isCartVisible
+    ? `calc(320px * var(--cart-scale, 1))`
+    : "0px";
 
   return (
     <div className="bg-background box-border flex h-full gap-6 overflow-hidden p-6">
@@ -86,7 +91,9 @@ export default function POSClient({ initialProducts = [] }: POSClientProps) {
       {/* Right Side: Cart Sidebar */}
       <div
         className={`relative hidden h-full shrink-0 transition-[width,opacity] duration-500 md:block ${
-          isCartVisible ? "opacity-100" : "w-0 overflow-hidden opacity-0 pointer-events-none"
+          isCartVisible
+            ? "opacity-100"
+            : "pointer-events-none w-0 overflow-hidden opacity-0"
         }`}
         style={{
           width: cartDynamicWidth,

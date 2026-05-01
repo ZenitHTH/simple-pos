@@ -13,7 +13,7 @@ interface MaterialTableProps {
 /**
  * MaterialTable component displays a list of materials in a tabular format.
  * It shows details like ID, name, type, tags, volume, and quantity, with edit/delete actions.
- * 
+ *
  * @param {MaterialTableProps} props - The component props.
  * @param {Material[]} props.materials - List of materials to display.
  * @param {(material: Material) => void} props.onEdit - Callback when the edit button is clicked.
@@ -28,7 +28,7 @@ export default function MaterialTable({
     return (
       <EmptyState
         message="No materials found. Add some materials to get started."
-        className="h-64 border border-dashed rounded-xl"
+        className="h-64 rounded-xl border border-dashed"
       />
     );
   }
@@ -67,7 +67,7 @@ export default function MaterialTable({
                         <Badge
                           key={tag}
                           variant="primary-subtle"
-                          className="rounded-full text-[10px] uppercase tracking-wider"
+                          className="rounded-full text-[10px] tracking-wider uppercase"
                         >
                           {tag}
                         </Badge>

@@ -31,17 +31,23 @@ export default function MoveImageConfirmationModal({
         </div>
         <div className="space-y-3">
           <p className="text-muted-foreground leading-relaxed">
-            This image is already linked to <strong className="text-foreground">"{currentProductName}"</strong>.
+            This image is already linked to{" "}
+            <strong className="text-foreground">"{currentProductName}"</strong>.
           </p>
-          <p className="text-muted-foreground leading-relaxed italic text-sm">
-            The exclusivity rule ensures that an image is linked to only one product at a time.
+          <p className="text-muted-foreground text-sm leading-relaxed italic">
+            The exclusivity rule ensures that an image is linked to only one
+            product at a time.
           </p>
-          <p className="font-medium text-foreground">
+          <p className="text-foreground font-medium">
             Do you want to move this image and link it to the new product?
           </p>
         </div>
         <div className="mt-4 flex justify-end gap-3">
-          <Button variant="outline" onClick={onClose} className="rounded-xl px-5">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="rounded-xl px-5"
+          >
             Cancel
           </Button>
           <Button

@@ -97,7 +97,7 @@ export function RecipeTargetItem({
 
       {/* Volume */}
       <div className="flex flex-col gap-1">
-        <label 
+        <label
           htmlFor={volumeInputId}
           className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase"
         >

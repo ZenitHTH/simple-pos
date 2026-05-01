@@ -23,9 +23,7 @@ const CartItem = memo(function CartItem({
     : null;
 
   return (
-    <div
-      className="border-border tuner-cart-item flex flex-col overflow-hidden border transition-colors duration-150"
-    >
+    <div className="border-border tuner-cart-item flex flex-col overflow-hidden border transition-colors duration-150">
       {/* Top row: image + info + delete */}
       <div className="flex items-center gap-4 p-[calc(var(--cart-item-padding)*1px)]">
         {/* Thumbnail */}
@@ -55,13 +53,17 @@ const CartItem = memo(function CartItem({
         <div className="min-w-0 flex-1">
           <h4
             className="text-foreground truncate leading-tight font-bold tracking-tight"
-            style={{ fontSize: "calc(var(--cart-item-header-font-size) * 0.01em)" }}
+            style={{
+              fontSize: "calc(var(--cart-item-header-font-size) * 0.01em)",
+            }}
           >
             {item.name}
           </h4>
           <div
             className="text-primary mt-1 font-black"
-            style={{ fontSize: "calc(var(--cart-item-price-font-size) * 0.0115em)" }}
+            style={{
+              fontSize: "calc(var(--cart-item-price-font-size) * 0.0115em)",
+            }}
           >
             {currency}
             {(item.price * item.quantity).toFixed(2)}
@@ -71,7 +73,7 @@ const CartItem = memo(function CartItem({
         {/* Delete */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-muted/40 hover:text-destructive active:text-white flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors active:bg-destructive active:scale-90"
+          className="text-muted/40 hover:text-destructive active:bg-destructive flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors active:scale-90 active:text-white"
         >
           <FaTrash size={16} />
         </button>
@@ -80,7 +82,8 @@ const CartItem = memo(function CartItem({
       {/* Bottom row: quantity controls */}
       <div className="flex items-center justify-between px-[calc(var(--cart-item-padding)*1px)] pb-[calc(var(--cart-item-padding)*1px)]">
         <span className="text-muted-foreground text-[0.8em] font-medium opacity-70">
-          {currency}{item.price.toFixed(2)} each
+          {currency}
+          {item.price.toFixed(2)} each
         </span>
         <div className="bg-muted/30 border-border/50 flex items-center gap-1 rounded-2xl border p-1 shadow-inner">
           <button
@@ -89,7 +92,10 @@ const CartItem = memo(function CartItem({
           >
             <FaMinus size={14} />
           </button>
-          <span className="w-12 text-center font-black select-none" style={{ fontSize: "calc(var(--cart-item-font-size) * 0.0115em)" }}>
+          <span
+            className="w-12 text-center font-black select-none"
+            style={{ fontSize: "calc(var(--cart-item-font-size) * 0.0115em)" }}
+          >
             {item.quantity}
           </span>
           <button

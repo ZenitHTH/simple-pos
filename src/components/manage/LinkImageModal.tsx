@@ -18,7 +18,7 @@ interface LinkImageModalProps {
 /**
  * LinkImageModal component allows users to link or unlink an image to multiple products.
  * It includes a searchable list of products with toggle buttons for linking state.
- * 
+ *
  * @param {LinkImageModalProps} props - The component props.
  * @param {boolean} props.isOpen - Whether the modal is currently open.
  * @param {() => void} props.onClose - Callback to close the modal.

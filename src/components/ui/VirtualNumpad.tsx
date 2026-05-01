@@ -24,7 +24,7 @@ interface VirtualNumpadProps {
  * A virtual numeric keypad component for touch-friendly data entry.
  * Features customizable gaps, button heights, and font scaling via settings.
  * Includes numbers 0-9, 00, decimal point, backspace, and clear all buttons.
- * 
+ *
  * @param props - The virtual numpad props.
  * @returns A touch-optimized numeric keypad.
  */
@@ -49,15 +49,12 @@ export default function VirtualNumpad({
       }}
     >
       {/* Numbers Section (3 cols) */}
-      <div
-        className="col-span-3 grid grid-cols-3"
-        style={{ gap: `${gap}px` }}
-      >
+      <div className="col-span-3 grid grid-cols-3" style={{ gap: `${gap}px` }}>
         {keys.map((key) => (
           <button
             key={key}
             onClick={() => onPress(key)}
-            className="bg-card text-foreground border-border active:bg-primary active:text-primary-foreground focus:ring-primary/40 flex items-center justify-center rounded-2xl border text-4xl font-black shadow-sm transition-[background-color,color,transform,box-shadow,border-color] duration-200 outline-none focus:ring-4 active:scale-92 active:shadow-inner touch-manipulation"
+            className="bg-card text-foreground border-border active:bg-primary active:text-primary-foreground focus:ring-primary/40 flex touch-manipulation items-center justify-center rounded-2xl border text-4xl font-black shadow-sm transition-[background-color,color,transform,box-shadow,border-color] duration-200 outline-none focus:ring-4 active:scale-92 active:shadow-inner"
             style={{ height: `${buttonHeight}px` }}
             type="button"
           >
@@ -67,13 +64,10 @@ export default function VirtualNumpad({
       </div>
 
       {/* Actions Section (1 col) */}
-      <div
-        className="col-span-1 grid grid-cols-1"
-        style={{ gap: `${gap}px` }}
-      >
+      <div className="col-span-1 grid grid-cols-1" style={{ gap: `${gap}px` }}>
         <button
           onClick={onBackspace}
-          className="flex items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10 text-destructive transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:bg-destructive active:text-white active:scale-92 active:shadow-inner touch-manipulation"
+          className="border-destructive/20 bg-destructive/10 text-destructive active:bg-destructive flex touch-manipulation items-center justify-center rounded-2xl border transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:scale-92 active:text-white active:shadow-inner"
           style={{ height: `${buttonHeight}px` }}
           type="button"
           aria-label="Backspace"
@@ -82,7 +76,7 @@ export default function VirtualNumpad({
         </button>
         <button
           onClick={onClear}
-          className="bg-muted/20 text-muted-foreground border-border hover:bg-muted/30 active:bg-foreground active:text-background flex items-center justify-center rounded-2xl border text-xl font-black transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:scale-92 active:shadow-inner touch-manipulation"
+          className="bg-muted/20 text-muted-foreground border-border hover:bg-muted/30 active:bg-foreground active:text-background flex touch-manipulation items-center justify-center rounded-2xl border text-xl font-black transition-[background-color,color,transform,box-shadow,border-color] duration-200 active:scale-92 active:shadow-inner"
           style={{ height: `${buttonHeight}px` }}
           type="button"
           aria-label="Clear All"

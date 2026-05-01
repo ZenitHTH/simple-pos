@@ -19,7 +19,7 @@ interface SettingsSectionProps {
 /**
  * A layout component for grouping related settings together in a Card.
  * Features a title with an optional icon and a clean structure.
- * 
+ *
  * @param props - The settings section props.
  * @returns A Card-wrapped settings section.
  */
@@ -30,10 +30,10 @@ export default function SettingsSection({
   className = "",
 }: SettingsSectionProps) {
   return (
-    <div 
+    <div
       className={cn(
-        "bg-card text-card-foreground border-border mb-8 overflow-hidden rounded-2xl border p-6 shadow-sm", 
-        className
+        "bg-card text-card-foreground border-border mb-8 overflow-hidden rounded-2xl border p-6 shadow-sm",
+        className,
       )}
     >
       <div className="mb-6 flex items-center gap-2">

@@ -18,7 +18,7 @@ const PaymentFooter = memo(
         className={cn(
           "flex h-auto w-full items-center justify-center gap-2 rounded-xl py-4 text-lg font-bold transition-all",
           isValid && !isProcessing
-            ? "bg-success text-success-foreground shadow-lg shadow-success/20 hover:bg-success/90 active:scale-[0.98]"
+            ? "bg-success text-success-foreground shadow-success/20 hover:bg-success/90 shadow-lg active:scale-[0.98]"
             : "bg-muted text-muted-foreground cursor-not-allowed opacity-50",
         )}
       >

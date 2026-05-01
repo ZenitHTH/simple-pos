@@ -19,15 +19,27 @@ export function sanitize(input: any, seen = new WeakSet()): any {
     // Using a negative lookahead to ignore common Unix timestamps starting with 16, 17, 18
     let result = input.replace(/\b(?!1[678]\d{10})\d{13}\b/g, "[REDACTED-ID]");
     // Redact emails
-    result = result.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[REDACTED-EMAIL]");
+    result = result.replace(
+      /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
+      "[REDACTED-EMAIL]",
+    );
     // Redact common PII labels followed by values (e.g. "Tax ID: 12345")
-    result = result.replace(/(tax[ _]?id|national[ _]?id|id[ _]?card|ssn)[: ]+([a-zA-Z0-9-]{5,})/gi, "$1: [REDACTED]");
+    result = result.replace(
+      /(tax[ _]?id|national[ _]?id|id[ _]?card|ssn)[: ]+([a-zA-Z0-9-]{5,})/gi,
+      "$1: [REDACTED]",
+    );
     return result;
   }
 
   // Only sanitize plain objects, arrays, and Errors.
   // Other objects (Date, RegExp, etc.) should be returned as-is or handled specifically.
-  if (input !== null && typeof input === "object" && (input.constructor === Object || Array.isArray(input) || input instanceof Error)) {
+  if (
+    input !== null &&
+    typeof input === "object" &&
+    (input.constructor === Object ||
+      Array.isArray(input) ||
+      input instanceof Error)
+  ) {
     if (seen.has(input)) return "[Circular]";
     seen.add(input);
 
@@ -44,23 +56,45 @@ export function sanitize(input: any, seen = new WeakSet()): any {
     for (const key of Object.keys(input)) {
       const lowerKey = key.toLowerCase();
       // Refined patterns to avoid redacting non-sensitive data like "tax_rate" or "product.name"
-      const isSensitiveKey = (
-        (lowerKey === "key" || lowerKey === "dbkey" || lowerKey === "secret" || lowerKey === "password" || lowerKey === "token" || lowerKey === "auth") ||
+      const isSensitiveKey =
+        lowerKey === "key" ||
+        lowerKey === "dbkey" ||
+        lowerKey === "secret" ||
+        lowerKey === "password" ||
+        lowerKey === "token" ||
+        lowerKey === "auth" ||
         (lowerKey.includes("address") && !lowerKey.includes("mac")) ||
-        (lowerKey.includes("customer") && (lowerKey.includes("name") || lowerKey.includes("phone") || lowerKey.includes("email"))) ||
-        ((lowerKey.includes("tax") && lowerKey.includes("id")) && !lowerKey.includes("rate") && !lowerKey.includes("enabled")) ||
-        (lowerKey.includes("phone") || lowerKey.includes("email") || lowerKey.includes("dob") || lowerKey.includes("birth")) ||
-        (lowerKey.includes("national_id") || lowerKey.includes("id_card") || lowerKey.includes("ssn")) ||
-        (lowerKey.includes("card") && (lowerKey.includes("number") || lowerKey.includes("cvv") || lowerKey.includes("cvc"))) ||
+        (lowerKey.includes("customer") &&
+          (lowerKey.includes("name") ||
+            lowerKey.includes("phone") ||
+            lowerKey.includes("email"))) ||
+        (lowerKey.includes("tax") &&
+          lowerKey.includes("id") &&
+          !lowerKey.includes("rate") &&
+          !lowerKey.includes("enabled")) ||
+        lowerKey.includes("phone") ||
+        lowerKey.includes("email") ||
+        lowerKey.includes("dob") ||
+        lowerKey.includes("birth") ||
+        lowerKey.includes("national_id") ||
+        lowerKey.includes("id_card") ||
+        lowerKey.includes("ssn") ||
+        (lowerKey.includes("card") &&
+          (lowerKey.includes("number") ||
+            lowerKey.includes("cvv") ||
+            lowerKey.includes("cvc"))) ||
         // Added from remote for VULN-003
-        lowerKey.includes("sensitive") || lowerKey.includes("maiden") || lowerKey.includes("zip") || lowerKey.includes("postcode")
-      );
+        lowerKey.includes("sensitive") ||
+        lowerKey.includes("maiden") ||
+        lowerKey.includes("zip") ||
+        lowerKey.includes("postcode");
 
       if (isSensitiveKey) {
         sanitized[key] = "[REDACTED]";
       } else {
         // Skip properties already handled for Error
-        if (isError && (key === "name" || key === "message" || key === "stack")) continue;
+        if (isError && (key === "name" || key === "message" || key === "stack"))
+          continue;
         sanitized[key] = sanitize(input[key], seen);
       }
     }
@@ -93,7 +127,7 @@ export const logger = {
 
       // Dispatch event for real-time listeners
       win.dispatchEvent(
-        new CustomEvent("app:action", { detail: { name, data: sData } })
+        new CustomEvent("app:action", { detail: { name, data: sData } }),
       );
     }
   },

@@ -23,7 +23,7 @@ interface TypographyControlsProps {
 
 /**
  * TypographyStylesPanel Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -46,7 +46,7 @@ export function TypographyStylesPanel({
         body_weight: TYPOGRAPHY_DEFAULTS.bodyWeight,
         line_height: TYPOGRAPHY_DEFAULTS.lineHeight,
         letter_spacing: TYPOGRAPHY_DEFAULTS.letterSpacing,
-      }
+      },
     });
   };
 
@@ -88,7 +88,9 @@ export function TypographyStylesPanel({
         </label>
         <PillGroup
           value={headingWeight}
-          onChange={(v) => updateSettings({ typography: { heading_weight: v } })}
+          onChange={(v) =>
+            updateSettings({ typography: { heading_weight: v } })
+          }
           options={WEIGHT_OPTIONS.filter((o) => o.value >= 500)}
           styleInActive={(opt) => ({ fontWeight: opt.value })}
         />

@@ -8,7 +8,11 @@ import { getRenderingEngine } from "@/lib/api/system";
  * and injects a `data-engine` attribute into the document root.
  * This allows for engine-specific CSS optimizations.
  */
-export default function EngineProvider({ children }: { children: React.ReactNode }) {
+export default function EngineProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   useEffect(() => {
     const detectEngine = async () => {
       const engine = await getRenderingEngine();

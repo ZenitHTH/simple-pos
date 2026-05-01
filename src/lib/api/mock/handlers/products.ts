@@ -13,7 +13,9 @@ export const productHandlers = {
     satang: number;
   }) => {
     // Check for duplicate name (case-insensitive)
-    const existing = state.products.find(p => p.title.toLowerCase() === title.toLowerCase());
+    const existing = state.products.find(
+      (p) => p.title.toLowerCase() === title.toLowerCase(),
+    );
     if (existing) {
       throw new Error(`A product with the name "${title}" already exists.`);
     }
@@ -65,7 +67,9 @@ export const productHandlers = {
 
     state.products = state.products.filter((p) => p.product_id !== id);
     state.stocks = state.stocks.filter((s) => s.product_id !== id);
-    state.productImages = state.productImages.filter((pi) => pi.product_id !== id);
+    state.productImages = state.productImages.filter(
+      (pi) => pi.product_id !== id,
+    );
   },
   set_product_stock_mode: ({
     id,

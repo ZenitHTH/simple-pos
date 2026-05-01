@@ -42,10 +42,10 @@ export default function DesignTunerPage() {
   };
 
   return (
-    <div className="bg-background text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/30 transition-colors duration-300">
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[120px]" />
+    <div className="bg-background text-foreground selection:bg-primary/30 flex h-screen overflow-hidden antialiased transition-colors duration-300">
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="bg-primary/10 absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full blur-[120px]" />
+        <div className="absolute right-[-10%] bottom-[-10%] h-[40%] w-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
       </div>
 
       <TunerSidebar
@@ -58,9 +58,9 @@ export default function DesignTunerPage() {
       />
 
       {/* Main Content */}
-      <div className="relative flex-1 overflow-hidden flex flex-col z-10">
+      <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
         <div
-          className="bg-card/50 flex-1 overflow-y-auto p-8 custom-scrollbar backdrop-blur-md"
+          className="bg-card/50 custom-scrollbar flex-1 overflow-y-auto p-8 backdrop-blur-md"
           data-lenis-prevent
           style={{
             transform: `scale(${previewZoom / 16})`,
@@ -81,7 +81,10 @@ export default function DesignTunerPage() {
             )}
             {activeTab === "selector" && <SelectorTuner />}
             {activeTab === "button" && (
-              <ButtonTuner settings={settings} updateSettings={updateSettings} />
+              <ButtonTuner
+                settings={settings}
+                updateSettings={updateSettings}
+              />
             )}
             {activeTab === "typography" && (
               <TypographyTuner
@@ -90,43 +93,57 @@ export default function DesignTunerPage() {
               />
             )}
             {activeTab === "cart" && (
-              <CartItemTuner settings={settings} updateSettings={updateSettings} />
+              <CartItemTuner
+                settings={settings}
+                updateSettings={updateSettings}
+              />
             )}
             {activeTab === "grid" && (
               <GridTuner settings={settings} updateSettings={updateSettings} />
             )}
             {activeTab === "sidebar" && (
-              <SidebarTuner settings={settings} updateSettings={updateSettings} />
+              <SidebarTuner
+                settings={settings}
+                updateSettings={updateSettings}
+              />
             )}
             {activeTab === "numpad" && (
-              <NumpadTuner settings={settings} updateSettings={updateSettings} />
+              <NumpadTuner
+                settings={settings}
+                updateSettings={updateSettings}
+              />
             )}
             {activeTab === "history" && (
-              <HistoryTuner settings={settings} updateSettings={updateSettings} />
+              <HistoryTuner
+                settings={settings}
+                updateSettings={updateSettings}
+              />
             )}
           </div>
         </div>
 
         {/* Global Action Bar */}
-        <div className="border-white/10 bg-zinc-900/80 absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 rounded-3xl border px-8 py-5 shadow-2xl backdrop-blur-md transition-all hover:shadow-primary/20">
-          <div className="flex flex-col pr-6 border-r border-white/10">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
+        <div className="hover:shadow-primary/20 absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-6 rounded-3xl border border-white/10 bg-zinc-900/80 px-8 py-5 shadow-2xl backdrop-blur-md transition-all">
+          <div className="flex flex-col border-r border-white/10 pr-6">
+            <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
               Design Mode
             </span>
-            <span className="text-xs font-bold text-zinc-200">Changes apply live</span>
+            <span className="text-xs font-bold text-zinc-200">
+              Changes apply live
+            </span>
           </div>
 
           <div className="flex items-center gap-4">
             <button
               onClick={handleDiscard}
-              className="flex items-center gap-3 rounded-2xl px-5 py-3 text-sm font-black transition-all hover:bg-zinc-800 text-zinc-400 hover:text-white active:scale-95"
+              className="flex items-center gap-3 rounded-2xl px-5 py-3 text-sm font-black text-zinc-400 transition-all hover:bg-zinc-800 hover:text-white active:scale-95"
             >
               <FaUndo className="text-xs" />
               Discard
             </button>
             <button
               onClick={handleSave}
-              className="bg-primary text-primary-foreground flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg shadow-primary/20 transition-all hover:scale-105 hover:bg-primary/90 active:scale-95"
+              className="bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/90 flex items-center gap-3 rounded-2xl px-8 py-3 text-sm font-black shadow-lg transition-all hover:scale-105 active:scale-95"
             >
               <FaSave className="text-xs" />
               Save Changes

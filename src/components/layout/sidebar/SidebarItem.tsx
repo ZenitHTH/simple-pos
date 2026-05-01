@@ -31,7 +31,7 @@ export function SidebarItem({
     >
       <span
         className={cn(
-          "tuner-sidebar-icon flex items-center justify-center shrink-0",
+          "tuner-sidebar-icon flex shrink-0 items-center justify-center",
           isActive
             ? "text-primary-foreground"
             : "text-muted-foreground group-hover:text-foreground",

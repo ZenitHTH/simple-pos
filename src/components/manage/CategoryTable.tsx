@@ -13,7 +13,7 @@ interface CategoryTableProps {
 /**
  * CategoryTable component displays a list of product categories in a tabular format.
  * It provides actions to edit or delete each category.
- * 
+ *
  * @param {CategoryTableProps} props - The component props.
  * @param {Category[]} props.categories - List of categories to display.
  * @param {(category: Category) => void} props.onEdit - Callback when the edit button is clicked.

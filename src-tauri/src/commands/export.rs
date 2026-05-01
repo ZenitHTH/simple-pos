@@ -2,9 +2,9 @@ use chrono::{TimeZone, Utc};
 use database::customer;
 use database::receipt::model::ReceiptList;
 
-use settings_lib::get_settings;
 use export_lib::thai_accounting::{TaxReportRow, build_thai_sales_tax_report};
-use tauri::{command, Manager};
+use settings_lib::get_settings;
+use tauri::{Manager, command};
 
 #[command]
 /// Exports receipts within a specific date range to a file (CSV or XLSX).
@@ -33,7 +33,7 @@ pub fn export_receipts(
     end_date: i64,
 ) -> Result<String, String> {
     let mut conn = crate::conn!(state);
-    
+
     // Security: Restrict export path to app-local data directory
     let app_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
     let path = settings_lib::validate_path_within(&export_path, &app_dir)?;

@@ -80,6 +80,5 @@ export default function ScalableContainer({
       <SelectableOverlay id={String(settingKey)} />
       {children}
     </motion.div>
-
   );
 }

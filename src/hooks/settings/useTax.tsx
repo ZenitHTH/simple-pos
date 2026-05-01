@@ -3,7 +3,7 @@ import { useSettings } from "@/context/settings/SettingsContext";
 /**
  * Hook to manage tax settings within the application.
  * Provides functions to toggle tax calculation and update the tax rate.
- * 
+ *
  * @returns {object} An object containing:
  * - isTaxEnabled: Boolean indicating if tax should be applied.
  * - toggleTax: Function to toggle tax enablement.
@@ -18,7 +18,9 @@ export function useTax() {
   const taxPercentage = settings.general.tax_rate;
 
   const toggleTax = () => {
-    updateSettings({ general: { ...settings.general, tax_enabled: !isTaxEnabled } });
+    updateSettings({
+      general: { ...settings.general, tax_enabled: !isTaxEnabled },
+    });
   };
 
   const updateTaxRate = (rate: number) => {

@@ -16,18 +16,23 @@ interface EmptyStateProps {
 
 /**
  * A component that displays a message and optional icon when a collection or state is empty.
- * 
+ *
  * @param message - The text message to display.
  * @param icon - Optional React node (icon) to display above the message.
  * @param className - Additional CSS classes for custom styling.
  */
 export function EmptyState({ message, icon, className }: EmptyStateProps) {
   return (
-    <div className={cn("text-muted-foreground flex flex-col items-center justify-center p-8 text-center gap-3", className)}>
+    <div
+      className={cn(
+        "text-muted-foreground flex flex-col items-center justify-center gap-3 p-8 text-center",
+        className,
+      )}
+    >
       {icon ? (
-        <div className="text-muted-foreground/30 text-5xl mb-2">{icon}</div>
+        <div className="text-muted-foreground/30 mb-2 text-5xl">{icon}</div>
       ) : (
-        <FaBoxOpen className="text-muted-foreground/20 text-5xl mb-2" />
+        <FaBoxOpen className="text-muted-foreground/20 mb-2 text-5xl" />
       )}
       <span className="text-sm font-medium">{message}</span>
     </div>

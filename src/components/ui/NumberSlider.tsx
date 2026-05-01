@@ -49,7 +49,7 @@ export default function NumberSlider({
 
   const handleLocalChange = (newVal: number) => {
     setLocalValue(newVal);
-    
+
     // Debounce external change to keep main thread and IPC channel clear
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {

@@ -21,10 +21,17 @@ use tauri::command;
 /// # Returns
 /// The newly created image record in the database.
 #[command]
-pub fn save_image(state: tauri::State<'_, crate::AppState>, data: Vec<u8>, filename: String) -> Result<database::Image, String> {
+pub fn save_image(
+    state: tauri::State<'_, crate::AppState>,
+    data: Vec<u8>,
+    filename: String,
+) -> Result<database::Image, String> {
     let mut conn = crate::conn!(state);
     let settings = get_settings().map_err(|e| e.to_string())?;
-    let target_dir = settings.storage.image_storage_path.map(std::path::PathBuf::from);
+    let target_dir = settings
+        .storage
+        .image_storage_path
+        .map(std::path::PathBuf::from);
     lib_save_image(&data, &filename, target_dir.as_deref(), &mut conn).map_err(|e| e.to_string())
 }
 
@@ -98,7 +105,11 @@ pub fn move_product_image(
 /// # Returns
 /// The number of deleted records.
 #[command]
-pub fn unlink_product_image(state: tauri::State<'_, crate::AppState>, product_id: i32, image_id: i32) -> Result<usize, String> {
+pub fn unlink_product_image(
+    state: tauri::State<'_, crate::AppState>,
+    product_id: i32,
+    image_id: i32,
+) -> Result<usize, String> {
     let mut conn = crate::conn!(state);
 
     // Validate existence (Optional but good for security report compliance)
@@ -119,7 +130,10 @@ pub fn unlink_product_image(state: tauri::State<'_, crate::AppState>, product_id
 /// # Returns
 /// The number of deleted records.
 #[command]
-pub fn clear_product_images(state: tauri::State<'_, crate::AppState>, product_id: i32) -> Result<usize, String> {
+pub fn clear_product_images(
+    state: tauri::State<'_, crate::AppState>,
+    product_id: i32,
+) -> Result<usize, String> {
     let mut conn = crate::conn!(state);
 
     // Validate existence
@@ -154,7 +168,9 @@ pub fn get_product_images(
 /// # Returns
 /// A list of all image records.
 #[command]
-pub fn get_all_images(state: tauri::State<'_, crate::AppState>) -> Result<Vec<database::image::model::Image>, String> {
+pub fn get_all_images(
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<Vec<database::image::model::Image>, String> {
     let mut conn = crate::conn!(state);
     database::image::get_all_images(&mut conn).map_err(|e| e.to_string())
 }

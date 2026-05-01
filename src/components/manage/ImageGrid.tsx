@@ -15,7 +15,7 @@ interface ImageGridProps {
 /**
  * ImageGrid component renders a responsive grid of uploaded images.
  * Each image card shows usage statistics and provides actions for linking, positioning, and deletion.
- * 
+ *
  * @param {ImageGridProps} props - The component props.
  * @param {Image[]} props.images - List of images to display.
  * @param {(imageId: number) => BackendProduct[]} props.getProductUsage - Function to determine which products use a given image.

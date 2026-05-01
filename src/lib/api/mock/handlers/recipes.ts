@@ -16,7 +16,9 @@ export const recipeHandlers = {
   delete_recipe_list: ({ listId }: { listId: number }) => {
     const count = state.recipeLists.length;
     state.recipeLists = state.recipeLists.filter((l) => l.id !== listId);
-    state.recipeItems = state.recipeItems.filter((i) => i.recipe_list_id !== listId);
+    state.recipeItems = state.recipeItems.filter(
+      (i) => i.recipe_list_id !== listId,
+    );
     return count - state.recipeLists.length;
   },
   get_recipe_items: ({ recipeListId }: { recipeListId: number }) => {

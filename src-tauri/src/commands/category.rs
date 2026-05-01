@@ -24,7 +24,10 @@ pub fn get_categories(state: tauri::State<'_, crate::AppState>) -> Result<Vec<Ca
 /// # Returns
 /// The newly created category.
 #[tauri::command]
-pub fn create_category(state: tauri::State<'_, crate::AppState>, name: String) -> Result<Category, String> {
+pub fn create_category(
+    state: tauri::State<'_, crate::AppState>,
+    name: String,
+) -> Result<Category, String> {
     let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
@@ -54,7 +57,11 @@ pub fn create_category(state: tauri::State<'_, crate::AppState>, name: String) -
 /// # Returns
 /// The updated category.
 #[tauri::command]
-pub fn update_category(state: tauri::State<'_, crate::AppState>, id: i32, name: String) -> Result<Category, String> {
+pub fn update_category(
+    state: tauri::State<'_, crate::AppState>,
+    id: i32,
+    name: String,
+) -> Result<Category, String> {
     let mut conn = crate::conn!(state);
 
     let trimmed_name = name.trim();
@@ -91,4 +98,3 @@ pub fn delete_category(state: tauri::State<'_, crate::AppState>, id: i32) -> Res
     let mut conn = crate::conn!(state);
     category::remove_category(&mut conn, id).map_err(|e| e.to_string())
 }
-

@@ -60,7 +60,7 @@ interface GridTunerProps {
 
 /**
  * GridTuner Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -86,7 +86,8 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
       <motion.div variants={item}>
         <h2 className="mb-2 text-3xl font-bold tracking-tight">Product Grid</h2>
         <p className="text-muted-foreground text-lg">
-          Adjust the size, spacing, and styling of items in the main product catalog.
+          Adjust the size, spacing, and styling of items in the main product
+          catalog.
         </p>
       </motion.div>
 
@@ -97,36 +98,26 @@ export function GridTuner({ settings, updateSettings }: GridTunerProps) {
           className="border-border/60 bg-card/50 h-fit space-y-8 rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
         >
           <h3 className="text-xl font-bold">Grid Tuning</h3>
-          <GridStylesPanel
-            settings={settings}
-            onUpdate={updateSettings}
-          />
-          <div className="bg-primary/5 rounded-2xl border border-primary/10 p-4 text-xs text-muted-foreground leading-relaxed">
-            <strong>Tip:</strong> Use the profiles (XS-XL) for quick layout changes, or use the sliders for detailed styling adjustments.
+          <GridStylesPanel settings={settings} onUpdate={updateSettings} />
+          <div className="bg-primary/5 border-primary/10 text-muted-foreground rounded-2xl border p-4 text-xs leading-relaxed">
+            <strong>Tip:</strong> Use the profiles (XS-XL) for quick layout
+            changes, or use the sliders for detailed styling adjustments.
           </div>
         </motion.div>
 
         {/* Live Preview */}
-        <motion.div
-          variants={item}
-          className="lg:col-span-2 space-y-6"
-        >
-          <div className="border-border/60 bg-card/30 rounded-3xl border p-8 shadow-xl backdrop-blur-sm relative min-h-[400px]">
-             <div 
-                className="grid relative"
-                style={gridStyle}
-             >
-                {MOCK_PRODUCTS.map((product) => (
-                    <ProductCard 
-                        key={product.id} 
-                        product={product as any} 
-                        onAdd={() => {}} 
-                        currency="฿" 
-                        titleFontSizeScale={settings.styling.grid.item_title_font_size || 100}
-                        priceFontSizeScale={settings.styling.grid.item_price_font_size || 100}
-                    />
-                ))}
-             </div>
+        <motion.div variants={item} className="space-y-6 lg:col-span-2">
+          <div className="border-border/60 bg-card/30 relative min-h-[400px] rounded-3xl border p-8 shadow-xl backdrop-blur-sm">
+            <div className="relative grid" style={gridStyle}>
+              {MOCK_PRODUCTS.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product as any}
+                  onAdd={() => {}}
+                  currency="฿"
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

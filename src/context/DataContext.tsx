@@ -1,19 +1,27 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback, use, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  use,
+  useMemo,
+} from "react";
 import { invoke } from "@/lib/api/invoke";
-import { 
-  productApi, 
-  categoryApi, 
-  customerApi, 
-  materialApi, 
+import {
+  productApi,
+  categoryApi,
+  customerApi,
+  materialApi,
   stockApi,
-  BackendProduct, 
-  Category, 
-  Customer, 
-  Material, 
+  BackendProduct,
+  Category,
+  Customer,
+  Material,
   Stock,
-  Product // Import UI type
+  Product, // Import UI type
 } from "@/lib";
 import { useDatabase } from "./DatabaseContext";
 import { logger } from "@/lib/utils/logger";
@@ -51,13 +59,19 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
   const refreshAll = useCallback(async () => {
     if (!dbKey) return;
-    
+
     try {
       setLoading(true);
       logger.info("Atomic Warming: Fetching consolidated management data...");
-      
+
       const data = await invoke("get_full_management_data");
-      const { products: pData, categories: cData, customers: custData, materials: mData, stocks: sData } = data as any;
+      const {
+        products: pData,
+        categories: cData,
+        customers: custData,
+        materials: mData,
+        stocks: sData,
+      } = data as any;
 
       setProducts(pData);
       setCategories(cData);
@@ -81,17 +95,23 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
   }, [dbKey, refreshAll]);
 
-  const updateCache = useMemo(() => ({
-    products: setProducts,
-    categories: setCategories,
-    customers: setCustomers,
-    materials: setMaterials,
-    stocks: setStocks,
-  }), [setProducts, setCategories, setCustomers, setMaterials, setStocks]);
+  const updateCache = useMemo(
+    () => ({
+      products: setProducts,
+      categories: setCategories,
+      customers: setCustomers,
+      materials: setMaterials,
+      stocks: setStocks,
+    }),
+    [setProducts, setCategories, setCustomers, setMaterials, setStocks],
+  );
 
   // Expose for E2E testing (Development only)
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+    if (
+      process.env.NODE_ENV === "development" &&
+      typeof window !== "undefined"
+    ) {
       (window as any).updateCache = updateCache;
     }
   }, [updateCache]);
@@ -109,29 +129,32 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }));
   }, [products, categories]);
 
-  const value = useMemo(() => ({
-    products,
-    mappedProducts,
-    categories,
-    customers,
-    materials,
-    stocks,
-    loading,
-    error,
-    refreshAll,
-    updateCache
-  }), [
-    products,
-    mappedProducts,
-    categories,
-    customers,
-    materials,
-    stocks,
-    loading,
-    error,
-    refreshAll,
-    updateCache
-  ]);
+  const value = useMemo(
+    () => ({
+      products,
+      mappedProducts,
+      categories,
+      customers,
+      materials,
+      stocks,
+      loading,
+      error,
+      refreshAll,
+      updateCache,
+    }),
+    [
+      products,
+      mappedProducts,
+      categories,
+      customers,
+      materials,
+      stocks,
+      loading,
+      error,
+      refreshAll,
+      updateCache,
+    ],
+  );
 
   return <DataContext value={value}>{children}</DataContext>;
 }

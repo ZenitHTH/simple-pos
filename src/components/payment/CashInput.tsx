@@ -84,7 +84,7 @@ export default function CashInput({
           <button
             key={`quick-${amount}`}
             onClick={() => onChange(amount.toString())}
-            className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 active:bg-primary active:text-white flex h-14 items-center justify-center rounded-2xl border text-lg font-black tracking-tight transition-[background-color,color,transform,box-shadow] duration-200 active:scale-92 active:shadow-inner touch-manipulation"
+            className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 active:bg-primary flex h-14 touch-manipulation items-center justify-center rounded-2xl border text-lg font-black tracking-tight transition-[background-color,color,transform,box-shadow] duration-200 active:scale-92 active:text-white active:shadow-inner"
             type="button"
           >
             {formatCurrency(amount, currency)}
@@ -100,9 +100,9 @@ export default function CashInput({
           onBackspace={handleBackspace}
           onClear={handleClear}
           height={numpadHeight}
-          gap={settings.styling.payment.numpad_gap}
-          buttonHeight={settings.styling.payment.numpad_button_height}
-          fontScale={settings.styling.payment.numpad_font_scale}
+          gap={settings.styling.payment.numpad_gap ?? undefined}
+          buttonHeight={settings.styling.payment.numpad_button_height ?? undefined}
+          fontScale={settings.styling.payment.numpad_font_scale ?? undefined}
         />
       </div>
     </div>

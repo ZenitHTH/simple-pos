@@ -3,7 +3,8 @@ import { ReceiptList, Receipt } from "@/lib/types";
 
 export const receiptHandlers = {
   create_invoice: ({ customerId }: { customerId?: number }) => {
-    const newId = Math.max(0, ...state.receiptLists.map((r) => r.receipt_id)) + 1;
+    const newId =
+      Math.max(0, ...state.receiptLists.map((r) => r.receipt_id)) + 1;
     const newList: ReceiptList = {
       receipt_id: newId,
       datetime_unix: Math.floor(Date.now() / 1000),

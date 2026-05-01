@@ -102,7 +102,10 @@ pub async fn complete_checkout(
 /// # Returns
 /// The newly created invoice header metadata.
 #[tauri::command]
-pub fn create_invoice(state: tauri::State<'_, crate::AppState>, customer_id: Option<i32>) -> Result<ReceiptList, String> {
+pub fn create_invoice(
+    state: tauri::State<'_, crate::AppState>,
+    customer_id: Option<i32>,
+) -> Result<ReceiptList, String> {
     let mut conn = crate::conn!(state);
     // Create a new header with "Now" timestamp (None)
     receipt::create_receipt_header(&mut conn, None, customer_id).map_err(|e| e.to_string())
@@ -249,7 +252,11 @@ pub fn get_accumulated_report(
         .inner_join(material::table.on(material::id.eq(receipt_item_material::material_id)))
         .filter(receipt_list::datetime_unix.ge(start_unix))
         .filter(receipt_list::datetime_unix.le(end_unix))
-        .group_by((material::id, material::name, receipt_item_material::precision))
+        .group_by((
+            material::id,
+            material::name,
+            receipt_item_material::precision,
+        ))
         .select((
             material::id,
             material::name,

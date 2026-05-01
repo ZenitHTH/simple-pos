@@ -13,7 +13,9 @@ interface ImportExportControlsProps {
   onRefresh: () => void;
 }
 
-export default function ImportExportControls({ onRefresh }: ImportExportControlsProps) {
+export default function ImportExportControls({
+  onRefresh,
+}: ImportExportControlsProps) {
   const { dbKey } = useDatabase();
   const { showToast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
@@ -50,7 +52,10 @@ export default function ImportExportControls({ onRefresh }: ImportExportControls
 
       if (path) {
         await stockApi.exportData(dbKey, path, format);
-        showToast(`Stock exported to ${format.toUpperCase()} successfully`, "success");
+        showToast(
+          `Stock exported to ${format.toUpperCase()} successfully`,
+          "success",
+        );
       }
     } catch (error) {
       logger.error("Export failed:", error);
@@ -94,14 +99,16 @@ export default function ImportExportControls({ onRefresh }: ImportExportControls
   return (
     <div className="flex items-center gap-4">
       {isImporting && (
-        <div className="flex items-center gap-3 w-48">
-          <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-primary transition-all duration-300"
+        <div className="flex w-48 items-center gap-3">
+          <div className="bg-secondary h-2 w-full overflow-hidden rounded-full">
+            <div
+              className="bg-primary h-full transition-all duration-300"
               style={{ width: `${importProgress}%` }}
             />
           </div>
-          <span className="text-[10px] font-bold text-muted-foreground whitespace-nowrap">{importProgress}%</span>
+          <span className="text-muted-foreground text-[10px] font-bold whitespace-nowrap">
+            {importProgress}%
+          </span>
         </div>
       )}
 
@@ -125,7 +132,7 @@ export default function ImportExportControls({ onRefresh }: ImportExportControls
         </button>
 
         {/* Dropdown Menu */}
-        <div className="bg-card border-border invisible absolute right-0 top-full z-50 mt-2 min-w-[120px] origin-top-right scale-95 rounded-xl border p-1 shadow-xl transition-all group-hover:visible group-hover:scale-100 group-hover:opacity-100 opacity-0">
+        <div className="bg-card border-border invisible absolute top-full right-0 z-50 mt-2 min-w-[120px] origin-top-right scale-95 rounded-xl border p-1 opacity-0 shadow-xl transition-all group-hover:visible group-hover:scale-100 group-hover:opacity-100">
           <button
             onClick={() => handleExport("csv")}
             className="hover:bg-muted w-full rounded-lg px-3 py-2 text-left text-sm transition-colors"

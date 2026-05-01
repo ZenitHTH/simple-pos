@@ -6,7 +6,9 @@ describe("sanitize", () => {
   });
 
   it("should redact emails in strings", () => {
-    expect(sanitize("Contact test@example.com")).toBe("Contact [REDACTED-EMAIL]");
+    expect(sanitize("Contact test@example.com")).toBe(
+      "Contact [REDACTED-EMAIL]",
+    );
   });
 
   it("should redact sensitive keys in objects", () => {

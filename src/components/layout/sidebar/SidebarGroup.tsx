@@ -34,18 +34,20 @@ export function SidebarGroup({
       <button
         onClick={onToggle}
         className={cn(
-          "group tuner-sidebar-item flex w-full items-center gap-3 transition-[background-color,color,box-shadow] duration-200 px-4 py-3",
+          "group tuner-sidebar-item flex w-full items-center gap-3 px-4 py-3 transition-[background-color,color,box-shadow] duration-200",
           hasActiveChild
             ? "text-primary shadow-sm"
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
         style={{
-          backgroundColor: hasActiveChild ? "color-mix(in srgb, var(--primary), transparent calc(100% - var(--sidebar-active-bg-opacity) * 100%))" : undefined
+          backgroundColor: hasActiveChild
+            ? "color-mix(in srgb, var(--primary), transparent calc(100% - var(--sidebar-active-bg-opacity) * 100%))"
+            : undefined,
         }}
       >
         <span
           className={cn(
-            "tuner-sidebar-icon flex items-center justify-center shrink-0",
+            "tuner-sidebar-icon flex shrink-0 items-center justify-center",
             hasActiveChild
               ? "text-primary"
               : "text-muted-foreground group-hover:text-foreground",
@@ -62,7 +64,11 @@ export function SidebarGroup({
               : "text-muted-foreground group-hover:text-foreground",
           )}
         >
-          {isExpanded ? <FaChevronDown size={12} /> : <FaChevronRight size={12} />}
+          {isExpanded ? (
+            <FaChevronDown size={12} />
+          ) : (
+            <FaChevronRight size={12} />
+          )}
         </span>
       </button>
 

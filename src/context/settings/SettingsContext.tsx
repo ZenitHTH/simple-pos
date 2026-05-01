@@ -9,7 +9,13 @@ import {
   useRef,
   ReactNode,
 } from "react";
-import { AppSettings, settingsApi, deepMerge, DeepPartial, StorageInfo } from "@/lib";
+import {
+  AppSettings,
+  settingsApi,
+  deepMerge,
+  DeepPartial,
+  StorageInfo,
+} from "@/lib";
 import { logger } from "@/lib/utils/logger";
 import { DEFAULT_SETTINGS, THEME_PRESETS } from "./constants";
 import { useApplySettings } from "./hooks";
@@ -39,7 +45,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
-  const [diskSettings, setDiskSettings] = useState<AppSettings>(DEFAULT_SETTINGS); // Track what is actually on disk
+  const [diskSettings, setDiskSettings] =
+    useState<AppSettings>(DEFAULT_SETTINGS); // Track what is actually on disk
   const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
   const [databaseExists, setDatabaseExists] = useState<boolean | null>(null);
   const [past, setPast] = useState<AppSettings[]>([]);
@@ -59,7 +66,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const load = async () => {
     try {
       const data = await settingsApi.getAppInitialState();
-      const loadedSettings = deepMerge<AppSettings>(DEFAULT_SETTINGS, data.settings);
+      const loadedSettings = deepMerge<AppSettings>(
+        DEFAULT_SETTINGS,
+        data.settings,
+      );
       setSettings(loadedSettings);
       setDiskSettings(loadedSettings); // Sync disk state
       setHasUnsavedChanges(false);
@@ -102,10 +112,15 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const updateSettings = (updates: DeepPartial<AppSettings>) => {
     setSettings((prev) => {
       let toApply = updates;
-      
-      if (updates.theme?.theme_preset && updates.theme.theme_preset !== "custom") {
+
+      if (
+        updates.theme?.theme_preset &&
+        updates.theme.theme_preset !== "custom"
+      ) {
         const preset =
-          THEME_PRESETS[updates.theme.theme_preset as keyof typeof THEME_PRESETS];
+          THEME_PRESETS[
+            updates.theme.theme_preset as keyof typeof THEME_PRESETS
+          ];
         if (preset) {
           // Merge preset first, then apply user overrides on top of it
           toApply = deepMerge(preset, updates);
@@ -119,7 +134,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const save = async () => {
     if (!hasUnsavedChanges) return;
-    
+
     setIsSaving(true);
     try {
       await settingsApi.saveSettings(settings);

@@ -29,7 +29,7 @@ interface TunerSidebarProps {
 
 /**
  * TunerSidebar Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -47,13 +47,13 @@ export function TunerSidebar({
       headerIcon={FaPalette}
       scale={settings.scaling.components.sidebar}
       fontScale={settings.scaling.fonts.sidebar}
-      className="backdrop-blur-md bg-card/60"
+      className="bg-card/60 backdrop-blur-md"
       style={{ transform: "translateZ(0)" } as any}
     >
       <div className="px-6 pb-6">
         {/* Navigation Group */}
         <div className="mb-6 space-y-1">
-          <h3 className="mb-3 px-3 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
+          <h3 className="text-muted-foreground/50 mb-3 px-3 text-[10px] font-black tracking-[0.25em] uppercase">
             Tune Component
           </h3>
           <div className="space-y-1.5">
@@ -72,7 +72,7 @@ export function TunerSidebar({
             <NavButton
               active={activeTab === "button"}
               onClick={() => setActiveTab("button")}
-              icon={<FaHandPointer className="text-sm rotate-45" />}
+              icon={<FaHandPointer className="rotate-45 text-sm" />}
               label="Buttons"
             />
             <NavButton
@@ -118,7 +118,7 @@ export function TunerSidebar({
 
         {/* Tuner Content Area */}
         <div
-          className="mt-6 min-h-0 space-y-8 custom-scrollbar"
+          className="custom-scrollbar mt-6 min-h-0 space-y-8"
           data-lenis-prevent
         >
           {/* Dynamic Panel based on Active Tab */}
@@ -132,9 +132,11 @@ export function TunerSidebar({
             >
               {activeTab !== "global" && (
                 <div className="px-3 py-6 text-center">
-                  <FaSlidersH className="mx-auto mb-3 text-muted-foreground/30 text-2xl" />
-                  <p className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest leading-relaxed">
-                    Interactive tuning<br/>on the right canvas
+                  <FaSlidersH className="text-muted-foreground/30 mx-auto mb-3 text-2xl" />
+                  <p className="text-muted-foreground/60 text-xs leading-relaxed font-bold tracking-widest uppercase">
+                    Interactive tuning
+                    <br />
+                    on the right canvas
                   </p>
                 </div>
               )}

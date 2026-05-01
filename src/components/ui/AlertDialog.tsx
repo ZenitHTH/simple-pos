@@ -21,10 +21,15 @@ interface AlertDialogProps {
 /**
  * A custom alert dialog component that replaces the native browser alert().
  * It uses the Modal component for consistent styling and provides an "OK" button.
- * 
+ *
  * @param props - The component props.
  */
-export function AlertDialog({ isOpen, onClose, title, message }: AlertDialogProps) {
+export function AlertDialog({
+  isOpen,
+  onClose,
+  title,
+  message,
+}: AlertDialogProps) {
   return (
     <Modal
       isOpen={isOpen}
@@ -32,20 +37,12 @@ export function AlertDialog({ isOpen, onClose, title, message }: AlertDialogProp
       title={title}
       className="max-w-[400px]"
     >
-      <div 
-        role="alertdialog" 
-        aria-modal="true"
-        className="flex flex-col gap-6"
-      >
+      <div role="alertdialog" aria-modal="true" className="flex flex-col gap-6">
         <div className="text-foreground/80 text-base leading-relaxed">
           {message}
         </div>
         <div className="flex justify-end">
-          <Button 
-            onClick={onClose}
-            className="min-w-[100px]"
-            variant="default"
-          >
+          <Button onClick={onClose} className="min-w-[100px]" variant="default">
             OK
           </Button>
         </div>

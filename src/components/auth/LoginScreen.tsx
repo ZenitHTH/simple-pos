@@ -36,10 +36,7 @@ export default function LoginScreen() {
             onKeyDown={(e) => {
               // Only allow English letters, numbers, standard special characters, and control keys
               // Thai Unicode range is \u0E00-\u0E7F. We use a positive regex for allowed ASCII.
-              if (
-                e.key.length === 1 && 
-                !/^[\x20-\x7E]+$/.test(e.key)
-              ) {
+              if (e.key.length === 1 && !/^[\x20-\x7E]+$/.test(e.key)) {
                 e.preventDefault();
               }
             }}
@@ -50,10 +47,11 @@ export default function LoginScreen() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`text-primary-foreground h-11 w-full rounded-xl px-4 py-2 font-bold shadow-lg transition-all ${isLoading
+            className={`text-primary-foreground h-11 w-full rounded-xl px-4 py-2 font-bold shadow-lg transition-all ${
+              isLoading
                 ? "bg-primary/50 cursor-not-allowed"
                 : "bg-primary hover:bg-primary/90 hover:shadow-primary/20"
-              }`}
+            }`}
           >
             {isLoading ? "Connecting..." : "Login"}
           </button>

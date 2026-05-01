@@ -22,7 +22,7 @@ interface POSProductGridProps {
 /**
  * POSProductGrid component renders a responsive grid of products with filtering capabilities.
  * It handles category selection, search queries, and dynamic grid scaling based on application settings.
- * 
+ *
  * @param {POSProductGridProps} props - The component props.
  * @param {Product[]} props.products - List of products to display.
  * @param {string[]} props.categories - List of available categories for filtering.
@@ -52,8 +52,8 @@ const POSProductGrid = memo(function POSProductGrid({
       setBaseWidth(window.innerWidth < 768 ? 160 : 240);
     };
     updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -74,7 +74,7 @@ const POSProductGrid = memo(function POSProductGrid({
   const gridStyle = {
     gridTemplateColumns: `repeat(auto-fill, minmax(calc(${itemMinWidth}px * var(--grid-scale, 1)), 1fr))`,
     fontSize: `calc(var(--grid-scale, 1) * 100%)`,
-    gap: `${settings?.styling.grid.gap ?? 20}px`
+    gap: `${settings?.styling.grid.gap ?? 20}px`,
   };
 
   return (
@@ -91,13 +91,10 @@ const POSProductGrid = memo(function POSProductGrid({
 
       {/* Product Grid - Scrollable Area */}
       <div
-        className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pr-4 -mr-4"
+        className="custom-scrollbar -mr-4 min-h-0 flex-1 overflow-y-auto pr-4"
         data-lenis-prevent
       >
-        <div
-          className="grid relative pb-6"
-          style={gridStyle}
-        >
+        <div className="relative grid pb-6" style={gridStyle}>
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}

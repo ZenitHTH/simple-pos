@@ -11,7 +11,7 @@ export function useMaterialManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
   const { materials, updateCache, refreshAll } = useDataCache();
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,7 +46,7 @@ export function useMaterialManagement() {
     } catch (err: unknown) {
       await showAlert(
         "Material Error",
-        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`
+        `Failed to delete material: ${err instanceof Error ? err.message : String(err)}`,
       );
     }
   };
@@ -66,7 +66,9 @@ export function useMaterialManagement() {
           parseInt(data.quantity, 10),
           data.tags,
         );
-        updateCache.materials(materials.map(m => m.id === updated.id ? updated : m));
+        updateCache.materials(
+          materials.map((m) => (m.id === updated.id ? updated : m)),
+        );
       } else {
         const created = await materialApi.create(
           dbKey,
@@ -83,7 +85,7 @@ export function useMaterialManagement() {
     } catch (err: unknown) {
       await showAlert(
         "Material Error",
-        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`
+        `Failed to save material: ${err instanceof Error ? err.message : String(err)}`,
       );
     } finally {
       setIsSubmitting(false);
@@ -92,26 +94,27 @@ export function useMaterialManagement() {
 
   const filteredMaterials = useMemo(() => {
     return materials.filter((m) => {
-      const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesTags = selectedTags.length === 0 || 
-        selectedTags.every(tag => m.tags?.includes(tag));
+      const matchesSearch = m.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.every((tag) => m.tags?.includes(tag));
       return matchesSearch && matchesTags;
     });
   }, [materials, searchQuery, selectedTags]);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    materials.forEach(m => {
-      m.tags?.forEach(tag => tags.add(tag));
+    materials.forEach((m) => {
+      m.tags?.forEach((tag) => tags.add(tag));
     });
     return Array.from(tags).sort();
   }, [materials]);
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
 

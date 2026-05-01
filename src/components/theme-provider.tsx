@@ -6,8 +6,8 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 /**
  * A wrapper for next-themes ThemeProvider.
  * This component handles theme switching (light/dark/system) via CSS classes.
- * It is compatible with our manual CSS variable injection in SettingsContext 
- * because next-themes does not modify the inline 'style' attribute of the 
+ * It is compatible with our manual CSS variable injection in SettingsContext
+ * because next-themes does not modify the inline 'style' attribute of the
  * document element by default.
  */
 export function ThemeProvider({

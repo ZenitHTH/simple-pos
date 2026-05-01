@@ -30,7 +30,7 @@ export interface ToastProps {
 /**
  * A notification component that slides in and auto-closes.
  * Features different themes for success, error, and informational messages.
- * 
+ *
  * @param props - The toast props.
  * @returns A notification element.
  */

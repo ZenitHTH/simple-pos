@@ -1,7 +1,7 @@
-use database::run_migrations;
-use serde::Serialize;
 use database::product::model::ProductWithImage;
+use database::run_migrations;
 use database::{Category, Customer, Material, Stock};
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct ManagementData {
@@ -15,11 +15,15 @@ pub struct ManagementData {
 /// Retrieves all management data in a single atomic database operation.
 /// Consolidates products, categories, customers, materials, and stocks to reduce IPC overhead.
 #[tauri::command]
-pub fn get_full_management_data(state: tauri::State<'_, crate::AppState>) -> Result<ManagementData, String> {
+pub fn get_full_management_data(
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<ManagementData, String> {
     let mut conn = crate::conn!(state);
-    
-    let products = database::product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())?;
-    let categories = database::category::get_all_categories(&mut conn).map_err(|e| e.to_string())?;
+
+    let products =
+        database::product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())?;
+    let categories =
+        database::category::get_all_categories(&mut conn).map_err(|e| e.to_string())?;
     let customers = database::customer::get_all_customers(&mut conn).map_err(|e| e.to_string())?;
     let materials = database::material::get_all_materials(&mut conn).map_err(|e| e.to_string())?;
     let stocks = database::stock::get_all_stocks(&mut conn).map_err(|e| e.to_string())?;
@@ -42,7 +46,10 @@ pub fn get_full_management_data(state: tauri::State<'_, crate::AppState>) -> Res
 /// # Returns
 /// An empty result on success.
 #[tauri::command]
-pub fn initialize_database(key: String, state: tauri::State<'_, crate::AppState>) -> Result<(), String> {
+pub fn initialize_database(
+    key: String,
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<(), String> {
     // 1. First, verify the key using a single, non-pooled connection.
     // This prevents log flooding and crashes if the key is wrong.
     database::connection::verify_database_key(&key)?;
@@ -57,7 +64,10 @@ pub fn initialize_database(key: String, state: tauri::State<'_, crate::AppState>
     }
 
     // 4. Save the pool to application state.
-    *state.pool.write().map_err(|_| "Failed to lock pool state")? = Some(pool);
+    *state
+        .pool
+        .write()
+        .map_err(|_| "Failed to lock pool state")? = Some(pool);
     Ok(())
 }
 
@@ -79,6 +89,9 @@ pub fn check_database_exists(_app: tauri::AppHandle) -> Result<bool, String> {
 /// This ensures that the database is no longer accessible after logout.
 #[tauri::command]
 pub fn logout_database(state: tauri::State<'_, crate::AppState>) -> Result<(), String> {
-    *state.pool.write().map_err(|_| "Failed to lock pool state")? = None;
+    *state
+        .pool
+        .write()
+        .map_err(|_| "Failed to lock pool state")? = None;
     Ok(())
 }

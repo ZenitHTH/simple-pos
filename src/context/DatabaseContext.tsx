@@ -39,14 +39,20 @@ export function DatabaseProvider({ children }: { children: React.ReactNode }) {
       setDbExists(true); // Ensure we mark it as existing after successful init
     } catch (error: any) {
       const errorMsg = String(error).toLowerCase();
-      const isAuthError = errorMsg.includes("no such table") || 
-                          errorMsg.includes("file is not a database") ||
-                          errorMsg.includes("invalid encryption key");
+      const isAuthError =
+        errorMsg.includes("no such table") ||
+        errorMsg.includes("file is not a database") ||
+        errorMsg.includes("invalid encryption key");
 
       if (isAuthError) {
-        logger.warn("Database login failed: Invalid key or unauthorized access.");
+        logger.warn(
+          "Database login failed: Invalid key or unauthorized access.",
+        );
       } else {
-        logger.error("Failed to initialize DB. Please check your credentials and try again.", error);
+        logger.error(
+          "Failed to initialize DB. Please check your credentials and try again.",
+          error,
+        );
       }
       throw error;
     } finally {

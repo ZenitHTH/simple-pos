@@ -17,7 +17,7 @@ interface MaterialModalProps {
 /**
  * MaterialModal component provides a form for creating or editing raw materials/inventory items.
  * It handles fields for name, volume, quantity, unit type, and tags.
- * 
+ *
  * @param {MaterialModalProps} props - The component props.
  * @param {boolean} props.isOpen - Whether the modal is currently open.
  * @param {() => void} props.onClose - Callback to close the modal.

@@ -18,7 +18,7 @@ export default function AppearancePage() {
       scaleKey="setting_page_scale"
       scrollable={false}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full overflow-hidden">
+      <div className="grid h-full grid-cols-1 gap-6 overflow-hidden md:grid-cols-2">
         <ThemeSettings />
         <DisplaySettings />
       </div>

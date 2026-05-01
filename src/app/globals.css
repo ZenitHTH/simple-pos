@@ -14,7 +14,7 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  
+
   /* Generated Interactive States */
   --color-primary-hover: var(--primary-hover);
   --color-primary-active: var(--primary-active);
@@ -59,16 +59,31 @@
     letter-spacing: var(--typography-letter-spacing);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply text-foreground font-bold;
   }
 
-  h1 { @apply text-3xl; }
-  h2 { @apply text-2xl; }
-  h3 { @apply text-xl; }
-  h4 { @apply text-lg; }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
 
-  p { @apply text-foreground; }
+  p {
+    @apply text-foreground;
+  }
 
   label {
     color: var(--muted-foreground);

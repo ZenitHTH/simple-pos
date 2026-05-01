@@ -15,7 +15,7 @@ interface ThemeExplorerModalProps {
 
 /**
  * ThemeExplorerModal Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -68,7 +68,7 @@ export function ThemeExplorerModal({
             className="bg-background border-border relative flex h-full w-full max-w-6xl flex-col overflow-hidden rounded-[2.5rem] border shadow-2xl"
           >
             {/* Header */}
-            <header className="flex items-center justify-between border-b border-border/50 px-6 py-6 md:px-10 md:py-8">
+            <header className="border-border/50 flex items-center justify-between border-b px-6 py-6 md:px-10 md:py-8">
               <div className="flex-1">
                 <h2 className="flex items-center gap-3 text-2xl font-black tracking-tight md:text-3xl">
                   <FaPalette className="text-primary" />
@@ -82,7 +82,7 @@ export function ThemeExplorerModal({
               <div className="flex items-center gap-4">
                 {/* Theme Toggle */}
                 {mounted && (
-                  <div className="bg-secondary/30 flex items-center gap-1 rounded-full p-1 border border-border/50">
+                  <div className="bg-secondary/30 border-border/50 flex items-center gap-1 rounded-full border p-1">
                     <button
                       onClick={() => setTheme("light")}
                       className={`flex h-9 w-9 items-center justify-center rounded-full transition-all ${
@@ -121,7 +121,7 @@ export function ThemeExplorerModal({
             <div className="custom-scrollbar flex-1 overflow-y-auto p-6 md:p-10">
               {/* Curated Grid */}
               <section className="mb-12">
-                <h3 className="text-muted-foreground/60 mb-6 px-2 text-xs font-black uppercase tracking-[0.2em]">
+                <h3 className="text-muted-foreground/60 mb-6 px-2 text-xs font-black tracking-[0.2em] uppercase">
                   Curated Palettes
                 </h3>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -139,8 +139,8 @@ export function ThemeExplorerModal({
               </section>
 
               {/* Advanced Generator */}
-              <section className="border-t border-border/50 pt-12">
-                <h3 className="text-muted-foreground/60 mb-6 px-2 text-xs font-black uppercase tracking-[0.2em]">
+              <section className="border-border/50 border-t pt-12">
+                <h3 className="text-muted-foreground/60 mb-6 px-2 text-xs font-black tracking-[0.2em] uppercase">
                   Advanced Palette Generator
                 </h3>
                 <div className="bg-muted/30 border-border/50 flex flex-col items-center gap-8 rounded-3xl border p-6 md:flex-row md:p-8">
@@ -150,23 +150,22 @@ export function ThemeExplorerModal({
                   />
                   <div className="flex-1 space-y-4 text-center md:text-left">
                     <p className="text-sm font-medium">
-                      Input any hex code. The system will automatically
-                      generate all matching shades using <code>color-mix()</code>
-                      .
+                      Input any hex code. The system will automatically generate
+                      all matching shades using <code>color-mix()</code>.
                     </p>
                     <div className="flex gap-3">
                       <input
                         type="color"
                         value={currentPrimary || "#3b82f6"}
                         onChange={(e) => handleSelectTheme(e.target.value)}
-                        className="h-12 w-12 cursor-pointer rounded-xl border-0 p-0 overflow-hidden shadow-sm"
+                        className="h-12 w-12 cursor-pointer overflow-hidden rounded-xl border-0 p-0 shadow-sm"
                       />
                       <input
                         type="text"
                         value={currentPrimary || "#3b82f6"}
                         onChange={(e) => handleSelectTheme(e.target.value)}
                         placeholder="#HEXCODE"
-                        className="bg-background border-border flex-1 rounded-xl border px-4 py-2 font-mono font-bold focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                        className="bg-background border-border focus:ring-primary/20 flex-1 rounded-xl border px-4 py-2 font-mono font-bold focus:ring-2 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -175,10 +174,10 @@ export function ThemeExplorerModal({
             </div>
 
             {/* Footer */}
-            <footer className="bg-muted/20 border-t border-border/50 px-6 py-4 flex justify-end md:px-10 md:py-6">
+            <footer className="bg-muted/20 border-border/50 flex justify-end border-t px-6 py-4 md:px-10 md:py-6">
               <button
                 onClick={onClose}
-                className="bg-primary text-primary-foreground shadow-primary/20 rounded-2xl px-8 py-3 font-black uppercase tracking-widest shadow-lg transition-all hover:scale-105 active:scale-95"
+                className="bg-primary text-primary-foreground shadow-primary/20 rounded-2xl px-8 py-3 font-black tracking-widest uppercase shadow-lg transition-all hover:scale-105 active:scale-95"
               >
                 Done
               </button>

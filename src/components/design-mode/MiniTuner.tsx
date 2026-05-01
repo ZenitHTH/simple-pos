@@ -4,7 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Draggable from "react-draggable";
-import { FaLayerGroup, FaMagic, FaCheckCircle, FaTextHeight } from "react-icons/fa";
+import {
+  FaLayerGroup,
+  FaMagic,
+  FaCheckCircle,
+  FaTextHeight,
+} from "react-icons/fa";
 import { useColorSampler } from "@/hooks/common/useColorSampler";
 import { useMockup } from "@/context/MockupContext";
 import { useSettings } from "@/context/settings/SettingsContext";
@@ -24,7 +29,7 @@ export default function MiniTuner() {
   const [activeTab, setActiveTab] = useState<Tab>("layout");
   const menuRef = useRef<HTMLDivElement>(null);
   const nodeRef = useRef<HTMLDivElement>(null);
-  
+
   // Color Sampler
   const { colors, sampleImage, isSampling } = useColorSampler();
   const [previewColor, setPreviewColor] = useState<string | null>(null);
@@ -48,10 +53,12 @@ export default function MiniTuner() {
     setPreviewColor(null);
 
     // Try to find an image within the selected element's parent (since overlay is absolute inset-0)
-    const el = document.querySelector(`[data-selectable-id="${selectedElementId}"]`);
+    const el = document.querySelector(
+      `[data-selectable-id="${selectedElementId}"]`,
+    );
     const parent = el?.parentElement;
     const img = parent?.querySelector("img");
-    
+
     if (img) {
       if (img.complete) {
         sampleImage(img);
@@ -80,7 +87,9 @@ export default function MiniTuner() {
     const updatePosition = () => {
       if (!selectedElementId) return;
 
-      const el = document.querySelector(`[data-selectable-id="${selectedElementId}"]`);
+      const el = document.querySelector(
+        `[data-selectable-id="${selectedElementId}"]`,
+      );
       if (!el) return;
 
       // We need to wait a tiny bit for the tuner to measure itself if it just mounted
@@ -88,10 +97,10 @@ export default function MiniTuner() {
       const rect = el.getBoundingClientRect();
       const menuWidth = 288; // w-72 = 18rem = 288px
       const menuHeight = menuEl?.offsetHeight || 380; // Estimated height if not yet measured
-      
+
       // Calculate center position
       let top = rect.top - menuHeight - 20;
-      let left = rect.left + (rect.width / 2) - (menuWidth / 2);
+      let left = rect.left + rect.width / 2 - menuWidth / 2;
       let flip = false;
 
       // Check if top edge overflows screen
@@ -102,7 +111,10 @@ export default function MiniTuner() {
 
       // Keep within horizontal screen bounds
       const padding = 20;
-      left = Math.max(padding, Math.min(left, window.innerWidth - menuWidth - padding));
+      left = Math.max(
+        padding,
+        Math.min(left, window.innerWidth - menuWidth - padding),
+      );
 
       // Keep within vertical screen bounds (protect the bottom edge)
       if (top + menuHeight > window.innerHeight - padding) {
@@ -119,7 +131,7 @@ export default function MiniTuner() {
 
     if (selectedElementId) {
       updatePosition();
-      
+
       // Call again shortly after to handle any layout shifts
       const timer = setTimeout(updatePosition, 100);
 
@@ -139,49 +151,90 @@ export default function MiniTuner() {
   // Mapping for dynamic access to nested settings
   const getNestedValue = (id: string): number => {
     switch (id) {
-      case "grid_scale": return settings.scaling.components.grid;
-      case "numpad_scale": return settings.styling.payment.numpad_scale ?? 100;
-      case "cart_scale": return settings.scaling.components.cart;
-      case "sidebar_scale": return settings.scaling.components.sidebar;
-      case "button_scale": return settings.scaling.components.button;
-      case "header_font_scale": return settings.scaling.fonts.header;
-      case "history_font_scale": return settings.scaling.fonts.history || 100;
-      case "sidebar_font_scale": return settings.scaling.fonts.sidebar;
-      default: return 100;
+      case "grid_scale":
+        return settings.scaling.components.grid;
+      case "numpad_scale":
+        return settings.styling.payment.numpad_scale ?? 100;
+      case "cart_scale":
+        return settings.scaling.components.cart;
+      case "sidebar_scale":
+        return settings.scaling.components.sidebar;
+      case "button_scale":
+        return settings.scaling.components.button;
+      case "header_font_scale":
+        return settings.scaling.fonts.header;
+      case "history_font_scale":
+        return settings.scaling.fonts.history || 100;
+      case "sidebar_font_scale":
+        return settings.scaling.fonts.sidebar;
+      default:
+        return 100;
     }
   };
 
   const getFontScaleValue = (id: string): number => {
     switch (id) {
-      case "grid_scale": return settings.scaling.fonts.grid;
-      case "cart_scale": return settings.styling.cart.font_size ?? 100;
-      case "sidebar_scale": return settings.scaling.fonts.sidebar;
-      case "button_scale": return settings.scaling.fonts.button;
-      case "numpad_scale": return settings.styling.payment.numpad_font_scale ?? 100;
-      default: return 100;
+      case "grid_scale":
+        return settings.scaling.fonts.grid;
+      case "cart_scale":
+        return settings.styling.cart.font_size ?? 100;
+      case "sidebar_scale":
+        return settings.scaling.fonts.sidebar;
+      case "button_scale":
+        return settings.scaling.fonts.button;
+      case "numpad_scale":
+        return settings.styling.payment.numpad_font_scale ?? 100;
+      default:
+        return 100;
     }
   };
 
   const updateNestedValue = (id: string, val: number) => {
     switch (id) {
-      case "grid_scale": updateSettings({ scaling: { components: { grid: val } } }); break;
-      case "numpad_scale": updateSettings({ styling: { payment: { numpad_scale: val } } }); break;
-      case "cart_scale": updateSettings({ scaling: { components: { cart: val } } }); break;
-      case "sidebar_scale": updateSettings({ scaling: { components: { sidebar: val } } }); break;
-      case "button_scale": updateSettings({ scaling: { components: { button: val } } }); break;
-      case "header_font_scale": updateSettings({ scaling: { fonts: { header: val } } }); break;
-      case "history_font_scale": updateSettings({ scaling: { fonts: { history: val } } }); break;
-      case "sidebar_font_scale": updateSettings({ scaling: { fonts: { sidebar: val } } }); break;
+      case "grid_scale":
+        updateSettings({ scaling: { components: { grid: val } } });
+        break;
+      case "numpad_scale":
+        updateSettings({ styling: { payment: { numpad_scale: val } } });
+        break;
+      case "cart_scale":
+        updateSettings({ scaling: { components: { cart: val } } });
+        break;
+      case "sidebar_scale":
+        updateSettings({ scaling: { components: { sidebar: val } } });
+        break;
+      case "button_scale":
+        updateSettings({ scaling: { components: { button: val } } });
+        break;
+      case "header_font_scale":
+        updateSettings({ scaling: { fonts: { header: val } } });
+        break;
+      case "history_font_scale":
+        updateSettings({ scaling: { fonts: { history: val } } });
+        break;
+      case "sidebar_font_scale":
+        updateSettings({ scaling: { fonts: { sidebar: val } } });
+        break;
     }
   };
 
   const updateFontScaleValue = (id: string, val: number) => {
     switch (id) {
-      case "grid_scale": updateSettings({ scaling: { fonts: { grid: val } } }); break;
-      case "cart_scale": updateSettings({ styling: { cart: { font_size: val } } }); break;
-      case "sidebar_scale": updateSettings({ scaling: { fonts: { sidebar: val } } }); break;
-      case "button_scale": updateSettings({ scaling: { fonts: { button: val } } }); break;
-      case "numpad_scale": updateSettings({ styling: { payment: { numpad_font_scale: val } } }); break;
+      case "grid_scale":
+        updateSettings({ scaling: { fonts: { grid: val } } });
+        break;
+      case "cart_scale":
+        updateSettings({ styling: { cart: { font_size: val } } });
+        break;
+      case "sidebar_scale":
+        updateSettings({ scaling: { fonts: { sidebar: val } } });
+        break;
+      case "button_scale":
+        updateSettings({ scaling: { fonts: { button: val } } });
+        break;
+      case "numpad_scale":
+        updateSettings({ styling: { payment: { numpad_font_scale: val } } });
+        break;
     }
   };
 
@@ -204,10 +257,13 @@ export default function MiniTuner() {
         defaultPosition={{ x: position.left, y: position.top }}
         onStart={(e) => {
           // Prevent drag from starting if clicking internal buttons
-          if ((e.target as HTMLElement).closest('button')) return false;
+          if ((e.target as HTMLElement).closest("button")) return false;
         }}
       >
-        <div ref={nodeRef} className="pointer-events-auto absolute flex w-72 flex-col rounded-xl border border-border bg-card/80 shadow-2xl backdrop-blur-md">
+        <div
+          ref={nodeRef}
+          className="border-border bg-card/80 pointer-events-auto absolute flex w-72 flex-col rounded-xl border shadow-2xl backdrop-blur-md"
+        >
           <AnimatePresence>
             <motion.div
               ref={menuRef}
@@ -219,19 +275,19 @@ export default function MiniTuner() {
               id="minituner-portal"
             >
               {/* Add a visible drag handle at the top */}
-              <div className="drag-handle h-6 flex items-center justify-center cursor-grab active:cursor-grabbing w-full">
-                <div className="h-1.5 w-12 bg-border/50 rounded-full" />
+              <div className="drag-handle flex h-6 w-full cursor-grab items-center justify-center active:cursor-grabbing">
+                <div className="bg-border/50 h-1.5 w-12 rounded-full" />
               </div>
-              
+
               {/* Header & Tabs */}
-              <div className="flex border-b border-border p-1">
+              <div className="border-border flex border-b p-1">
                 <button
                   onClick={() => setActiveTab("layout")}
                   className={cn(
-                    "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-[10px] font-black uppercase tracking-widest transition-all",
+                    "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-[10px] font-black tracking-widest uppercase transition-all",
                     activeTab === "layout"
                       ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted"
+                      : "text-muted-foreground hover:bg-muted",
                   )}
                 >
                   <FaLayerGroup size={12} />
@@ -240,10 +296,10 @@ export default function MiniTuner() {
                 <button
                   onClick={() => setActiveTab("style")}
                   className={cn(
-                    "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-[10px] font-black uppercase tracking-widest transition-all",
+                    "flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-[10px] font-black tracking-widest uppercase transition-all",
                     activeTab === "style"
                       ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted"
+                      : "text-muted-foreground hover:bg-muted",
                   )}
                 >
                   <FaMagic size={12} />
@@ -253,10 +309,10 @@ export default function MiniTuner() {
 
               <div className="p-4">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                  <h3 className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
                     {selectedElementId.replace(/_/g, " ")}
                   </h3>
-                  <div className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  <div className="bg-primary flex h-1.5 w-1.5 animate-pulse rounded-full" />
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -269,39 +325,73 @@ export default function MiniTuner() {
                       className="space-y-4"
                     >
                       {selectedElementId === "grid_scale" ? (
-                        <GridStylesPanel settings={settings} onUpdate={updateSettings} />
+                        <GridStylesPanel
+                          settings={settings}
+                          onUpdate={updateSettings}
+                        />
                       ) : selectedElementId === "numpad_scale" ? (
                         <div className="flex flex-col gap-4">
                           <TunerSlider
                             label="Numpad Scale"
                             value={settings.styling.payment.numpad_scale ?? 100}
-                            onChange={(v) => updateSettings({ styling: { payment: { numpad_scale: v } } })}
+                            onChange={(v) =>
+                              updateSettings({
+                                styling: { payment: { numpad_scale: v } },
+                              })
+                            }
                             min={50}
                             max={150}
                             unit="%"
                           />
 
-                          <div className="space-y-4 border-t border-border/50 pt-4">
+                          <div className="border-border/50 space-y-4 border-t pt-4">
                             <TunerSlider
                               label="Button Font"
-                              value={settings.styling.payment.numpad_font_scale ?? 100}
-                              onChange={(v) => updateSettings({ styling: { payment: { numpad_font_scale: v } } })}
+                              value={
+                                settings.styling.payment.numpad_font_scale ??
+                                100
+                              }
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: {
+                                    payment: { numpad_font_scale: v },
+                                  },
+                                })
+                              }
                               min={50}
                               max={200}
                               unit="%"
                             />
                             <TunerSlider
                               label="Display Font"
-                              value={settings.styling.payment.numpad_display_font_scale ?? 100}
-                              onChange={(v) => updateSettings({ styling: { payment: { numpad_display_font_scale: v } } })}
+                              value={
+                                settings.styling.payment
+                                  .numpad_display_font_scale ?? 100
+                              }
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: {
+                                    payment: { numpad_display_font_scale: v },
+                                  },
+                                })
+                              }
                               min={50}
                               max={200}
                               unit="%"
                             />
                             <TunerSlider
                               label="Button Height"
-                              value={settings.styling.payment.numpad_button_height ?? 80}
-                              onChange={(v) => updateSettings({ styling: { payment: { numpad_button_height: v } } })}
+                              value={
+                                settings.styling.payment.numpad_button_height ??
+                                80
+                              }
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: {
+                                    payment: { numpad_button_height: v },
+                                  },
+                                })
+                              }
                               min={40}
                               max={120}
                               unit="px"
@@ -309,7 +399,11 @@ export default function MiniTuner() {
                             <TunerSlider
                               label="Button Gap"
                               value={settings.styling.payment.numpad_gap ?? 12}
-                              onChange={(v) => updateSettings({ styling: { payment: { numpad_gap: v } } })}
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { payment: { numpad_gap: v } },
+                                })
+                              }
                               min={0}
                               max={32}
                               unit="px"
@@ -321,32 +415,52 @@ export default function MiniTuner() {
                           <TunerSlider
                             label="Cart Width"
                             value={settings.scaling.components.cart ?? 100}
-                            onChange={(v) => updateSettings({ scaling: { components: { cart: v } } })}
+                            onChange={(v) =>
+                              updateSettings({
+                                scaling: { components: { cart: v } },
+                              })
+                            }
                             min={50}
                             max={200}
                             unit="%"
                           />
-                          <div className="space-y-4 border-t border-border/50 pt-4">
+                          <div className="border-border/50 space-y-4 border-t pt-4">
                             <TunerSlider
                               label="Font Size"
                               value={settings.styling.cart.font_size ?? 100}
-                              onChange={(v) => updateSettings({ styling: { cart: { font_size: v } } })}
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { cart: { font_size: v } },
+                                })
+                              }
                               min={50}
                               max={200}
                               unit="%"
                             />
                             <TunerSlider
                               label="Header Font"
-                              value={settings.styling.cart.header_font_size ?? 100}
-                              onChange={(v) => updateSettings({ styling: { cart: { header_font_size: v } } })}
+                              value={
+                                settings.styling.cart.header_font_size ?? 100
+                              }
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { cart: { header_font_size: v } },
+                                })
+                              }
                               min={50}
                               max={200}
                               unit="%"
                             />
                             <TunerSlider
                               label="Price Font"
-                              value={settings.styling.cart.price_font_size ?? 100}
-                              onChange={(v) => updateSettings({ styling: { cart: { price_font_size: v } } })}
+                              value={
+                                settings.styling.cart.price_font_size ?? 100
+                              }
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { cart: { price_font_size: v } },
+                                })
+                              }
                               min={50}
                               max={200}
                               unit="%"
@@ -354,7 +468,11 @@ export default function MiniTuner() {
                             <TunerSlider
                               label="Padding"
                               value={settings.styling.cart.padding ?? 10}
-                              onChange={(v) => updateSettings({ styling: { cart: { padding: v } } })}
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { cart: { padding: v } },
+                                })
+                              }
                               min={0}
                               max={32}
                               unit="px"
@@ -362,7 +480,11 @@ export default function MiniTuner() {
                             <TunerSlider
                               label="Margin"
                               value={settings.styling.cart.margin ?? 8}
-                              onChange={(v) => updateSettings({ styling: { cart: { margin: v } } })}
+                              onChange={(v) =>
+                                updateSettings({
+                                  styling: { cart: { margin: v } },
+                                })
+                              }
                               min={0}
                               max={24}
                               unit="px"
@@ -374,7 +496,11 @@ export default function MiniTuner() {
                           <TunerSlider
                             label="Button Scale"
                             value={settings.scaling.components.button ?? 100}
-                            onChange={(v) => updateSettings({ scaling: { components: { button: v } } })}
+                            onChange={(v) =>
+                              updateSettings({
+                                scaling: { components: { button: v } },
+                              })
+                            }
                             min={50}
                             max={200}
                             unit="%"
@@ -382,7 +508,11 @@ export default function MiniTuner() {
                           <TunerSlider
                             label="Font Scale"
                             value={settings.scaling.fonts.button ?? 100}
-                            onChange={(v) => updateSettings({ scaling: { fonts: { button: v } } })}
+                            onChange={(v) =>
+                              updateSettings({
+                                scaling: { fonts: { button: v } },
+                              })
+                            }
                             min={50}
                             max={200}
                             unit="%"
@@ -393,16 +523,24 @@ export default function MiniTuner() {
                           <TunerSlider
                             label="Sidebar Width"
                             value={settings.scaling.components.sidebar ?? 100}
-                            onChange={(v) => updateSettings({ scaling: { components: { sidebar: v } } })}
+                            onChange={(v) =>
+                              updateSettings({
+                                scaling: { components: { sidebar: v } },
+                              })
+                            }
                             min={50}
                             max={150}
                             unit="%"
                           />
-                          <div className="space-y-4 border-t border-border/50 pt-4">
+                          <div className="border-border/50 space-y-4 border-t pt-4">
                             <TunerSlider
                               label="Font Size"
                               value={settings.scaling.fonts.sidebar ?? 100}
-                              onChange={(v) => updateSettings({ scaling: { fonts: { sidebar: v } } })}
+                              onChange={(v) =>
+                                updateSettings({
+                                  scaling: { fonts: { sidebar: v } },
+                                })
+                              }
                               min={50}
                               max={150}
                               unit="%"
@@ -411,7 +549,7 @@ export default function MiniTuner() {
                         </div>
                       ) : selectedElementId === "header_font_scale" ? (
                         <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                          <div className="text-muted-foreground flex justify-between text-[10px] font-bold uppercase">
                             <span>Header Font</span>
                             <span>{settings.scaling.fonts.header || 100}%</span>
                           </div>
@@ -420,26 +558,36 @@ export default function MiniTuner() {
                             max={150}
                             step={5}
                             value={settings.scaling.fonts.header || 100}
-                            onChange={(val) => updateSettings({ scaling: { fonts: { header: val } } })}
+                            onChange={(val) =>
+                              updateSettings({
+                                scaling: { fonts: { header: val } },
+                              })
+                            }
                           />
                         </div>
                       ) : selectedElementId === "history_font_scale" ? (
                         <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                          <div className="text-muted-foreground flex justify-between text-[10px] font-bold uppercase">
                             <span>History Font</span>
-                            <span>{settings.scaling.fonts.history || 100}%</span>
+                            <span>
+                              {settings.scaling.fonts.history || 100}%
+                            </span>
                           </div>
                           <NumberStepper
                             min={50}
                             max={150}
                             step={5}
                             value={settings.scaling.fonts.history || 100}
-                            onChange={(val) => updateSettings({ scaling: { fonts: { history: val } } })}
+                            onChange={(val) =>
+                              updateSettings({
+                                scaling: { fonts: { history: val } },
+                              })
+                            }
                           />
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
-                          <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                          <div className="text-muted-foreground flex justify-between text-[10px] font-bold uppercase">
                             <span>Scale</span>
                             <span>{currentScale}%</span>
                           </div>
@@ -449,9 +597,12 @@ export default function MiniTuner() {
                             max="200"
                             value={currentScale}
                             onChange={(e) =>
-                              updateNestedValue(selectedElementId, Number(e.target.value))
+                              updateNestedValue(
+                                selectedElementId,
+                                Number(e.target.value),
+                              )
                             }
-                            className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
+                            className="bg-secondary accent-primary h-1.5 w-full cursor-pointer appearance-none rounded-lg"
                           />
                         </div>
                       )}
@@ -466,7 +617,7 @@ export default function MiniTuner() {
                     >
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between px-1">
-                          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                          <div className="text-muted-foreground flex items-center gap-2 text-[10px] font-black tracking-widest uppercase">
                             <FaTextHeight size={10} />
                             FontSize
                           </div>
@@ -480,18 +631,20 @@ export default function MiniTuner() {
                             max={200}
                             step={5}
                             value={currentFontScale}
-                            onChange={(val) => updateFontScaleValue(selectedElementId, val)}
+                            onChange={(val) =>
+                              updateFontScaleValue(selectedElementId, val)
+                            }
                           />
                         )}
                       </div>
 
                       <div className="flex flex-col gap-3">
-                        <label className="text-[10px] font-bold uppercase text-muted-foreground">
+                        <label className="text-muted-foreground text-[10px] font-bold uppercase">
                           Color Sampler
                         </label>
                         <div className="flex items-center gap-3">
                           {isSampling ? (
-                            <div className="flex h-8 w-8 animate-spin items-center justify-center rounded-full border-2 border-primary border-t-transparent" />
+                            <div className="border-primary flex h-8 w-8 animate-spin items-center justify-center rounded-full border-2 border-t-transparent" />
                           ) : colors.length > 0 ? (
                             colors.map((color, index) => (
                               <button
@@ -499,14 +652,18 @@ export default function MiniTuner() {
                                 onClick={() => setPreviewColor(color)}
                                 className={cn(
                                   "h-8 w-8 rounded-full border-2 shadow-sm transition-all hover:scale-110 active:scale-95",
-                                  previewColor === color ? "border-white ring-2 ring-primary" : "border-transparent"
+                                  previewColor === color
+                                    ? "ring-primary border-white ring-2"
+                                    : "border-transparent",
                                 )}
                                 style={{ backgroundColor: color }}
                                 title={color}
                               />
                             ))
                           ) : (
-                            <p className="text-[9px] text-muted-foreground">No image found to sample colors from.</p>
+                            <p className="text-muted-foreground text-[9px]">
+                              No image found to sample colors from.
+                            </p>
                           )}
                         </div>
 
@@ -514,14 +671,15 @@ export default function MiniTuner() {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mt-2 rounded-lg bg-primary/10 p-3"
+                            className="bg-primary/10 mt-2 rounded-lg p-3"
                           >
-                            <p className="mb-2 text-[10px] font-medium text-primary">
-                              Previewing color: <span className="font-bold">{previewColor}</span>
+                            <p className="text-primary mb-2 text-[10px] font-medium">
+                              Previewing color:{" "}
+                              <span className="font-bold">{previewColor}</span>
                             </p>
                             <button
                               onClick={handleApplyColor}
-                              className="flex w-full items-center justify-center gap-2 rounded-md bg-primary py-2 text-[10px] font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-95"
+                              className="bg-primary text-primary-foreground flex w-full items-center justify-center gap-2 rounded-md py-2 text-[10px] font-bold transition-all hover:brightness-110 active:scale-95"
                             >
                               <FaCheckCircle />
                               Apply to Global Theme
@@ -532,9 +690,10 @@ export default function MiniTuner() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
-                <p className="mt-4 text-[9px] italic text-muted-foreground border-t border-border pt-3">
-                  Canvas handles and precision sliders are synchronized in real-time.
+
+                <p className="text-muted-foreground border-border mt-4 border-t pt-3 text-[9px] italic">
+                  Canvas handles and precision sliders are synchronized in
+                  real-time.
                 </p>
               </div>
             </motion.div>
@@ -542,6 +701,6 @@ export default function MiniTuner() {
         </div>
       </Draggable>
     </div>,
-    portalRoot
+    portalRoot,
   );
 }

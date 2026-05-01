@@ -15,7 +15,7 @@ interface SettingsSetupProps {
 
 /**
  * SettingsSetup Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -37,9 +37,9 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
 
   return (
     <div className="bg-background/80 fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div 
-        className="bg-card border-border w-full max-w-2xl flex flex-col gap-8 rounded-3xl border p-10 shadow-2xl origin-center"
-        style={{ 
+      <div
+        className="bg-card border-border flex w-full max-w-2xl origin-center flex-col gap-8 rounded-3xl border p-10 shadow-2xl"
+        style={{
           transform: `scale(${(settings.scaling.display_scale || 100) / 100})`,
         }}
       >
@@ -55,25 +55,28 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Left Column: Localization */}
           <div className="flex flex-col gap-8">
             {/* Currency Section */}
             <div className="bg-muted/30 border-border/50 rounded-2xl border p-6">
-              <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-xs opacity-50">
+              <h3 className="text-foreground mb-4 flex items-center gap-2 text-xs font-bold tracking-widest uppercase opacity-50">
                 Currency
               </h3>
               <Select
                 label="Region & Symbol"
                 value={
-                  CURRENCIES.find((c) => c.symbol === settings.general.currency_symbol)
-                    ?.code || "CUSTOM"
+                  CURRENCIES.find(
+                    (c) => c.symbol === settings.general.currency_symbol,
+                  )?.code || "CUSTOM"
                 }
                 onChange={(val: string | number) => {
                   const code = val as string;
                   const selected = CURRENCIES.find((c) => c.code === code);
                   if (selected) {
-                    updateSettings({ general: { currency_symbol: selected.symbol } });
+                    updateSettings({
+                      general: { currency_symbol: selected.symbol },
+                    });
                   }
                 }}
                 options={[
@@ -96,8 +99,8 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
             </div>
 
             {/* Tax Section */}
-            <div className="bg-muted/30 border-border/50 rounded-2xl border p-6 flex flex-col gap-4">
-              <h3 className="text-foreground mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-xs opacity-50">
+            <div className="bg-muted/30 border-border/50 flex flex-col gap-4 rounded-2xl border p-6">
+              <h3 className="text-foreground mb-4 flex items-center gap-2 text-xs font-bold tracking-widest uppercase opacity-50">
                 Tax (VAT)
               </h3>
               <label className="bg-background/50 border-border/50 hover:border-primary/50 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-[border-color,background-color]">
@@ -105,7 +108,9 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
                   type="checkbox"
                   checked={settings.general.tax_enabled}
                   onChange={(e) =>
-                    updateSettings({ general: { tax_enabled: e.target.checked } })
+                    updateSettings({
+                      general: { tax_enabled: e.target.checked },
+                    })
                   }
                   className="text-primary focus:ring-primary h-6 w-6 rounded-lg border-2"
                 />
@@ -132,23 +137,26 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
           </div>
 
           {/* Right Column: Layout */}
-          <div className="bg-primary/5 border-primary/10 rounded-2xl border p-8 flex flex-col justify-center gap-8">
-            <h3 className="text-primary mb-6 flex items-center gap-2 font-black uppercase tracking-widest text-xs">
+          <div className="bg-primary/5 border-primary/10 flex flex-col justify-center gap-8 rounded-2xl border p-8">
+            <h3 className="text-primary mb-6 flex items-center gap-2 text-xs font-black tracking-widest uppercase">
               Display & Scale
             </h3>
-            
+
             <TunerSlider
               label="Interface Zoom"
               min={75}
               max={125}
               step={5}
               value={settings.scaling.display_scale || 100}
-              onChange={(val) => updateSettings({ scaling: { display_scale: val } })}
+              onChange={(val) =>
+                updateSettings({ scaling: { display_scale: val } })
+              }
               unit="%"
             />
 
-            <div className="text-[10px] text-muted-foreground leading-relaxed italic bg-background/40 p-4 rounded-xl border border-border/30">
-              Tip: Adjust the zoom to fit your screen resolution. You can always change this later in Design Mode.
+            <div className="text-muted-foreground bg-background/40 border-border/30 rounded-xl border p-4 text-[10px] leading-relaxed italic">
+              Tip: Adjust the zoom to fit your screen resolution. You can always
+              change this later in Design Mode.
             </div>
           </div>
         </div>
@@ -156,7 +164,7 @@ export default function SettingsSetup({ onComplete }: SettingsSetupProps) {
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`text-primary-foreground shadow-2xl shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
+          className={`text-primary-foreground shadow-primary/40 flex w-full transform items-center justify-center gap-3 rounded-2xl px-8 py-5 text-xl font-black shadow-2xl transition-[transform,background-color,box-shadow] hover:scale-[1.02] active:scale-[0.98] ${
             saving
               ? "bg-primary/70 cursor-not-allowed"
               : "bg-primary hover:bg-primary/90"

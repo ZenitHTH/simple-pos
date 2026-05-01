@@ -58,44 +58,53 @@ export default function SimpleRecipeBuilder({
   const [showConnections, setShowConnections] = useState(true);
 
   // Connection line logic
-  const [connections, setConnections] = useState<Array<{ d: string; id: number }>>([]);
+  const [connections, setConnections] = useState<
+    Array<{ d: string; id: number }>
+  >([]);
   const rightPaneRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const headerRef = useRef<HTMLDivElement>(null);
 
   const updateConnections = useCallback(() => {
-    if (!showConnections || !selectedProduct || !rightPaneRef.current || !headerRef.current) {
+    if (
+      !showConnections ||
+      !selectedProduct ||
+      !rightPaneRef.current ||
+      !headerRef.current
+    ) {
       setConnections([]);
       return;
     }
 
     const paneRect = rightPaneRef.current.getBoundingClientRect();
     const headerRect = headerRef.current.getBoundingClientRect();
-    
+
     // Start point: middle right of the product header
     const startX = headerRect.left - paneRect.left + headerRect.width;
     const startY = headerRect.top + headerRect.height / 2 - paneRect.top;
 
-    const newConnections = recipeItems.map((item) => {
-      const el = itemRefs.current.get(item.material_id);
-      if (!el) return null;
+    const newConnections = recipeItems
+      .map((item) => {
+        const el = itemRefs.current.get(item.material_id);
+        if (!el) return null;
 
-      const elRect = el.getBoundingClientRect();
-      // End point: middle left of the recipe item
-      const endX = elRect.left - paneRect.left;
-      const endY = elRect.top + elRect.height / 2 - paneRect.top;
+        const elRect = el.getBoundingClientRect();
+        // End point: middle left of the recipe item
+        const endX = elRect.left - paneRect.left;
+        const endY = elRect.top + elRect.height / 2 - paneRect.top;
 
-      // Quadratic bezier curve
-      const cp1x = startX + 40;
-      const cp1y = startY;
-      const cp2x = endX - 40;
-      const cp2y = endY;
+        // Quadratic bezier curve
+        const cp1x = startX + 40;
+        const cp1y = startY;
+        const cp2x = endX - 40;
+        const cp2y = endY;
 
-      return {
-        id: item.material_id,
-        d: `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`,
-      };
-    }).filter(Boolean) as Array<{ d: string; id: number }>;
+        return {
+          id: item.material_id,
+          d: `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`,
+        };
+      })
+      .filter(Boolean) as Array<{ d: string; id: number }>;
 
     setConnections(newConnections);
   }, [showConnections, selectedProduct, recipeItems]);
@@ -145,7 +154,7 @@ export default function SimpleRecipeBuilder({
         data.type_,
         data.volume,
         data.quantity,
-        data.tags
+        data.tags,
       );
       await refreshMaterials();
       setIsMaterialModalOpen(false);
@@ -200,7 +209,7 @@ export default function SimpleRecipeBuilder({
                 </button>
               </div>
               <div className="relative">
-                <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base z-10" />
+                <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 z-10 -translate-y-1/2 text-base" />
                 <Input
                   type="text"
                   placeholder="Search materials..."
@@ -255,7 +264,7 @@ export default function SimpleRecipeBuilder({
 
               {!selectedProduct ? (
                 <div className="relative">
-                  <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 -translate-y-1/2 text-base z-10" />
+                  <FaSearch className="text-muted-foreground/50 absolute top-1/2 left-4 z-10 -translate-y-1/2 text-base" />
                   <Input
                     type="text"
                     placeholder="Search products to build recipe..."

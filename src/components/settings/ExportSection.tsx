@@ -12,7 +12,7 @@ import { useAlert } from "@/context/AlertContext";
 
 /**
  * ExportSection Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -65,7 +65,10 @@ export default function ExportSection() {
       }
     } catch (error) {
       logger.error(`Export failed for format ${format}:`, error);
-      await showAlert("Export Error", `Export failed for ${format.toUpperCase()}: ` + error);
+      await showAlert(
+        "Export Error",
+        `Export failed for ${format.toUpperCase()}: ` + error,
+      );
     } finally {
       setLoading(false);
     }
@@ -120,10 +123,10 @@ export default function ExportSection() {
                   key={f}
                   onClick={() => setFormat(f)}
                   className={`rounded-xl border px-4 py-2 font-medium uppercase transition-[background-color,border-color,color] ${
-format === f
-                    ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
-                    : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
-                    }`}
+                    format === f
+                      ? "bg-primary text-primary-foreground border-primary shadow-primary/20 shadow-lg"
+                      : "bg-background border-border hover:bg-muted/10 text-muted-foreground"
+                  }`}
                 >
                   {f}
                 </button>

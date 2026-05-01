@@ -3,9 +3,9 @@
     /* ── High-Definition Light Theme (Chinese Palette Base) ── */
     --theme-primary: #5352ed; /* Saturated Sky */
     --theme-background: #f1f2f6; /* Pumpkin Patch (Very Light Grey) */
-    --theme-text: #2f3542;       /* Prestige Blue (Inky Contrast) */
-    --theme-card: #ffffff;       /* Pure White (Surface Pop) */
-    --theme-border: #ced6e0;     /* Twinkle Blue (Defined Lines) */
+    --theme-text: #2f3542; /* Prestige Blue (Inky Contrast) */
+    --theme-card: #ffffff; /* Pure White (Surface Pop) */
+    --theme-border: #ced6e0; /* Twinkle Blue (Defined Lines) */
 
     /* Tailwind Variable Mapping */
     --background: var(--theme-background);
@@ -22,9 +22,11 @@
     --primary-active: color-mix(in oklch, var(--primary), black 10%);
     --primary-muted: color-mix(in oklch, var(--primary), transparent 90%);
     --primary-glow: color-mix(in oklch, var(--primary), transparent 50%);
-    
+
     /* Dynamic Primary Foreground (Accessibility) */
-    --primary-foreground: oklch(from var(--primary) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0);
+    --primary-foreground: oklch(
+      from var(--primary) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0
+    );
 
     --secondary: #dfe4ea; /* City Lights */
     --secondary-foreground: #2f3542;
@@ -64,16 +66,16 @@
     --grid-item-border-width: 1px;
     --grid-item-hover-scale: 1.02;
     --grid-item-bg-opacity: 1;
-    
+
     --sidebar-icon-size: 20px;
     --sidebar-item-spacing: 8px;
     --sidebar-item-radius: 12px;
     --sidebar-active-bg-opacity: 0.1;
-    
+
     --button-radius: 12px;
     --button-shadow-intensity: 0.1;
     --button-transition-speed: 200ms;
-    
+
     --cart-item-image-size: 48px;
     --cart-item-gap: 12px;
     --cart-item-border-style: solid;
@@ -82,11 +84,11 @@
 
   .dark {
     /* ── High-Definition Dark Theme (Swedish Palette Base) ── */
-    --theme-primary: #575fcf;    /* Dark Periwinkle */
+    --theme-primary: #575fcf; /* Dark Periwinkle */
     --theme-background: #1e272e; /* Black Pearl (Deep Navy Base) */
-    --theme-card: #2f3542;       /* Prestige Blue (CN-based Deep Surface) */
-    --theme-text: #ffffff;       /* Pure White (Maximum Contrast) */
-    --theme-border: #485460;     /* Good Night! (Mid-Grey Lines) */
+    --theme-card: #2f3542; /* Prestige Blue (CN-based Deep Surface) */
+    --theme-text: #ffffff; /* Pure White (Maximum Contrast) */
+    --theme-border: #485460; /* Good Night! (Mid-Grey Lines) */
 
     /* Refresh Variable Mapping for Dark Mode */
     --background: var(--theme-background);

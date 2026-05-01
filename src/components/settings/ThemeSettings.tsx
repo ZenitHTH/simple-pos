@@ -8,7 +8,7 @@ import { useEffect, useState, memo } from "react";
 
 /**
  * ThemeSettings Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -37,8 +37,8 @@ const ThemeSettings = memo(function ThemeSettings() {
               variant="outline"
               onClick={() => setTheme("light")}
               className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
-                theme === "light" 
-                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                theme === "light"
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 shadow-sm ring-2"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -50,8 +50,8 @@ const ThemeSettings = memo(function ThemeSettings() {
               variant="outline"
               onClick={() => setTheme("dark")}
               className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
-                theme === "dark" 
-                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                theme === "dark"
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 shadow-sm ring-2"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -63,8 +63,8 @@ const ThemeSettings = memo(function ThemeSettings() {
               variant="outline"
               onClick={() => setTheme("system")}
               className={`flex h-auto flex-col items-center justify-center gap-2 p-4 transition-colors ${
-                theme === "system" 
-                  ? "border-primary bg-primary/10 text-primary ring-primary/20 ring-2 shadow-sm" 
+                theme === "system"
+                  ? "border-primary bg-primary/10 text-primary ring-primary/20 shadow-sm ring-2"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

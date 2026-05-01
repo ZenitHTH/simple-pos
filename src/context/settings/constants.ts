@@ -1,14 +1,54 @@
 import { AppSettings, CuratedTheme } from "@/lib";
 
 export const CURATED_THEMES: CuratedTheme[] = [
-  { id: "flat-cn", name: "Chinese Soft", color: "#5352ed", description: "Flat UI Chinese Palette" },
-  { id: "flat-se", name: "Swedish Deep", color: "#575fcf", description: "Flat UI Swedish Palette" },
-  { id: "ocean", name: "Ocean Deep", color: "#0ea5e9", description: "Professional and calm" },
-  { id: "matcha", name: "Matcha Cafe", color: "#4ade80", description: "Fresh and organic" },
-  { id: "sunset", name: "Sunset Glow", color: "#f59e0b", description: "Warm and inviting" },
-  { id: "ruby", name: "Ruby Wine", color: "#e11d48", description: "Elegant and bold" },
-  { id: "slate", name: "Slate Tech", color: "#64748b", description: "Minimalist and clean" },
-  { id: "midnight", name: "Midnight", color: "#1e1b4b", description: "High-contrast dark" },
+  {
+    id: "flat-cn",
+    name: "Chinese Soft",
+    color: "#5352ed",
+    description: "Flat UI Chinese Palette",
+  },
+  {
+    id: "flat-se",
+    name: "Swedish Deep",
+    color: "#575fcf",
+    description: "Flat UI Swedish Palette",
+  },
+  {
+    id: "ocean",
+    name: "Ocean Deep",
+    color: "#0ea5e9",
+    description: "Professional and calm",
+  },
+  {
+    id: "matcha",
+    name: "Matcha Cafe",
+    color: "#4ade80",
+    description: "Fresh and organic",
+  },
+  {
+    id: "sunset",
+    name: "Sunset Glow",
+    color: "#f59e0b",
+    description: "Warm and inviting",
+  },
+  {
+    id: "ruby",
+    name: "Ruby Wine",
+    color: "#e11d48",
+    description: "Elegant and bold",
+  },
+  {
+    id: "slate",
+    name: "Slate Tech",
+    color: "#64748b",
+    description: "Minimalist and clean",
+  },
+  {
+    id: "midnight",
+    name: "Midnight",
+    color: "#1e1b4b",
+    description: "High-contrast dark",
+  },
 ];
 
 export const THEME_PRESETS = {

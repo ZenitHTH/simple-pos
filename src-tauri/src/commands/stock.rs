@@ -1,9 +1,9 @@
 use database::product;
 use database::stock;
 use database::{NewStock, Stock};
+use diesel::Connection;
 use export_lib::{CellValue, ExportTable};
 use std::path::PathBuf;
-use diesel::Connection;
 use tauri::{Emitter, Manager};
 
 /// Retrieves the stock record for a specific product.
@@ -15,7 +15,10 @@ use tauri::{Emitter, Manager};
 /// # Returns
 /// The stock record for the product.
 #[tauri::command]
-pub fn get_stock(state: tauri::State<'_, crate::AppState>, product_id: i32) -> Result<Stock, String> {
+pub fn get_stock(
+    state: tauri::State<'_, crate::AppState>,
+    product_id: i32,
+) -> Result<Stock, String> {
     let mut conn = crate::conn!(state);
     stock::get_stock(&mut conn, product_id).map_err(|e| e.to_string())
 }
@@ -44,7 +47,11 @@ pub fn get_all_stocks(state: tauri::State<'_, crate::AppState>) -> Result<Vec<St
 /// # Returns
 /// The newly created stock record.
 #[tauri::command]
-pub fn insert_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, quantity: i32) -> Result<Stock, String> {
+pub fn insert_stock(
+    state: tauri::State<'_, crate::AppState>,
+    product_id: i32,
+    quantity: i32,
+) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
@@ -72,7 +79,11 @@ pub fn insert_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, q
 /// # Returns
 /// The updated stock record.
 #[tauri::command]
-pub fn update_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, quantity: i32) -> Result<Stock, String> {
+pub fn update_stock(
+    state: tauri::State<'_, crate::AppState>,
+    product_id: i32,
+    quantity: i32,
+) -> Result<Stock, String> {
     if !(0..=1_000_000).contains(&quantity) {
         return Err("Invalid stock quantity.".to_string());
     }
@@ -91,7 +102,10 @@ pub fn update_stock(state: tauri::State<'_, crate::AppState>, product_id: i32, q
 /// # Returns
 /// The number of deleted records.
 #[tauri::command]
-pub fn remove_stock(state: tauri::State<'_, crate::AppState>, stock_id: i32) -> Result<usize, String> {
+pub fn remove_stock(
+    state: tauri::State<'_, crate::AppState>,
+    stock_id: i32,
+) -> Result<usize, String> {
     let mut conn = crate::conn!(state);
     stock::remove_stock(&mut conn, stock_id).map_err(|e| e.to_string())
 }
@@ -196,9 +210,7 @@ pub fn import_stock_data(
     let id_col = table
         .headers
         .iter()
-        .position(|h: &String| {
-            h.to_lowercase().contains("product id") || h.to_lowercase() == "id"
-        })
+        .position(|h: &String| h.to_lowercase().contains("product id") || h.to_lowercase() == "id")
         .ok_or("Could not find 'Product ID' column")?;
     let qty_col = table
         .headers

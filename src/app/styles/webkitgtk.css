@@ -55,5 +55,5 @@
 /* 7. Image Optimization */
 [data-engine="webkitgtk"] img {
   image-rendering: -webkit-optimize-contrast;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
 }

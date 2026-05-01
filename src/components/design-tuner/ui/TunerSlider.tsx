@@ -14,7 +14,7 @@ interface TunerSliderProps {
   unit?: string;
   onChange: (v: number) => void;
   formatDisplay?: (v: number) => string;
-  variant?: "default" | "compact"; 
+  variant?: "default" | "compact";
 }
 export function TunerSlider({
   label,
@@ -56,7 +56,7 @@ export function TunerSlider({
             "text-muted-foreground uppercase",
             variant === "compact"
               ? "text-[10px] font-black tracking-[0.1em]"
-              : "text-xs font-semibold tracking-wider"
+              : "text-xs font-semibold tracking-wider",
           )}
         >
           {label}
@@ -65,14 +65,14 @@ export function TunerSlider({
           className={cn(
             "text-primary font-mono",
             variant === "compact"
-              ? "bg-primary/10 rounded px-2 py-1 text-[10px] font-black border border-primary/20"
-              : "text-xs font-bold"
+              ? "bg-primary/10 border-primary/20 rounded border px-2 py-1 text-[10px] font-black"
+              : "text-xs font-bold",
           )}
         >
           {display}
         </span>
       </div>
-      <div className="flex items-center h-8">
+      <div className="flex h-8 items-center">
         <RangeSlider
           value={localValue}
           min={min}
@@ -85,4 +85,3 @@ export function TunerSlider({
     </div>
   );
 }
-

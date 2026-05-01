@@ -25,7 +25,7 @@ interface ManagementPageLayoutProps {
 
 /**
  * ManagementPageLayout Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -50,7 +50,9 @@ export default function ManagementPageLayout({
 
   return (
     <ContentWrapper>
-      <div className={`mx-auto w-full max-w-7xl p-4 md:p-8 ${scrollable ? "pb-24" : ""}`}>
+      <div
+        className={`mx-auto w-full max-w-7xl p-4 md:p-8 ${scrollable ? "pb-24" : ""}`}
+      >
         <GlobalHeader title={title} subtitle={subtitle}>
           {headerActions}
         </GlobalHeader>

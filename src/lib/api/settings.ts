@@ -35,7 +35,7 @@ export const settingsApi = {
 };
 
 // Expose globally for E2E testing (Development only)
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   (window as any).settingsApi = settingsApi;
   // We'll also allow components to attach the router here
 }

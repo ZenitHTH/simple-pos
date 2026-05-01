@@ -23,7 +23,7 @@ interface GlobalHeaderProps {
 
 /**
  * A shared header component used across different pages of the application.
- * 
+ *
  * @param title - The main title of the page.
  * @param subtitle - Optional subtitle text below the main title.
  * @param icon - Optional React component (icon) to display next to the title.

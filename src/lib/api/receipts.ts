@@ -49,7 +49,10 @@ export const receiptApi = {
     key: string,
     receiptId: number,
   ): Promise<[ReceiptList, Receipt[]]> => {
-    return await invoke("get_invoice_detail", { key, receiptId: Number(receiptId) });
+    return await invoke("get_invoice_detail", {
+      key,
+      receiptId: Number(receiptId),
+    });
   },
 
   /** Retrieves all invoices within a specified date range. */
@@ -97,6 +100,6 @@ export const receiptApi = {
 };
 
 // Expose globally for E2E testing (Development only)
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   (window as any).receiptApi = receiptApi;
 }

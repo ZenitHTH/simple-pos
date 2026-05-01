@@ -31,7 +31,7 @@ interface GlobalTunerProps {
 
 /**
  * GlobalTuner Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -53,27 +53,27 @@ export function GlobalTuner({
       <motion.div variants={item} className="mb-8">
         <h2 className="text-3xl font-black tracking-tight">Global Tuner</h2>
         <p className="text-muted-foreground mt-2 max-w-2xl text-base">
-          Customize the core aesthetics of your POS system. These settings affect
-          all screens and components universally.
+          Customize the core aesthetics of your POS system. These settings
+          affect all screens and components universally.
         </p>
       </motion.div>
 
       {/* Panels Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Presets Column */}
         <motion.div
           variants={item}
           className="border-border/60 bg-card/50 h-fit rounded-3xl border p-8 shadow-sm backdrop-blur-sm"
         >
-          <div className="flex items-center justify-between mb-2">
+          <div className="mb-2 flex items-center justify-between">
             <h3 className="text-xl font-bold">Theme Presets</h3>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-muted-foreground mb-6 text-sm">
             Quickly switch between predefined layout styles.
           </p>
-          <ThemePresetsPanel 
-            settings={settings} 
-            updateSettings={updateSettings} 
+          <ThemePresetsPanel
+            settings={settings}
+            updateSettings={updateSettings}
             onOpenLibrary={() => setIsLibraryOpen(true)}
           />
         </motion.div>

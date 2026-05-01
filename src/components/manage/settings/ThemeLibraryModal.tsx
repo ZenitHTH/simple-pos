@@ -20,7 +20,10 @@ export default function ThemeLibraryModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Theme Library">
       <div className="p-6">
-        <ThemePresetsPanel settings={settings} updateSettings={updateSettings} />
+        <ThemePresetsPanel
+          settings={settings}
+          updateSettings={updateSettings}
+        />
       </div>
     </Modal>
   );

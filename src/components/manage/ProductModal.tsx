@@ -36,7 +36,7 @@ interface ProductModalProps {
 /**
  * ProductModal component provides a comprehensive form for creating or editing products.
  * It includes fields for title, category, price, stock tracking mode, and image upload/selection.
- * 
+ *
  * @param {ProductModalProps} props - The component props.
  * @param {boolean} props.isOpen - Whether the modal is currently open.
  * @param {() => void} props.onClose - Callback to close the modal.
@@ -149,7 +149,9 @@ export default function ProductModal({
           label="Title"
           required
           value={formData.title}
-          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, title: e.target.value }))
+          }
         />
 
         <Select
@@ -158,7 +160,10 @@ export default function ProductModal({
           label="Category"
           value={formData.category_id ? String(formData.category_id) : ""}
           onChange={(val) =>
-            setFormData((prev) => ({ ...prev, category_id: parseInt(String(val), 10) }))
+            setFormData((prev) => ({
+              ...prev,
+              category_id: parseInt(String(val), 10),
+            }))
           }
           options={categories.map((cat) => ({
             value: String(cat.id),
@@ -215,7 +220,9 @@ export default function ProductModal({
 
         {/* Image Section */}
         <div className="space-y-4">
-          <label className="mb-1.5 block text-sm font-semibold">Product Image</label>
+          <label className="mb-1.5 block text-sm font-semibold">
+            Product Image
+          </label>
           <div className="flex flex-wrap gap-2">
             {selectedImage && (
               <div
@@ -262,11 +269,12 @@ export default function ProductModal({
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isSubmitting || isUploading}
-          >
-            {isSubmitting ? "Saving..." : initialData ? "Update Product" : "Save Product"}
+          <Button type="submit" disabled={isSubmitting || isUploading}>
+            {isSubmitting
+              ? "Saving..."
+              : initialData
+                ? "Update Product"
+                : "Save Product"}
           </Button>
         </div>
       </form>

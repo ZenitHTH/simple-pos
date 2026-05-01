@@ -25,7 +25,7 @@ interface BaseSidebarLayoutProps {
 
 /**
  * BaseSidebarLayout Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -43,7 +43,7 @@ export default function BaseSidebarLayout({
   showMobileClose = true,
 }: BaseSidebarLayoutProps) {
   const { settings } = useSettings();
-  
+
   // Calculate dynamic width (base 16rem = 256px)
   const baseWidth = 256;
   const dynamicWidth = `${baseWidth * (scale / 100)}px`;
@@ -51,17 +51,23 @@ export default function BaseSidebarLayout({
 
   return (
     <aside
-      style={{ 
-        width: dynamicWidth,
-        "--sidebar-button-scale": buttonScale,
-        ...extraStyle
-      } as any}
+      style={
+        {
+          width: dynamicWidth,
+          "--sidebar-button-scale": buttonScale,
+          ...extraStyle,
+        } as any
+      }
       className={cn(
-        "fixed inset-y-0 z-50 lg:static flex flex-col transition-transform duration-300 ease-in-out h-full transform-gpu",
+        "fixed inset-y-0 z-50 flex h-full transform-gpu flex-col transition-transform duration-300 ease-in-out lg:static",
         "bg-card text-card-foreground border-border border-r shadow-2xl lg:shadow-none",
-        side === "left" ? "left-0" : "right-0 border-l border-r-0",
-        isOpen ? "translate-x-0" : (side === "left" ? "-translate-x-full lg:translate-x-0" : "translate-x-full lg:translate-x-0"),
-        className
+        side === "left" ? "left-0" : "right-0 border-r-0 border-l",
+        isOpen
+          ? "translate-x-0"
+          : side === "left"
+            ? "-translate-x-full lg:translate-x-0"
+            : "translate-x-full lg:translate-x-0",
+        className,
       )}
     >
       <div
@@ -72,11 +78,7 @@ export default function BaseSidebarLayout({
         className="group relative flex flex-1 flex-col overflow-hidden"
       >
         <div className="flex items-center justify-between p-6 lg:block">
-          <GlobalHeader
-            title={title}
-            icon={headerIcon}
-            className="mb-0 px-0"
-          />
+          <GlobalHeader title={title} icon={headerIcon} className="mb-0 px-0" />
           {showMobileClose && onClose && (
             <button
               onClick={onClose}
@@ -87,9 +89,7 @@ export default function BaseSidebarLayout({
           )}
         </div>
 
-        <div className="flex-1 overflow-hidden">
-          {children}
-        </div>
+        <div className="flex-1 overflow-hidden">{children}</div>
 
         <SelectableOverlay id="sidebar_scale" />
       </div>

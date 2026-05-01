@@ -102,7 +102,7 @@ const menuEntries: MenuEntry[] = [
 
 /**
  * Sidebar Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */

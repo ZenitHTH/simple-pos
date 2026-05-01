@@ -1,10 +1,6 @@
 "use client";
 
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-} from "react";
+import React, { createContext, useState, ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 interface MockupContextType {
@@ -33,7 +29,7 @@ export function MockupProvider({ children }: { children: ReactNode }) {
   // Modern React 19 pattern: Update state during render when props/context changes
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
-    
+
     // Clear selection on navigation
     setSelectedElementId(null);
 

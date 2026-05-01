@@ -80,7 +80,10 @@ export default function HistoryPage() {
             // In real app, we would fetch details here, but for list item type it's enough.
           } as ReceiptListType);
         } else {
-          await showAlert("History", "Receipt not found (Mockup: try 1001, 1002, 1003)");
+          await showAlert(
+            "History",
+            "Receipt not found (Mockup: try 1001, 1002, 1003)",
+          );
         }
         setLoading(false);
       }, 500);

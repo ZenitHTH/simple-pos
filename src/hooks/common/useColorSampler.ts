@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 
 /**
  * Hook to extract dominant colors from an HTMLImageElement using the Canvas API.
- * 
+ *
  * @returns {object} An object containing:
  * - colors: Array of hex color strings (top 3 most frequent).
  * - sampleImage: Function to trigger color extraction from an image element.
@@ -15,10 +15,11 @@ export function useColorSampler() {
   const [isSampling, setIsSampling] = useState(false);
 
   const sampleImage = useCallback((imgElement: HTMLImageElement) => {
-    if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
-    
+    if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0)
+      return;
+
     setIsSampling(true);
-    
+
     try {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -28,7 +29,7 @@ export function useColorSampler() {
       const size = 50;
       canvas.width = size;
       canvas.height = size;
-      
+
       // Draw the image to the canvas
       ctx.drawImage(imgElement, 0, 0, size, size);
 
@@ -43,9 +44,9 @@ export function useColorSampler() {
         const b = imageData[i + 2];
         const a = imageData[i + 3];
 
-        // Skip transparent or near-white/near-black if desired, 
+        // Skip transparent or near-white/near-black if desired,
         // but here we just collect them all.
-        if (a < 128) continue; 
+        if (a < 128) continue;
 
         const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
         colorCounts[hex] = (colorCounts[hex] || 0) + 1;

@@ -1,10 +1,10 @@
 use serde::Serialize;
 use settings_lib::{
-    get_settings as lib_get_settings, get_storage_info as lib_get_storage_info,
-    save_settings as lib_save_settings, AppSettings, StorageInfo,
+    AppSettings, StorageInfo, get_settings as lib_get_settings,
+    get_storage_info as lib_get_storage_info, save_settings as lib_save_settings,
 };
 use std::path::PathBuf;
-use tauri::{command, Manager};
+use tauri::{Manager, command};
 
 #[derive(Serialize)]
 pub struct AppInitialState {
@@ -19,7 +19,7 @@ pub struct AppInitialState {
 pub fn get_app_initial_state() -> Result<AppInitialState, String> {
     let settings = lib_get_settings()?;
     let storage_info = lib_get_storage_info()?;
-    
+
     use database::get_database_path;
     let db_path = get_database_path().map_err(|e| e.to_string())?;
     let database_exists = db_path.exists();

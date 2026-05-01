@@ -1,6 +1,11 @@
 import { memo } from "react";
 
-import { FaReceipt, FaShoppingCart, FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import {
+  FaReceipt,
+  FaShoppingCart,
+  FaChevronRight,
+  FaChevronLeft,
+} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import GlobalHeader from "@/components/ui/GlobalHeader";
 import SelectableOverlay from "@/components/design-mode/SelectableOverlay";
@@ -15,7 +20,7 @@ interface POSHeaderProps {
 /**
  * POSHeader component displays the top navigation bar for the POS interface.
  * It includes the application title, cart toggle (desktop), cart button (mobile), and navigation to history.
- * 
+ *
  * @param {POSHeaderProps} props - The component props.
  * @param {number} props.cartCount - Total number of items in the cart.
  * @param {() => void} props.onOpenCart - Callback to open the cart drawer on mobile.

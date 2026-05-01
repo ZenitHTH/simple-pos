@@ -10,14 +10,23 @@ import { useToast } from "@/context/ToastContext";
  * Handles manual saving, undoing, and resetting of global settings.
  */
 export default function SettingsActions() {
-  const { resetToDefault, save, isSaving, hasUnsavedChanges, resetToCheckpoint } = useSettings();
+  const {
+    resetToDefault,
+    save,
+    isSaving,
+    hasUnsavedChanges,
+    resetToCheckpoint,
+  } = useSettings();
   const [showWarning, setShowWarning] = useState(false);
   const { showToast } = useToast();
 
   const handleResetDefaults = () => {
     resetToDefault();
     setShowWarning(false);
-    showToast("Settings reset to default. Click Save to apply permanently.", "info");
+    showToast(
+      "Settings reset to default. Click Save to apply permanently.",
+      "info",
+    );
   };
 
   const handleSave = async () => {
@@ -39,7 +48,7 @@ export default function SettingsActions() {
       {hasUnsavedChanges && (
         <button
           onClick={handleRevert}
-          className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-sm font-bold text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
+          className="border-border bg-muted/20 text-muted-foreground hover:bg-muted/40 hover:text-foreground flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-bold transition-colors"
           title="Revert to last saved state"
         >
           <FaUndo size={14} />
@@ -49,7 +58,7 @@ export default function SettingsActions() {
 
       <button
         onClick={() => setShowWarning(true)}
-        className="flex items-center gap-2 rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-2 text-sm font-bold text-destructive transition-colors hover:bg-destructive/20"
+        className="border-destructive/20 bg-destructive/10 text-destructive hover:bg-destructive/20 flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-bold transition-colors"
       >
         <FaTrash size={14} />
         <span className="hidden sm:inline">Reset</span>
@@ -60,7 +69,7 @@ export default function SettingsActions() {
         disabled={!hasUnsavedChanges || isSaving}
         className={`flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-bold transition-all ${
           hasUnsavedChanges
-            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 active:scale-95"
+            ? "bg-primary text-primary-foreground shadow-primary/20 shadow-lg hover:scale-105 active:scale-95"
             : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
         }`}
       >
@@ -72,7 +81,7 @@ export default function SettingsActions() {
       {showWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="bg-card border-border animate-in fade-in zoom-in w-full max-w-sm overflow-hidden rounded-xl border p-6 shadow-2xl duration-200">
-            <h3 className="mb-2 text-lg font-bold text-destructive">
+            <h3 className="text-destructive mb-2 text-lg font-bold">
               Warning: Reset Settings
             </h3>
             <p className="text-muted mb-6">
@@ -89,7 +98,7 @@ export default function SettingsActions() {
               </button>
               <button
                 onClick={handleResetDefaults}
-                className="rounded-lg bg-destructive px-4 py-2 font-bold text-destructive-foreground shadow-lg shadow-destructive/20 transition-colors hover:bg-destructive/90"
+                className="bg-destructive text-destructive-foreground shadow-destructive/20 hover:bg-destructive/90 rounded-lg px-4 py-2 font-bold shadow-lg transition-colors"
               >
                 Yes, Reset
               </button>

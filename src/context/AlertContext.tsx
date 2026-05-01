@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, ReactNode, useRef } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+  useRef,
+} from "react";
 import { AlertDialog } from "@/components/ui/AlertDialog";
 
 /**
@@ -21,7 +28,7 @@ const AlertContext = createContext<AlertContextType | undefined>(undefined);
 /**
  * Provider component for the AlertDialog system.
  * Manages the global state of the alert dialog and provides the showAlert function.
- * 
+ *
  * @param props - Component props containing children.
  */
 export function AlertProvider({ children }: { children: ReactNode }) {
@@ -70,7 +77,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
 /**
  * Hook to use the Alert system.
  * Must be used within an AlertProvider.
- * 
+ *
  * @returns The AlertContextType containing the showAlert function.
  * @throws Error if used outside of an AlertProvider.
  */

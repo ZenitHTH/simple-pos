@@ -2,7 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@/lib/api/invoke";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useAlert } from "@/context/AlertContext";
-import { Image, ProductImage, BackendProduct, productApi, imageApi } from "@/lib";
+import {
+  Image,
+  ProductImage,
+  BackendProduct,
+  productApi,
+  imageApi,
+} from "@/lib";
 import { logger } from "@/lib/utils/logger";
 
 export function useImageManagement() {
@@ -161,7 +167,10 @@ export function useImageManagement() {
       setIsPositionModalOpen(false);
     } catch (err) {
       logger.error("Failed to update position:", err);
-      await showAlert("Image Error", "Failed to update position. Check console for details.");
+      await showAlert(
+        "Image Error",
+        "Failed to update position. Check console for details.",
+      );
     }
   };
 
@@ -238,7 +247,10 @@ export function useImageManagement() {
             l.image_id !== selectedImage.id &&
             l.product_id !== moveProductInfo.targetProductId,
         ),
-        { product_id: moveProductInfo.targetProductId, image_id: selectedImage.id },
+        {
+          product_id: moveProductInfo.targetProductId,
+          image_id: selectedImage.id,
+        },
       ]);
 
       setIsMoveConfirmOpen(false);

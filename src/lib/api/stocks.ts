@@ -47,12 +47,20 @@ export const stockApi = {
   },
 
   /** Exports stock data to a file. */
-  exportData: async (key: string, path: string, format: string): Promise<void> => {
+  exportData: async (
+    key: string,
+    path: string,
+    format: string,
+  ): Promise<void> => {
     return await invoke("export_stock_data", { key, path, format });
   },
 
   /** Imports stock data from a file. */
-  importData: async (key: string, path: string, format: string): Promise<number> => {
+  importData: async (
+    key: string,
+    path: string,
+    format: string,
+  ): Promise<number> => {
     return await invoke("import_stock_data", { key, path, format });
   },
 };

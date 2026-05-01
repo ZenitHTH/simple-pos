@@ -11,7 +11,7 @@ export function useCategoryManagement() {
   const { dbKey } = useDatabase();
   const { showAlert } = useAlert();
   const { categories, updateCache, refreshAll } = useDataCache();
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

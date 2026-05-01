@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface SmoothScrollProps {
   children: React.ReactNode;
@@ -20,14 +20,18 @@ export default function SmoothScroll({
     if (engine === "webkitgtk") {
       setIsLinux(true);
     }
-    
+
     // Optional: Mutation observer if we expect it to change after mount
     const observer = new MutationObserver(() => {
-      const currentEngine = document.documentElement.getAttribute("data-engine");
+      const currentEngine =
+        document.documentElement.getAttribute("data-engine");
       setIsLinux(currentEngine === "webkitgtk");
     });
-    
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-engine"] });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-engine"],
+    });
     return () => observer.disconnect();
   }, []);
 

@@ -10,7 +10,9 @@ use database::{NewProduct, Product};
 /// # Returns
 /// A list of products with their associated image metadata.
 #[tauri::command]
-pub fn get_products(state: tauri::State<'_, crate::AppState>) -> Result<Vec<ProductWithImage>, String> {
+pub fn get_products(
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<Vec<ProductWithImage>, String> {
     let mut conn = crate::conn!(state);
     product::get_all_products_with_images(&mut conn).map_err(|e| e.to_string())
 }
@@ -174,7 +176,11 @@ pub fn delete_product(state: tauri::State<'_, crate::AppState>, id: i32) -> Resu
 /// # Returns
 /// An empty result on success.
 #[tauri::command]
-pub fn set_product_stock_mode(state: tauri::State<'_, crate::AppState>, id: i32, use_recipe: bool) -> Result<(), String> {
+pub fn set_product_stock_mode(
+    state: tauri::State<'_, crate::AppState>,
+    id: i32,
+    use_recipe: bool,
+) -> Result<(), String> {
     let mut conn = crate::conn!(state);
     product::set_product_stock_mode(&mut conn, id, use_recipe).map_err(|e| e.to_string())
 }

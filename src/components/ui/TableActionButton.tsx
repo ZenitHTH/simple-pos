@@ -14,7 +14,7 @@ interface TableActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 /**
  * A reusable action button specifically designed for use within tables.
  * Provides hover effects and color schemes for common actions like editing or deleting.
- * 
+ *
  * @param props - The table action button props.
  * @returns A styled button for table actions.
  */
@@ -31,10 +31,12 @@ export function TableActionButton({
       className={cn(
         "rounded-lg p-2 transition-colors",
         {
-          "text-muted-foreground hover:text-primary hover:bg-primary/10": variant === "default",
-          "text-muted-foreground hover:text-destructive hover:bg-destructive/10": variant === "destructive",
+          "text-muted-foreground hover:text-primary hover:bg-primary/10":
+            variant === "default",
+          "text-muted-foreground hover:text-destructive hover:bg-destructive/10":
+            variant === "destructive",
         },
-        className
+        className,
       )}
       {...props}
     >

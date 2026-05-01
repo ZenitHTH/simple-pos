@@ -1,13 +1,15 @@
 /**
- * Deep merges two objects. 
+ * Deep merges two objects.
  * Note: Arrays in the source object replace arrays in the target object (they are not merged).
  * Objects in the source are cloned to prevent shared state.
  */
 export function deepMerge<T>(target: any, source: any): T {
   const result = { ...target };
   for (const key of Object.keys(source)) {
-    if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
-    const isPlainObject = (obj: any) => obj && typeof obj === "object" && obj.constructor === Object;
+    if (key === "__proto__" || key === "constructor" || key === "prototype")
+      continue;
+    const isPlainObject = (obj: any) =>
+      obj && typeof obj === "object" && obj.constructor === Object;
 
     if (isPlainObject(source[key]) && isPlainObject(target[key])) {
       result[key] = deepMerge(target[key], source[key]);
@@ -16,7 +18,9 @@ export function deepMerge<T>(target: any, source: any): T {
       // Ensure arrays are cloned to prevent shared state
       result[key] = isPlainObject(source[key])
         ? deepMerge({}, source[key])
-        : Array.isArray(source[key]) ? [...source[key]] : source[key];
+        : Array.isArray(source[key])
+          ? [...source[key]]
+          : source[key];
     }
   }
   return result as T;

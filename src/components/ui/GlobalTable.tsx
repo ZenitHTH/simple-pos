@@ -24,7 +24,7 @@ interface GlobalTableProps<T> {
 
 /**
  * A highly reusable and configurable table component for displaying data.
- * 
+ *
  * @param columns - Array of column definitions.
  * @param data - The data array to display.
  * @param keyField - The field name that serves as a unique key for each row.
@@ -41,11 +41,11 @@ export default function GlobalTable<T>({
   return (
     <div
       className={cn(
-        "bg-card text-card-foreground border-border overflow-x-auto rounded-2xl border shadow-sm custom-scrollbar",
+        "bg-card text-card-foreground border-border custom-scrollbar overflow-x-auto rounded-2xl border shadow-sm",
         className,
       )}
     >
-      <table className="w-full text-left min-w-[800px]">
+      <table className="w-full min-w-[800px] text-left">
         <thead className="bg-muted/40 border-border sticky top-0 border-b">
           <tr>
             {columns.map((col, index) => (

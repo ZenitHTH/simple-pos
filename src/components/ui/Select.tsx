@@ -28,7 +28,7 @@ interface SelectProps {
 /**
  * A custom-styled dropdown select component.
  * Features a searchable-like feel, custom popover, and smooth transitions.
- * 
+ *
  * @param props - The select component props.
  * @returns A custom dropdown select element.
  */
@@ -70,7 +70,7 @@ export function Select({
   return (
     <div className={cn("w-full", className)} ref={containerRef}>
       {label && (
-        <label 
+        <label
           id={labelId}
           htmlFor={id}
           className="text-foreground mb-1.5 block text-sm font-semibold"
@@ -143,7 +143,7 @@ export function Select({
 /**
  * A legacy or helper component for representing an option in the select.
  * Used for compatibility where standard option elements might be expected.
- * 
+ *
  * @param props - Component children.
  * @returns A standard HTML option element.
  */

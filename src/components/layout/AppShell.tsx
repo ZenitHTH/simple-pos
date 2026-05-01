@@ -7,7 +7,12 @@ import BottomControlPanel from "@/components/design-mode/BottomControlPanel";
 import GoBackButton from "@/components/ui/GoBackButton";
 import MiniTuner from "@/components/design-mode/MiniTuner";
 
-import { useMotionValue, animate, motion, useMotionTemplate } from "framer-motion";
+import {
+  useMotionValue,
+  animate,
+  motion,
+  useMotionTemplate,
+} from "framer-motion";
 import { useRouter } from "next/navigation";
 
 /**
@@ -17,7 +22,7 @@ import { useRouter } from "next/navigation";
  */
 /**
  * AppShell Component
- * 
+ *
  * @param {Object} props - The properties object.
  * @returns {JSX.Element | null} The rendered component.
  */
@@ -27,7 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   // Expose router for E2E testing
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       (window as any).router = router;
     }
   }, [router]);
@@ -47,21 +52,23 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [undo, redo]);
 
   const targetScale = (settings.scaling.display_scale || 100) / 100;
-  
+
   // Use a motion value to animate the scale (Animated Scaling)
   const scaleMV = useMotionValue(targetScale);
 
   // Sync motion value with settings changes
   useEffect(() => {
-    const isLinux = typeof document !== 'undefined' && document.documentElement.getAttribute('data-engine') === 'webkitgtk';
-    
+    const isLinux =
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-engine") === "webkitgtk";
+
     const controls = animate(scaleMV, targetScale, {
       type: isLinux ? "tween" : "spring",
       ease: "easeInOut",
       duration: isLinux ? 0.2 : 0.4,
       stiffness: 300,
       damping: 30,
-      mass: 1
+      mass: 1,
     } as any);
     return () => controls.stop();
   }, [targetScale, scaleMV]);
@@ -77,11 +84,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         This container handles the global display scaling.
         We add a solid background to eliminate overdraw during scaling.
       */}
-      <motion.div 
-        className="bg-background relative flex overflow-hidden shrink-0" 
-        style={{ 
+      <motion.div
+        className="bg-background relative flex shrink-0 overflow-hidden"
+        style={{
           transform: transformTemplate,
-          transformOrigin: 'top left',
+          transformOrigin: "top left",
           width: staticWidth,
           height: staticHeight,
           contain: isScaled ? "strict" : "none",

@@ -22,7 +22,8 @@
 [data-engine="webview2"] .card-container,
 [data-engine="webview2"] .btn-hero,
 [data-engine="webview2"] .btn-primary-lg {
-  transition-property: transform, filter, box-shadow, background-color, opacity, color;
+  transition-property:
+    transform, filter, box-shadow, background-color, opacity, color;
   transition-duration: 200ms;
 }
 

@@ -33,10 +33,11 @@ export default function GlobalLayoutControls({
             max={600}
             step={10}
             value={settings.styling.payment.numpad_height || 320}
-            onChange={(val) => updateSettings({ styling: { payment: { numpad_height: val } } })}
+            onChange={(val) =>
+              updateSettings({ styling: { payment: { numpad_height: val } } })
+            }
             unit="px"
           />
-
         </div>
       </div>
     );
@@ -51,10 +52,11 @@ export default function GlobalLayoutControls({
           onClick={() =>
             setMockupView(mockupView === "payment" ? "default" : "payment")
           }
-          className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${mockupView === "payment"
-            ? "bg-primary text-primary-foreground hover:bg-primary/90"
-            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
+          className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+            mockupView === "payment"
+              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+              : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+          }`}
         >
           <FaCompass /> Payment Modal
         </button>
@@ -70,7 +72,7 @@ export default function GlobalLayoutControls({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-50 px-4">
+      <span className="text-muted-foreground px-4 text-[10px] font-black tracking-widest uppercase opacity-50">
         Global Layout
       </span>
     </div>

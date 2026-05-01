@@ -20,7 +20,7 @@ interface ProductTableProps {
 /**
  * ProductTable component displays a list of products in a tabular format with detailed information.
  * It shows images, titles, categories, prices, and provides actions for editing, deleting, and managing stock/recipes.
- * 
+ *
  * @param {ProductTableProps} props - The component props.
  * @param {(BackendProduct & { image_path?: string })[]} props.products - List of products to display, including optional image path.
  * @param {Category[]} props.categories - List of all categories for display name lookup.
@@ -87,7 +87,8 @@ export default function ProductTable({
         {
           header: "Price",
           className: "font-mono tabular-nums",
-          render: (product) => `${settings.general.currency_symbol}${(product.satang / 100).toFixed(2)}`,
+          render: (product) =>
+            `${settings.general.currency_symbol}${(product.satang / 100).toFixed(2)}`,
         },
         {
           header: "Actions",
