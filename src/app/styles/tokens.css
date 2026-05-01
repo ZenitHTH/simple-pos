@@ -12,7 +12,8 @@
 
     /* ── Custom Theme Colors (New color-mix Logic) ── */
     /* If --theme-primary is injected via JS, use it; otherwise fallback to default blue */
-    --primary-base: var(--theme-primary, #3b82f6);
+    --theme-primary: #5352ed; /* Saturated Sky */
+    --primary-base: var(--theme-primary);
     
     /* Reassign --primary so Tailwind uses the base color */
     --primary: var(--primary-base);
@@ -28,10 +29,10 @@
     --primary-foreground: oklch(from var(--primary-base) calc(clamp(0, (0.7 - l) * 10, 1)) 0 0);
 
     /* Manual Overrides with Auto-generated fallbacks */
-    --background: var(--theme-background, #ffffff);
-    --foreground: var(--theme-text, #0f172a);
-    --card: var(--theme-card, #ffffff);
-    --border: var(--theme-border, #e2e8f0);
+    --background: var(--theme-background, #ced6e0); /* Anti-Flash White */
+    --foreground: var(--theme-text, #2f3542);       /* Prestige Blue */
+    --card: var(--theme-card, #dfe4ea);             /* City Lights */
+    --border: var(--theme-border, #f1f2f6);           /* Pumpkin Patch */
 
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;
@@ -42,18 +43,17 @@
     --accent: #f1f5f9;
     --accent-foreground: #0f172a;
 
-    --destructive: #ef4444;
-    --destructive-foreground: #f8fafc;
-
-    --success: #16a34a;
+    --success: #2ed573; /* Ufo Green */
     --success-foreground: #f8fafc;
 
-    --warning: #f59e0b;
+    --warning: #ffa502; /* Orange */
     --warning-foreground: #0f172a;
 
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #3b82f6;
+    --destructive: #ff4757; /* Watermelon */
+    --destructive-foreground: #f8fafc;
+
+    --input: var(--border);
+    --ring: var(--primary);
 
     --radius: 0.5rem;
 
@@ -89,14 +89,12 @@
   }
 
   .dark {
-    --background: #020617;
-    --foreground: #f8fafc;
+    --theme-primary: #575fcf; /* Dark Periwinkle */
 
-    --card: #0f172a;
-    --card-foreground: #f8fafc;
-
-    --popover: #0f172a;
-    --popover-foreground: #f8fafc;
+    --theme-background: #1e272e; /* Black Pearl */
+    --theme-card: #485460;       /* Good Night! */
+    --theme-text: #d2dae2;       /* Hint of Elusive Blue */
+    --theme-border: #808e9b;     /* London Square */
 
     --secondary: #1e293b;
     --secondary-foreground: #f8fafc;
@@ -107,17 +105,17 @@
     --accent: #1e293b;
     --accent-foreground: #f8fafc;
 
-    --destructive: #7f1d1d;
+    --destructive: #ff3f34; /* Red Orange */
     --destructive-foreground: #f8fafc;
 
-    --success: #22c55e;
+    --success: #05c46b; /* Green Teal */
     --success-foreground: #020617;
 
-    --warning: #f59e0b;
+    --warning: #ffa801; /* Chrome Yellow */
     --warning-foreground: #020617;
 
-    --border: #1e293b;
-    --input: #1e293b;
+    --border: var(--theme-border);
+    --input: var(--theme-border);
     --ring: #1d4ed8;
   }
 }
