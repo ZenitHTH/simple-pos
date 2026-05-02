@@ -55,8 +55,8 @@ jobs:
       - name: Setup Dependencies (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          # TCL is required for libsqlite3-sys 'bundled' feature on Windows
-          choco install tcl
+          # magicsplat-tcl-tk provides tclsh required for libsqlite3-sys 'bundled' feature on Windows
+          choco install magicsplat-tcl-tk --no-progress
           # Use the standard OpenSSL location on windows-latest
           echo "OPENSSL_DIR=C:\Program Files\OpenSSL" >> $env:GITHUB_ENV
           echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL\lib" >> $env:GITHUB_ENV
