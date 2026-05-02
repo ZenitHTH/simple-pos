@@ -52,13 +52,21 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev
 
-      - name: Setup OpenSSL (Windows)
+      - name: Setup Dependencies (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          choco install openssl
-          echo "OPENSSL_DIR=C:\Program Files\OpenSSL-Win64" >> $env:GITHUB_ENV
-          echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL-Win64\lib" >> $env:GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=C:\Program Files\OpenSSL-Win64\include" >> $env:GITHUB_ENV
+          # TCL is required for libsqlite3-sys 'bundled' feature on Windows
+          choco install tcl
+          # Use the standard OpenSSL location on windows-latest
+          echo "OPENSSL_DIR=C:\Program Files\OpenSSL" >> $env:GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL\lib" >> $env:GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=C:\Program Files\OpenSSL\include" >> $env:GITHUB_ENV
+
+      - name: Debug OpenSSL Path (Windows)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          dir "C:\Program Files\OpenSSL"
+          dir "C:\Program Files\OpenSSL\include"
 
       - name: Install frontend dependencies
         run: npm install
