@@ -55,18 +55,48 @@ jobs:
       - name: Setup Dependencies (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          # magicsplat-tcl-tk provides tclsh required for libsqlite3-sys 'bundled' feature on Windows
-          choco install magicsplat-tcl-tk --no-progress
-          # Use the standard OpenSSL location on windows-latest
-          echo "OPENSSL_DIR=C:\Program Files\OpenSSL" >> $env:GITHUB_ENV
-          echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL\lib" >> $env:GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=C:\Program Files\OpenSSL\include" >> $env:GITHUB_ENV
+          # TCL is required for libsqlite3-sys 'bundled' feature on Windows
+          choco install tcl --no-progress
+
+          # Find OpenSSL location dynamically
+          $openssl_root = Get-ChildItem -Path "C:\Program Files" -Filter "OpenSSL*" | Select-Object -First 1
+          if ($null -eq $openssl_root) {
+            Write-Error "OpenSSL not found in C:\Program Files"
+            exit 1
+          }
+
+          $openssl_path = $openssl_root.FullName
+          Write-Host "Found OpenSSL at: $openssl_path"
+
+          # Find lib directory (could be lib, lib/VC, or lib/VC/x64)
+          $lib_dir = Get-ChildItem -Path $openssl_path -Filter "libcrypto.lib" -Recurse | Select-Object -First 1 | ForEach-Object { $_.DirectoryName }
+          if ($null -eq $lib_dir) {
+            # Try searching for static lib if dynamic not found
+            $lib_dir = Get-ChildItem -Path $openssl_path -Filter "libcrypto_static.lib" -Recurse | Select-Object -First 1 | ForEach-Object { $_.DirectoryName }
+          }
+
+          if ($null -eq $lib_dir) {
+            Write-Error "libcrypto.lib not found in $openssl_path"
+            exit 1
+          }
+
+          $include_dir = Join-Path $openssl_path "include"
+
+          Write-Host "Setting OPENSSL_DIR=$openssl_path"
+          Write-Host "Setting OPENSSL_LIB_DIR=$lib_dir"
+          Write-Host "Setting OPENSSL_INCLUDE_DIR=$include_dir"
+
+          echo "OPENSSL_DIR=$openssl_path" >> $env:GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=$lib_dir" >> $env:GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=$include_dir" >> $env:GITHUB_ENV
 
       - name: Debug OpenSSL Path (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          dir "C:\Program Files\OpenSSL"
-          dir "C:\Program Files\OpenSSL\include"
+          dir "$env:OPENSSL_DIR"
+          dir "$env:OPENSSL_LIB_DIR"
+          dir "$env:OPENSSL_INCLUDE_DIR"
+
 
       - name: Install frontend dependencies
         run: npm install
