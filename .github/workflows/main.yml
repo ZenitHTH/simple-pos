@@ -55,8 +55,8 @@ jobs:
       - name: Setup Dependencies (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
-          # TCL is required for libsqlite3-sys 'bundled' feature on Windows
-          choco install tcl --no-progress
+          # magicsplat-tcl-tk provides tclsh required for libsqlite3-sys 'bundled' feature on Windows
+          choco install magicsplat-tcl-tk --no-progress
 
           # Find OpenSSL location dynamically
           $openssl_root = Get-ChildItem -Path "C:\Program Files" -Filter "OpenSSL*" | Select-Object -First 1
